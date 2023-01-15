@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="也许我可以做一个open功能综合 为了提高软件的内聚性，Linux内核在设计的时候尽量避免使用全局变量作为函数间数据传递的方式，而建议多使用形参列表 I&#x2F;O设备把中断信号发送给中断控制器（8259A）时与之相关联的是一个中断号，当中断控制器把中断信号发送给CPU时与之关联的是一个中断向量。换个角度分析就是中断号是从中断控制器层面划分，中断向量是从CPU层面划分，所以中断号与中断向量之间存">
+    <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="也许我可以做一个open功能综合">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/1/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="也许我可以做一个open功能综合 为了提高软件的内聚性，Linux内核在设计的时候尽量避免使用全局变量作为函数间数据传递的方式，而建议多使用形参列表 I&#x2F;O设备把中断信号发送给中断控制器（8259A）时与之相关联的是一个中断号，当中断控制器把中断信号发送给CPU时与之关联的是一个中断向量。换个角度分析就是中断号是从中断控制器层面划分，中断向量是从CPU层面划分，所以中断号与中断向量之间存">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:55:06.475Z">
-<meta property="article:modified_time" content="2023-01-15T12:55:36.718Z">
+<meta property="article:modified_time" content="2023-01-15T13:37:18.238Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          766 words
+          4.3k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          7 mins
+          36 mins
         
       </span>
     
@@ -273,21 +273,22 @@
             <h1 style="display: none">也许我可以做一个open功能综合</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>也许我可以做一个open功能综合</p>
-<p>为了提高软件的内聚性，Linux内核在设计的时候尽量避免使用全局变量作为函数间数据传递的方式，而建议多使用形参列表</p>
-<p>I&#x2F;O设备把中断信号发送给中断控制器（8259A）时与之相关联的是一个中断号，当中断控制器把中断信号发送给CPU时与之关联的是一个中断向量。换个角度分析就是中断号是从中断控制器层面划分，中断向量是从CPU层面划分，所以中断号与中断向量之间存在一对一映射关系。</p>
-<p>软中断一般是指由指令int引起的“伪”中断动作——给CPU制造一个中断的假象；严格的讲，int与IRQ毫无关系，但二者均与中断向量有关系。int引起的中断，CPU是从指令中取得中断向量号；而IRQ引起的中断，CPU必须从数据线上取回中断号。</p>
-<p>接下来CPU的工作就一样了：保护现场、根据中断号得到中断处理程序地址、执行中断处理、恢复现场继续执行被中断的指令。</p>
-<p>Linux用int $80来实现系统调用异常 .这一指令使用中断&#x2F;异常向量号128（即16进制的80）将控制权转移给内核。事实上，机器代码段非常简短。它所要做的工作只是将送给系统调用的参数加载到CPU寄存器中，接着执行int $0x80指令。然后运行系统调用，系统调用的返回值将送入CPU的一个寄存器中，标准的库子程序取得这一返回值，并将它送回用户程序.</p>
-<p>疑问：swi和int指令区别在哪？open()被库函数转换成哪个？</p>
-<p>通过int 0x80，就可使用内核资源。</p>
-<p>通常应用程序都是使用具有标准接口定义的C函数库间接的使用内核的系统调用，即应用程序调用C函数库中的函数，C函数库中再通过int 0x80进行系统调用。    所以，系统调用过程是这样的：</p>
-<p>    应用程序调用libc中的函数－&gt;libc中的函数引用系统调用宏－&gt;系统调用宏中使用int 0x80完成系统调用并返回</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="7b722929dd8fbe6f8146e52b0aa7afe7e1e91530baba8041457a7d6153b57f14">4630436162ade97ba2718b7d0c4b3b639a53d7dcc288523eac4a5e93b98734ad82384608bcbe94a3e85b2b4c463d6645c6a09ec1d38f35ac91c49f93a5c5f6ed88aeca16ced611146723d2e79e72d611f82fcf4a527fa828db4fec5d3e6ed9feb53a6c8a44d5304826ca50676413f17a7afcfdafcd9ed4b960f6593634b17298a7e93ba3398676ad6006412b555c511e737f310df20cd1def4964e11e05ad4092e9f14e1a0f62d8ab36fff8693ca10e6ce2bc69d3d315816b4e08e3eb9bdfaf6f11d4b6e63d703ff411ac8c5d7789c5de0e4e9d24cfbe37ef9db54872fb2cc0b969283d3abdd1fca8512c62ff1986f3ba471b09b4b9e917a8d2a37b13d6dc9611e802c0d2999ed17280379bd141a35c12cb05e6185d227df797239ef4a2365b9357ffd1c547690e5fe8627f70010c08011dd42573452291fd395743425b7dddfd4a1c4dd3e091317456e2a7229627faa024122a642fb91060266d4bc73db8aa345934de26576d30e00b0421ec57a8a538c2aa273ad4a8af6c63ac2a6f7df0efe6816144582825abc0a8055901226a20f125d02bbf97491408c9fafcddaa9c9b1c6b9b65550c0c78dbd196409bdb01916d2f63f2ab789150e61630d651f3a5e60dba7853814d4fc9b8d9b5e32d7d471fdb1c83bf93ce639309331c47a831470c517996517afba0a1375eb9f373397200b4443f0ae94e25e08c5fad4a12bc71a04f39a2526f839e67acfe006e103ed096adb661376e4533f1869fb2df93b2c7602d26d9f722eee9919b4cd9f171a3b5f22d2fa0b1f5704982e97bd93be369aae9ddb9f0376b441f1196c637791c26080144256d23f833ea5ddf74ec81535cb65e2df98c563946f1498b729ebd06d391c73957893fccb0b1e83d1728c6b5d1d87a96432055db20f0f91a4988544bee370043c497662c122712bdeab206146076edcc27513e5000cc492a83dfd2ac681af3766e8f17305b24b4e0fec37e3fca42e6e139cd40ea0a0c870d184876eaadf3af944661e2d57f3bfd40d2d8b8e7e854ed5d0b455ea257f52aa30f8a91db42b2ee3de5f838ec1c860c3a6a7891127d9ec6d11fbe2e12068d8c728cfa4dece8b95a361a947cc7a24043f4778b397a776bc15cc6f4cf3ab645705daa528414aae67249a7450c6181ab581d4ade4f45e4188f2cc519564501973a57104c0e2a9952583a81c219ea4c6ccc1c99a84d863d35338d86d4a4c953b1488b9adb6fea383126e5e787122f17e846f5f231569abf85d635a68423c04d69cd810e717101bf229d7b99553b4ccf193caf5c40aa5877f5f27ceafaa46235dc66a5fb1a6fc8f506a0471913bed6d809eef2db19a8c55330a79a46951b6702af2dba53c3eced2a08a17436f09cf3e4c0ac4c7bf2ca7bbe5d666896bc5133b23dd77ef5b58ba66b62a6cd11c450909f019de5582e33101facb807c481a76be55a6ffbccece04c603eae15945251ac6c8d51e40d9de3377a90ba5e53d13578fb87407602810fce0dcf75b2a5eb523cbf1ba16022c3649fb8ca07ff53ac931a700872e3b46f335075bd43456208f41189b50bcdebb9598e3da6e860fe606655a4afebc483cc1df8b5ab0c3d2b29ddf29caaee2b0dffafe8b5f233f4542678a88fee14e66e3a7263841d57146313cba254d2742aca54bfaa02e77dea5dd3537c297efe57a993c703c16fefb087e3d4f01703883b4a18cc146d6d40db0135c5d61e2742cd773126cdd7dbfcee9fd660c9cc7ed7e89186abb810a5a219a58f811d3b694f53aaea84d1396008e0a4063212c0826b6fec139faa83315c8b91b08c7c65edcbd00ccc65a1d101b383130a281e0be9b4b5b391672361251983ccb5b2d2ee3d18cc00367f9b5358b6f59bb2b524148a183ab14b2f5cf96867e7666985de4ce3b9279f965450d88f183e360de632dd4264d66b3c77d2b655135262ea42a21f62dc1976a17b01dc0ab0ec47941448d5abc9ed956a79f5ae02f78499e2a9b3a024132a5d79b2536d10ac1ac90356a8df036065c5abc4d94724201f3d5b6b567a4497595a7de39b185a9500cadcc64c627d5d57cfa354e50e8769e1567efa7c3d30e761e45bd05c5b32ec8916741885a1685ff5d7f7328e8f37e5a7c641ceb61b55427e19e5ed30ecc1725c8472f1d5506d2ed1e6a1690aac00d8c1a2d9b522f6d2651247d86c1f3a4b660a00c9f7f67aee227def38ffc4eff8a2a6b43b06d1ff30477a4dc803d7022ff0ec797c170a180a0a7224bebe1618dc087f47a9ee2a9cabfa04a261df56e798327442d1b67824c9a6475f83a9d1fe119ee7c22b5af56cefbea0a244d179c89a1b6c5128bccd30ad11beaaf6892be77ec852117d25f4ed1362ab483a3e4473099d6204d0b264e368ab1275499a2ae4d7a48de0173b8dd2dcfc9eeeb8e2727041489645bce0b4ec62f8ee927b55d86a250e32d609ba3e0d61a5a6a93da66be502d71e8a412ab6176b6b9f4936896fcac5d9bf40e4e0d3f909ddcb3ec0a5e4de09d8f96d0249f8a8c9724681d24120384b4753c6e07aea0ed003c0cc03f0f3701ea1f8fc5b253a326b22f840dc98579fd5bdcc900ec20d7079bb941a090a93f413cce6f46dfffcbf5528f835262a25b2f441c1c57fdf819608837fd8c6415125030cc4bc3299d4887edb8d80b968eb7df8a2d080a2bc373a8acb86e26685236259f693a303281233729af27325b0510211a78c2b4c4e99f3e230131c8266c02518a6d7607eca0b254625c33dd8390d952af6226722cbbe0aeedf0ea0b4808fdd156a8c65c1b09f1ad2f8a56529d9003a1f63dcbebc78d3394805abb6fc3ff8a01eac9ea315bafebc5d5d550b279e110767946e57a6128a075b91e71d616206ace4b817fbb91e3a02d127275e12d25dc91a7a8e679d499ca4c4410e21adcacf2836db2c76cd6d38673534e0b73b683951d7e77cc4462a6149db7fe6df763814707bacf92370b227dfee588caa3ed27ed951166864fb9e3639fcbb4c1ff2004b269537b6b547eed72d88ff5238b8e8e2ea0d247</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="Hey, password is required here.">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -544,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   
