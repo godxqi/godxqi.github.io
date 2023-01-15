@@ -232,7 +232,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/%E6%96%AD%E8%A8%80/" target="_self">
         <div>
-          if和断言区别： （1）if是在最终发布的版本中真实存在的，用于处理程序运行过程中产生的错误（例如处理用户错误输入），以提高程序的健壮性。 （2）断言用于开发阶段的调试，捕捉不应该发生的非法情况，并迅速定位问题。发布的时候需要把断言去掉 背景： 写有参数的函数时，首要工作，就是要对传进来的所有参数进行合法性检查。而对于传出的参数也应该进行检查，这个动作当然应该在函数的外部，也就是说，调用完一个函数
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -295,7 +295,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/%E5%8F%98%E9%87%8F%E5%9C%A8%E5%AD%98%E5%82%A8%E5%99%A8%E4%B8%AD%E7%9A%84%E5%AD%98%E6%94%BE%E5%BD%A2%E5%BC%8F/" target="_self">
         <div>
-          一、不同位宽的存储器： 1.1 存储器的位宽 存储器的位宽表示 存储器位宽表示了每个地址下有多少位数据，与它的数据线根数相等； 如：32位机器一个地址下就有32位数据，即4个字节（这4个字节称为一个字，字就是机器字长）  1.2 存储器的存储器容量 存储器容量是位宽与2^N的乘积，此处单位为bit。 如：2M * 32bit的存储器中，2M个存储空间，一个空间32位数据。即2^21，21个地址线。
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -358,7 +358,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE-%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E4%B8%8E%E7%A8%8B%E5%BA%8F%E8%BF%9B%E7%A8%8B%E4%B8%AD%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" target="_self">
         <div>
-          一、程序进程与程序文件： 程序进程就是程序运行时的程序（如在内存上运行） 程序文件是编译后生成的可执行文件，比如.bin文件等 二、冯诺依曼结构和哈佛结构： 2.1 简介 （1）冯诺依曼结构：提出了二进制逻辑、程序存储思想和计算机由五个部分组成。将指令存储器与数据存储器合在一起，使指令和数据共享一条总线。 指令的执行为顺序执行，无法重叠执行，只有完成一个再执行下一个，使得信息流传输成为限制性能的瓶
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -421,7 +421,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/volatile/" target="_self">
         <div>
-          程序的硬件优化：  （1）由于CPU处理速度远大于内存访问速度，CPU直接从内存中存取数据需要等待一定的时间，所以为了提高整体性能，在硬件上引入高速Cache。Cache保存有CPU刚用过或者循环使用的一部分数据，CPU再需要使用这些数据时直接从Cache调用，减少CPU的等待时间。 （2）在现代CPU中指令的执行并不一定严格按照顺序，没有相关性的指令可以乱序执行，以充分利用CPU的指令流水线，
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -484,7 +484,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/typedef/" target="_self">
         <div>
-          用途： 1.定义一种类型的别名，而不只是简单的宏替换 需要注意的是int 和 unsigned int是不同的类型，需要起不同的别名 2.帮助struct声明新对象 3.用typedef来定义与平台无关的类型。 比如定义一个叫 REAL 的浮点类型，在目标平台一上，让它表示最高精度的类型为： typedef long double REAL; 在不支持 long double 的平台二上，改为：
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -547,7 +547,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E9%94%99%E8%AF%AF%E7%A0%81/" target="_self">
         <div>
-          在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    /* 4k */#define IS_ER
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -610,7 +610,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC/" target="_self">
         <div>
-          一、缩进 1.1 switch （1）switch和case标签从属一列 123456789101112switch (suffix)&#123;case &#x27;G&#x27;:case &#x27;g&#x27;:        mem &lt;&lt;= 30;        break;case &#x27;M&#x27;:case &#x27;m&#x27;:        mem
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -673,7 +673,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux_C/" target="_self">
         <div>
-          open函数属于Linux中系统IO，用于“打开”文件，代码打开一个文件意味着获得了这个文件的访问句柄。 1int fd = open（参数1，参数2，参数3）；  包含头文件： 123#include &lt;sys/types.h&gt;#include &lt;sys/stat.h&gt;#include &lt;fcntl.h&gt;  参数1（pathname） 即将要打开的文件路径,例
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -736,7 +736,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/gcc%E6%8C%87%E4%BB%A4%E4%B8%8E%E7%A8%8B%E5%BA%8F%E7%9A%84%E9%A2%84%E7%BC%96%E8%AF%91%E7%BC%96%E8%AF%91%E6%B1%87%E7%BC%96%E9%93%BE%E6%8E%A5%E8%BF%90%E8%A1%8C/" target="_self">
         <div>
-          1hello.c(预处理) -&gt; hello.i(编译) -&gt; hello.s(汇编) -&gt; hello.o(链接) -&gt; hello  一，预编译 1.1 操作步骤：gcc -E hello.c -o hello.i 1使用预处理命令时，最好将c文件中的#include &lt;stdio.h&gt;注释掉，这样结果更加直观  1.2 主要作用：处理关于 “#” 的指令
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 
@@ -799,7 +799,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/C%E8%AF%AD%E8%A8%80/C%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85/" target="_self">
         <div>
-          123456typedef struct tagPoint&#123;double x;double y;double z;&#125; Point;  在上面的代码中，实际上完成了两个操作： 1、定义了一个新的结构类型，代码如下所示： 123456struct tagPoint&#123;double x;double y;double z;&#125; ;  其中，struct 关键字和 ta
+          这有一个加密的内容，请输入密码后访问。
         </div>
       </a>
 

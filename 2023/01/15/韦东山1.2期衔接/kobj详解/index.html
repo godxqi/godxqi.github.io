@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;zlsh007&#x2F;article&#x2F;details&#x2F;22291993 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_16777851&#x2F;article&#x2F;details&#x2F;81368580 （一）主要数据结构  Kobject是基本数据类型，每个Kobject都会在”&#x2F;sys&#x2F;“文件系统中以目录的形式出现。 K">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kobj详解">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/kobj%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;zlsh007&#x2F;article&#x2F;details&#x2F;22291993 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_16777851&#x2F;article&#x2F;details&#x2F;81368580 （一）主要数据结构  Kobject是基本数据类型，每个Kobject都会在”&#x2F;sys&#x2F;“文件系统中以目录的形式出现。 K">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/161219114048231.png">
 <meta property="article:published_time" content="2023-01-15T12:55:06.480Z">
-<meta property="article:modified_time" content="2023-01-15T12:58:25.858Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/161219114048231.png">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k words
+          14k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          20 mins
+          119 mins
         
       </span>
     
@@ -275,44 +273,22 @@
             <h1 style="display: none">kobj详解</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zlsh007/article/details/22291993">https://blog.csdn.net/zlsh007/article/details/22291993</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_16777851/article/details/81368580">https://blog.csdn.net/qq_16777851&#x2F;article&#x2F;details&#x2F;81368580</a></p>
-<p>（一）主要数据结构</p>
-<ol>
-<li>Kobject是基本数据类型，每个Kobject都会在”&#x2F;sys&#x2F;“文件系统中以目录的形式出现。</li>
-<li>Ktype代表Kobject（严格地讲，是包含了Kobject的数据结构）的属性操作集合（由于通用性，多个Kobject可能共用同一个属性操作集，因此把Ktype独立出来了）。</li>
-<li>Kset是一个特殊的Kobject（因此它也会在”&#x2F;sys&#x2F;“文件系统中以目录的形式出现），它用来集合相似的Kobject（这些Kobject可以是相同属性的，也可以不同属性的）。</li>
-</ol>
-<p>（二）Kobject总结</p>
-<p>kobject是隐藏在sysfs虚拟文件系统后的机制，对于sysfs中的每一个目录，内核中都会存在一个对应的kobject。每一个kobject都输出一个或者多个属性，它们在kobject的sysfs目录中表现为文件，其中的内容由内核生成。</p>
-<p>Kobject的核心功能是：保持一个引用计数，当该计数减为0时，自动释放（由kobject模块负责） Kobject所占用的memory空间。这就决定了Kobject必须是动态分配的（只有这样才能动态释放）。</p>
-<p>而Kobject大多数的使用场景是内嵌在大型的数据结构中（如Kset、device_driver等），因此这些大型的数据结构，也必须是动态分配、动态释放的。他们释放的时机是是内嵌的Kobject释放时。同时Kobject的上层数据结构中实现了Ktype及其内部函数，而Ktype中的release回调函数负责释放Kobject（甚至是包含Kobject的数据结构）的内存空间，因此只有Ktype才知道Kobject嵌在哪个数据结构中，并通过Kobject指针以及自身的数据结构类型，找到需要释放的上层数据结构的指针，然后释放这些上层数据结构。</p>
-<p>每一个内嵌Kobject的数据结构，例如kset、device、device_driver等等，都要实现一个Ktype，并定义其中的回调函数。同理，sysfs相关的操作也一样，必须经过ktype的中转，因为sysfs看到的是Kobject，而真正的文件操作的主体，是内嵌Kobject的上层数据结构！</p>
-<p>（三）cdev_map散列表</p>
-<p>内核中所有的字符设备都会记录在一个 cdev_map 变量中。这个cdev_map是一个struct kobj_map类型的指针，其中包含着一个struct probe指针类型、大小为255的数组，数组的每个元素指向的一个probe结构封装了一个设备号和相应的设备对象(这里就是cdev)，可见，这个cdev_map封装了系统中的所有的cdev结构和对应的设备号，最多为255个字符设备。这个结构用来快速存取所有的对象。</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">kobj_map</span> &#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">probe</span> &#123;<br>        <span class="hljs-keyword">struct</span> <span class="hljs-title class_">probe</span> *next;      <span class="hljs-comment">/* 这样形成了链表结构 */</span><br>        <span class="hljs-type">dev_t</span> dev;               <span class="hljs-comment">/* 设备号 */</span><br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> range;     <span class="hljs-comment">/* 设备号的范围 */</span><br>        <span class="hljs-keyword">struct</span> <span class="hljs-title class_">module</span> *owner;<br>        <span class="hljs-type">kobj_probe_t</span> *get;       <span class="hljs-comment">/* 用来获得kobject对象 */</span><br>        <span class="hljs-built_in">int</span> (*lock) (<span class="hljs-type">dev_t</span>, <span class="hljs-type">void</span> *);<br>        <span class="hljs-type">void</span> *data;              <span class="hljs-comment">/* 指向struct cdev对象 */</span><br>    &#125; *probes[<span class="hljs-number">255</span>];<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">mutex</span> *lock;          <span class="hljs-comment">/* 互斥锁 */</span><br>&#125;    <span class="hljs-comment">//kobj_map结构体是用来管理设备号及其对应的设备的</span><br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="8a7380c0646d4c6063ec54bfd0e3010d51f37fc68983d0efc07807e418f7d359">4630436162ade97ba2718b7d0c4b3b6393e46aed1c69f6ac78fc7c4c2e0b6813e0dc7eb26de44b11f0b2fb2b7bc72e342f136a42dcb100f03d5a2e88b95e9c105386c27c1036a3753c5a4ed626a4200135ede6a67fdd12c0bca398e3f23ac1f28252086a03606e7424f4e025e7eeba27d4e917bd5b0137ebee898073a2420e0098d18981b103cd09e6b165073f55755de65e4b146bfc6d1623847bb267a8a17ab52f6646a3746731d6b34b4025c9be340ae89d4dba29ca512180e1a4d8fdece4f798917954474c975473e639ed13a624d8ec54ba52bb7393608d8be6e4f9d218026ef454de1ee5c15c0e0a9fbbec72054756764a3ee1f52b88e266123cd126f5b63835b74695c2dbe24e4594d9880089e1953b23d98f96f04b2c85c0f8f9bcd91546b3f6f5b50433f39950ad2aa84eda93a471feffbae9742bcc1275b9f9242b2113c100efaf5cec04f2678f0784a1db6e4f3ca57e08db4f038d3858d85efbc19dcab56ce9d028da9f9019455de3cbb3163e5df461e54a6a5790cc9db9ba428ecf6cf88e00f17529d7a577f80b4610c63f18705e96093056d417b6d555067b4c6b3e860bd92803deaf62611d49b9df0ef0ec10acccfb05e5606ff9d576af353e77165402854e7b83d678c0d6ba3f9e6c9ec0c86a454da027d880e2ee2a695c9c2783e94b891ff2d12228c1ccedcc01050db78d971300a984051a3359b5d5685a240d12fe57e1b612c05b72b90d5a975687c079efccda5230f0e3b14acd155f35f230036aba47a16729f8b28e7ea379503386a2de756bd92ee986adbee674714a4aa5ca85febea7d7e9c37539189b77686dd0f9ded3abfa3ff073d07276d2c775399bd73cbe5e172fc05c91db391b99834cf0a0522dac683d1f16f68cfc4734b0591b12fb55cacac3a36f69b9d387dbcb714ec48e50f9a7a084f720147a4659ef0f46b07ab833b9dd5302350c3fb4b9c669d1982dc3eec28bbdd91dc2364ef5d9caec1449019656edf9bdaacaa695560bee3a4cca361b2dbae02b9c2603ad35c81a83d866da19163dc62a06b12d3620f1da5f7d764bc7843ecd9613fd593b0ab0a31f8aa16442b069c1af61735583ed642da58526d6f25e33a58a00fb3323145276a367e47e55a536ef9bd36cc992143737a9c8225a20636c18bd3b8946c69c28c2eab0b7ec1a03e0fc7e845dc3e5515198a9a4428995c45f039804b5ad34de47cc3dce9ae2c79ee4cc9c15ea08005046b0321f850378727ff5a62c94e657400364f879dc37556b616dc60ed3bae8e895e3884bb95279c8e97e492f8a7a040a147bff536529b800b3267a685b4161a3f519dd1398d5c605ed3aa1f1ef437e41b5501abf0929ee645fcce561719fc1c705a00280189183dae00be25570f9c56019816ff7d66f4f4877c81a0ba33f9570ed632eec4005e824d57b7b078e8e68d106b80baab447411c275c2f8e3d898d7a9678e42065a02fd4d1ceb72dc5851e4744279f1d70bb4caf9d4013812014f6dd651ddf750d1061c1b9d7410a77672d12fb54d01d3c544c22e3f7dae25c753c6ddbde0517369a39f24f7c2398812ac9a2bc5b00fa1a4c3e6a34db335b3d64c9e491534e12de75df07afa3a31244c6131aad7200866b6dc6ddf4c59e5e4e8bd10fb3554dd6c8a8717963c6eaed5b0c96ed90e2828dca5e10f2d33d5cd15b31d6a2ace550eed145c73640f3dfe124de098156bbe8550ee3e0f1f9cd4875ebd17f6b87ec93bd793b4c9d8cd8ffe17e92ec140e4c7c0e79ca0931cb3bb87ccf661dbd41438f18ab94f3ed6795b898c89210e96dd78b321b57e5ace610f5e751c0d53ac6804d1f795f0db50664fc1e7ee4c8009f094834795ba444254df8de87577b936c50513418c2c676fb4db1914da8d04f24c7d1455525e87dfa965005482c7eaf164ef1b791bc3fe0a070e5e6e0313c374feda4af4a22be23e8cc48f919ca6c722a093721cc6e35f1953100e6c2c7eac4f8799d9ce5770fc0b2ecd838ee2dbcd30a9b4dfa6e6f0c8d0338da6a23602b29bf30b3e876e51283489a441b53116e6e61fec2c8402fa50c33df324498963035f0eff8ae57928cff4e14beb41f3740cfafbec8b4816f7b5a9346935c804af1305e6b0edd69275d5376bcda74bdef90912b4734d11c7510d3c213aa7bbd293f9b5b5346782629818bd344bd69f9014b15b6022e4056f40ad30c5212e79385573e63c2f829715e97238b69a5e12de9547b34318144cbc30fd59b55976d239ea29cbad5ca18fa34632622b1427b241dfca44a7a37b77b0321303efdd1d2d943d01aa7dfc2735e02a95f9e2462f4e0ad9dc124beeef0fc80426f9addbd4d624d5b4313a05cedc8ba748d83968af9d7e15da3bfaeff8514254867844c9d5743ecbc1b84bca0e7440f4de37c20fef87b9f01be213588c384a51b851575ed99731fce2c5252f88cb2dd34d991225097d02fded858a74dd0ed8d121324e60cd12d37f583a0f6a2a06fa9579105c13fc40670c72d014953d003db9256da736af5dd21ddadfcb2b36cf9a851f440bfe289f7b7c6ae5d659b55d0c7fcc67815f94db10167b0413a08d1f180c8a84ce56e3b6d16fcd0174f2d202709a534b2451427834cd4e0fb448f42866c830f17a5647693b50d3b42621ac31433c1ede8219918c28a731ce538825dc24051107f31f3c60db46c32b06572db5851c2d02a729f9fd8acfa7a3ebdee8cf4861b0de5887e0cdfe58eab8f6cd4cf0c0c9ec92e2ebb4b81ef3ca29b97f7875ea89c355f81e54d553435646c8ba7f710943ef1eb4a73fbf139df37b848347d9ae0a3d2ba8aa12582e68cd73c24b65a50421d87306bacadb79eadaad5857fb67c24a844a4cff69c4479fe0a296beac3d567f71d541a07cceb494e207c30cb6625205f583fa9e71f111a4060a0c85952df8bbca5307123904dfc9ffdf61ed99caa9c6724d97dc6a0197f7ad3e84c7238b10a98da755507a8941cf079a5649492646418c545d55b45132cc3874eabc08d658e50fa25f52ec6c387ef98640f59f9177298d2564d66c4136289217bcd41c4b49d77691eb008879a964c61140e816002c99e405c3ca07d055b1304a0db5f8180e9a022e1073d6d7a03903a1f8c3ac4dbc814b9fabd0a84eca8ea5063e7e095ad0ad29dce9d5c316891a8fbd75408a5ceb63a62a65ff3c5276e082b220aceaf8c89ff495a88805af5476ba20f41c9eb9a78df0d751696767d8736d333af239a4362cd9a7b0318bf3748f579bd39516b97192c723940ed1da8cf3c39108d7ee943d6bc99504ee0ab76fc0438844a45f6be3406c79b4b9c486381863a2504f772bf8dd0ef5bbbba3b752679043983e0cfd3732e8a5a90e8ff1d945e43823729e4fc56e69306a56b246bbdca622df0be454b53f78e52d8cbe43a8c04b3afeb729334407713c30ae2e968c93dd6c0a2ace3afd7a38f0dc0aa8e03941e083d95420f22831c9096f7f04c3670153f8eee52d9e620af58181fd8e91c83dd05bc7ab8e0045f5c02386067fe504b09b2937be0f52fffb9717ef3a9de61db6a823c7dcd55336ef1b1abd4c141e722b9daf60dc61b601c3e5e5803ae3126c134653393b01267a64dd7e5d33be1782caddf66c62bbb10647e75eff76da26e9e4d11d66090b1da4ecc54fad3158ed8a65b17bfae89c6831b09e086af6959f0ee04ba3fae925e50b3948d582ffa2c0adc0e006583cbfcc17537b60acb601481a6b07d272336f5d047c13c79a2025d30e0d8763e01ecf844c4b051431963b1b8b0cb1115454d8b588a3280b16a18d1c92a89b0e196a9ab07772c44f79b68eee06c2c56f5ff44c83de3adb87a3bac7fda93bc59c56a1e99204302ce13d5378eb44edb4d1e3b7a03612a237d0bca320416d28bdc5a8539b2818b372c7bdd678615e3419be0c14566fba39815171f592aaf4022c81201ecc2526d7c1dc72f342d66f488e3083058d3aea074073a676899fcab2c729448fad9083b55a43a3f2ab199500565aaa0aced75e64af33b86204947730fd79d14de3aa25e34e9ea4bcbc701427168923767ea4f12cf4a5f1b4ac4675e6f6559be16b540b48e2ec82f62ba41b600ea46e6886ea8e72fd4cbde050a5db6c0484a8b66f62ad788f6f36885c2c1dab48c8343c0ae7d14063bc7154ceaf7dfdbb27292431996824b0955b760885fa1e9b04b71abafcdd8529fa44f7d9963f6bfc21562d44f86ce2fe8abcb6c0902846f97abb90dccb62f725900922d00295a1e2ebb3648908a2ff5b604bc8ca4da9d67f4a95209d31616099b15cbad48dbc9ba4eb24fc3f2d678563450a6bc1504ba36e76bf1a8f82e08ae9e8bcee75d9a653f0bcf567f521d738f10984a99c32f0544927d616e1caf2630f8a91db6630e2d33f2883039908fc971ddc41e8e2175254620c8b577674bf8e28c16673cc5077929eb8234b931bac3b8f24720a70360db9987e3a1815ccddd5ffb7021c0b7afe7c9ea4fe2cdffe4769fe538f4773e5a551ab1867bd032981796c7406447a6af144b856b6fdac8028cba3858e886173187825defa99b7a229e4fef98e175acc8f5a4dae94d5ff80e61ad9e1b5c6680d4bc4cbf704b0fcb89ad8ae06949fe925a54d689d2ffb816842d22cbbee61ac50b07db7f7547a13fb877b17eafe9364e4470636485c7a064263f30eb779a0d4041bb646505265948d1b7420719399069ebb17ac01f0a12d9ee30a4bdd3e105506473769082946ec1df40347970ad16b5cc7a3c59c7e3f9d8d8901b27b11ee1ecf33d89374873a5fd94393e6731e5cbca7d20d1636c1a8a5b9f24ff5c888f9689ebf2183979e9f3c8ab92c59b39addc37ace6b7589d06c7115b07f6a5ee1c609b1ccbc99e69324d3ad053b8a26b30c948f87b9a276ed8aad6b14b721a530781d862885e00c14a7f01559effa09d873118691e6e0bf1562654c6c4374eacfd8184d847e1b119cf7526ce01888e13b53932ee7a05a7fd376f1a379b98a18186ac8f6a13eeb6f4962d655f4c01f00f082dbe9c1b0862e7e561a518f919ee165f27f8b5c4a9a33df29dea56d422a6f74218f71cd2e30d7b30cfea2ca1fd881ac5ec2cf6193a2dec7fc22d905dc00f5b15d8c0d615f3f6460405a29b5ad21236ce4e82cf7344aa92dea1593e8156d3e318d53570720d1b5460ad0a8a34a510a03f4c0d57c070e0a38cf222222df2e1749601125f5f53d1cf55d2a96c2dd496a22096e37647936dc6ebe0e0739ad30defd38e03826b2c80a9645b001d01ea852ea99092b858900ae8150341aee3b10510092d856940567b66c0cec93023f58fe2bf33fbb32c7b4d2b223511e51ed4fb0da6cedc35a1c0d2155793ffece9d759e79b3cb40826f42d14f9e9fbf5c575049c2e59915808a7190d5c432f1515679ff0cf17096dd7b84c36dea8de12086a73c4f036eb977571f2d4a73f85b5e45290af15a57a99a1f7512181dd51cf62969794f078959f3851f97a833f3ff43b6b2cc0465b2b1ae991974f1a312e9f1a191b1c3bb4bd57cc43e40daf8c404c0d829a6029ff158d09da6b68ccfe5e7aab79e66e14d5ce4a73fc9e6f628800efeef28a16082c7335cf8a8d749bde00eb1978df2523f1e6f1049bb05177f92ade4acf57e04a984004d4bd242fa538af17898ef973c0f096b1e13cd26fa3d90c5d6fbd5cc0f7627780c0af986b0f7bc8035302eab0ab83193e524fb6b30cca2d1b09cb4de2738dc119ee49486b8b2302cf2aaa420ea124638cb2f336f889b3ce3a9373688c198ba034a8ea15f198c99db89e7f1105946a5809e4466c512dea6d369b0b8fe145d4efff6744e78cdb9a96a90b25f0a456a577bc35fe27f0d83a6d44e44afb5a9151f8ff42865c0171444d6d76b258267bb13632752188bef3379a1d0f136de7d93656d3c545db8734422d4bd767547147ecb53f665a80f02009a2231a463cc1632810f780b9677d682514cb1b5407dfcff204787e476cf54f1d12b9573e8bd3c95c5cbea779dd54846d0ed30a495900b5b99c679c825e80fda62669b876bc009bca5f1c358c89f4335747f2588dcc06f84db3e556b44c6c0fe1af29140d5b60834381d402b41fa50f6479661da54385b378dc1b8e52e2ca91b0f71548ee8904272d1d3ed6719d1b35c9e81cd201c875b830995e238d81b5a860b415306a85d1d35c23de20dc318e8528b96e372152b9057ff072c00e147fdbabd233fd04c6ae8246abb2c83334e865cd44b3038391e05173135c37d71af100bb4cb4e5a9d6f991969a9896175c30b7c08a139569024043b6df3e958859d9ac1a35c0529b055374a377c39dae47a1637d53f1bfa1c27e4ad95497dc740e1b4944f3cf82519564cd00e05a58f3a47f8c5cc714fcc8e3166189615f64efa2f5fe951e8b715652facb896d892f0c5b3d8230be1d199990a472d6391f0b302e36a7faa965d34bdfedddf3bad82692524cf2ca598c108f84a30fb642a3dbec4e3931ef3909b7a5e34eaab116ab2f5f83a369b1c5dc0a6be2ee3da95a3aed09882a5529d0071c6eae8636875d21cf97417a8c1726d6b7e833eec308f82e4720d42d34b10db16db7d852f27806fc89c1800c795f9e4d351435f2beb91cd46f42180f22d57f45164a0644f3e93ca4e5d298bbe760fc1ba6bd6dfc12828aa4752e284c3766d773df87e69e9aefa13dec623da8649e06011008cda4ada11b68e99cafdaba2694e93267b64d91161869aedd4d1566d82c0b364620e64ccc54c0d077035483b5f30bb46304fa1a5824d2b64e34149730073f85ec88cac851359f9d56acd42b247b2868125fbf575298e4e1c60313ad02d95e8f35437a40c8ed57328ba9530bbce73651cfb48f148cf6e5570d5399bf9b0ff2895dad05c6b321340cb33cfde9dd222a865585c19ec8b2d71c9ea7a06c569066cc76762138bb99932b990800c2f68a0101ce1a86ba24d9085a217ee627e20e91ff079119314aaf707525baa2b0e34b177fd9e826170af1c53fb428e96993b6498271e1b07da31010e78b5010a356766f94bf56b9a208c6a61feff8f61a8c01759648c924423b7653fe541217bd4768db41ee3fe05e0234ec16e38e3963bb9a33a77bd5a2626f0b821d65af6264f725a8146305be41ec6994a53fe927480982ed78ac270b25f85c46f14f8f3de9a46a4eebdbc184bca861433466744be4f34c8606bceaa0284a0d2ca54fde68f98526fc9616f39d717ce21a32c20ad2ad952403bcf9487d4001cb6ad8c66cae8076c7c04663c3c589f19b8ef32d37bdfe95b2a9d9877ba3daaf92163da4e50257d97674f50101df4e9be8e665a2e90a7483b1000a3fb50facb561ff8b5d533a0591bf33564934e9e621dc9b2f0c97dc38a72becc2e0c0ef6f0686f66bd2825ae8396abbb125ae36c0648bfd2e1a51570957ab599749471ebfff526aaf1312bc627c00c068fc97ad6a99c7e77c603e3b6656334037bd16a337058f1c2ffb9eac298f0dc5a8f1cdc59ef9c5f22c158ca6e825589c282f5514c72c9fd0807266bdd2819db50b6e10c6207a5a583dbd0037ca6160ba48e2e69c29c139f328cbb6042d7c8d4f2db80cca0609026087c4459307a00225bf90857c69f8af1c4ff5812f440c457c763e6125ace86bae6a93a26bac245a0374578ee1eef58c05f833acb12ea5744c1d49fc481580b0b49c7ddae90a0fa1d51791b4fb108d36e309dd527a38778556e912ac83d886a487b2ef05e4605062b0d7f46deeced698d126ce40b4e633245226584cd574fa7b494cb28e0b91394d264d25c887456ee557e5d6a518095a1422268b8247e9ca4c74d4746bd36581442dd551d800e67baa4eeb7a7bf2164b75ded3f08fbcb19a05c86791c389599fe84eff71eab63c31373555c9e70945a138c75f7566075e4988276868bb32724945ea3bd9100c8cb2f1a4273528298f87d20ed24efe07591508338c8b60c1df82b8192e26438a23256f3ef73d2b1664ad3cf30098b13b00d4e97565947636f672ce46d6e631fce2865a4896f8bcb799bae690b68f94d57b6b9af4367b9549732b6d30edbc8d1c431de6a5b5971d99ef82d03f7e54c47118b91c9504ff020005ecf754cb1297f2353242beba6d41d5aa931fdff5759ce8ac6e7c0a37e8194941ba730c9c893d31a19a35e465e77caabeaf41cbd79b302c077531fcddc4430ac03183b4f4eee2c5cee74b88a21961a9844c2199210002eb0f550d2abca438e51d96b3923f513377697b06f6a2ebf1cfbe27645b66450dbd6f4293af3c54c8ded28ab8d7ba0074e119f10d46268d09cc153576593804dcb6088770b1488493534e3cf0b5bea0a3e041482353cc0aa1f5203a1ad375f6e74c15a0fdcd4c58ab38949df8c435c66a1e09ee2212b39f8cb7c753de4ebc0475ab3ba90699d511c907c00e7e4233084201b2821c1c64f6d09daaa411d285c92b9d692b9bdaa5d413cb33687bc55b07706522cc69aaa02c3bbb7ad25ac6df4c219319d07dc3f2ebf75a7a4f578793aa7178af29d44f6c0985a50a3ad90cb864bb338e59c15364fe12e9096a82e9822591fe491153e8e31fac910e236bc45c15b618f7523f9acb278911f2c78f1f03192e3a53809f3394d368e5122e500acbe0c12e0a8d705304e96d3bf3c87584f3439819d5ef1d0ea6ec4342b00522c8abc161c2433bee507ebc477f360f01ed4039ca48ee8597f16cfeaff0a26cd63af32404aefedef209f21f3ff28e24363146dc8011a1267ed840cc11763e8a583b1c7b7e8eca9278c1fc2a197f5bfd77590ac339240aa597e9e18d199b57a622108459c80ad1517ce949c1e894f13993b0766e0ae02e23f1ffd07e05c46a3d1d5e4d75a286d35c8f26c26b383887ad9a06deabc8df1df8d2f5b9999aebb5a27c259bf75e90f9ff8d6bafc8c8e95ca3396045051318fbb6340caeb9553780e2878567147a86bbbe27995648c992c34af4696438029352a5fbb730e502583cf837079a59b70ee6a59a86e4082b76e95f34331397eca3b9dbd178e4f18d96339c8478ebd0d4a46fa804864155a1778a1ea2b9796ecfcbf95e1741fa95090f1518b107f029e820f16a051ffeb1e96a254284e73829ed4fda56e38a07f170dba3005d2688cf14d17ad39741fa42e6d078ed7cf038886c439f8ea25d35364dc3496c1d822f2bf7a8232b04806c71ae7e4b908d2f297dee1459270951cdf6048372ea6da6c93ec4bc76dac06efe0f497448b802d9337fb181abd69d8192069f73d4ab1668969528f05805dd21220677e606b66975add2264e68328dbdec2a8f45e8dd2df11b44fb0aa33d07b0014d856c686763b4c3ba4d51927dfa70bca8db75a38e0c240d0b47d4a9809ff64182657220bb617ba9a59428334cdd6a286148fcb812af7353afa5307fe3d6d35f78ddf3e27a8dc200fba4f0712a12b30f5404a1f7b7c31d8bbb22b5310280c2cb046e6bd4c816dfb4ca8e2556f91dd0368abf3b26d2f14755b964b4f7a05f89a1d75043daf060ffad2705ab746525b6aa3049b4f0eb32a4a342c758d6a4e2eb7228ea214ad1e0f92415fbe2e88455d73090e68b4a6fb2d6100b71b4184d6f7f30dda5bcb11e282bc9cb8dd15503b3e82eedd65e35e4559829a146823d3fdaa6301c697e1df8c9d63377e1414442f4b339f1693255b70f47df62fd81827bedb2902dbc2c1476bfa5d2957a5cde7c94821465a6f20696738f9954baea66190b6b1c08bd8bc689863e7d350b50a5062d56917751a524eda6a50608753addfad5758392741d9959b6de43606661247db7689daba0ef23b2cc9abef23815f183a944a5604f3d1a7eb7c17a1a38e9edebbe93056761a43a770dd0250872d23a0e86fff6174e65e4d79fdc5e209e1ef576eae21173a2dd2861b2496fca968530a97d5fe345261d652621d61fc19b734942118616010f17621390fe157efaa04dd85a6af74e469bd267e1cb02fb7142ac4937a8d1b31873ec1f09237beecc1decbb9af191ff7af139488ccfa36bf48d2a7c1ee823379f453726b2ea571391f5a1cf38d87104a1f2c10809b63f7ef0be9485255599e22f68</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p><img src="/image/161219114048231.png" srcset="/img/loading.gif" lazyload alt="161219114048231.png"></p>
-<p>（三）功能分析</p>
-<p>Kobject使用流程：Kobject大多数情况下（有一种例外）会嵌在其它数据结构中使用，其使用流程如下：</p>
-<p>（1）定义一个struct kset类型的指针，并在初始化时为它分配空间，添加到内核中</p>
-<p>（2）根据实际情况，定义自己所需的数据结构原型，该数据结构中包含有Kobject</p>
-<p>（3）定义一个适合自己的ktype，并实现其中回调函数</p>
-<p>（4）在需要使用到包含Kobject的数据结构时，动态分配该数据结构，并分配Kobject空间，添加到内核中</p>
-<p>（5）每一次引用数据结构时，调用kobject_get接口增加引用计数；引用结束时，调用kobject_put接口，减少引用计数</p>
-<p>（6）当引用计数减少为0时，Kobject模块调用ktype所提供的release接口，释放上层数据结构以及Kobject的内存空间</p>
-<p>（四）kobj相关函数</p>
-<p>kobj_map() 函数就是用来把字符设备编号和 cdev 结构变量一起保存到 cdev_map 这个散列表里。当后续要打开一个字符设备文件时，通过调用 kobj_lookup() 函数，根据设备编号就可以找到 cdev 结构变量，从而取出其中的 ops 字段。</p>
-<p>kobject_init()，初始化通过kmalloc等内存分配函数获得的struct kobject指针。</p>
-<p>kobj_unmap()找到对应设备号dev和range指定的probe对象后，退出，然后kfree释放空间</p>
-<p>kobj_lookup()查找该结构体，然后返回对应设备号的kobject对象，利用该对象我们可以得到包含它的对象如cdev</p>
-<p>kobject_get()和kobject_put()：每一次引用数据结构时，调用kobject_get接口增加引用计数；引用结束时，调用kobject_put接口，减少引用计数</p>
-<p>kobj_map_init()在初始化一个kobj_map对象时，将probes指针全部指向同一个base</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -569,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

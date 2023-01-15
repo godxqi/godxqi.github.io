@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="自己写c语言应用程序的时候，经常会使用printf来打印。 printf在是一个标准库函数，功能是：打印(变量、字符串)等等。 问题：能不能依据printf的原理，写一个简易的用于裸机程序调试的my_printf函数呢？ 好处：1)my_printf函数在单片机、嵌入式芯片裸机调试过程中非常方便。       2)my_printf函数可以帮你打印寄存器的值、变量的值、打印字符串等。 &#x2F;">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自己写c语言应用程序的时候，经常会使用printf来打印。">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E8%87%AA%E5%B7%B1%E5%86%99c%E8%AF%AD%E8%A8%80%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E7%BB%8F%E5%B8%B8%E4%BC%9A%E4%BD%BF%E7%94%A8printf%E6%9D%A5%E6%89%93%E5%8D%B0%E3%80%82/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="自己写c语言应用程序的时候，经常会使用printf来打印。 printf在是一个标准库函数，功能是：打印(变量、字符串)等等。 问题：能不能依据printf的原理，写一个简易的用于裸机程序调试的my_printf函数呢？ 好处：1)my_printf函数在单片机、嵌入式芯片裸机调试过程中非常方便。       2)my_printf函数可以帮你打印寄存器的值、变量的值、打印字符串等。 &#x2F;">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:59:58.032Z">
-<meta property="article:modified_time" content="2023-01-15T13:03:17.020Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          8.1k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          17 mins
+          68 mins
         
       </span>
     
@@ -273,59 +273,22 @@
             <h1 style="display: none">自己写c语言应用程序的时候，经常会使用printf来打印。</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>自己写c语言应用程序的时候，经常会使用printf来打印。</p>
-<p>printf在是一个标准库函数，功能是：打印(变量、字符串)等等。</p>
-<p>问题：能不能依据printf的原理，写一个简易的用于裸机程序调试的my_printf函数呢？</p>
-<p>好处：1)my_printf函数在单片机、嵌入式芯片裸机调试过程中非常方便。</p>
-<p>      2)my_printf函数可以帮你打印寄存器的值、变量的值、打印字符串等。</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>printf的声明</p>
-<p>int printf(const char *format, …);   </p>
-<p>format:固定参数</p>
-<p>…   :可变参数(变参)</p>
-<p>…可放入多个参数，放入的参数依次存储在堆栈中</p>
-<p>printf中的格式字符</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>可变参数</p>
-<p>1）c语言指针的复习</p>
-<p>2）代码：手工确定可变参数</p>
-<p>        堆栈：X86平台，函数调用时参数传递时使用堆栈来实现的</p>
-<p>        </p>
-<p>        结构体字节对齐：由于在x86(32位机器)平台下，GCC编译器默认按4字节对齐，(如：结构体4字节对齐,即结构体成员变量所在的内存地址是4的整数倍。),可以通过使用gcc中__attribute__选项来设置指定的对齐大小。</p>
-<p>        1）：__attribute__ ((packed))，让所作用的结构体取消在编译过程中的优化对齐，</p>
-<p>按照实际占用字节数进行对齐。</p>
-<p>        2）：__attribute((aligned (n)))，让所作用的结构体成员对齐在n字节边界上。</p>
-<p>如果结构体中有成员变量的字节长度大于n，则按照最大成员变量的字节长度来对齐。</p>
-<p>        在变参(可变参数)传递过程中，浮点数默认按照double类型存储</p>
-<p>3）代码：自动确定可变参数</p>
-<p>#include &lt;stdarg.h&gt;</p>
-<p>va_list    p;            </p>
-<p>va_start(p,fmt );         </p>
-<p>va_arg( p, int);          </p>
-<p>va_end( p );             </p>
-<p>vc6.0中的stdarg.h</p>
-<p>typedef char *  <span style="background-color: #ffaaaa">va_list</span>;</p>
-<p>&#x2F;&#x2F;当sizeof(n)&#x3D;1&#x2F;2&#x2F;4时,_INTSIZEOF(n)等于4</p>
-<p>#defin e _INTSIZEOF(n)   ( (sizeof(n) + sizeof(int) - 1) &amp; ~(sizeof(int) - 1) )</p>
-<p>#define <span style="background-color: #ffaaaa">va_start(ap,v)</span>  ( ap &#x3D; (va_list)&amp;v + _INTSIZEOF(v) )</p>
-<p>&#x2F;*</p>
-<p>    va_start(p, format )  ( p &#x3D; (char *)&amp;format + _INTSIZEOF(format) )</p>
-<p>                          ( p &#x3D; (char *)&amp;format + _INTSIZEOF(char *) )</p>
-<p>                          ( p &#x3D; (char *)&amp;format + 4 )</p>
-<p>*&#x2F;</p>
-<p>#define <span style="background-color: #ffaaaa">va_arg(ap,t</span>)    ( *(t *)((ap +&#x3D; _INTSIZEOF(t)) - _INTSIZEOF(t)) )</p>
-<p>#define va_arg(ap,t)    (ap &#x3D; ap + _INTSIZEOF(t), *(t *)(ap - _INTSIZEOF(t)))</p>
-<p>#define va_arg(ap,t)    (*(t *)(ap &#x3D; ap + _INTSIZEOF(t), ap - _INTSIZEOF(t)))</p>
-<p>#define <span style="background-color: #ffaaaa">va_end(ap)</span>      ( ap &#x3D; (va_list)0 )    </p>
-<p> &#x2F;*</p>
-<p>#define va_end(ap)      ( ap &#x3D; (char *)0 )    </p>
-<p>*&#x2F;   </p>
-<p>    </p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="f3a5ec353c9d4446a2f9f1fd6385cf7a441de3db756c0695765ca16cf2c3e378">4630436162ade97ba2718b7d0c4b3b63866b58d50ce48b273577c23638e197815a0f5d6ad8f64105125df3b1ef69c19e7ca21d7165ad8239a3b68fab4fa1c3b258a7a5f1fb2247d05d3e932fb3b5fae347417e557640c0167438efb6f836cc00a8a804cb366c4283ed9938aad9699afbc129064bf6adb8affc52f406c30592b93d8495ee1e26b4f2c0b7a076ba1691e3329b3781a68af6d4c349ce1eec95a2ff57445ada0e2fbfb51c158759f0a3bee25eb726bb3bef211212fc03a3fa0c7a11d14164841c9eb3e1ae1e7833aee42f2ecea45538da523b65e28095fd2d1cfbd6b7f4b95c6965bffd433a54c5672184d43e180d32444e6967caf9b6ed01f36e052412f1c134d0b0b85e72fe2c271e112b253023e50e7b5c70d81a4bd16ce1da1e2ded1a1d4b93d646e35fe408b08de2a1002f3b3effc51e810f7de4286b374b6afd80b5cabd560845b66be2b2889878f7d905ec2f32d22970d4571d39b6529622e309e04048d9c1ea99d70dac7d209016e54fa6568d4458961f9996fac7d7e33702b3f45d155d17615fe9f0cd8165c094c50c8522d67d89ac5df668b41f33d7745c797e57d32dacc50c11db078d23a97838993e92da8c133a264f715360fe296f3d74021f57a43eadaec00915ced3d9a2558fcd6e8a60eb63b4800b2f78a32b8015791a365eae18041072f26c34a98c725e58f0633c45293c11a3426eb349b644fc038108e12a03d0f5696ee9801d43b61461cbedb9c01e211545d46f6e1c1fc1ef8b9d39c3ad2871ee18a4e61622366cd4cf7ff9d37e0709d088d8982495732f6ff24d5fc23449f9e814be7146c1ea99fac453fc1e57de2d61a0551ba728af892919798e491228f00a624a90206786ca6007185e0b8f4c62c72ccd82a92308705c4143e5c668d6e1a2848e3e1573a76cd38bf21f305b6b9761c9829205f64d16df9f7029886af2cba20acfd0a86a079d0d1dd8237602341456e8c42b7428a45ef1d0543faebe1eb0724c0182d98b84f34798205d1045fa34a25503b65466c3f104aebc3c405531a2357237a410d7e88cb8a5a8241843aaae5ae11a933d9f3a9211d45a942cbc7c188985e75ab7407a6f820dc3cb05a0b878148c4e2ccf0d6ac0fe2d69ce9e6dedfbf2900abbe69888dbbfb40bb511abf1833e3115b9c55b3f3609aa201fd715fb1f10d61644874e25ce9d0ddb608d3812c5d469143b0300a41b8354a02bda62fdddb2c505a86cd4a1f7eec7d4607db07db50391bc5720659aae6ccd28fa8d6ac579989f28fd0feecfc6cc0d7b457ba8074dcc60544d7f980f4a56a805ba9baee12b3a942e284325471208db46b50b6004f4144039af991041f44382b1c17c8982f056cb9957814aa16b4425e943b3a38da8e2aa5177aeca21d61484858ee24eeca6deac3df2024b6b5c2a3ffacff32a0880d5e8fb1265d44029eaf9eda1b52c05c7db1f725a38714e0cbcf343e16ee7b0e6e6eef8fa5f1881646843ca2f06bb1837a7994bb31ea58400b58ab862c942d3895a0e50b650a776263b4f222e7ee538af8dde677e8d610c71b13ec835314cda81ca718a27b76363eb6f692f74409469cca7e840d6657cc0eb47824b5002e04902f0ab9383bf439bf731805abc0effa62ba1b4840868808b520752f2a3524d2ce5a5c9992e07864b454eebe0e02ae25de384884e249697da250527dff013e7ce56e07f7f50ef5c5959da5e8e056bc41fd0b062f92e7ae682dcebd2e15965a8b6a0584cf4e8053719433abfebdbeafbee53a9c96d4c084145789c2307a6bfde3f43836c123a6ea25960f235aa3674c3240191f304b8b8c92d7aa8f9ff05a16a6bb77dab7065d6ea845026d3ddda7485e0aa37761798ad06b6ce55be61a213fe15895ec373bbc977a25d74db5ec55e06a544a529e462d4e3200074033b69df3f67e8e495bb7cb510d3e37ebe2620c91198a061f71b59d8b464266d966e30c399cceedd3e24adcfefc5c07ea4ae8362c28ba48d43dddd09e4442a6fb9187b84e3f25d72c2a652eb6727a89a6dfc8080e6be67021325ad60ea6dff1a26c3f401a23dbf6b3f4e473dfa9c146160f655072c722af67bb0db4e9f7a105239bccf8a389f17ffad8e4724d98a24fbdc1db29727248cfe64aa23207a0f6e2316a531fa0cab584e954373a0bc51c7ce285472396322ea84a14fe240579b61f748b13cc90633fe943d80ec0b1f3c586627e806af2b14081f3cab0630eec8a68715306e6054093330f0bbf5c4b66660405492f2c6aaf519d6b919f57f89e38025ba5ca87794f19149f59b000a3166ff5e57d9508aee321a95938a2cd4425e31dbed9a30bcc2cd897f644fed512b813460339dcea9870e4e1f83eb02a31f15aec8d879368cf52e4edbe7cd4aefdc96eaef5c5c5f8b6483fb80f666414968a8b8d74988bafa545feb79753af30eba25f8f66169708e693424d882ba0255c53ba4592505201cd7efdf87f039255837e2206ee51bbe75f1c3da1a1e86f8e762d33f498f8ef5b9d68d7fd2d6afd8bd0f0496e706389e1b47d752caca991bf0b65027d39df87c3b917aaa079580d783f20983a97a19183332a841ef4ad5c7b23e4e5e4d654c2cee78413c50577bc41df9e2a79ae0b0c5361edff8864890647311dd2f746651dd9398b5308fd5d137641ff9aed699be467b93d6af3497d36edc2c424f23de534e2504de2c82db93ae76b27dd51180325c9276d17681921da535582a72ca369e30c157b32aa9be5439ba3ea8074d898fbfb72e154b5440efda46ee9c2709f271985bd77bb0528f3bbd76e1528da57200cee01ce5d4ef78240ff450322e876083dcd75fa9005cc97f7f46919475f871f0a3007325beefdde4785dc61f40855e4778846551be9ebb856d76f74224b46291e9f37ecf0b46a0c8548f759c2bd7953cf526cf0a8e9047134f50e451e210bdc62b1415562f3cd27f1395d5484fbf828c430dd81dc1ebbcad2de832488e95d1bc173fd36e53e801e4fa4e4e89770deabc39d861a832109f4ea6815dfe94c16369d8f3d178971cc20362b5f09354a2eb0cdfa8629d85fa3eee31d483738a00e6ea30feab18fee96440d53e8e66e12d058b658ac70b51d8230f1d419671a79d07b6efbd372b30366cbd5a0841d9d7c329451b4ba1a010eb94c1219b1e576b36291e755c47a881580b05e3d12d287de196a35ce7eef4ca25cc7f04886875d28900cc44ba34eacfac875bf378a6f920bf352920b1e2308d04a45e39d5a57af75b514d900a76c972dd01f82979f9f483e96d47bce6be7bd339c729251b7828edbe80116527a6afb4db6e4a7f94abcdc61ec9902c762add8dc4cd7ecd6aa8415f373596ef6530d2ea6ba0b5360f3e188562eaa9b8559e4973acb6ad87f8386a7fab1827d62014b2be44c2655852c4a97dfc5a06c635ac940e842ba1d04025299a1ca554be9472dd81d4d13c28f938c9f21c4fcd88c234451ed3790edc6876c6af659d241d41b4f3e2dd73a12c22b4081c5a6337cff87f000791f48425a1e36fb29af24fb585519b04e72a5e44ec98f800580d6fdd7ceeef03f6cfbab28abe4b0764167801a4aa68ee26186788ec8a8524dbd6c675c6a81b1b64345a6414073267445754f002a5f6c88473e599c427a80aa5e8fc6399c6357e7a12885c08578b64903cef08b83c37c99c70cd2f574989d64684ba8c2948cf6425ff97fd2340e23057c34c0628944b4aa567212598d75a044d47b6085010cf0e30fd00a96a5a3eabe06eb0005cf28c83a8d4567d31df6c2c3248725db9f9a8134fae0c7900489f4389c31354c87178cce1e1e488606b2a2ce41030bfe59056fcdd1865752e0b0b5e920d7aff46c94695e080d6599b3346f13cdd382193153f94aff2abfe5393baef4e8603664b7105e665987938d36526285e09f9e65b7dfec90cf362bc6f61c0f5acf296944890279c48c59ac0c122bfadcf79ea362821968a91fcc79ca282e9a177e8c59abd0fc9fd3924760b629bc7a117863223a06de885d8cb198d07947bd5d920e0e6745b6505e24580a1354b279ea999de0bf74be3580878daab84e9ea4df06b7e05b7df8e9906559bff44971367b61c0f3d7962f071474ba2bc61f74bcd5ab421317ea3b9030c827d731841ed371720e67445741a249ccfffcec74652c8e4a3163e2b3ef091a8ef83f67d0dfb1f585fdc158a8707301f0286a2b9c09753695b9af46f07f7f47e15dc37190436c6f1e6a8f11932ea2ed3f7cde4b97087a4679c8a713ca85ff082f14ea53a7cf885dc9162db9093663b0fd9350e707e6e84c5ec9b5be01c86a7db08ebd04d4d0ae8a6cd12371f9b0a2ef0f8dc17816d05624940f556a1ccdeb21ea0513f363d6f8ebd438aae1962c111c12b9edb961f31747717a2302bea61722b12d0ab103ed854791ebf0bb55bdbbe2dd6e8e76055f60336e304d5d8faf91f838cb3d4649ba9212e090e8a2ed83229cd4c8b745d01f1f3462421eaade9c25f108de669b2457ab7fe45d2d16064e27a7cb914005ccb0b36d89d838e408064b1d8850929a563573780df4f3fd629a76102a914fff7bea88f7b52c2d74ee057e399e523b29db3dfeaa505f8a4d195ea1ca77a13af4c2738ce0a3eb8fd78bb8590decb62fcf8cbb1c42ec8be8b8a4734b5864fef241debdc3c5907478a41a42add221c536e5282e605436a0958eda4d1ebe9a684e1a6a2db92a1d4fde810645b8b7d8ddb7bc54beda7261d8bdad2d02d3e8846999df3a0dd94de27f20fb5a936e84f8d87be97202a79806439e3a9ffca9afcd6628011ac5cf87bce17c692b4233b8cbdb248df0d2cb5d6e024a2c6cf780c601bfd6b1775997b07d901f55bae3509613277cd5f8bf2be41094e472d1cfb077905cd6d9f92d2cc05a769de0ad9c2853f9ce595de38215da9c1b695efb76bc580f4c861fb3a502c1e5d1715766377fa13e52a32970fcfb620173507791f3c6d04b51bd2fd94392a3100e2389ed226623fca11a6779441a5745ad8c80ae9f52e711129069d1eacb938b05c2b89186aabd3b5d9b11af12502a6b41ec0bf59ec0b0803285453e7f73e62daac546ab062e410aab9065856d2d0327ef09d0474257c5068ce6ff6d0d22a6be8b9773325d040df49fac25df2ce03ca2ea7d5a9e72d22bc5947d761eda5a95ec802f7c6c19077e6e5651309b3b986a42fdbd3410ca200c9e9ce159b0b3ed823dda3f0d44ec74dcecc61268b3355dc7c95c78504123fa63de0bc3c69f32e5c72ebd3b206ccc9c5cb5caf18f375834095b921df2ee5323396e6dec3cb920042f35855042f65e8c9589da95a41ef675206a478a4811183aee4597138207e64daf0ea010d60e539515f070fdfb006bc1ee72648464cf1d659920bd7a1ff52f676a9344c97b61d5cc497b0872cf133bcb653e3624b45db30ada75a89dc0b1dbd97d001bb161abf1405c75076580e2871fdc2ee30d2f0a2500f3e05b00a1fb38f9007b4fd081c31825f33005ca478c48b87434df9be0c7a67705fc2af53e903327f949ee40b6fe08e9ff901b2361bfe9bfab6a3e409a07ffb328c241d18ba1ee97ddef8769ecf08654566b9a3101dfc40c60bb3721910a7c62758dd18b1ba6b71ac159334d3f2c4e737872fe68833f412f604fd1ef256a20ca9d217381b2b957320d5eb339251fe6b82c82abf74c4363f90</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -582,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

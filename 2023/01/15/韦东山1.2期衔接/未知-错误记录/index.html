@@ -16,28 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="find命令：find -name “deconfig” * -nR错误：  %!(EXTRA markdown.ResourceType&#x3D;, string&#x3D;, string&#x3D;) 错误记录  1.drivers&#x2F;serial&#x2F;Kconfig:235:warning: multi-line strings not supported https:&#x2F;&#x2F;">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="未知&#x2F;错误记录">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E6%9C%AA%E7%9F%A5-%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="find命令：find -name “deconfig” * -nR错误：  %!(EXTRA markdown.ResourceType&#x3D;, string&#x3D;, string&#x3D;) 错误记录  1.drivers&#x2F;serial&#x2F;Kconfig:235:warning: multi-line strings not supported https:&#x2F;&#x2F;">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/0595824c9330a78964e30a8c08cf9dbb.png">
-<meta property="og:image" content="https://godxqi.github.io/image/28200b3c98ddb9803a69300cba8a57c7.png">
-<meta property="og:image" content="https://godxqi.github.io/image/9025954f241d36acc87f58e50f214395.png">
-<meta property="og:image" content="https://godxqi.github.io/image/2df7cb905914048915801cddea4ac3a4.png">
-<meta property="og:image" content="https://godxqi.github.io/image/8e9a996eaabb229dbbb6097bfdb60d63.png">
-<meta property="og:image" content="https://godxqi.github.io/image/73d0d5beedd7c9afdaaee59c36ff29ca.png">
-<meta property="og:image" content="https://godxqi.github.io/image/b5a208d90f8264c9bf431df804ed436f.png">
-<meta property="og:image" content="https://godxqi.github.io/image/31d14f6a5e85ede855518e1aeef629e2.png">
 <meta property="article:published_time" content="2023-01-15T12:55:06.496Z">
-<meta property="article:modified_time" content="2023-01-15T12:57:43.047Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.427Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/0595824c9330a78964e30a8c08cf9dbb.png">
   
   
   
@@ -230,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          705 words
+          4.5k words
         
       </span>
     
@@ -241,7 +232,7 @@
         
         
         
-          6 mins
+          38 mins
         
       </span>
     
@@ -282,33 +273,22 @@
             <h1 style="display: none">未知/错误记录</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>find命令：find -name “deconfig” * -nR错误：</p>
-<p><img src="/image/0595824c9330a78964e30a8c08cf9dbb.png" srcset="/img/loading.gif" lazyload alt="0595824c9330a78964e30a8c08cf9dbb.png"></p>
-<p>%!(EXTRA markdown.ResourceType&#x3D;, string&#x3D;, string&#x3D;)</p>
-<p>错误记录</p>
-<hr>
-<p>1.drivers&#x2F;serial&#x2F;Kconfig:235:warning: multi-line strings not supported</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/daoliting5268/article/details/84503064?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.channel_param">https://blog.csdn.net/daoliting5268/article/details/84503064?utm_medium&#x3D;distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.channel_param&amp;depth_1-utm_source&#x3D;distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.channel_param</a></p>
-<p>换了版本依旧没解决</p>
-<p>2.无法向指定路径创建目录</p>
-<p><img src="/image/28200b3c98ddb9803a69300cba8a57c7.png" srcset="/img/loading.gif" lazyload alt="28200b3c98ddb9803a69300cba8a57c7.png"></p>
-<p><img src="/image/9025954f241d36acc87f58e50f214395.png" srcset="/img/loading.gif" lazyload alt="9025954f241d36acc87f58e50f214395.png"></p>
-<p><img src="/image/2df7cb905914048915801cddea4ac3a4.png" srcset="/img/loading.gif" lazyload alt="2df7cb905914048915801cddea4ac3a4.png"></p>
-<p>原因：文件目录理解不够</p>
-<p>mkdir -p &#x2F;work&#x2F;nfs_root&#x2F;first_fs是在work目录下创建，而不是我想的在&#x2F;home&#x2F;book&#x2F;work下创建</p>
-<p>computer下有个和home同级的work目录，此处指定的绝对路径为&#x2F;work</p>
-<p><img src="/image/8e9a996eaabb229dbbb6097bfdb60d63.png" srcset="/img/loading.gif" lazyload alt="8e9a996eaabb229dbbb6097bfdb60d63.png"></p>
-<p>注意此处~指示的是家目录，即代替了&#x2F;home&#x2F;book</p>
-<p><img src="/image/73d0d5beedd7c9afdaaee59c36ff29ca.png" srcset="/img/loading.gif" lazyload alt="73d0d5beedd7c9afdaaee59c36ff29ca.png"></p>
-<p>而work目录下可见无~号</p>
-<p><img src="/image/b5a208d90f8264c9bf431df804ed436f.png" srcset="/img/loading.gif" lazyload alt="b5a208d90f8264c9bf431df804ed436f.png"></p>
-<p>3.<img src="/image/31d14f6a5e85ede855518e1aeef629e2.png" srcset="/img/loading.gif" lazyload alt="31d14f6a5e85ede855518e1aeef629e2.png"></p>
-<p>因为根文件系统中找不到挂载点。这里就是文件夹没有创建</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="0db350b0f789e219f7062dcd33685a741239468fb0661da1f7c6ddb4e0de0603">4630436162ade97ba2718b7d0c4b3b6363d9f77a738495c199a0c4b01266127e549878f360c695e8f5f6cd05d96609ba16023fa907dae6c10a4660aef4419f3b837120f41b6be33ec01f90bd7e30e7e04582e2cf732dbdb6788b4d2175303f1b87bb0055987ee3e6f3ef5a37caea060658ae35dff429bde0d169d7434a20054e6e610a8d12696d7df7057a8c9f83e63e984e2bb7d832e02d4ff47f6995a1de678cc9167f5caef11bcdcf7000878050f9412e4e07e974098515de92469b52d06615a93cb85a94a25c11f96633cd1ebc0d1c1b8dd02ddec751a314a695fdbda4567218298e301f5eb526d6e47d92801ead5658d0d7d11726b47e7380c9aae239dc77ce5477bc272f48d9568d58bf7a10f61ea3b35ec44f72a8ffefc48bb1b184aed7a28a92ca8bdcd529cbfc6a7d16068b2a687bcccb0c7a28a4c86c917bf720765bb6f777f62428cefd6fa3b5f72cbb807f95621322077295fd43da880edbb1367ffa043edeaa40468ac14ab0f5eb224c376fe636783ce92062c53847a704c69a7cdfdc9211b283cf075cd23481ebea2381eaac044e28040e5488289bcef4078c8ca73c45d7bab1c03466a21625e589ffe869a3e65ff94fbe7804aa316b233d86b4f81a0718200039ea1eaa87e19da6e6ad52a279e5fa3416ce374f681541e2ab096539c7109adac8541b10623d87953494a213de8a32f200f0dd483d8662ed52e8803105c7166749d6f702da0e06632a10941034b194dc946586e3b111e24dc543f4921448ecad773d8d5a4cadddc781cf6c4ca830deb38ee0566a0f8c6bf20402c1875801051c45d054a372938e9f267cd0a510e0e4c4b3531637211a8a156942a58aab7ab0456cd027d83684504f1424c16d6de4cf770362e836eb612057d8423d3828a02eb741a01e897a4cc6cbc807b809e76dca51a4c4f444a5f6ea56609522fda8b81aa5676db0ff53d7a6f65c05cb6eee2105d695870432f491bf13424b149acb7ae05488098016eb47db205228792936fccab99a782da044491c318169bfa1999bdfe5e3b20b0fd585bcc0d89e7a2a8e28f061b71872ad51434cd4f336c9e03722c18a34b0b7f24b3770574af60ab593c5d97b0ea4a0c95fce475ea2336c14dd5f3906ea3ff1b16274e4a2192939037574486924c48799b3765dabf8e3467870c911a4e77e2a17a76a2b87820c9ed2f23d549c5023e33a00927917911e364e68bbe03ad597070b8f427c7b15d9ed9108e84b1757ab635e48e3f1241446740679b498eda002bccc34581f1baf3c621cefd9dad1b485a7432768d32b8fec998de0a3df82d591621b4dcbfaab10fa86eeb36d7c1ba521604d7becb686081cd8efc59ebb2ac0aa74ad0797ef8fe2aeb2d967087ac6c974c2a0c5a356203094d6c5dd86c93363dba59a7215f64205f496947067c69d9f593d01bf85e31c640eb60ae965a5590d341cc6a89bf194ea7b819175eaad0c9498c5c6feddd6d6e002bb58b908d8c3732b4d87f82ce51718a341d1e991625a1d7689edd73dd9d1a32693f7585fd288edeaaf1e3788a2934630c9950d52c6fc6ab0e9d8750e19d064ec6fc69ea86c54a7db8023def3c24c27ff004a2e895e0c76cefe65ddb9717f565a4c874ecda3ce86a0bf24403300d4a4f5e2026f9a9233639442c3b528779d40ea192c668158263439cba7f5e196e10087f1799f87edb61749aa887463d3b8f7cfbc1bc2ab6180746958ecfb5901a89e467b397d08d336d9ec4bce27f0f3542133927406901c9534d983c1af40b761e75a4c45b53c70e28d32c6c1de28c133be17a28e1989a8f74a9cc7831919a39f8933625bfea651bf740d3046694d0d2dc8fcba5c9cee2d3e24255c5348910aa950a9fa507fb3b7df3a3b2cdd24b84af5a743dea47e59685268682d3fd7a0961a7ae25bef7e0e5452ddebf760f7f18a39f8db74d464a6a32d743fb469765e62199c158df54890c5efbc4598d4163a4cb3c8b4a344ab09bb5d6990813540aa5c2bbc005cf7bdb4bb18434a68746c8f1a6b501a0476d7047d997a2c936e96083249a4b5f4f307783174a33aed6dccbbde37794f2d5448dc71aea30bcc12d10643e362988645c840d2e4b17a55e8aa768a3892f93892c03ba2587c51a4408d4147dbbd604400ee39531ffcfad527ac541bffb17254745a27761e382329cfb34bb1506fe8434d3504f715cba3e7f811af0e5f7e57b43df02e66f61782a32266a01d16c252520cf8f826c7d340f16f1797cb2bd2c138062c8a8e5a16d2b7ebb60d7c1576b80f9cc0449f15e44976534b5aa3db30ba27dca27da24efbd23e8fd2006c9e5f484be78e0b8f7ee19366fa83ff609c464d7ad0db46d0936d9724fbf2fed101603116b8a7ab4def52de44592245777e3a3bd1ffc473c6e843b508ccb67880b9e6e3303686870738c42a0ec25d99f8b99883817e3555378cffb8d3984d1705ee93e61fc54ae3ffd5dbfe68c6483d7cd7123b93b3e5037d97be2ba024923776c135c0ac501e2679fcf60beaab892fd4ed0291a38bc2efe9a2a3937ec4730ade1c2106624dd0175dd788c6cf0d8075f8c92390f0d43ab855a93d7188fdd4a413e1edf4928b02d12ab335e4106e0601de1977c3e80a78633476586d4d7a9097133cb41f37e90e3eccbed1b583685b6d6ab89d27c2ee7beda17e752d2a5df832393509bd7ab7d8f6d82e2a84ae351223e236128053f10da845323847b0b6fa7fe6bb619a6fdaec89a574cd8cfcde45a05f0ec3b09691397a3115143fccf5b6fc085ba3c1ac757a187417bae5b4c8501260b77c70505a2a39ae48aadf2e6a3c403825b7cebf27cd4c104da75b1547396556ba1b4ebf921d77853a4b2411ac38841a3bc1f124c3f0f413dc383e4ca6e453df21e70e5248cdc0184e8e74c4b636601508a35d2f1a49b6b53c698d0d5612550c4d3af25bfae81953800d193e21498059d2a5d875008b05a39d77652877a134fd5b3860b6734a0e9dae61dcf33f5c3badf5628bed08326969569e76c6f245ca773125e175b560e78d07e3607da7a86036d2db7d720a647abd4cc2aaacbd8cdd4a0a4d6fe99833f9ae95487998606aac26adf7e9276a2fb2570b3c10b28aa42a86d474af12aa2e40f9133696e6ba9fded323ed1133f2035efa21d9594eddc532c5be25</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -565,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

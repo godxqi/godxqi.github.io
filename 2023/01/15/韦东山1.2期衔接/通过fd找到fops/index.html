@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;mbuger&#x2F;article&#x2F;details&#x2F;72123692 https:&#x2F;&#x2F;blog.csdn.net&#x2F;metersun&#x2F;article&#x2F;details&#x2F;80513702（更深入） Linux中有一个结构体task_sturct专门用来控制进程，在它的里面存放了各种关于进程的信息。 其中一个成员是一个指针：struct file_struct *fi">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通过fd找到fops">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E9%80%9A%E8%BF%87fd%E6%89%BE%E5%88%B0fops/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;mbuger&#x2F;article&#x2F;details&#x2F;72123692 https:&#x2F;&#x2F;blog.csdn.net&#x2F;metersun&#x2F;article&#x2F;details&#x2F;80513702（更深入） Linux中有一个结构体task_sturct专门用来控制进程，在它的里面存放了各种关于进程的信息。 其中一个成员是一个指针：struct file_struct *fi">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/20170516212621354.png">
 <meta property="article:published_time" content="2023-01-15T12:55:06.495Z">
-<meta property="article:modified_time" content="2023-01-15T12:57:32.952Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/20170516212621354.png">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          600 words
+          4k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          6 mins
+          34 mins
         
       </span>
     
@@ -275,23 +273,22 @@
             <h1 style="display: none">通过fd找到fops</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/mbuger/article/details/72123692">https://blog.csdn.net/mbuger/article/details/72123692</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/metersun/article/details/80513702">https://blog.csdn.net/metersun/article/details/80513702</a>（更深入）</p>
-<p>Linux中有一个结构体task_sturct专门用来控制进程，在它的里面存放了各种关于进程的信息。</p>
-<p>其中一个成员是一个指针：struct file_struct *file ,这个指针指向一个文件描述符表file_struct结构体，每个进程都有一个自己的文件描述符表。</p>
-<p>文件描述符（fd）就被写在这个file_struct之中，它是文件描述表的索引，而且文件描述表中每个表项都有一个指向已打开文件的指针。</p>
-<p>用户程序不能直接访问内核中的文件描述表，只能使用文件描述表的索引文件描述符访问，这些索引就称为文件描述符，用int型变量保存。</p>
-<p><strong>（指向过程并不标准，从file_struct到struct file并不简单，这里只是简单介绍）</strong></p>
-<p>在open的过程中，内核会以得到的fd为下标生成一个struct file（内核空间用struct file结构代表一个打开的文件），将新生成的struct file的指针填入表中，即</p>
-<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl"><span class="hljs-function"><span class="hljs-title">task</span>-&gt;</span><span class="hljs-function"><span class="hljs-title">files</span>-&gt;</span><span class="hljs-function"><span class="hljs-title">fdt</span>-&gt;</span>fd[fd] = filp;<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="8a8a596b96de9ff255506d6ebb1d6f29ddd45e56d34de29d20e2928609dad838">4630436162ade97ba2718b7d0c4b3b6393e46aed1c69f6ac78fc7c4c2e0b6813e0dc7eb26de44b11f0b2fb2b7bc72e34ca5a839eb0ee86f131513a608d8ae73cf3192922d40d4b46aab0570a17ccac4a3a0947bd36b5a61f08684aa03318a9e9c7e0f8b5ea6c5553ab47e6225bfaf14af2d9a143d3e1bd8b528424ecb9e5a3a75193085b783ca9d65ef8f59f076b271b6ab20d066e062dfe2039dcfb1f618816c692b2fe995115abecee0f42118dbf3e8db92b983ec71ad2bb08641165a6e9bf0159466a0a924bac272f1f0c42ed5c73d2a5b8d899b9ffdd298bf305ec52d356621b12395d06a3d3e07c4ade3407aa8682381409c96e6c313bbc23441d975cc67476c3dfc6af1c3b90e423c56089d43ccd90b149fc719810542d47877ecccabe6f16349ad76daaa69d101abd8f12351b5842b12a9b101a9eec4209f90b7cda238ff6eee0dfd6b8fe9f2a8538f4dea95a408025fb2f90aa7918e2456d52d5575b72e07aae4102e30150dfb65abaed7dc799159441f0a626dca8c1a6f357a055950147313cb993fa3bbcd119e45175cc2d4004da2923dabf8eff3011b06c9b6e29f38975562eb188edaa90c9ca42a377925ccc722981b47c58739b81b9348f9a4a56df79181575a7e9449b50f9c19243ea1d8a52c49b3555ca6f88045b63007790e148cda86e737549e7fbea75ff3655df1dcc07c624527f3e53d38599e28dd13f5762d91e6c486d10d11458886d26f28112849f7edebbcff559fb166450b93d2e81a8bf591fa85a3b48c2539f2cc237d2ec74bb8df3d5d5fd70027bbf37d311964a5e2d0a71b52d157b88bf59005d0c16ee1cfddc8c64e8198396edc6bd7436586dbc175faed446ab993f03aff0234d6115d9400c99c85087cafe95090a31e714bc209fdf48923c511efb0c429df34df4de1d656efc58d3e758a1c4c047b968e4ddfa34f441bee46ba7c8c2dabb8fc4a5f50e9323d6e95ab4ebe799ece4cbce75e183b2e366f77f9f405155bbc1b69de21ff3310a47c7c26c69f57741e60559c33b424e91d49d8e630c07d63c269bd4acb5a4634dc72e97da6846839a910a8d4b24ef3c369b661d4bd971f7406bc4cf948ddcc3bda00db5bb007dfe4e4756db582ead734f0129462378e19cef5069d7bde5fe42494b07510adc057a948b105c0c01410108b0589d78a9409218721195364e4666ff75d08a1268f0b5b07ffacbe4d4e3a3dcccf8ca7e564bc533f61ecb86071d10b26df825c78b5670c131a3b129656086e1a0bfdd242875e4940cdd3018d3e30adb69d76022ee610fbedc12b6d952d15460531f1e43658c57fafc76cce66b50a8aeda20750661e9f1d961d86aa4bf157ae602307f26ecb575c1a7ff8977ea056a82491d4ff60e2818a701c0e612573030093b489752d1daf99ac9f87c955b5d2f521bc6735883384dffbb1f8a1bf9ad99d9510fcdf87c231d91a0927b505b2b1e46dcbc35b5f31cdc9a690c660ff1e69717ea432a0175e1dcf461afd2efc35b0eecc5b68d2134b4beec3dd06e323f6f2a9768d5d0d3b2bb64a63af0892064eac2cdf8d80bd80ef2d0a55104d0c8272daeac5a61e01a4e457f4a6465762a8be94b19c4cde563980abed247b0912f679b60795a58c78a9d89bbc38162265d3157823b637328d494b6e8ab61a7f0d3f9d3b0f54588a4138b0702d116f9affa256c6aef715f702ec11ac7e604019601e1b646e05c670b8ba6f5b1240138754bd0d7d621484a7362cf20b72351885350117f333da3f7ef6de904cf645079a0ed5994ba3d213dccd84e42cca9b32717d304831f7cf571f1690ec7bed2e91d097c182c2e3f801e7bbf42d33c25bd83d240ea2fb2dc388e1e78cfe2248676055d5046461fc20c0ea98969c9afeba746833d8fd71fc06b602026503c22132c719be79cd4c5c7860b9a46b735ce60ee6ad696028d9b427e5567bed56f27e455c08c5b8be52befac8e5c40cb2009e2741d2b3f47a8a07a064e48a54513ee18efca794fe91f7ce9e0c366f53b9412dfa4c84c61dd06c7daa0e5797cd6c8a809d600c9034d76b4b3f0907891ba407afb0785a3b13e3a42a952141ad21b5b9c6c471101ef99f662b92cb0ed32cafff1e8ea7ace8937c6995062571a5eef54865de4f9fbc1be4deb33a8b99693bcc5de6567e5e0453eb93970d706e0ecc818147f251454ef345dc36d2cff955cdf224e2e0bc6fac21136cfe4a7a40a6c378b64c80b18c5a949e1b3d6a615a1bcfbda9b2f42d7a607e9e58bb2f62dfe746eb8307c6540187f57a1ce0f65817be29c11da7f4c1f1047fdb6ee5e543439d5a6ca9a6ea115fc4b078980d2e435a09c8228a6706ba800fc318d21e99116d00ac5ef1d82d31eb389c042df07f33f2501c853b284d35d1effe420988411cf1089852629f21135701882b6c1726fb7606de73bcd8466521723795b06a983f2d23d1f5e21e00e27a02e1ae6c71df5b13fceeaa8e19035b77f74c17e7e2edbb4f58ca59239b9b01b90555a72b69cd332b45e008127cf54840fa24b06ebb6e68bf7f4ec4ac3dbdb9f5291da0b9fe5f3574d96d90b9a20f4e9a6a2ff79000ff67435a48b2f14907882c6d0a36f9b7a5a79028c103c40f66f46b360417dcecd4bdadece98821065d5dec77cb48aed8d6ad09ddb18966d23106cdec58ef40efaf4c1af976f625a5223c117441266013ed5c103235142d0289131fd8b068360640dd10d868a73e7fe7b46363da75d5694bbd33c6466af383bf8f49283bce33061a2c12dcf1451fe5cfeb200da</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>因此以fd的其他文件操作可以很轻易的找到其对应的struct file，进而调用f_op对应的方法。</p>
-<p><img src="/image/20170516212621354.png" srcset="/img/loading.gif" lazyload alt="20170516212621354.png"></p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -548,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

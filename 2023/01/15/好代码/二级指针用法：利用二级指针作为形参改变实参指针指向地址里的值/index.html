@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="利用二级指针作为形参改变实参指针指向地址里的值 1234567891011121314151617181920212223242526272829303132333435void find2(char [] array, char search, char ** ppa)&amp;#123;    int i;    for (i&#x3D;0; *(array+i)!&#x3D;0; i++)    &amp;#123;">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二级指针用法：利用二级指针作为形参改变实参指针指向地址里的值">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E5%A5%BD%E4%BB%A3%E7%A0%81/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E7%94%A8%E6%B3%95%EF%BC%9A%E5%88%A9%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%BD%A2%E5%8F%82%E6%94%B9%E5%8F%98%E5%AE%9E%E5%8F%82%E6%8C%87%E9%92%88%E6%8C%87%E5%90%91%E5%9C%B0%E5%9D%80%E9%87%8C%E7%9A%84%E5%80%BC/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="利用二级指针作为形参改变实参指针指向地址里的值 1234567891011121314151617181920212223242526272829303132333435void find2(char [] array, char search, char ** ppa)&amp;#123;    int i;    for (i&#x3D;0; *(array+i)!&#x3D;0; i++)    &amp;#123;">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:48:03.540Z">
-<meta property="article:modified_time" content="2023-01-15T12:48:52.793Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:27.812Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="未重构">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          541 words
+          7.7k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          5 mins
+          65 mins
         
       </span>
     
@@ -273,13 +273,22 @@
             <h1 style="display: none">二级指针用法：利用二级指针作为形参改变实参指针指向地址里的值</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>利用二级指针作为形参改变实参指针指向地址里的值</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">find2</span><span class="hljs-params">(<span class="hljs-type">char</span> [] array, <span class="hljs-type">char</span> search, <span class="hljs-type">char</span> ** ppa)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> i;<br>    <span class="hljs-keyword">for</span> (i=<span class="hljs-number">0</span>; *(array+i)!=<span class="hljs-number">0</span>; i++)<br>    &#123;<br>        <span class="hljs-keyword">if</span> (*(array+i)==search)<br>        &#123;<br>            *ppa=array+i<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (*(array+i)==<span class="hljs-number">0</span>)<br>        &#123;<br>            *ppa=<span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">char</span> str[]=&#123;“afsdfsdfdf\<span class="hljs-number">0</span>”&#125;;　 <span class="hljs-comment">//待 查找的字符串</span><br>    <span class="hljs-type">char</span> a=’d’;　　 <span class="hljs-comment">//设置要查找的字符</span><br>    <span class="hljs-type">char</span> * p=<span class="hljs-number">0</span>;　 <span class="hljs-comment">//如果查找到后指针p将指向字符串中查找到的第一个字符的地址。</span><br><br>    <span class="hljs-built_in">find1</span>(str,a,&amp;p);　 <span class="hljs-comment">//调用函数以实现所要操作。</span><br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span>==p )<br>    &#123;<br>        <span class="hljs-built_in">printf</span> (“没找到！\n”);<span class="hljs-comment">//1.如果没找到则 输出此句</span><br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(“找到了，p=%d”,p);　 <span class="hljs-comment">//如果找到则 输出此句</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="753844b07387577d70c0b1cdc514ac0936f2666927e05b8aeaa04765db7217d9">4630436162ade97ba2718b7d0c4b3b638a5be78acc07d315be94a4974ff30258b1d8eac4b946de66c0f21f093135d4463229039963a61ebfd0fa6a68ad55584ba397f843ef3e6024a3e7b96ca2ed7a87cd6fd6d500a47a6c3ff2e94c84e56b59eea7948e02da67d088e035315e6dc6c98dda694f8aacfe9f569649f19daae8697d1b76fae72b6f52a997aa86d909368c37a69538e482b09a201243d0f1464d57fe3b825b0bbe47abccf02cddc421af1b346467a84a487aa3109dcd4f241dc5f6c7ac417a7635cbca617d31b82630ce469fe26f1fc879c508572791b4532a2bd2ae21e65fa7571272f4cdc23f4e955177cd77384fb9bc3c8eff08cb4669a8c91c11023be3d81aebb82a8ea9b2d508e61cd0a0f31a2ab51ac7579676a08ad2582bc0885bb70963a5e08331909db750ca47815260a437263d6afb088d880ac3fd8b5e3566052ac07a0fc41e8221303e63cb271db2ddb447185a7749bb7d89830d98a60af00195468ee6e5f04931a35955b0a2779af99af52bbd8e308994eae04b4708cd62cf954de1baccd8560f90d080fcf3fbb32469a0a37b8dafadfdb8cb6d258db5cb3f340c50b32d4558e224fb2e5bdaecc5ed50e9ae7d358ee8320d3690c5715e4654a5dcb872a93169d75bed869e06fd93a3c86d2cc1c53908bd6e7ae5a7f5ce329dd1256b23ebb1d58433df43fa56ca3d2d49396739d9832d0f2ef36e0bdd00df927f4e2998f0816cefb6e1e132cab0cb441d1559a850e778f48f6974c859920216a6374729707fe57e4b0c85dda0c5a6882b2ede9cbac8eb45d771a1059f738e0fa586822f6021b81b5e4e2ae989578dadab9831701aa87a67656e6918a77634ffaf3e4ecaaf248ec247194e93508dfba07abacd8f3d45ef1eed0843c0cc3d213da684bc7e514d15405b2abc42399c146c9540f0e5cb08afa975b72d3b3b222b61c774ed7a434681dc84ee026abe0709913194dbe7acfae6000fc7e25e2933f68130cea0a3c0c4c8400741ef084145797da8659e68e0864c369aa98225962d764a8a9569986332eb50ebd7b8a6aa86065d26d2b1c682d692cdd9370431dd1c4ac590890ca293ae544ddf4900410e2be016704a242ae82bb555502338f646231cfe88e0cfeda36dee6910f8f3cc5e05c16e9ac180a77e3a011af012ddcb3771ab725fe29034f929ad0614d529ed641f1f91905b9d5b311e45345ad9a4c8b45201ab50387a38dac39bb20373ef198e34ac5a9c52451698edbca532ad4bbbff2b071f2459fc4407b2e147e7e06eb6c993ae579a751933d07e9d2cc3e3d0c647361ed41f51c5f97ed20f7fa792738aabb39f393aceb67a5a66c7cdad1c15128b849bfbd69c96e84cb4fd00a2eb4c693e4e44743b224cb67234d1827b2095c45fa473ec25ccc82f0484aa9e6df53fbad702d64065a79af978872424bf700c1ac532efea56642ee80bc611b9b653e637052104e89111fc9d06c0d887d92870f8318cd4697e5abcfaa7dc7432c4ebf2c17c79fa3f03a569ccd68df2c56bf8a021345df464e2191f2d3200179a58d3c2415adadfb3d0a5583dbe68d29fc6d6eb0b14eb3a6aa189b0ba9e5e9138d65bec1bb8964fd04351b479cfe629819aa971340075c44f6de378267b02edba1f8ce2bdcebdb31b39fdb18f1b254bd84248b0a1872df8936af2da01da6096fc1049d64620e6977bef58ab574c693f04df38eba0773d23e18d4f90dfcd3182a082cae4088a0882b3f12e03cd3978f00d63f4016fd948dedca02a0a66e42a9c4ba3613f705c0c1e8b458766c83f98ce628d50f12285c2e75e598b5a5f0762693e3c8b4e3b14a3b8f55ca3c62d7bdb57c0c78fdfdd8f091c6df7e82f15b6549edc315f85d7ffada8d7d116170aa7f9f6b21f1a3ded481dede1711fde3b32f2e749293d113a285499762ffabbea753360410c95f62395cb49e8dd41481344ca3a0049a1e4b8880f3a0f9c4cddb33730219c2706ef336b67c5f11fa75056be9e0af66933ef7a58cbbe567b0ba2317d4e2e1d5f7f40b9a7b11c8506f455637269ef14e6a4d68fda2c3aab0116d6702763cc7cff2bc195bbfc30b5f0a5ba0fa592670fc341fabafe0f22d2d15338a1d330c86a539d27a81e099876a8086d610783234467f9543b5ab40b2fc3650aa8580808d355b5d05a450fa1cde9e96ed8933c380343d65b7cde33788039c228546dec04900de4103c66562f405c9a52b42b16137b437af87e35c0d995b063b31d4255972357671ad982b6e2617d0f26426e00727762d3c699bcf3e2ff29c57fe7270b40606e6e82fd509eef8991495172a8be321322772f0ea98fcf3e120f753e76972276963f5bfa5b90184876c803dd8ea06844da45932b9118c07a7326604d2e74e85d78960bfed416ccca262e37654080739f4d157c395acc1d8bc8b7899c2719e6d140472cc1b921eadef29664218c8f5d1398cc75f7467f027a32015b79caa8d957d2d7345ecec8ee9ae550ba158f675db92814e2544b35e9272aa456666bcb8d8be67055d56df85de07a43c3f60c668c662f91347c9bb99576580b5d313bc083899c04c0d07afb9a494c7ce437865531e5ebf14532b61eede2933f4d9d5706738570bb3a5554adba49511945dfd5ee5ef47a377ddda27e03f2138cc84c4dc726ec5f8e0982c09fad9470f0f643301da92bddac858f90b5da56dccf98b37922438df7af928a07d11f67d49a3f92439b29e18ca3f5c8d0536ce6cac3f37ea4b50888548710ad71ae68460f6b9219df54265b23c603d9aa4ea26e4264c9b1c0843c87d408ee28b6bbd33ae78e5c7f7a35976682f81ea10f46530a1f5fdc99286738ec00aa46036bfca32ed6fda53a538f1ab9edfa8cef6bfc5a83ecfe9b1fcabc663f48c35fab664e9d86522045b6273b93e7302bb3055f7bb0089794418bd471d96e0784fddc0d36b145843c4b3026afcded110d206f2b9eb87fa85d1bcfad9e12c632c1ab6061f4d52e4a71a9fdc8e1c6cef193d1c7a7c46e4b47fc1650c48b102a3c58b7c736dc6fcd9b474ea713754651df8b67e6dae19fbc17941ea3d7433e3b14de4bef5a13a0549ec0158f9a066b1b3300dcc89f8f97deb41d9b16887c06191265bc34d22f7d18f2c8c63a1d54049dac3ecf2a1eb576ae17f87aeb463d9202d656e05fd9d8781c2995660d53fe6307b3298a32e0afcde6de8b8f19d9fc2f69510c8fbcc9cc6067c5795fdeb1866958ace4dc7b0837ebd59f69aa4a8878c692719f4156d9475c4d6e97f433462c726f82a05d6c019f7c6678e92eefe3d22abc00676d722e9b0da395494bdeeb337e51ddf9c84ac532dc74fc8a74753442360b6531105566a759a345eff278725aa84428a582f1701948923f834ee6532c439cc25ca7eeef61aeb249f599a3cc097ebf8adf328a55b472ae32d2034da1a5496af367bb179292654c0072df4a404a726adb9fc2607a4f7757501c56fa0be864da041d64dafb3a41f949b1a747d65e8d99d505917c15bfecfcc01f0499c416db0e0b9a9df131e82cf8c1b2ad5fbe53362c68fd49e51f394cb9fc39f3f6c773106bb155e7ed5b63816e0a1021085cd40d2bae0b29217e7d55bb06b9b9a80858b2ecaf2dd716b9b707dd4fbd9d164d8c352924646fdee5ea4f8a3bd591a1523aa05171aeef093dd35795110507c65bad2b5eb3a5c9fc544c5c879076e96fe16d8c6b8caf707565579974c81bce2a4ee607b6390079a4290de703eed723045534f310633fbd890abf4be981d4e6d80152216c3d9426076552599c4893745216b345776526438c007c9b2e2462e7ad2da9a4010f9710ee51c3ff197a7b61a046ed8a896e85236bc99476bf802f743213e81793a6afda6327fc9abeb7a936145a2c8fe1a30dd191e66dbef0a791cf2076be5949d15e492c544e77dfad7ab30963e0f2870415b164125e76057964147ba2e06cc64eff690fce5d1e20e4d392f5a4001ad371df84608bd91b83254bb6f24116836457e92566a870ab5c037dcccabc04c3d59830da0d5c782e6b1d283e78603534859f614320b8be5c663801c0c75d3925669faddfeaf64c18d8c4fc18997c28d1b3a8cec57328eb077b03af293fda3c4570b175abc0af78f4628fde4cdbf415ceed9af8cc8c4636c5a4063bb32e7c5c606b7b12d9c5554c33e00226be9c4858bef13f0b7754abb66104a7cf11054bd11809d55905239e44b83abecae03f7495388ed8c809b236cf3aa463be2574969dd76c560f06c20d5cc235f5ee3e2fbfdf32b7259186ab5843cd71f497c7bcfa73885eded0366f42b48ee663833e2cb4e51da46fc6b67ed067f7023533ca2854c4c9dad8436be255a6ea981eec36c45488c812074a540e383b25b2309a29fe5c1dd538b8ca1140bba165499fb788164ba618b084e304d81a555aca1a9431b76ea6283bd064cad6ba3fa9c9c1c4044fbe180de051186780ea4fe2e442b74e6ce475667c8e8ffc7c8ab27087ba40af356f57dee152e400e46fc5732559f0060886da9673b38b7dcfd9f80cbebe0092e1a7817bd23151f406683b9bc358c9bf918c169c4849fec84244547a021592b84635e2e194d74f5e717d61d32480cf7b12596766deb6fba78f1ec5d436c718e61e1a500a47cb41085a9e825c098cf85251abe439b8d162cbbb26a64e51892e37d1661b409f239df94c2cd94e79405401b022b76bb1c09860366b452fdc02efe1108b765eb290ba5c90d775a375fa65d3a8f977d0e4a00e49818042d9207c6534fe25b8b607cfe19a36d1d65bad518f3aa56f299e86f781e513b34a5fb5a5bc1e7e8e0dec3dce222b79eb36f55be94c81a7a4d9da60bf0ddcb4e07785bb66560db68e0ee7b6d074c4494b0518ba0ac35db3e6786a794185eaec0c6c7b348039eb8cc8085c010cc70cf3be2b5c29fd5619b66cf53fb1e97c2d967344dba92ae9300e073e3f54a4596f19fe3f807d8f49052386a2f8fa7d0ad2c1e696463baa57d003066fee819edab8dee014d39e43b9e520c65852ffd85bd2c87a85bd87edab86aa594dc458a5525bc97491bce190cb2c4f8fe08da0343e5dc064873e6182dfdc817fc67d3bc60fa215ea63a73e024852c5d8cfddad31478efb9e26b475d279b7e3f408735cf60f893a332004cc3f8fd9d73f4853c8ce9b48f481af3b7ed7377c00ca2885d0474b770bab9db740129e4626291cd5f726396ef6046e57e997009aa4e79baeaa1da4dc15de39e8948f98d9e55dea803269654f40882b1428e48ac672059258cb58f064e60b9514ac2e0cd0f53bc854db9e15ed8e19a239c3896e578c34ebb223f9a416f76af078b99a4b3acdca2f83037c05649acda6a51574437c4d7e825c917bf06c6b6d0c829111005f89ead3d3c95fc6b712cc24e2947c2cc063b2fd59504a35db55f87df80ad2337225bce5d8cdfaa923208d9526af89cde9d7e775ea1d3757bc08</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -536,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

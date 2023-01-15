@@ -16,38 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="对于CPU来说，只需要把数据发给寄存器(数据并不输出到外部电路，只到寄存器中)，再由控制器(内部的控制器决定这些数据起什么作用)发出对应波形         1.GPIO&#x2F;门电路接口(通过控制器决定CPU发来的地址起什么作用)         2.协议类接口：UART,IIC等(通过控制器决定CPU发来的地址起什么作用)         4.NandFlash控制器：外接NandFlas">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="(待修改)硬件知识_内存接口概念__不同位宽设备的连接_时序图工作实例">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/(%E5%BE%85%E4%BF%AE%E6%94%B9)%E7%A1%AC%E4%BB%B6%E7%9F%A5%E8%AF%86_%E5%86%85%E5%AD%98%E6%8E%A5%E5%8F%A3%E6%A6%82%E5%BF%B5-%E4%B8%8D%E5%90%8C%E4%BD%8D%E5%AE%BD%E8%AE%BE%E5%A4%87%E7%9A%84%E8%BF%9E%E6%8E%A5_%E6%97%B6%E5%BA%8F%E5%9B%BE%E5%B7%A5%E4%BD%9C%E5%AE%9E%E4%BE%8B/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="对于CPU来说，只需要把数据发给寄存器(数据并不输出到外部电路，只到寄存器中)，再由控制器(内部的控制器决定这些数据起什么作用)发出对应波形         1.GPIO&#x2F;门电路接口(通过控制器决定CPU发来的地址起什么作用)         2.协议类接口：UART,IIC等(通过控制器决定CPU发来的地址起什么作用)         4.NandFlash控制器：外接NandFlas">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/e85803c6efa27ee9327c9b644609033c.png">
-<meta property="og:image" content="https://godxqi.github.io/image/3e7d5249bee8d4d2f430459a83d89755.png">
-<meta property="og:image" content="https://godxqi.github.io/image/c62901bfe83f82dafe729ad4e4859d9f.png">
-<meta property="og:image" content="https://godxqi.github.io/image/6aa71301e9e56153f0d875066245619e.png">
-<meta property="og:image" content="https://godxqi.github.io/image/087d110e4b9740968fa83f7c5436b450.png">
-<meta property="og:image" content="https://godxqi.github.io/image/02318db71e6a55e20901609fa0d93775.png">
-<meta property="og:image" content="https://godxqi.github.io/image/16aa956fd18bfde9f12f631d448d7e57.png">
-<meta property="og:image" content="https://godxqi.github.io/image/e22139f880830a6a030e9a625a31798a.png">
-<meta property="og:image" content="https://godxqi.github.io/image/7a9fdd67e1e2707b8627305eb8ad9670.png">
-<meta property="og:image" content="https://godxqi.github.io/image/41be7372d72c0edb52d0e0533186d99b.png">
-<meta property="og:image" content="https://godxqi.github.io/image/ab4e832099bc0bb3f37e66a35647f7eb.png">
-<meta property="og:image" content="https://godxqi.github.io/image/2153866fc498b9fc1a90c1c55a53c637.png">
-<meta property="og:image" content="https://godxqi.github.io/image/6666943883922af52bee5a37fbdf3905.png">
-<meta property="og:image" content="https://godxqi.github.io/image/f278b1dc119f0655900c693c2a86239a.png">
-<meta property="og:image" content="https://godxqi.github.io/image/355aa45588c8f8c220221dc220f189dc.png">
-<meta property="og:image" content="https://godxqi.github.io/image/5d1de58defba2376f590697434d07322.png">
-<meta property="og:image" content="https://godxqi.github.io/image/5a1dd584fa24fc0e53498fc34f8aa296.png">
-<meta property="og:image" content="https://godxqi.github.io/image/064865ee0117734946963d5cc60591ca.png">
 <meta property="article:published_time" content="2023-01-15T12:59:57.996Z">
-<meta property="article:modified_time" content="2023-01-15T13:00:26.246Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/e85803c6efa27ee9327c9b644609033c.png">
   
   
   
@@ -240,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.5k words
+          24k words
         
       </span>
     
@@ -251,7 +232,7 @@
         
         
         
-          38 mins
+          203 mins
         
       </span>
     
@@ -292,109 +273,22 @@
             <h1 style="display: none">(待修改)硬件知识_内存接口概念__不同位宽设备的连接_时序图工作实例</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>对于CPU来说，只需要把数据发给寄存器(数据并不输出到外部电路，只到寄存器中)，再由控制器(内部的控制器决定这些数据起什么作用)发出对应波形</p>
-<p>        1.GPIO&#x2F;门电路接口(通过控制器决定CPU发来的地址起什么作用)</p>
-<p>        2.协议类接口：UART,IIC等(通过控制器决定CPU发来的地址起什么作用)</p>
-<p>        4.NandFlash控制器：外接NandFlash(NandFLash不参与CPU统一编制)</p>
-<p>        3.内存接口：内存类设备(Nor、网卡、SDRAM) </p>
-<p>                            CPU可以直接把地址传递给这些设备(地址线、数据线都直接连接到芯片上)</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>SDRAM、DM9000、NOR公用地址总线、数据总线，它们如何才能互不干扰？</p>
-<p>    它们都有一个片选引脚CSchip select，谁来通过地址选择哪个芯片？是内存控制器</p>
-<p>    CPU把地址发给内存控制器，内存控制器跟据不同的地址决定发出哪个片选信号</p>
-<p>地址和片选信号的关系</p>
-<p><img src="/image/e85803c6efa27ee9327c9b644609033c.png" srcset="/img/loading.gif" lazyload alt="e85803c6efa27ee9327c9b644609033c.png"></p>
-<p>例如：0&lt;&#x3D;addr&lt;&#x3D;0x0800,0000，使nGCS0输出低电平，片选Nor</p>
-<p>        </p>
-<p>1、2、3它们的地址都是CPU统一编排的，都属于CPU统一编制，而NandFlash不属于CPU统一编排</p>
-<p>如何让访问内存时Nand不干扰？Nand也有片选信号，由Nand控制器发出，只有CPU访问到Nand控制器的某个寄存器时，才会发出片选信号访问NandFlash</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p><img src="/image/3e7d5249bee8d4d2f430459a83d89755.png" srcset="/img/loading.gif" lazyload alt="3e7d5249bee8d4d2f430459a83d89755.png"></p>
-<p>每一个片选信号可选择的地址范围空间是128M&#x3D;227，至少需要A0,A1,…..A26共27条地址线</p>
-<p>32位的CPU把32位的addr发给内存控制器，但因为内存控制器能力有限只利用到了其中的27条</p>
-<p>从这向上介绍了CPU与内存设备之间连接的线有地址线，数据线，片选线，</p>
-<p>如何确定CPU是从内存设备中读还是写?</p>
-<p>引入nOR,nOW，使能来决定Only Read,Only Write</p>
-<p>如何分辨数据是由CPU写给内存设备，还是由CPU从内存设备读出？</p>
-<p>需有引脚确认数据的传输方向</p>
-<p>        在网卡中：使用两条引脚分别表示读或者写</p>
-<p><img src="/image/c62901bfe83f82dafe729ad4e4859d9f.png" srcset="/img/loading.gif" lazyload alt="c62901bfe83f82dafe729ad4e4859d9f.png"></p>
-<p>        CPU可以使LnOE变为低电平表示使用这个引脚读数据</p>
-<p>        使LnWE变为低电平表示要将数据写给网卡芯片</p>
-<p>        在NorFlash中：使用两条引脚分别表示读或者写</p>
-<p><img src="/image/6aa71301e9e56153f0d875066245619e.png" srcset="/img/loading.gif" lazyload alt="6aa71301e9e56153f0d875066245619e.png"></p>
-<p>        CPU可以使LnOE变为低电平表示使用这个引脚读数据</p>
-<p>        使LnWE变为低电平表示要将数据写给NorFlash</p>
-<p>        在SDRAM中：使用一条引脚表示读或写</p>
-<p><img src="/image/087d110e4b9740968fa83f7c5436b450.png" srcset="/img/loading.gif" lazyload alt="087d110e4b9740968fa83f7c5436b450.png"></p>
-<p>        当LnWE是低电平的时候表示CPU要将数据写给SDRAM</p>
-<p>        为高电平时表示CPU要从SDRAM中读数据</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p><img src="/image/02318db71e6a55e20901609fa0d93775.png" srcset="/img/loading.gif" lazyload alt="02318db71e6a55e20901609fa0d93775.png"></p>
-<p><img src="/image/16aa956fd18bfde9f12f631d448d7e57.png" srcset="/img/loading.gif" lazyload alt="16aa956fd18bfde9f12f631d448d7e57.png"></p>
-<p><img src="/image/e22139f880830a6a030e9a625a31798a.png" srcset="/img/loading.gif" lazyload alt="e22139f880830a6a030e9a625a31798a.png"></p>
-<p>上面图中，为什么NorFlash，SDRAM都不是A0接A0，网卡更是只用到了一条地址线，为什么？</p>
-<p>查看芯片手册的举例</p>
-<p><img src="/image/7a9fdd67e1e2707b8627305eb8ad9670.png" srcset="/img/loading.gif" lazyload alt="7a9fdd67e1e2707b8627305eb8ad9670.png"></p>
-<p><img src="/image/41be7372d72c0edb52d0e0533186d99b.png" srcset="/img/loading.gif" lazyload alt="41be7372d72c0edb52d0e0533186d99b.png"></p>
-<p>图中可以看出</p>
-<p>当你使用两个8bit的ROM拼起来变成16位芯片的时候，CPU的A1就要接到A0</p>
-<p>当你使用四个8bit的ROM拼起来变成32位芯片的时候，CPU的A2就要接到A0</p>
-<p>得知外接芯片的位宽有变化，地址线的接发也有变化</p>
-<p><strong>举例一：</strong></p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm">假设CPU执行：            <span class="hljs-keyword">mov</span> <span class="hljs-built_in">R0</span>,<span class="hljs-number">#3</span><br>                        <span class="hljs-keyword">LDRB</span> <span class="hljs-built_in">R1</span>,[<span class="hljs-built_in">R0</span>]<br>去地址<span class="hljs-number">3</span>读取一个字节<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="7799f4dabd4de2c28964ceb60d1b7bdbd0095f5dc102edc2c4387db7682c62eb">4630436162ade97ba2718b7d0c4b3b63dc8a3093a9c70c851023301c44e13901b4a5e7862ac69cdb8429a7712fba9317aa06f2b7d1c63fa8b9f686d163001710f57fd9307d596698e614924b1e4f89b5959189c505f5cbac3eb3bfcf8c00a3cab4433542688c7230c24bea6c1f450777be0bdbbe039dcb0c47d4bad7393f8d62b058beb69b930f68b0750ca713cca7918ecbb98255381d2d3753f7be14b260ce776374ef497597a062a69eb8bf8ffc011658fce6eda98e4221ea292749797fd0777bad1f93e5ce085f33c4dba9d77e9ddaab79ae6cef660506ec9796798d76ed6b0396ea153887cd5dd347c5e305abc7f486cb7037a21a6960166d3305ea3b900791b5b407ae9c572d80eddd236a627a5470611622040ec7898cdd540be1716bbae1e037afc9eb5df28840cd69e763bc8aa9ba0ad8d466b536382463eccea260d73f176eef8866d28664514826508a8d537b17e10262a9973e6477de8a221579b9676a1e2cbe35e24c127d88556eaa71f0b65082427b3da6f14411ed5667b462c4f2c11e4da1c51a71bb7435a10aacf2a54f2672f542b76825879a7abd5b4b12d57e2ec5ba2a52e315031fb99b4b1d6fcea6967ab80abebfe142d85da148f426f8245b18aa019f0a94d734cbc1f62119c5f37dd34973d5bb5947890cd9698262949ee7c73a4f0de36f7ccd4cf4965dc9613fc2e4b3556fc793b5258ef947663ddb357acc1958ad553b7358bba4d0a12fdb53a2fb3b7d2865c261b38591b36c6d1733988fbf179b251323f1247702a1674d2115af13a20788d19c56e5c6470cd362d43a85d24ffc35dfc230cb7158999fdcaa3cd006a56c7f9234336bdcb0968408a9bc42d61eb3878e54ac3ab6a2d5221e440e885ed73ac4c937b746919600b9c5853628405c896227e102f8ea7cadd6f2227f388dbc4ed53f4761cfd4285aeb721c972a19d20265bc6d634e2dd51e2eb22e9340dceb74d5bec6e436e08581275a86e152746e16526b48c01c7d3818541cf61c339c6394147684445b0e45f5c1b2c738dff11f1a4e6fff819d7e57e2d6d1ff1b5f3f1a26bb96fb6e0797a3476d181729b5efcbda4479509206b9dfc68f9c0a533008767100253d39fee3cec1845d674968146be67f43fb650b4b7e25d831ece81c862c5853ec74ce64eaba3268d906f9bbff41d40f8ebffb999fe0979b04e9a9c0568aa50d37eda2d38b330ef7bd7c58ffd85174e1ffa7ac5b682038ba2da5d0eef2c26eb1a81055c517209bc542f0c6d4cc6c209e1ff610c5c66b11f8f9e57233db4824743d8e28a7d51ec7f79c2dc9990bda17d09ba8d79c053bb13645df2f7432411bcb41ee60db72794abd55739022220dec034ce6e7d4c8a8d24af754f45f565b8354ee099aa54c932e0fb74c7f4b2828be764172d2f3f669d5a1f80a206f010eea6b3afedb63026fd11e9b30f2624ad126c2d9f140dde249decbc04de2e6ddc8f92dac2bf172ff1c133be344306e703edc539be3d6fb4988b5ac09e5e9c5a82347f38e102e2de7e1849b3d540a5614bce1a869aeb24fd603c82c5417a636654948442b2d0bbad08c7ebe64b84be64a4130983a1463954c141732f752331bee66b94cf0ef03b0bf24649d3ed62cb4623f8e366148d1c24aa0d72771b958a08cf7cc52c3793189e02c9c8cb91c677377a98f372b7d4fb9887feac52a0cdaed16eddc36bbb2cb7a420674df5a6825f4c3c4d8f0bf2d608d03114ae8ec6880e243cbfc6732c0203b7f25dba2f53453d39c6927d4230e72e4b82c1d76e93c43d8acab7c4d75c15d218f0a86a86da3e7afeeacfeb43de0bdfa34eb60f43967b6ede9a3a4ca83a664cf8808af3970495bd9acfbb32ac63bdd30bf277415ca444a7fe63575a1495701b8d58a04d3317bd7bb753a9bd8fd85aebecbe8b648492566a7018145724e2f73952c99cb3ebc1b3ed94e8c7942e27bc71bd08d41466a6bf0a1d9bb8ce0f9bb1771e8e7ad21dd84ee42b86af98a3e365c81b52a19cbbb14ac6a4872f56af529a50110ddc33cc02445767365f437337750a54bd0c7711918302a63321b60e813e1da4159b83865941e355dacf424b7f218e4b6f5381e062fb4e4b8b7a9c6d8c4dca074c911ab59b319dc60ed0bdcdbc33e597792b9668076e721888e8be21eef47891f5f53a5fbbbd750f2feb8858e25c78aef5c5a2a1497bd296749917420bdcc88429a188d1b28d8a20f2ad6b516ae625470af58d6752c2f2973cc24fd44c74b283aca66ff3bc7409fddf2529ba6f59646f2f5af330d80c1eba78b56d2052e52b28f1e181cbf2a425a2e44a346c8c3aaa5005bb6310edf36eb058ad4bca136b3e31ba943b3fd8232dc9736f69a705f469fe5b3713af5baa5ba6bd13a1c0112b993a3a2b077cb87053e859e5a7958b08a827ad4c950cd3443857d18c3c885271059c0d58a1f66a725a1161775f76957db92ceaa5887b1d82c7abb9107c6a53b0a2858a3e974b90780ae8b17fb377959cb5937447c5f80366488ae900a650c08cd950e6250ce870e38acd0ac9c8d8d286c94dc5a40c78de91dae75d58495711aee6da0ae082c188babcafd4872aa15086c378dcbb6da1be897a1bb7bab6c903448e7b6fbac90e7ac2ec23a027253b1e8243183667232d4e6e018db7971cd834df96f827627ecdfcb14b5b55dd3077f5bdeec1c8538f974ebacb653d1f0523141a0f1843f29863a78c39bdc0f9e3488433cba062954b1d19ec9e46cb9a970b02cae70b8a87ee9c8542ffb1950522d132274e0d18c20584b005296693065b6ca9b8a7e714123b89504657a71884c064616b14fde48a4ce9795a331a6f310414b4ba26ad782577d2c5fa1d0ba2469aab71ba226aed7c3f98d44d7ace402bb57fb21159e8cdd435625525e02873e36a2042cf5e09f10a849bd36d541fd35db4d0e3ca5fac57401d627ff6a211d5c78fed26d4e8448d01239c1707703b397221aa13762c1dd35d1818460072f78c86e4c417c9b9a9e583fa05be902bc1ccc01ea1bd0e23a677a021ce58c985113cce7867be03cdb40050d08d6e15c47884f3e818c2a45aa929ca0f6fd3473caf8f2e72ad49e10d15e044ffd7126e11e3ae8436abc03a2e08df3c7ccc6e6f93f344449ad4b19bf938ca9b08a37ca63dce5da7cfea73fb3fe21b860429810a64350378c82352379acc8ae6963f2b5e81602ea3ec017ab6522281653d9a69228bd33dfa39b8be4e65b0a09db04b65d5ed0f02000cd68af71fe98108b0cfcaf7e1e6ce1dc6854872cbf1f4d6703010d4d76e0f8806c5052f0941a5b7b110dcc35e6a67782240a55a053e995ca4d3d5939fdf59c70bcee2c69e384bef02b241c27facca1710e8f95ac5b95c6c35f0d74ab319fd84e9d9e0328e2f2d46a6109e1e4e5f3ed38e4a7600fb3ac2d3b0dd972c781081a03f12de64924115b92dc0320d1a2d53f4b23c6995304a92aad3917db8b15ec4b367941aa3ca0a94a362f89ad361e0847c80bd9477e5fae2203d46ed6163c05dc4f527b3683e0ededf04fa5bae90e88d9e6cfe16f4b4eb7effefa5549c30413635387606cd050b6a5f60d4526b86e75eaad138dde072cfb5ea4b7383251d04f03b8f8a998c3d41653485db7a9698c848f9bd011936c6a617b83112c329ea9d0500adecafe83a0266a451941c8d6036f8a9a2ffcf85c6e60ca870459bd0cae91dd5611703e76002a348c65695a1c829baf381569901146033c997b93dbb0b4a349deb41dd03444f8678c2bbd6eba0d766a6cd339746608cf5d9f67285a944edb7ba71382cc4c1978bc2f6b22d2e399ffe18188dade4899980bdecb043b8f80ee4a5db2c9e6389ce39e7cf8dc6914f078e447ed3625463e851c6efd8c4dd9fdb03488363e98fb98fd366c4566ec1e50f47d6bfc797744793e4fc090aad708699fe1baf664941bbacfe9b53fb228c9018289a6d5d01bef0e84af6a66842b0474ff15b9622f3938d5d50c982fd4b24c5fe5ed2779037e59b0e60817f49b3dae81c4d76e6503da460e4a626fa292a09ff2a005ff03790d9c28c76d488dedd9b343563fe905168a04db96cab31e246460a2bcbd12eac14408eb27602bb6bd8c207415079f86cb3734a00217b02cc8551c46e80b2ddbb4b9bcfbde3d0e60bf5f562f4ef5156d8204687aa57b5e1adc405c153d491bd6b326f17dbfe5f4a1defb3a16c194732531f4f6621d756e1d00132b4e602c038402fd803d6feecf518b77d17c443731c74bbdf0fdd462168c83fe62ed3b990b1b75ca1359fc5386beec33b3dbcee93aef21ad5396c147755c9ea9e22c408a1af2ce7e7fccb35e5dbce5eb092daa0acf7939f2f3d1858d35a739b6b7a16df1c6e7719bd50cb35916f2264a0bbfc466c6add46a8f95659b0c5ea211c50d89e8556039f3f2db24dad7c3f1c4b401717c959c4851ef26fdcaafe1072fb81dee5276e2c149d115f67b29222207b1c65d68b3f5f314910a377fc01527d61dede905ec8f8586f8df854cb4754f0316d59608277f36898233f0607fee8b1575f9f139511fec6955c49cb4e1326127117440f0b7f640ffec93a807761cd5b0701be48018d94b6af8f0e145ae64dd02d714dd247bf247dcd35dd0441315196fe1feeda6137c37774d0603552d4dce1112047e9e00ab8043e60adb83c9686d26417d2bb916bcc9da98eb5b3117b64a511e21e2439fbc894c4d2dd403717c91582a5a0ce832408ffa581b0bf8b6d6edfe8c26287f115776a155efbecad31928dab9e870bbd4df133c04b2d7166aa2fdb0bf7ea4ca615efa0ab9d2ef9e1290031b2887f98c842bdf2066d1305ef2563eb32d611b85e4ab0c68c9279631a498e50c58f49a6787d488bd73b3f3ff94c81f99d58db9aba01367641fab9417729204969b83d3cb968c70ed3dedac0defa9a57f9cd9c9a47114b2f2e45c08b573445baeab3fa8e8f61db6b6f5009ea4680301970c379e3d9f1401b665ef6e7724edf6f690784b2e38b0dbc23a07a958fabf30416e14463437eb192b541bdf867820b813accbca242300c46016a6308fbd8aed915e48609842916ca3a4a710edcb422273264fcf3d447152d178f5dc1151aacacf47c83b23bf108fe851ea81c663bc21deff5fc447fc8367a4448796c5b4fffe160cc7573e783a345ba62f1fa5a0f3cb6d722cbb41c41c09893375ea0fd91971cce6a1ee82846b948c740660dc8c2e3a08f8a01ae9e61a8d4cf763d8f32101291f63492507b52259f118f4b078617124707853d930c2cfa6f49fd47a8d18b91574e1d3ea14f0c5f380eb0059af0ef9b9df8efdddcf7e6250ddd6a7be9c9167793646680e5e25c2c59e724bdb6e052c1a73a4442da617d4e5637a7f14b22eed00c5b94148bc2369ecb1a4fd8d03a3095372d5332ac189502b6645f20ff1416d19a6f214aadf782f505fc489dc540aef52b4659c17cbd5566c4277703b73c6e9abe802a9c60f0f28f9f7e56648ede50c0e25c295f882b05017d8adef27a24080bdf659f5493020afb7a068fd482819215f24246e91032fa8fd8ca004b38d1878122933dc61d633ddb4ca7019b76d83ca1645dab9bd392608d7c08c8f921a70159d5d6bc02ae6989b09b1c636811dc3318f46f5fadbf9a947f901564c48d43d9c3a6c6fb7b7560fff7a0fddd41cdd2c41aa55e933ec8ee8ae5db007254906867962762475fdf4929c4e613d693e7597cb81d3ea12832af017b79d1a083a27d161fc851af2b7d207f9a37cd6a01248dd50fa60f9a8180abd080b5f087b258ae863b386583983a9cb29e960adbf7bb6b1743f0f75eab1d55356b757f055e9fca5660827ded2133d6c68b8914c47cd410add1d5561742c9b09afd0191c830f677246ed760080fd39e8ad41a359ebba9bd5b7a00786309eafabd7efe1df0fd5648207bdb576b00351e1cd62f6ccb88e294b3cacdd7966c2ac69ed9d2cb83e3cfab0c0ca4c31f46772c3759f8d762e5f730f4f899849c10f7dce38a4a56189afd7e3725713cdc59243b49523cf60153685a4c2349cc13ca23fa3b6fb434ecbeaf4ef6df11724269ef4409c10644a782db58c568f3770f74086d698e3a0fe8ae2fa9e61ad58e1ad028cda087bd44db613824ce2697edc12bafec16f2bb926ee1b0df4e1c405fc5a910fa6b55b4ce72e72e476413c18e23f8ee809930cb707e86ae336b17219bd35127958cd6222adaa2e57aef701b3dd2f117c3e5bb74a6a97b006e0709b6615f14212c054ac29fed8b244b4764a1217d086429a246421dcf1281ed9d04f36b8178600257dcb0b491fd476108b118a40feec0af48efb9e0a5150ea7e2cd434dbb83500e583b996e5857f16cedafcecd79894cf619f718b374974b56d37928816e827963862339c389d23abc89317e8ad0268964bf1a3cbbac0e3bf87662f7e0dd2800d8674996776bc50ce049ec53139bf69ce693c097403a1be0115b4643db385a6efaa6e884d045a1b64fd3371e5b9a1e7ed2425d4f5d2bb8bbb6a52a777adf246a85b969c0a1b8f4cc7ee14902bdb1a2a52010d5723101a0651bf25cb3024f6c3d085194cc72684db92d5c8c66d14f6322355367d0bdaeca7e36c60ba03a415ffeac8524ae1786f87c08b67dd8598ab5ec293f81288465620b00cee648f90e553be6449aeca00aca05c0f6e1360494ed8bb5bb37f61c15ff7095106deae91310627cfaf8f177129b359b327e34406d8bcad70222f77a96b2b74ed157ad7ef3af6cd3988f77e9334c24c98eac1d4a766291f2e33aa1d2bb7a4ab68f4769292ab2ba4465e22fc3e17cd6d84cb282813e87b42dcc880babbf1415e50542b1966369da3aef20e2e0e6122e968229c1d2e4b7cb47ef562a3e5f0b0b71661caeeae86ef2a45ecd6537ba5aaf16fd8dbd722feefe3c4e35fe8ab4f4acfd8b0fab72c0f56792e356b6866cb2fbfae85f3896e4917bc570a8569e847266860f9da58a58b50090d3d87c97beebb1d4be7c337980e952205240492761fdb9dd8036ee93df732c8fb72f41c9baa8569b3c747c8eb57ce131b9f3a8520cc8b76ab411f9caad8fe607cca0e5a9538acc87d8ddb8e5af8179ffec53e91c003d6ae1fdae3f577121abced478f842de772ef48d40cdff0521b5ab202c80d13ecd422e59b085637bce74eb484c1a732d638cc659ef35b781c43406d8c213835e2231d6bea11d9ae4c75d19ce08c194f9a4c60a81b5456f7c7406f10d49368d96062e496aab7e1dc8fe1a48b1ee72b6efba606bd9c90aedd37f0e31e5f673562a0985c45a5069324fc42b7b4f9bfdb9f2411d1734fe9e559474335ea1959bcb5aca700f4615fe6b93ca80489437f9cfe33b9b4e1268dbe2e15b0b7bc0195e971fc8f39a99ebced1e8a191b148b07cc960f7b0af170b76e593e45352499a0ba58bfa82c7a15e3b317f645e1cb25d6c9f3d9d9615962b63acdd699c2e8eaa27d130c558badc5a559a3cdcd38c6f91412c901b6fbef34058bee38d15e6af0221ccf4a430a1a459e4a274a36e52ee1179cb0ac36cfd77461993434f6e65cef960226399cc272d94b451985aac832d9697b3cb96228e4e791ad39d3e9fcd69327a5f64a146bfb51bda6a910a3cafd21506248a7d14a8ee935cb7e4c1ca9e1f1a97cf5e34783adfaad17cc23e2d31fde3d60735ddc4aabdf116eb2b87a8506e1ff9881a1bcd482b7500facb930949fb6432e45a3d1af0683fcd6cf1abe366495125ce56c3948a236e49c847d6686390193a37bbe6f74a76f8f94df64c4c5e2cbf6ec3704dbd861eb3dcdc747d1ac6489147611903910fc2afb96251829ef0faa2374b46db2cd10803b005b2d848e54b3bbdc512f006f9c19201b0e4ccd30360f1bcec279d36b04b7c32eabc9ff00efd24f088c889fdd7892340903c9acfb2db120312246e1825bf1b5b3f2c5cac0641d4caa21de0f1414dd3fdbb86fa449d2c22d27fb5b18aecc784440b3e09b6d8b55a89f445a3d760f7b16f724501af4c51f74f5f7c4ca7d1d85512ba8bcb35fdc6eecface6f2a6a91fc71594931d0c52918138140d0b8e22f42d78088cb7692eb77e1477fe42f9132b667f6bd679c72c22f7a087b0af6cac9c4a01d98d7234c2d60ebadab355837ba5d8f62dbf9aa8e7f9c6df63d28ecbdb6dff5ad91a3ded1257c3c0eb678a0a6386a42d7f09cfbbda679079efde6018211bc1720a0f79056fae8b972ea0211b39286bf6b8556b912d70b7e4640ead7a96d93293986b61cbaf12be707c57ccb01b59fa7cfc3d0d886a314f08fe53e9fa4f795f31568266df3d1de72731297eb5d17653cc25dc68c5c51e2771f8b29a0a0a6c3a30e9c2a4b0952d9b0d23e0e0bef638d31a5e570e37670b82c8c3073a1d2d6065b0e8e6d7a0868577dbf1ab395b601132dcb7c4eb382c09be7d937025cc0d45898a79bc74c3ba54f4d6f2cd1ad5f5549ed88096df67489538f47b8aeda641aa3f87cd29dd68552345759682b24ddb6e85f5be42ed41e87f37d21057418f4224453e1bb864fe32ff85ec65778c05a6dd7754f1b182917e401316d3dc2d50eb08287afea764a88e62577513dee26e5fa2c68a61522841887b6de0a44a15e546cf81bf3107f9a5c4346e95fb514fe0a38d35e053ecd3cf03a6feccb1cf74d54fd9ac4957e5fcd37d31cd54daee5d1fccefbc99efa3878467e8b1d4075912d9deaca51ae569e713b1b0047c759b2b0ac5e3a7e3ed49b422830b662697505fcbe6eb5e5c9cae72f37bebca30df36fd5b6c5c2b1d157b9f6e49ed6ce97ea4978a93de3cfdaa9fbc1bec660282621d0ae9de69b53f67e3a04e4d8adf891b57040bcc27781cc42598d2f2710a427d530870cc58059b43de1f147d2d4ed72c44b38da6f8beb1311bea1fd7612807748b6ed701d3763498dcf50346e713ccbeef07b42581db5837f21f0006d8018580006ce5254762d351f492ea39c16cb366c94f58a45b7fa8b6a247802d18c2ac539ffd80fa76e32eb55a3cf6f791ab69d22c737f3c236fdfd6a1664e86129989bd3e717e3c3a1b860beb70153c36586b41d12048e7116555c9a04fd1897698be270edf4638f6f0687d34af22a55412122b6204889e34f81d44cbf191741951603a714ec674324ba2ef37f47e8f720a9758562797a02f4022e8f11bad7f67e10df16975250722d5cab335085dc5a3215316151e3d3c7c9d591512e6959f1aa114a15cc42095738ce63ebe21cf7319ccd4252c1932232932a843cb91636623eab0405c31d2d06edeb9ae373af37f18c5d6128610fbb4a08744ae03ad9836cbb39e4d5546da040e13726edb5deb436645fcadd4cb58386dd771d120b1583f69c1b8fced024d9ee01611ea2f3e82554f6249aff2da9ccc0121d949b992778894efa29970a9dde51ca961debb9e0a2f55776c6bbab85f7dc8298350473dcad6d2477889cd103a217c303fd54f38268d73657e1af8e7b448350cbd4d4d6f8c608425200765089870cf63ea3216a167c585f6b6cfaef8193d5b9c088cb1b5a3faf5be108d84397c358f4a2938e0f89fabebc939f8b486e2b18bb3e22a0c844e71a26b664d10c0e098e12e9d3a790b7b631d7f62df14e80248d45c649008979a27dc97da9995e6a46fc5f7c51f8d0862cd98f1327ead6350cf847bbfb72eadefaae8b898aebe15908bd192d47db165d5a899d881843ef6e0f7ea35e142bd5ae53c80d7b1c05b165b430c0de36774560d3200aac5473e12353319f8772341afa0cb63b22166baab7c42ad8805fdc3ff9942fe15bab3d47da68d2ea7ad30b28707ce7ce71eebefe08c1efa194fb5785038634ab09608f75d6033ae97d1eaaa15726919fa7802501e4a3ebd8b4b3392738aaba54013e50c23b49f94549832303cd945ff417b97ee5ae8855ade7c5fe997f40368e554926974c53e4b77339b3355e95b380ec71f1ca34cd7d88c86ab732b0c16ffd0d9f230384b04f6743acffc7c4615635f395e799f1fc82e49a07745d8431ada8f7a5a540f12422f2a69344a828054b5249809424c4897551ebbb595ffb83d63c58195e14e1e9c3db802b84e569983111087f5cc37cc2e7492b0f49757cea480f0ed1d6edfbbe909395c1f91cd30f4bfaf50d08f4527f9a45102a20d70601718b42705ef4d07c4e5fa122fed3050e763e397929cdeacb60037a3cccb69ab5f53c4cb6ebd960f41cb40a3c682a7a2f143783500c3c6f290d4ec5eb99dd16ad4821ac2735eaf1df9019bf9460cdfbf3f498a8c753df496e5209322affaedc85b65478322a07c81f54b791a94718885c5e15a267597baa1996428f9fefb769835280b20ced28d6cf7910dc7d099daeac7f1cfb9f501f6bcb37f0db7d734f44d69ccab9c3c366ef59053e41fdda12a8c4fef1cd7ce7c977ecbb80f34e7f63a84dcd29f80a210984b40948b9e0ff432dd979bb7608e85e9756b66fe2b55da39116340b9aa29c1beed35cb167b2011ee8b0a654f175507c67bf07b3ae913a7a4521f9d39ccae2da3fdbce4a6a6c0a8c365770199ede481d5dc9cba869f430852d4070eaf760cf6d96a5554858cc75c099f1368d66ec27ccafa781f870daa1bb11a332ee6736908ead8dae1e6ea821cb8665e825ea79e71b6f9122f1489687d9fc8be9ac95c3a208ef400bc2d956d3b7d6baa8d8e509fbe90f94edd7dcbd14ee7e7b43f5c99a2581c47052fce00535fbc6d8ad2c13842d985650fa651acd9312962336fe8bf11e8af2d33e47170df0a0f4973f391cdfc714ce79083f9a7e59c8c1308cc0368c05baf3491c98d4e5d78c3d1adc3bc43b6d123bdddee1b10b03ee453e13db0bbbdbf800746dadd41ec669bb9d2261ee705fa92282e0480f91e6a25cef6fbd6ac36f7b265b2cda098bbcc374204f5d08bcf06ff5a199e6ca1f6d5845aeee3dcfa177aab8a5323d9ba62c91d795106bf826a514902d3df36cf798bcbc27ae341957387423b62f0a78010c4ab8cbd5aa358b1ebe069969e6093afe08b7f4f3cf1e75307ea66c117b86e675ec4bd2c62d1832721f0af5ba2fa699d99169838605666147ff1dd92cbf9299e1c8bc63cc80ef8b249b0dde78501d85bbb578ac9c7df6e04501d001349a835020e9996913cc27d423af3feeb028104774cca66c35ad090e3766b8b0b1e9c24c7af5d031f5201250ac5b62d3b8d35ca734a629e98ac150138a3be8784d9bc2b3f757fbf91004904599eeb3095db77c3bede53ba450d323f8fa0a7c635757d72bdcc4ceb8bba659ffc2b90481ff7560db003c32d621fa3d87861a8ac1d98fdd8531194db62f5fb127d10c1b9412c16d57c9117815191858f525a80754e4911f4f7b95b79f08140d419aed7ef8c4c0dd7ae9f83fd73a2289c378dbe7d84b6c27e37302ab82afff272de69bc20cd6c8ffd10aa9adcdcc6315c11045246f2ceb23070c2262c7ab45195f64638b587a071bb49d888de412f5e564772f925b1bea5b2e24888ddfbf5990cecf51efa1d7270be69828974a4b9ac48b83cbdc3e3dd62417f4633bfbcb853d9675537759d63311a3f33a75700c37bb927ef227f01cbb07aca14b055fa353b288da80a7caf5aa82c47d1624de01b0b23182e2c9de130007b4c2ec60556bc6ddede1b332caa67663617c95c8cc0ef0bd2abf28e2ff67c7d714d858252f0e31ead8ddf7171e7f7eca498b7bb8e531575126f553305ddc9f1daa4ee74e9e3a3f9f70fcd3bd6c357380f96db4dd8b74dd5e076b1e439e1e0cca95a781ddc05b9021877eff466ff9a2a052528f404322704f56f0ce7bc1f0a0dd43d6dfae8a5b654de1d9771fe4903402eeaa8310fa65ee4a16864244dcb1c2834e0d520fa085c2f03a8b485d24281aaf522456504ac789c6025e3ebf3e2fc995f4cf998c6eeb315f0ccca399eca0befb5405844da4fc75981a10bb6c36859585c8b6784634fd8fa9e24021e026e28a78c5b29149b9fec6ef00778706765e59721c0dbb7a8a34934d0930da304d102897b2719918a807aef435026dc8ba359606eddf07f2a21cc0c6de97e1a2b5bd337e2c9d0553aa5eadb77a759fdd07096e99eaffab4270051f82f5bf4dc9cd1ab3d6b00fa324330abad480e1b896480d3fdb7814ca08e6dd97854a16b23334b7f127aa2805e5017f6e16bb940cde98afd9c816259044e7dc722ec30baee75dd67b96fc9ded71a6a9147a7ec52e795bf68453a35ce2fb0f01e1a16cd1b31e07348d5a040a452a878ef5611dc67aec1d45f485dd02809152c9665ce31b0b6831a7726d22742391ff6099b58fe2b3a250032e6b49dee3b5c1ce1603001ca138944a81053954c0d08381515d9d6d528f0fc89239d068b053770146a4625ed0f839d6d8d3f190c504ed78d0ed10a2547592cf66d19d8563fb50754bbb3ed139c6914d8c0679eedff08717a83a9f7d303ad7e5082a15667edacf2097e47c40e9672a38fadeef17643a9d66a20a55c69fb84a72c38c7da6fcd88a38390acf1be59557999550de1dc7dec24e8cb3d20f6ff33b47b29a6688e29de038a27ba5df41d6591c78171e24b12b23b0d240bebc45fb862c36b9a21967747c46c6575c29b8538a484df770e02742510cdbaa13d18f964dc67a2199756f0d0c88fc232811b5c0366edc47ee0cd455b53f355b63f38b51ef68e4a978e709c3ec336f9783361812eb00a8d24cdc261a066104412a608bf2b9ec3e6b41d3830057f0701be86fb354253fbbca1802c967dcf1c91420332da1cedc0e1cd2a09e341a06ae3c9550787469ebe5becc06d317c43a54eb60494b5fe0aa9ac8ef3b776471b632a36c6811431ceadb09795b2c8f428997476bea9dcdb6a03a070c6fe8c54a0d9de914046d52ca1f5bb74f28d5e928933c5c7067b1d1d4d62dd627d3b957adf6fd399b1db10f63c50b3fddc5f623512f63233fd9367d7dc97aed34d0016f140c345084ffb1d4f42ba9dac60fa3630c756cb8b247b0009dc238b20fdd5f056b25f46ca23d188190a3c5966dcec9693d0265e7ec03de3715a2fc19d76abefe35221348e21074793ea9f2560de55fd559707f7f28669e05f3b715fbe87069596be4557cc61f1285bd5d020d9319c99219728eb22303ff17896a7f13a749e340a72afb0c8e34d445633cc2d47ece5d5c92ba1d38d6c9a9d50a2e298dc9287030b35a20fa5b96cfc96c53f3a62ec659f151e963b8383be0d592889b0838d9e36fc0a6e9c0397a639757b8348ced59da6516b9acfdad217a5d15e10e99c68ddbcafb982b7f00c88d452db5cf0efd678e5c33696fc1e592484b0c781a247a428ef8289bfb0f211d16b0a3a776664f0426d070b219b259c021fdc94712dc027455ed29932f2ebe7157baa5ea5d29c3c0836c1026b44017c1e03cf0e6178e8316731ede5aa9fd729c7ab45573459c4862af554a2b9ce06fd032a297b601be20985b866f8e7b8f37e31439d8fcb5da4ff931cf0a9db6576114b0dc3f5a6c494bfaeb6bb267fc40619e7b17315f4615c5b3c01e57e548f0f88889df3b9ee596e65181c74b5d7298de0e12b17f0d2017cc8fed6ba340f51673459aa49f196da190d854287f5ba6ec246713ca397f07b1af95cefa5c9506d16dfeadd8f0c2d581e8b3e600135d7ebf33c1ae1e61512351230b9b8df7b191c60cd1f77a51942c6420c16ee4ee0987290d55fff32847dae45c86a2546138ae73e409d18739c37abc7cee90bc6b21df8d84a6cb296963474da26709173153e77d88c16a361d9cac5d1c754c375f1308eb8f4b8fad7e1a66cfab83074f3d58f162f5c393534cadc6fc731d7e7dee33ba0540245f122ff00d7b8c559280105b4a1cd0e5a78b1d7816addd03f0b22032d63bd7c9a43b9fc3664c75ef4cb225a88f26836c7426d4ece753be391e4c20df27c03dddc9590ba8ccaa79a554957e3aecc7189f1d5a5fb821065b400767453dff89dd5186b2eeff50ee15d5d477a42e70e8f33a2e0af75dd54b4f467cfd8ad613a079787ce49e0792ed1ba66a08cb607d069724b7b4b97d2e96e8d5a601c993f61840b1c488919eb7144e33a97956fcd7d3b0b48e52dadcbfd5eb41b61606e08bf98cbebe72f7053425771952488dc84de2ebad5061a4163aac2269bd0f6470757b7cbcf6cd74af6fc11a6052ce3eadfe4df7cc806623ca8047077ce9b2ac173c1a5c599ac9ac735ac6c9607bf4ad85ce5dbbe5571897c5f1f606e6a8988f922642ad5986281441ebaa8e509040fa0d98c180bb74c97cfc48e9052d4d420e952f72f60ced8e254d0d553535f3ec7d8313f39aa0795a9ac6ff3d0685070dff8c67077f808a7be84c2fb2d4c4d4f1adee38eaf970f33ea8bf41f927e7963c64c732bc48a422a329468ecdfade80f1e1c85358caddc68aac704f8eb9b35f095e98aefd6156ba0fa0b95883b3849857de4dc4a79ae1865f299236406b2dae8811b0bdcdc2b6fbe4cdda986616fa785d7295a2bf7fbb38aa68a6d2a70f19042ffdf8d0ac0f33852e3e1b4d5e00fa8dbf3363398230a6b51976d45c82b1bb619dc351156fe9c7b17bfd8e93edc82bf75603a367d725703770acfd8c4bebd8b6a5cccaf5932c066c0ad7d5225f1140412ecfc6a2373a51b6694b2c92fd21135f998534446461abbe8d544a04124621bc74d4db8dc65f2cfe691e092a92ad7c3251f5cc57c1710b2d609e872cdcfd32362462957bfdd779fe7b4dc72f0baeae84409da0aeb91595acf9e9a973e4b90d1c7093c2b48ec580df8c335610c3de0c49fd58b1ba7cefb73f8e534db0381ed4f5bc21b4a5b9110a33791ece4b38f88f2fa3a6f3ffe4c960d7cc9d2c1ae52fe6b85c5e30b0ec04037a4c9d5a8faf3f5c28c81cb76a1f8545df5dabdcf101637465e84477c468f844993da6aa20f793ccd45f7372ed2eaf3ffc4dcbed330b17bfbc39209e0a2d07b9ac44c9902af362b5b4f1157bac95bb6412af1f59fde9da3a24b59b95c372c0b3d3ecddeaf901488e691e026cfd59bc810f5b5473d3b41bda1d9c80b6a0da92545de550a2f8ff60c74b708ede6b4472eb7cbcccb73ff5881449dafbd5ba221ba4cabb89846523581782274ed69befa0639ec1f62819a8649ce886a813e42a7f7f9fc7cec879f6aa25522f260e5b12818bc8a67d4cbd8d51243b00e7f201546b0432ed98977ce0b252203c331320a3efe181c0c75996533779a5b21684966429ce89b2e12276c36dffed22302e6d04fb99d8ce42bc1ef3672782ea12b117598aaca2f4196dcbe459335515d1c495efe386a7791ae04e8388d30c11b987a1c422b12dceccb199dd8084855316b1f82a8200934a3109b6b454bedfc8b045bf771a07be05e416f721a934a40bca5adc1ef83bce471e5ae9a66f6cb3d09f3e6737dbab4949549f2704db97f1bb424c018dcab770df3ce55e332a27c6b759d59b174c4d23a22bd95cbec95d2ff074c53f0192d388d1da6950b100e5189516c302bee066de534c73786ea8716bde3989d50d033a71ff82ee7d1b179ab9d3db7c08542498b1c9d12c0fa8309e91c155699162c1d65b49006bc627ec576228a85d70d5e3314c86bc070c001b281c4dce20895e503723dde43702994c0ed9e213bea12230675c94a588b0540d10cd9cecfc5be6496f3cf5764c5fc3845cfdb53f760f7e669ffdfcb13f02b5b7fb125e7bd01ccf5f9d56f1238df667b187c3403257679f3cf7b50ce962b0c26b03335a9d58feba13df1a6c878e694fc57cb492749526019309ab60ab124dc58045a8e6c64ea4d4348c1a2d99ae6a6ced85e4c799573ab02908737dc7a5c20f85d1aeecbc598eb9d8eee4f5ea8180a1b5bb08af3743603b55e4d2047cd3ab6147bf88965beee933573799de45a5bb14955b7145fbe7beb17820e216c36e01b4d209961d3a4c8266f93ac3c693f442063c984453bfbd84803255509fe5766f7819da6b23fe84350275eefa324fc7d9d4394774d3a346de46b08feaddbcbca489e81fe00e2064347163c4514e638a4d8b711fef6d82338b3dbd0fc279ae651137ec96fe3ff25fdaa9ae45d1d2c625aefc9ab821c7701f748c4d88f745ebfbeca61ef9a4eb4afa4a8f404bd42e4e2d4b2ce8e04d880cfff9e4f62f7f55eba2b3b532d6996bffe2d917c661fc56a02ca01e8f184acad5ee79e536cac89e15de1f2fe42466bac5f9f7b8defaedbb344c9080e4619cf52f137ee6e9239153b9e8d7600784483ee99f7abeebd87a9631b58a45f9009019665fefe426d808650db9e9be8b8067a9abdf08e8115a7f09fb70970074b2ea5ed50d845aad314b2adf40657e7df4f4f473e09f080774bd6e2ca554110bcfb74c50dcfb22670abfe4237b086e7b1abcc9b9ece88338f210b0e95aec52d82d16da8944da09e0f3d2427d17710e43e3c122abd7a09c23f90ec0681aec68e73735fc28edda6eb8b2910d6818600a3ed8de822be1baf305ada4c047926b28f5667bb54d33b0d58ddfca09658d1dc10df4266776f37cc8944a68758e0ae23f128241164918ec4e5acb47833400efffb238233af1c0372c724aa053f34513cad739dd7fc8f80a3f9d6845fbe01a22e809e64836cae66b0c735ea25ba16bddbce4ab095c4b06a475ca65e18e00781f8f55d387efa0608651f8b40820ecb220629f91ee10fc3d7391a135e5232da5fd999c779f22c63b9cb7b9fbbe2b31089675e37bf48c4752b901d5d2cb06d26f274beb56d0baa745e10afea6adad2bc12cc554ea9bffdfd15521be29df41fd417e08890caa29ee1de2df277df660d0a4fec25c76447407d616c1e6ecd82655e0b36386740c7149853d73e728a503125d7e70b6c9360e3cb0e04951c6987a3795bbe2aef707290d0e8d0554b785ef21a37fbc13de3259b5eb87f65d24143d8a3a20cd262c31f49918945d8b8cae1f270f95299fd7fae0c47d505eae545e8e32f501a3693fcadf89639a9c42b13b1d769d34a5fcf48a5cba5fe313d6d08b83f98a196dc019186e03829cebf5a6a28ba49f0f5f1f802432516f4f45277fdca0e5f0a5d0bf51b342a0d5ebe2b95ef56527c4dbd65aad7a97e28e1a506d6a6d85fd937acfed26831cdd994e8fa0ad0d2bd1e67ef5e90456c32aa466940ce973e01be14ea5f0671dadc6e4e907b185d354d9ad803796aab15e2327f7045134b51d1098987062272b1a601fbc7bdf97ea47614458ce1e555b8b709bccee6870b7346e6996fd6e7159f7598e4dfa16c5da3065d55c</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p><img src="/image/ab4e832099bc0bb3f37e66a35647f7eb.png" srcset="/img/loading.gif" lazyload alt="ab4e832099bc0bb3f37e66a35647f7eb.png"></p>
-<p>在16bit ROM中，取出的是第一个16bit的数据</p>
-<p>在32bit ROM中，取出的是第0个32bit的数据</p>
-<p>但我们需要的是一个8bit的数据，如何从16&#x2F;32bit数据中挑出这8bit的数据？</p>
-<p>使用内存控制器挑出16bit中第A0个数据给CPU，从32bit中第A1A0个数据给CPU</p>
-<p><img src="/image/2153866fc498b9fc1a90c1c55a53c637.png" srcset="/img/loading.gif" lazyload alt="2153866fc498b9fc1a90c1c55a53c637.png"></p>
-<p>结果：内存控制器发出的地址线有一部分接到了芯片上，这些接上的引脚用来确定读取芯片的哪一个单元，把这个单元的数据返回给内存控制器，而内存控制器使用那些没有接的引脚来确定从这些单元中取出哪一个字节返回给CPU</p>
-<p>                    比如：A0是给内存控制器使用的，用来选择这16位数据中的低八位还是高八位</p>
-<p>                        <img src="/image/6666943883922af52bee5a37fbdf3905.png" srcset="/img/loading.gif" lazyload alt="6666943883922af52bee5a37fbdf3905.png"></p>
-<p><strong>举例二：</strong></p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm">假设CPU执行：            <span class="hljs-keyword">mov</span> <span class="hljs-built_in">R0</span>,<span class="hljs-number">#4</span><br>                        <span class="hljs-keyword">LDR</span> <span class="hljs-built_in">R1</span>,[<span class="hljs-built_in">R0</span>]<br>去地址<span class="hljs-number">4</span>读取四个字节，即读取<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>这四个字节<br></code></pre></td></tr></table></figure>
-
-<p><img src="/image/f278b1dc119f0655900c693c2a86239a.png" srcset="/img/loading.gif" lazyload alt="f278b1dc119f0655900c693c2a86239a.png"></p>
-<p>内存控制器的作用：1.CPU把地址发送给内存控制器，内存控制器根据地址选择不同的模块（ROM），然后把数据发给模块&#x2F;或者取出数据给CPU</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>怎么根据电路图确定芯片访问地址？</p>
-<p>1.根据片选信号确定基址</p>
-<p>2.根据芯片所接地址线确定范围</p>
-<p><img src="/image/355aa45588c8f8c220221dc220f189dc.png" srcset="/img/loading.gif" lazyload alt="355aa45588c8f8c220221dc220f189dc.png"></p>
-<p>Nor：CPU发出的A1-A20接上芯片上，A0是给内存控制器用来选择16位数据中的低八位和高八位的，所以用到A0-A20共21条线</p>
-<p>最多支持NorF0lash是2M空间</p>
-<p>网卡只接A2,16位数据只需要一个A0选择，我们不关心A1</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>2440 Read时序图(查看各个引脚如何协同工作)：1先发出地址信号，2才发出片选信号，3再发出读信号，过了一会，4数据才有效</p>
-<p>将数据读走，5然后释放读信号，6释放片选信号</p>
-<p><img src="/image/5d1de58defba2376f590697434d07322.png" srcset="/img/loading.gif" lazyload alt="5d1de58defba2376f590697434d07322.png"></p>
-<p>这些时间值要根据所接芯片的性能设置，以NorFLash举例</p>
-<p>Nor时序图</p>
-<p><img src="/image/5a1dd584fa24fc0e53498fc34f8aa296.png" srcset="/img/loading.gif" lazyload alt="5a1dd584fa24fc0e53498fc34f8aa296.png"></p>
-<p>Taa：收到addr后多长时间Data才有效，Max&#x3D;70ns保证芯片接收到地址信号70ns之后有数据可供访问，但不能保证70ns之内访问的数据是正确的</p>
-<p>Tce：收到片选信号后多长时间Data才有效，Max&#x3D;70ns保证芯片接收到片选信号70ns之后有数据可供访问，但不能保证70ns之内访问的数据是正确的</p>
-<p>Toe：收到OE信号后多长时间Data才有效，Max&#x3D;30ns：2440发出读信号，保证在30ns之后有数据可供使用，但不能保证30ns之内数据是可靠的</p>
-<p>Toh：数据保持时间，为0</p>
-<p>Tdf：即使片选信号已经释放，此时并没有选定该芯片，但在Tdf时间内也不能访问其他芯片，因为此时数据还不稳定</p>
-<p>Trc：读周期时间，Min&#x3D;70ns，NandFlash每读一次至少花费70ns时间</p>
-<p>需要设置这些时间可以满足2440,为了简单让地址信号，片选信号，读信号同时发出，然后保持Tacc大于等于70ns，就可以满足芯片时序</p>
-<p>查找芯片手册寻找如何设置Tacc，因为NorFlash接的是片选线0，所以选用BANKCON</p>
-<p><img src="/image/064865ee0117734946963d5cc60591ca.png" srcset="/img/loading.gif" lazyload alt="064865ee0117734946963d5cc60591ca.png"></p>
-<p>可以看到默认Tacc值为111，一上电时是用晶振运行的</p>
-<p>            HCLK为12MHZ，Tacc&#x3D;14 * HCLK</p>
-<p>            则默认值为：(1000&#x2F;12) * 14&#x3D; 116ns</p>
-<p>可以看出上电后，它使用最保险的参数</p>
-<p>            假设HCLK&#x3D;100M，T&#x3D;1000&#x2F;100 &#x3D; 10ns</p>
-<p>            Tacc需要&gt;&#x3D; 70ns，BANKCON[10:8] &#x3D; 0b101</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>对于NandFlash我们需要设置BWSCON 和 BANKCON0两个寄存器，检查发现BWSCON采用默认值即可</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -651,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

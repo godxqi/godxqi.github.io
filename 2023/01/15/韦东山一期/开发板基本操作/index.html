@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="eop常见问题  未连接op&#x2F;eop到电脑 有其他程序在使用op&#x2F;eop (同一时间只能有一个程序使用它) jtag线未接 开发板未上电 oflash xxx.bin 时当前目录下没有xxx.bin 烧写完后没有正确设置启动开关 烧写完后，op&#x2F;eop-----开发板之间的排线未断开, 导致程序无法运行  使用uboot烧写裸板程序(大程序)  使用op&#x2F;">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发板基本操作">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E5%BC%80%E5%8F%91%E6%9D%BF%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="eop常见问题  未连接op&#x2F;eop到电脑 有其他程序在使用op&#x2F;eop (同一时间只能有一个程序使用它) jtag线未接 开发板未上电 oflash xxx.bin 时当前目录下没有xxx.bin 烧写完后没有正确设置启动开关 烧写完后，op&#x2F;eop-----开发板之间的排线未断开, 导致程序无法运行  使用uboot烧写裸板程序(大程序)  使用op&#x2F;">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/%E5%BC%80%E5%8F%91%E6%9D%BF%E6%8E%A5%E5%8F%A3%E5%8F%8A%E8%BF%9E%E7%BA%BF.jpg">
 <meta property="article:published_time" content="2023-01-15T12:59:58.026Z">
-<meta property="article:modified_time" content="2023-01-15T13:02:36.940Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/%E5%BC%80%E5%8F%91%E6%9D%BF%E6%8E%A5%E5%8F%A3%E5%8F%8A%E8%BF%9E%E7%BA%BF.jpg">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          792 words
+          4.2k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          7 mins
+          36 mins
         
       </span>
     
@@ -275,47 +273,22 @@
             <h1 style="display: none">开发板基本操作</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><img src="/image/%E5%BC%80%E5%8F%91%E6%9D%BF%E6%8E%A5%E5%8F%A3%E5%8F%8A%E8%BF%9E%E7%BA%BF.jpg" srcset="/img/loading.gif" lazyload alt="开发板接口及连线.jpg"></p>
-<p>eop常见问题</p>
-<ol>
-<li>未连接op&#x2F;eop到电脑</li>
-<li>有其他程序在使用op&#x2F;eop (同一时间只能有一个程序使用它)</li>
-<li>jtag线未接</li>
-<li>开发板未上电</li>
-<li>oflash xxx.bin 时当前目录下没有xxx.bin</li>
-<li>烧写完后没有正确设置启动开关</li>
-<li>烧写完后，op&#x2F;eop-----开发板之间的排线未断开, 导致程序无法运行</li>
-</ol>
-<p>使用uboot烧写裸板程序(大程序)</p>
-<ol>
-<li>使用op&#x2F;eop把u-boot.bin烧到nor flash</li>
-<li>开发板设置为nor启动, 上电后马上在串口输入空格键，使板子进入UBOOT而不是启动板子上的内核</li>
-<li>连接PC-----------开发板的usb device口; 安装驱动</li>
-<li>在UBOOT的串口菜单中输入n (表示接收USB文件并烧写到NAND)</li>
-<li>使用dnw_100ask.exe发送bin文件</li>
-<li>uboot即会自动接收、烧写bin文件</li>
-<li>断电、设为NAND启动、上电：运行nand上烧好的程序</li>
-</ol>
-<p>恢复出厂系统</p>
-<ol>
-<li>使用op&#x2F;eop烧写u-boot到nor&#x2F;nand, 设置为nor&#x2F;nand启动</li>
-<li>上电后马上在串口输入空格键，使板子进入UBOOT而不是启动板子上的内核</li>
-<li>连接PC-----------开发板的usb device口; 安装驱动</li>
-<li>下载内核: 在UBOOT的串口菜单中输入k</li>
-<li>使用dnw_100ask.exe发送uImage文件</li>
-<li>uboot即会自动接收、烧写uImage文件</li>
-<li>下载文件系统: 在UBOOT的串口菜单中输入y</li>
-<li>使用dnw_100ask.exe发送 fs_qtopia.yaffs2 文件</li>
-<li>uboot即会自动接收、烧写根文件系统</li>
-<li>输入q退出UBOOT串口菜单, 执行命令删除参数分区: nand erase params</li>
-<li>重启(对于QT文件系统，第一次重启时会要求你较准触摸屏)</li>
-</ol>
-<p>(如果触摸不准，可以等系统启动后在串口执行：rm &#x2F;etc&#x2F;pointercal 然后重启再次较准)</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="717e17727122f512bf9efe585168298f1a44e2bccdcad7423854b88ccf292441">4630436162ade97ba2718b7d0c4b3b63dc7090183d7540ee162ecb0e10eb2414aa4a5fb9debd4038920028217993a02ffc034c32fc44e4919e0f8beda2688c3b611a4bcfc3087268d2b1ab6c57d1b7bc21f568fb58f095b19b229a3ae1d98830b37b4645e673561bc8b4207fabe2202879e88d515818130f4b57f27db1656a6c656a9b2c938224ff510675b14a93871e655f298097182934dfd6ef19dc0800c96ac16247293df0fd7a115bf3c1e4dabfd79b80fc5e5844a66b3b2f59f53628689003940359d4e1d61931380af3df4a4b92eb870195c0451d6649e200c70132cc4f665a9106cccc95628100bb57a4be4e6d3b8ee6f46e1c8db4af0fbe875673d214f48bf04cc9095dd6be0553de8f6aac18030009030d623efaf99ea3c995f17ac3697f5d292b2a39f513df1f938de10cb9e5b9ba41e1d040fbbd1c6293c78b6a9351363ddb0a6b204022cc47ee10ee60ea761993456daa4d0f932a1f2c307bcfb2a530e60a45df77389f556d880f5c73aff4532e2c999d777829570a5626025178a44aea578ce79279d5b381362514c8d89b1ce07afb9173a152cf39fbc8f565f1cff9809c13e70f1beb59daa87a83c273a46f7a74a3154169a381c720e8ff99112c70d2464e783bc6c7a3e06b3336836da431badfffbb2f769d9d2906276c692d4e1455fe66889e627b99694a82c8f40555744d3e4b8ff19807d732b8413fc827a8943384c8bc518744b6d408953024c88abcc0b3aab116d46460acc958659368a0f08bd3bf49403aa8cdf10bd1c01686bfb9235fc426759bb0e9516cdceab8bbde3483ef2cfa1d07cb4787c5dffe85c3ce9eb584aa03f8f59cd6cbd2c24fa1712051f739067d6cc78c27ba4202c772e520f19dbcbce502370286577380cdef57a05703502d205681169a77e7788f2dae248a63688bdbcaf8def13149401be21bbc00fff5c8c6a2bf4275ef31515a87d67728c830dfee8dbf909815946c90b86ac21e87887eefbc28a8c01986b43cd3c3f9fd82677f22dca54af159501166cd344b723611a55eba4af9ec2d6d450da9ccf26143876a64cef53771674e831a7ac4f07e679dcf5eab480ee063539492c3a50598fb45b1960547f121da56d1afe37f0af52531d77c76a3aafbbc93e4f3ee4baf835cd66be924e1782aae1ef09c5645c9c31313fae6a8b3b857f0d6fb9c560fc6d4f83d0d1c90e4b32a64c13930c359b03276dcc682a4d31045b70724f374d90b3c8ffa3b6b2038e8fb16e30f225f39f70a9b8b7393dcefe589993430ceb7218b860ac7d848f24711f17be81e92e20489469e393f066f582224d09d5895c428f70c99b13abf1b14d6d487b4e09ea926485be9e587a1abe18886717420dc93b97cd1e92b883c25f5669d356fbf53499e507c403e6f6772e4642ffce7a0167ea8a37a8861fa696a0ac7789653bdeb6ed07b9703efc50ce3e277e1c987ca0a5db2ef43833260a25f262be1f008d074faaae79f36ae8cf4422a8156ead93fcb3511d05cc74229c196eed9aa2947d28bb245099d13615c119147b113aca9b7a33db867021c5070cc2ef5390ce14b1b42e9f090f40b5609103f11cd38d159d018fbede67dc09820f0d3b747979e314a8003bc080468d0d59988ee04d7d56092c93919b6acf1c4a6a3e3e82b7d7a5c014c8aefd67e7873e0243b0a3507037694f728fdfeb8ee037088acaff39bc732589cf3a224bc536a15c0dcd4d7514094a77de7b0d7d9babf502e94a232d34a95164e5e6bf0e5d5f03578acd0ba1a170f559c6da4efff84b784ca464a5a458ffcca67cc1ec115f615c8aef07e5ce153012d59f15f4f17169930d0d8925f8b30437486fcc4e871eea06d64037e09b38ed7d618f32fa4d3ff5d924e3c5d6a9fef056a5e56610344921edc475f8ab7ba36fbea7be00f609d5dcf69633a0e9f47cc8f80ab913abab2a2274c371755aae640e1ab5044e3605995369ce4c35790666e3bdc58e6baad39cac40069f23349fa131da9596645e1afd7a05b8399e7729299a963b3190c513f711ba0c586ab9fdcee445f6c3a579041fc34838daa3cedc2bc8c5a05b2aae6ddb1e29c0427422ba01b174b83a901f6e8af6af3efd19b0c4a2bcb833b2d9ad8457440dcdb77d68cef3505dbc5318bc15ef622b9117b923a1b396542ba1a7749e2184e366b8f798312ea17175f74cac6611361892e6986a08565f0e3fca038e5b28ea4e63807fa5966322192e6532768fbec96211e2ce652e745bdef8818fb619a28660551dab39de4becac97fa95d3727e40a01b8178a0b65309e35003d22baa6fcae8302952d00f0322407f707568e087932342832d5040e5af514cfa64bee7a8fef2ff317548a74da43620bc3911d138d552d5ee102aac214d860013488d34d583a162d1eefc47ba2530970d75de22459b881a6dd6dfbd5dfa7ff5579f795e2f7e5cfb5142eeef1baca32543fa32bc86323c9a5fa37b060129a6b417c0b5d62b6404f89a546ae961475bf3c5b475101afa99057f8291aaaef77c7b5e0a714c3417d27ee8f2ea9eb2f556d743e734da095d6b76cfe9dec7abab623e28609088ed72d4e23e64366119aae71ba9a6d3f6982fcbbe03c9d7760551d3e3ad3c0d9e7828bc51e57752b9fd718037f08b27e32cf9ea834e255e923b2987e000dd35f86fb6c2b2e3e19ab5c84a7f23b3c88d7e8d5bbbfffa791c307d2abf2d2739b42c48bf36d896b979eebea19781ea94c91f0ef59951b082c5603ea20225d0983070d1889a2edf31bfc6b3d524677c6b3d736c204b25a4168e6baef94db925d7369802c0ea2d1d4f91393c7269ea087405548a527f4291f17d72e0c86d3da0381135cb9c0cd0abf5cf0f0026789d3f79326a2bf683e3fcdbb93b33eca7dc70d527546d179090b37f37d91341b6d68250fa9a0c6fc6deca9e194bb83e00fcf735ad485c561b424b7bda55a88ecd9ec4d</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -572,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

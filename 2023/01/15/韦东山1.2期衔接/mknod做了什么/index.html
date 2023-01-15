@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="http:&#x2F;&#x2F;blog.chinaunix.net&#x2F;uid-22720671-id-4425640.html 在linux系统上操作字符设备和块设备其实就是操作文件系统上的文件，而这类文件称为设备文件。 它需要我们去创建，而且需要我们提供足够的信息。 例：mknod    &#x2F;dev&#x2F;demodev    c    2 上述命令行中，mknod是创建一个设备文件(或者称设备节点)">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mknod做了什么">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/mknod%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="http:&#x2F;&#x2F;blog.chinaunix.net&#x2F;uid-22720671-id-4425640.html 在linux系统上操作字符设备和块设备其实就是操作文件系统上的文件，而这类文件称为设备文件。 它需要我们去创建，而且需要我们提供足够的信息。 例：mknod    &#x2F;dev&#x2F;demodev    c    2 上述命令行中，mknod是创建一个设备文件(或者称设备节点)">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:55:06.481Z">
-<meta property="article:modified_time" content="2023-01-15T12:58:34.646Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k words
+          9.5k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          10 mins
+          79 mins
         
       </span>
     
@@ -273,33 +273,22 @@
             <h1 style="display: none">mknod做了什么</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-22720671-id-4425640.html">http://blog.chinaunix.net/uid-22720671-id-4425640.html</a></p>
-<p>在linux系统上操作字符设备和块设备其实就是操作文件系统上的文件，而这类文件称为设备文件。</p>
-<p>它需要我们去创建，而且需要我们提供足够的信息。</p>
-<p>例：mknod    &#x2F;dev&#x2F;demodev    c    2</p>
-<p>上述命令行中，mknod是创建一个设备文件(或者称设备节点)的命令，“&#x2F;dev&#x2F;demodev”是设备文件名， c表示所创建是字符设备(b则表示块设备)，2和0分别表示主设备号和次设备号。</p>
-<p>mknod命令中的设备文件参数是如何被内核所用的？</p>
-<p>对于任何一个已存在的文件，内核都有一个称为struct inode的结构体(定义于include&#x2F;linux&#x2F;fs.h)与之对应，对于字符设备而言，真正需要关心的只有结构体的以下三个成员：</p>
-<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gauss">(<span class="hljs-number">1</span>) dev_t i_rdev;<br>表示设备文件的结点，这个域实际上包含了设备号。<br>(<span class="hljs-number">2</span>) <span class="hljs-keyword">struct</span> <span class="hljs-type">cdev</span> *i_cdev;<br><span class="hljs-keyword">struct</span> <span class="hljs-type">cdev</span>是内核的一个内部结构，它是用来表示字符设备的，当<span class="hljs-type">inode</span>结点指向一个字符设备文件时，此域为一个指向<span class="hljs-type">inode</span>结构的指针。<br>(<span class="hljs-number">3</span>)const <span class="hljs-keyword">struct</span> <span class="hljs-type">file_operations</span> *i_fop;<br>文件操作方法集合，该设备文件所能拥有的所有能力。<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="faac41d11e653e2c9c5abc4b8145592c25602a88e2af50e9c178d940ae20e199">4630436162ade97ba2718b7d0c4b3b6393e46aed1c69f6ac78fc7c4c2e0b6813c3f2d7bced83608d50d813a60e5169ab1a4297bab8cf2d94d4a3f344baabbf5260bbc556903f76de6b4a177acd95c9fde99b2a133efa2be18bf6dcde047c7fc039667b33779658f940141e8936f433b91e40c96d48a5582a63157c45ac3d5ed617318a747916692fc23f483fa8417f0d5e74056800d9b440a19e752f13b14bc578a21c3f1997fdba365bd3cb301a7d44be02f7ec21ddfef7db5de093c103e8e362298f269e94c0fb3ca07ed34706fb28af3a604d60511243592642e7ac1bb89ae378a92c61c34b6bbc5eff0cd56b03b88a7040d52fb8e83fd9f446be56d36b92889bf731d9007fceefbbbe454a2e92f8cb3bb23432f78dc6de9392464eff29eded538a99fb7b986db2e660a7231c196d6f3cdf99fe4a605af197d95b92b9248d949d8a713fbdafbde12edab934420f359d64ba5ccb364504c96f889d4b01b55235ed5b8967332d5460ce1fcbc1090eb02670f93870358a6190a481ca6e48dce125b3fd8417dd46c8569bc277f3c882136070a6273a2c377aa98b517cc0cec5bdda3e3a22d20f9eb01e1b555657bcb66306daa3bc61025d7987d29593257dea1cb68a1dd1f8f6b990e4968122299ce053a1fec5ee86fa6f0b90496070b4d29507ca1dbdb33ce5431f6c97555c773ca8a8a65361789ae063309c118c7ce8ac9ce78682a3f7c0afa8fee4732c995f4f97df60e103ccd777dff6aaeb7833d5eb19dcd9705490f44736cce303daf839e2f7137323def58401991fc6510147fb4644235a0142293229b5741115e110929fa824ae6a92d450615d6e87f0f98e59b1487b8d4c9f8197c11686686a03e415a1d40dec499708a4a9c272ec26eab7331b11a731764f3044b457d46dec59f085ae2082ff1012635c7bb1e5c01e90880381a8be4f94b3437715c70004cb33a88ac072bf86c27c7e31f9d9228b0cc5db527b398e998f577cbe6d57b4c629d231b98a6314c7a9388a71f1915fe5c40cd4e7b9f551076cffe6d79e13a581c1b9f7bc78f1e95d4c078437855ac803642f3662d3b9f33178f331e7fc67891a58702742d8e8266f16c2a3ce3f48ae39a65de2ed872c383a4c1f96f77838acad5d2c64ebf7e7e61ff27aa4bbb4cc63e7c7f0e82a1c0c4b4e4750deb10ea2cb65a1dea2c7f87292707f4345cf246dfe2fac14308b74781a24c1955103a3bbb52fc1aae346a6ffb9c2bd94d906ba8465be76f913e8a680232847edfa53ba1b3dbbe4241a76fab0d4d637b8c55bc7b6deeca32166369343d77f28e0617acbbeb284b626f9ad10bf6598e5f1d7c77d71a9d735d6c4012c57e3530078a126374d6f3974647f2a17c874f5b32d4616c1032fc997d77704e0e0468d0b3f9ddf1a175277f28f7d8c6f5cdcffbf9cce57359beb99131ae63be770bfbf1c2e9f08499995a7ed5396aa69e2f2d7198027dc4772ac0cc06fb7a2f791814c5b87f52d11a7ebafced8c5f7728052fca86d105481aa542b074c9429cf7d85961dd3bd35b26dfd3eb0e00fd3a2cf05bbc2ddc1a4bc7e5877973b15b83d067dad102f2a78371b1616df6afcbb861a4e3e8e6fa304a0f3d624d66f9a98e8d21fc0bf30e376d934434e7f7c65892008c6ce05b2fe3a50eb4d1cb7964f9a22d89da84496238c4f6291e71d109a043d7019143ed376ecc944991e65cbadfe4374224955edc44558d4a058e64ce43cfd56f4c8bd8dabaf76634ee2f9f0c57028d1b6789390abfc8557e1f2af5942ba8c50a28d992b2b031754b64c1128a18ac8c76eb9af5ecad49fca703291a19600525756ea2cd1cabf29056b78ae16a9e5a206514dd1be403df1a265f5b3b5efa0adf6b800d710edcf92dcfaef89cb376d56e75bb507adb4d71362ae77e479a0552cf0f8fd215670af108bc667162bd20cfd20a373eab6c42b766c4c5b38f85788064a22917871b7981a3a31fab0fb659f348c23601e48869e3304b689a100176af9acc7103085931f3d8c0a08b439bbd147d02c05b3108a99d6c9d9e65c478f0e39f44d58d8c679dc24dbc04d8b15cf59d736b5bca00a7fd693e458b73d1ed5839e9ec41f39003c5ef46542e50f8cf90233f007f5c0f1cd0d9605c56ca7453440b79002607b575ecfb61a58e835ad0fb0372589ef749857facfcbaf91434c5e51e3aee57fc483d71ec23b6aa527feec5d994a1ee4003b1c1c2deff852c8f08f98284c7c61674c7009d01b76eed4b8cf6cdbe16fb897df6f6957aab2db9fc3e7eb81303f4afcf89048d9d17a08034758dc88f090ae9690d1412e1d87d037393c500e475c27e6b0238eec53220033ccbc7f58a975199cc37350beecc5fde4d9764034ac443cf3168f49e6f34ad307264f977dec0caae3e1eb49f8399e604f97956b479b3aedf87656b786942495b937c8c9d6c21e4c2e679a5658c483f45375fc9bec60628fe829582cb841281fcb82f5f3b4ad22eed2867195b621bd6a4b03cd7c22c66b757c5e7cdc52a56eefae5b3ab7bb4d373b12d2d9d240f3970bdd38e6e9f755b6a6e12e2f5708be2f93f329a4e940bf877de7aec5d500261917c282aeb20b2234daba77ebc1c224527a695545c253619b37b4b1d4e17343b2f9d2af7bc1e8e3763cd4a0525d4cbfa940789db405d1328a4db0f15dd08d6acabcf1b3d26f74d6091e75f88ab7cbea34db845baea2e92fe041f59a53df6da648bf93323998037cf746ab23cb3f3e4d8f3c0620eedb2da3ddda8bc0cd8c0d322e3c63978897b23e31130d28350c67611ea441f238ec5f372ffc8ec6a59946075fe1ee16a46e638893231d6aa4cc7f38360f879aab4799cd26bded8377d370907b150a7b4bc2a77d39c861b5daa83f1d6eff4f990919ed1ed04dad71bfe5184979b07736797031357b8061ae07805f75874942f995bfd95add61c8a2ff24df4df110f7fe20f4d14597be5ecbc8a3b274630a2ad0df898b0e079f1fe097e0148829f80a5801d7f6fe94be8e2711769552795ed351261f562f55cfa900dc8044de059373618f4dc8cad7d20912c26cfa10b6fd124eb2534096e403d5ff66c7c104f40feb264c91ac21b45927ec9a5ffe3be0e30ddd3b1d289e8d3e030746dfceb72b97fbc7d3597f2226034c4809f89aca89efccb2ef7b3c116f027aac88a847b19c31836470cdf907091b5259416b6ea6da9b0b46b75c85d1eb545ec73fffca3344e54398c9063d397d8f0e94f954c8edb7e0329adf2d62d07d7fb58bfd73317800d689fabd1695c0ec27ea7b8d6bd9b3ae095b6aae11226cac8bf1dfc91587d2a08c349b1af587ad66513dcfa10a670bd8897841ae79b6ae0de5354d63a3ab746d6cb0f1b274d206a703053170f3edcf069ade5dd62c47764678d4146abc237ac145a23de2e923090fe371eb0c0e217727f8287ebd2b634a3d61a2b1431ae847d91e88506258430ff843e108e541ac22787ff55b056a62613d2071feb016d647971e2a6068a48a5ea206444255bd2a463b6724e277b3714f6f34606345804c06d8b7d91c5acd907702e092ba23a037cdf409ea19d0989e5bd5c8a4b98f0a4756bd95506bb0e77467279c2a1f66b4f14aa43d350ea8c6d92dd27b94bd913de276059407cdb6d6738c09385d2fc035aa88f9bf6674eac3badd31a73de80c3bcb807824ec75a151ec6e91f174575fab51b510cda9a0e2b079ee1d1cade1d8011a9feb08b0446223abc70f71f2df46ea5b2d200b8728d4f10808d7e305fb67b1142f4c9a5f54e28666fe1b42f6612a56cc80f799464974dc43edf4afe9584ec4689df644aefef1f78f4fede0f602ca84b9c80c86d37f79bfa1acb1d4606843de3bae2dc2998bdb3a1c5f99ae304356a53073ece7f9d72a03d39e1f6b32b3fa132d30402e3e5ece62c9fd769426726c4d787111c8ad28c3cef66e69400cbdb2389c9043cda2a4646d3c986dc0084753cc253556c671622102356b1bce8eea53450dbd3963764a570b92e4ddb81a7819a566911d0db38e0185acd17fc5797a7f7a209c8494f28087c16d03141b19ea5584a6ee40221d65ee10559830e5839c4f7aa790d3d948613eb8a89c91d14ec054bcbd158bc3ce9cf9aa49e3b4b554604c6c7c33f71b4b0946f5621b647c35ce55a9b4b622b409f15adff600e3b63fe8c000106acfb4d79413d813d1f4757f3a22323e81dbd6fffbcdd3c4ef8ed8883afcb3c7e2ae334c3e9015b8dbad7a71da77ee1bb4a8ea558262e8cae461fe212ef4349e8d5565340a8df074751cce1b7ebd94c04a54ecae3edd52bc77a0c530977bc6451c83b063d61f86993872fd3c32eff7304f09ed846fd3d4d7a6451ac2ef491ae9f00b87fab53e375df596e073b2b95f37d3e14706d143d77671ce5ffe9d6c6df6d69cf2842e5eb040977bfddaef90aabdcbf0e75a5be16158fed3450aa5d183534327eb3e1c39245f7026692fb97ed9ba45ff024e53f1f14b7556ea70664bf347d054fee6efa931758a0b2147eded327efcdf0d3a72173c7a7bdb05992810632df6ee2fddd9447e909b0801e3f36d42750b7642c4a640a7e01f6df92eb15b01046b239db018c70282d4a312c43cf833834a61fb79ce0322c98cada4fa6245b6b50ae2669c89adc9cf0cfde34644d31cdfada2960b52d266ac15c9078d1d7be63a2c2a57fb1910a2fd2c0526c88edfffba318197947415ea907e7ff8fb7e2ec992a33add18eac0f636bfd5a34915a82396570b19448b203b453b8280dfafaa3fed8c36940a0f2f4946a037399b4cf951cded54d17ebc8d15c2b105f9e256b43104e022303386c9d5ed2f165834e45d6d956c88967e0b85bc81129460d7c115a688cc25637610ed10550cb298fc85871700827caef87f9e3e7094c79d5216223febb3a05605c7f7ef2adcb5b55d39027e9a97ac346fb292316fdc56c7d24d1b1e2ba1fc5ca3a45acd6220501f15e9d8218ad5e705bfe31ee06124bf2954e23b5c7f44e2e6b817ab2fdec5bbaf12a6824e92bff02a3a8fb7cac1f1911a8f660a655d1721ff397696146b49b1a999fad45b42edfe347ec0b6fd5e94fe6265a5b456ea21f11aa43fde4d994c44f72dfaf8bacbcf48d98332f5736aadec45fd21affd957d13aa96c1b08e721265c1d23106fb174bd0d198a9f7b8d52f44690ceea626ae475621fd3db9c4542973aeca32f971ffbc02b3d0db76818a36a16398ddebc45a24197384354baf4cc640f1746b5fa7eeefa1287310c020dd8265015c3489391bc9bc092c63a58724743e48229be9922cfb4499e6eace6f22962bc656e766f60af06d891ba0bb0f700125298c6759cbdecafee93462de1838d840ab665c2ac8b891907048ef9b5aeed2e2ff388aa7f71aef57cc89d2d43c3e46994f55bc50ea7495d6953946e2419b14d67b8c3584c5af5c1ce0980505a3e9312dd28fcc39b4eb3230bdec62f9e83a36d230c6ce80560b51ae5d4ef661005ec64cad56641178859adbec4566711a811b1abe481ad301f9f40d5bc04fb7418bb7f2b468f108998c80fabf710d922cccc5d49b4d6e154c287f06cf3886fa962f52240e104875eb2fb2a7ed99172bd57add6142ecfd39f2ea00eb32b3d280bad2971865f3e72798ef2072bc1269e69226041497bef99bfa8e38e604107302053f73d0b6ba1e48df3e0d6496aa871657f620110e81621a908135df9342d344dd9af75e6f8739e2ff921433b641a410cd065862c25e845478f930f087971ad9a546edf6526a054003cec7840e2c20668b23de80405b53ee5e2f5fe4cfb72c5b8c283a7053403d09a1dbd1e96000fd09aeb3d8935ba67c1cd2f25ac9c61c713a40f95f67420f2ced532ad5bfd031a5c14ebb7669f6c8a1151e63a2705b90b2040eb89697879a7068badeb42cc7f5935fd23111b1c1c5452c220983e848bb97ccc8c20ce174e74873f3fddad266f3801e6e87851f6e6da3464d08c5806fa5bff34e37e9f6b10bfcdf89597c7dc92b700d23f7f410cd587d96d93c33a1cb2ace1a5854ed83b7b522bbd17344ad386bd294cb401fd5272c7186183c981967ac990a4ace1863810f822f6958a3c7ff6e146ef8dd0c24f473b22e994aefc122267b4f517fd45577d259317fdb7985b825182afc66bacc34f21fc4d2687dbbdb6244f32a3aff8895fc1483faa792747251137c91a3366bc7d49832e5b198170272eb11f57d4eeb5538a221df5450497434c04f1c656f0ad16508c72ae4bbb2d6c4182b146b76916d9722d4fb1da3036a6a688ae4655c11262b3af35b8c28fa85092182f5ab3b4ddfe72eb3236c7966d1f1392e60625b464c3fdd4b7aa46d8c39e06a25cc3d7e93c3ffc1beca13ce07b2c78bb6a6d6e90f32bf3a208b827c91f66006e5265013544781ad212455b3729daeacc8c483361ca057b08a0415ada6dfc3ca3128cdf0917e1b1672b2dad5b6756f55fe5e6e3ed143e5d5484e16ebddc3731c1ab7b78c59c8841b632b0470657c97865d7d72cc5f4bb19ab6e8af0588f5f205198f68511c5a14c7fcca41a86d51c33bbb9957a8c265ea0aa5d1c0d1cf9573aca0a6dc25d655fe8b9c94dda974d860c568a5ffd4b00ccb43dbc692ae1f2bf18ecf6ab487ab7033f2de1e6a20536e7f04cac908446b3f8382ed4a30b345ab413ff03be42f9c21ed23e2755894bf43524c7b5cd751ad</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>用户空间调用了mknod命令后，内核空间会做两件事: </p>
-<p>(1)生成一个struct inode 实体；</p>
-<p>(2)为struct inode的部分成员做初始化工作。</p>
-<p>在mknod的内核执行流程中的会调用一个与设备驱动程序关系密切的init_special_inode，部分函数内容如下：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void init<span class="hljs-constructor">_special_inode(<span class="hljs-params">struct</span> <span class="hljs-params">inode</span> <span class="hljs-operator">*</span><span class="hljs-params">inode</span>, <span class="hljs-params">umode_t</span> <span class="hljs-params">mode</span>, <span class="hljs-params">dev_t</span> <span class="hljs-params">rdev</span>)</span><br>&#123;<span class="hljs-operator"></span><br><span class="hljs-operator">       ...</span><br><span class="hljs-operator">       </span><span class="hljs-keyword">if</span> (<span class="hljs-constructor">S_ISCHR(<span class="hljs-params">mode</span>)</span>) &#123;<br>              inode-&gt;i_fop = &amp;def_chr_fops;<br>              inode-&gt;i_rdev = rdev;<br>       &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>...<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>可以看到：</p>
-<p>（1）i_rdev初始化为rdev，rdev是由mknod中的参数构造而来的</p>
-<p>（2）i_fop初始化为&amp;def_chr_fops</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file_operations</span> def_chr_fops = &#123;<br>       .open = chrdev_open,<br>       .llseek = noop_llseek,<br>&#125;;<br></code></pre></td></tr></table></figure>
-
-<p>（3）i_cdev没有初始化</p>
-<p>剩下的两个成员初始化在open函数第一次调用中初始化 <a href="evernote:///view/18988257/s16/1c1aeca4-3d5b-4413-b149-78439b27b4a9/1c1aeca4-3d5b-4413-b149-78439b27b4a9/">open()第一次执行</a></p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -556,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

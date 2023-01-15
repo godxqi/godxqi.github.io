@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.自动变量会被分配到寄存器吗? https:&#x2F;&#x2F;blog.csdn.net&#x2F;pianbing&#x2F;article&#x2F;details&#x2F;45672793?utm_medium&#x3D;distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&amp;depth_1-utm_source&amp;#x3D">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="疑问及解答">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/%E7%96%91%E9%97%AE%E5%8F%8A%E8%A7%A3%E7%AD%94/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="1.自动变量会被分配到寄存器吗? https:&#x2F;&#x2F;blog.csdn.net&#x2F;pianbing&#x2F;article&#x2F;details&#x2F;45672793?utm_medium&#x3D;distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&amp;depth_1-utm_source&amp;#x3D">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:19:10.790Z">
-<meta property="article:modified_time" content="2023-01-15T12:25:22.256Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:28.038Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="未重构">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          899 words
+          5.7k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          8 mins
+          48 mins
         
       </span>
     
@@ -273,29 +273,22 @@
             <h1 style="display: none">疑问及解答</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>1.自动变量会被分配到寄存器吗?</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/pianbing/article/details/45672793?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase">https://blog.csdn.net/pianbing/article/details/45672793?utm_medium&#x3D;distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&amp;depth_1-utm_source&#x3D;distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase</a></p>
-<p>最后一段话</p>
-<p>答：为了提高效率，C语言允许将局部变量得值放在CPU中的寄存器中，这种变量叫“寄存器变量”，用关键字register作声明。</p>
-<p>注意：只有局部自动变量和形式参数可以作为寄存器变量；一个计算机系统中的寄存器数目有限，不能定义任意多个寄存器变量；局部静态变量&#x2F;全局变量不能定义为寄存器变量。</p>
-<p>会，由于寄存器变量的分配是由编译器自动完成的，程序员在写程序是并不能保证所声明的变量是不是会自动的被分配到寄存器中，所以不要对自动变量进行取地址操作是最安全的做法。</p>
-<p>2.如何将一个整型的值作为地址赋值给指针</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">int</span> iAddress = <span class="hljs-number">6140080</span>;<br><span class="hljs-type">char</span> *pBuf = (<span class="hljs-type">char</span> *)iAddress ;    <span class="hljs-comment">//即pBuf地址为0x6140080，而(char *)iAddress是一个指针常量</span><br>                                    <span class="hljs-comment">//为什么要强转？因为要规定指针滚动的字节，以保证将数据完整读出，将地址赋值给指针变量的时候，指针变量只知道其首地址而不知道其想表达的数占多少字节</span><br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="6a172d4a5e016eda241ab3b11642f424c3b6a25e0269c5154f7c2cb4d73b0a9c">4630436162ade97ba2718b7d0c4b3b6389b4ce7c6aba16818ee17363224d4bd942d675cb9a79370d2adc995d5f09e6a1c7e4fcc09a38e8644e5c7dd3c78e76b67f5417db61f14f14304c2592d04c8815578305e21c57fdcfa08e5ad77894c3714c5d0c3c12908516b8a5864e778ede95c7b43938ce192f03fd69954539adbaf500ccc44135888a106657ca5542964b8f715fa5a4eb03cc680f47cfaf7489e707814c06e5abf80991193abe67edfca827d3b249da26159d8e33807e6985b6220fbce06e5da5155d76382ddb9f5973027e676b99d4a102779f09e84d9678250b2a30a49afff1b11812be1fd8c279da754dc8902133854923027f5de7a9f97e0ad32b6c8c41b105b03c7151457c3e6e1201165cb44af80b7e2bdaebaaf9fc9c3f2f29befd3ff700354298bdd8bb51820f16b5805ae13e695c32199a8cf0dec07246d7681ef8e7a2b5ebfc548034a0c18b4fef25768d6f68054a926ccd91289ac649eecba15bbd782fa8750106f181a3beaaa91c57647c293bb1c8efff06d52bdc819e6b354b970ab557a9569ceedfe5605683f8d586a2b9a5ef52197d7bc82fdaad9a8c72cb9cd7a30203b107e20090d438098ef05a5946da22f537394ed68dfa63bd0e2078a9d347f1b611f80e0dfadabd02419d16c95fe669e75bf0936523f0038214e364e336488faea7e7562234c0de32e9cdc799aa66be757f32201cfb203fd46218cf4035f3fcef7f577d006d594ed975260ca38ac552d7e47cd0d95fa2d1156252995a5a173e7e57878c3df1545dbfdb719db0df2f53be35126364f7a0f4f8feeff45aa1b65e76df469e78f3c07fe708f327f242d8bf00c63b56543a925c2ddef857f4301396260d394e548549ea00e698eca7efc1e0ef684cdc3a38ed606f0b5e40b2b6b29c7c58b26b55db41dbe6bda42b6c736c5cf9f6c9ee3847da665b76c739c7827132eae127726fab57aacd2794d1cb5e3d4c32898228b4ce08d187f1a7a0fccb08f8474b37ef8a25bb86d8c2e096128cc961fcf30e91b5afa2a52cfb204471a768a7657c6c6561411ca48c1802e0a9b4b53f93a51e89ea61b7e1215e911ec145fda08e055e680d7b87067e3814aad4faa123ba89e476042293273c0bf48a1c033941016327bd3bc9e3b45a62ef185964ca169b5f88d4ecaa9a8a9a1571a6f702ac07dfe999a08c3d71c443bfac3c7bd96e57690b238721c41ded97cb2554e9704a4b166df44f6ded1284414573d43b7ea75b98a7450cc8f1fc50e5646a10bf64990bffd3874fa581bb0c3137eea6252ca7066da71d3875f5361d50f5190755b84a4072c0635a0f79707b23f7a52164a1525e902900dd885a2e9217b8ccdf7991fdd4de5360fd7b328e63502363b832c34d63f07d304db43265067bc3eb66c0921b50f187149a977c63459eaf445fbbb0c19ecc517892324162bd464091470be09691725cc81aee2a68073f0ede034311294a6fe7d8a48a96bd2c056cb4fd91cbe637a76ec668d44a09de3e92ab745a4ab1be4cfbb5f87ec23130bc8bf1cd64371eb95b94cb358f5603b89675285e1a6b4d589aab7f19996e475b561d9397424e04d06c7974a820622fe54507656ac74c0fe8d2c9150ca910aa2293bf823d07631060e137899fa0d62bd3c14abd5fea9dda0a64fd08cd326258a91ba7a491589d0b13eee3644321b7a49c1241225c89b2d3a81cfcaabd544a0b8aba0a82b7e741ea43787c58d21dca03b0ee6266f55efbaf40f9980da8aec55dbbb9a887134faab2736bf226f7f1b5039c1b385fc5002efdd5488ce8b7ee4f75e21337ad3779e682b6f0fff887c78e7075b2f1a13d3bf87cc89c1c9285a28f8333c5fade637e5028b342a6af610cc8139c4dcf814efe3873d63fc51a16edc01e3487792fa7be144ff61b42f26097020954fd1298d37a66e8d5b4a600de1b269d84970a4c4023187226b9b41c07d66db8fa0ccae8897aed4b196cd079b6f1fda294060424d97ff431b95afd04427987e3387e25df215da49b1ab000d0561eeb949a695be82bf095092f39750ac77dacabe345ec70d3b2de1a387dd7e7f658da5774099cc5e96ab71d1fd7fd823c8aa60a6ce5256d4d2992c0e457e00b1a180d4b89d93b40d74c1cc11c8c76d986ef27bedc757d4e048ac2e485108840a96e7313693b797c912dace64a9b75cc169c508df9bed0bf4a7e7b980f9010d0726ad5dcdb67aeaf359bb96eccbe29abb45cdca1c308af41a0182f2c9bbb0b5722c042ba891ae1de17f74cbbfc964bcf3716920652891252de198346310987cfd780a556f93f5d71ea3d97710bab8ac7fee1b08032e25fe271d35d19a4e036fa9a8aae0f0c4391e85cc9794dd49c69f1bf632535a8623a61fe60b6aa8b7530a9a8575c7fbf73ea7085a3960172133609f3f33d77b68f91a45a8c19259ae13e702181611a8a7d194a0196ef4f540bcff77d0f87bbc4c52d8123ce922d08722a132e68f3eee433169eed01011989d44209dca0e4780dcec5298fa0784ec92c246e5da1b695e2a38847452a057877876e1767c732f443047aeb3ce3d349503009ffa5ba83dd5652c3c797607d3938f4999a72e37fd9eeb34e8b792a1a41853966284366247b65e9e4de388a76138910a5f8313812f320a6910d453ee8c793eb7fd514f595379e36240794a008169436a97c2777a29af4e8243b0b6de9d3e1730c0020889ef7304cd03b7542eec23fa5a9d001f0f93917b9a195e958eb4276498b1ee1f6bad31e6d35dd5271eac1b0b068c31d701903eaf320e87cdac5052780096f85f9d75c0e96a024a9c9c7b289c2e83cffc7e1b11cc0144124a9eaec82c20ef34f6200072bfe0cf7efa990b3253c574cfbcffe88a4833043a6182ba2850fce0c213fb6679e3fb7464c14b6b7666cfd4847661a6e5b46599033719941703af72984f837b942ff2c5c645651d0aed192a97cc390bdc077d0e8c24cfd0967a2c58bbea5bdfd348d4097b3090f68986d974cff6b661db5b902ac026b7f8b05a0fec2d6c07d9c0fdeb25357750eced8b9bf4f0510fd289a7356af09581adbb8d008449fc13d8c46457bc59bce474890e9abf7371e159135206d5a471d31c90c836bea61f76eb8a692ba86d86059fc68a7cf4fb1824165911ec1ab3470f001eab6217d89d9d8ec9fd872d029ee7866b310bf403504daced0a800ed620519c3762dffa6a8dfcfe69e57eab7ddf23819668ab4ffab6273ee306fa035709bce31ad38733c26a81ea9d38b820c6bff377d329a8e2bcee2fb2482140ec7f424a361aa4334adab3456f74ab2f271befecf3e9c6386837d9b26fe03999fa11cf4a3c54c21b449682d9a7f2467e0e474fe016d2413717f83ea7bef271f296d4db9923c86f591fd1ecdf106ffdac94274a88ee8474f4a12cd450248657d59181ddd3fbd49a2a9b9eb64b1b287ca9224d19ea9985448fefd062793ecde5cb23b1cb87046f7a9758e04da42b02ec9f25475d12785dc6976d8338a32b3752ba7661fffef99f82fde382ef359c29b0bc6f4e7b4c69e734b089f1ea322b72acd63ccfaccef85b7e330c8051341237a3a2fd123d11943ffbdf499b1852b7eee06e39bc4e1899d36703dc444f74acb5e53b18b7c32d1374d2ddd4fa765d9716e0f9fe7e7380d339f9924506c140cd0d29e6426e1fec65526ea90b5c1bbb78bf5bdf739aade81c57a4cdbf785a0bfc5a2d6ad9af288430388207307d96ec6174e915ca3175a2f37746e41f7f5a3902ecd03d8d403ec29de33fa75f04a09501b39fde0f21c3e781158ae8fccb25ada8b1b2ef196f6e770e5de0df1fe323cb8aca4669ad6452f6563a268328510e3ec89823d84a2c7e94647707b0a679ae3a94cadefac0d44ce1f0acadd2d34d07d0dd5242533436672be531a210640d689d1d2bd0e1131a6c0606a09906c3ff158a84d4626a501f15832795e56f793546c99c39c85f72d251a0ff1977b865adbe95463d0</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>3.数组，结构体，共用体等的存储位置</p>
-<p>5.malloc创建的是哪里的内存？</p>
-<p>堆空间</p>
-<p>6.指针加一是怎么移动的</p>
-<p>7.只读存储区，全局数据区？</p>
-<p>8.指针能用const吗？</p>
-<p>9.程序编译运行究竟做了哪些事</p>
-<p>10.printf第一个参数被当成字符串内存地址？printf执行的时候有固定地址吗？</p>
-<p>11.register变量是将变量放入寄存器中，但不可以寻址，而GPFCON这种也是寄存器，但有具体地址，它们有什么区别吗？</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -529,6 +522,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

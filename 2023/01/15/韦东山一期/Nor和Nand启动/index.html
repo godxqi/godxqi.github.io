@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1) 保存寄存器：CPU 运行的时候，用到了一些寄存器，对于这些寄存器的值，如果你不保存而直接跳转到子函数中去执行，那么很可能就被其破坏了，因为其函数执行也要用到这些寄存器。因此，在函数调用之前，应该将这些寄存器等现场，暂时保持起来(入栈 push)，等调用函数执行完毕返回后(出栈 pop)，再恢复现场，从而让CPU继续正确执行。(比如保存lr等寄存器，若main中也调用了其他函数，那么main函">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nor和Nand启动">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/Nor%E5%92%8CNand%E5%90%AF%E5%8A%A8/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="1) 保存寄存器：CPU 运行的时候，用到了一些寄存器，对于这些寄存器的值，如果你不保存而直接跳转到子函数中去执行，那么很可能就被其破坏了，因为其函数执行也要用到这些寄存器。因此，在函数调用之前，应该将这些寄存器等现场，暂时保持起来(入栈 push)，等调用函数执行完毕返回后(出栈 pop)，再恢复现场，从而让CPU继续正确执行。(比如保存lr等寄存器，若main中也调用了其他函数，那么main函">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:59:58.003Z">
-<meta property="article:modified_time" content="2023-01-15T13:03:59.470Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          317 words
+          1.9k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          3 mins
+          16 mins
         
       </span>
     
@@ -273,15 +273,22 @@
             <h1 style="display: none">Nor和Nand启动</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>1) 保存寄存器：CPU 运行的时候，用到了一些寄存器，对于这些寄存器的值，如果你不保存而直接跳转到子函数中去执行，那么很可能就被其破坏了，因为其函数执行也要用到这些寄存器。因此，在函数调用之前，应该将这些寄存器等现场，暂时保持起来(入栈 push)，等调用函数执行完毕返回后(出栈 pop)，再恢复现场，从而让CPU继续正确执行。(比如保存lr等寄存器，若main中也调用了其他函数，那么main函数保存在lr中的返回地址会被子函数返回地址所覆盖，所以需要保存lr等寄存器)</p>
-<p>2) 传递参数：汇编代码调用 C 函数时，需传递参数。</p>
-<p>3) 保存临时变量:包括函数的非静态局部变量以及编译器自动生成的其他临时变量，此函数中使用到了两个局部变量，就需要用到栈</p>
-<p> </p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="66bc40dacc39596884725e707c0f551524ae5db49fcfbd04604b3560060c85de">4630436162ade97ba2718b7d0c4b3b63135900c811469d6c76ef340aaf667f9a415bac3361f7f048ef773d34a5627055c27edc3004218f6e8f80d1ff4a4d8875bb04f4f3d573c1f2e949d8aa0322b817103999cd479e9ed4cf809d9f0467611ab64a020a306943c8202995c729bf4dd3ce761ec8dfbdbb4fc48aa30e45cb27bf01abfe56a0eba93c1d48cc30c02fd38776c706c29812cf1e2207c115b759a884f1909376f7689ff92c7a953ad376c3b4a34961133fd68a3cf14830717aba652ff43deb09ea96083832e7b15af889a66c1850736478fe29d65e865ede57e7d39622b83c2db1dd0a2f8027962c854532fe8a76be8db6570e2adee56abe4a1615437e8fb22899fa8869744e67b8d93e523b2ed38f45c644069a38077a1a0f9f56bef5645b8d8e724667366743544ef804c46800df49e1f137b194079c958d06b2824cad1f62cbb86e024dc0b339c93833cf89ac20bb650d045ad43b38cacb8acdb4fd8a8528e233d72d2aa8f17f260014f53c05f2668fc4ad13052bb97848a603057b1870cb02f7438e93304dbc01282042399fd1b1b5fd0dfa818a79d0e48aa522a4175b4b618fe6b571af441fcc5ee0fb49408c5c332e9ab6293a3e9eb2225afbb87030c0c04c20b2ac8e60d7308497d88af18e95ce62e63faa3bf7c912cb047b8d38d3da8dc33899253b23f23f7aee8694bfcb06a6386449256094309b0572cd884b6e415061866ddae51ea66419e1674fa456702568e4dbff237fa386b4d2e4a8ea955c265934688d81df59f93073b94bf201d1a3a205f6264e17ebfa8feea8c1511280c7cb57472145ff9e35bdeea4acc6e862bb994704628862b2ba5acd7b7ed5aa3e5ba97db0e27fe9437f1ce811478780da3d7d8c555083c36ad60bbdc1758b53ba0e71809f3bd39023a07b4b8a20842222dcc614a36962dd97064163af91fcd7d6eb90add5a36a95431034f2c11706a5d0059fdce91312f642c1b705fb782ef3eb0cac378754b968502298ceac94ccd4d3afac673aa7f814c1bbb51535ab753d63fe47060de9715821216320b27fdeb85b468035d53d651aeb754ebe8fa28c3684af48b70794f930acf46ec2effa5cb7b6bdfc8e50f99d553c7c0df4d7c42462bec06063d1b15e767aeabf85e213489bfbb99228387abc4bfc305c59eea0d389e29ed20db1358649efa92f5b081254e0b42621504d14c692c2b69ade2c160870a4a03f81071ee61e22d1b212e26867a05f2f4cb3f9736c1eb40f8c28100c86d212147cc416831697cd58c09c240d1a968d7a0b02e8178e37ad348112d31808ce480ef938409b8e26edc659eac9</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -538,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、置位操作： 7,8位置1：将想置位的数与0xc0(1100 0000)相或 1a |&#x3D; 0xc0;  但算出0xc0太麻烦，可以直接这么用 1a |&#x3D; (1 &lt;&lt; 7) | (1 &lt;&lt; 8);  二、清位操作： 7,8位置0：将想清位的数与0x3f(0011 1111)相与，即与0xc0的取反值相与 1a &amp;&#x3D; ~(0xc0);  但算出0x3f太麻烦，可以直接">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="位操作">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/%E4%BD%8D%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="一、置位操作： 7,8位置1：将想置位的数与0xc0(1100 0000)相或 1a |&#x3D; 0xc0;  但算出0xc0太麻烦，可以直接这么用 1a |&#x3D; (1 &lt;&lt; 7) | (1 &lt;&lt; 8);  二、清位操作： 7,8位置0：将想清位的数与0x3f(0011 1111)相与，即与0xc0的取反值相与 1a &amp;&#x3D; ~(0xc0);  但算出0x3f太麻烦，可以直接">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:19:10.788Z">
-<meta property="article:modified_time" content="2023-01-15T12:24:53.316Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:27.812Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="未重构">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          355 words
+          5.7k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          3 mins
+          48 mins
         
       </span>
     
@@ -273,37 +273,22 @@
             <h1 style="display: none">位操作</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>一、置位操作：</p>
-<p>7,8位置1：将想置位的数与0xc0(1100 0000)相或</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">a <span class="hljs-string">|= 0xc0;</span><br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="e582ef8dd87d3cad6f87728c4754fa099107009adbc4207ddde1b639e5cbf5ce">4630436162ade97ba2718b7d0c4b3b63c1b394a84309ecfbf18e8c9d1504b449de9bc980a8624d043d351b17b6ff1bf8cda9cc298ccb3fd88f5ffdeef8d22198dd27fd8560be1646311a93d0d6f80f3d115d6354b2323883fa918b71151cb41e2e00df5a4484385986396248e39a6cfcec1e6bec0d332faf42ab752320314969402baf08482cfac2e11e2ce32f80242c7005d5fb719143c85c49f870dd4b503ee0f2ac1dfaadd5a73d7781bdee2021feeff11f2959d60fce9caabfa0f30f4ebf84ec56d3890d172c411f34370ba2acd339abfef700263b5cc8ab1490fe6d584c5e4373392b446fde7d663baa78d4a8c9755b875376be15cd534a18ccacd633a8ef32253aa60496f733c4a4782396e920e8d45cac3c747b6452dd110f36ec4f496e8d568e019e1b9b253438f5da30ed095055f97a3593d8317829a328b28592cb7a465bad5c949de2273c9089259a9213d1c1e6122c65226f4be16854ca3008537246ad34f591f9f32f389bb2e55c22bbd7889a8bb9cd746266f4e9b41c74a1bfd097c5da2e1e03048c907b442fe35236878cac63b3cefad622f13c2f0c9b14cb14a24895d388d50096be92f31a9431cb436dc06d8ed5d6601eb39be815f88dfcadcc98710fa840b587dca34376d8c0056e791373d24913a77f290c346c63eb0c35a7459ecc6628c658568796cfa3ea888d68b30241e276d627ac03de21b7853cb412383c302c60add4ebf54995957444103db0c5452e73745d531582ed266a907977275622f4473abb644e332e633b701593e6e2ec0fa202264bbd2afb459f2471b7c59267c55bdef9c576421ab97c96cd8dd3f6b7a3211bb3cb03fe9c36754be9f3fb0c6c4b231371855c17d23f51bb5d5a45b967645f058b5245066babe569a7ca08ae8fdee5967fa458e893f5eb52a6e6c1afecc0004b6a52712a14a9a0f84d26ca448cc442407783d007f0f2b721844ca1995ddfc2f40d831488587270ceb33044eb570474acbce0edc724a73d4338e93f5f02db205c18fc1aa963ca5b0341cc5ee17b161c95fc349e8116e4af4f85b0bd7bcd9d81315bfdc6bddd6c06738fc49f18db8a0342c288b08e15704358fff3e8889edabc97ff0dfb99df5103054ebfe032baad64fd2e5759e35c2038f269fd844ada476c3e932fba979b1edb74ef8e489cb4f9e3f53823dbc881987619b936164f932c3a955b6c826b6d39ad48272b3741a6b9f4ddc5f7d8df97592696563a1afb7ea62a56507ba332e47dcd391497df0d20eaa6fb9dccde4669b441993c3de6cee87e9cc2b28b9e8570cbc3fab542bb4edfc375acfaa708bdd67a323738e79e0771df3d4cb8ddd63e8f48855d1f30bfd4fcff71cd4aad282d8f7fd03a8825d29c2a3e77727ab954850b204c6ea9db9716c421f7c6b9be4695ef53697a0c04c31be3fb39ae035306c3c4d14196e62520afe4033ef0503db9eb105861724128f83abea2b868f7771a52be47ad2c7ada2dd4db32a2edc49d41a608f7d08d3f68363fc3d5df8d1e17bedc665c3ffbed725e6d819801e61bb6a27c87c4d6e07dd7e10559c80f92ed5a5766f3aba92668489322284541ab7903e069842ba973b132f0c9e408dfb65f795c230c18740700e120f2ce6d619c005c5b284e9ff2944cb099342225747bac0b7f2a7f0e53009fb801046aed7fd1b4a52e25963d395d41fbeca81dbc8a0a23e8e1a30e3dfce49f1814ebfe1515ed106618418afe2f7077677ade9fa7596e9d74f4fddb847f4acdb780963ce0ea34ead5a5fc5cb3b88f93e2439995692d9ea7e52f121021ea90efa8712f2be894dbf9f04b8e5f98fae180ce10b0c3526ea187a38727b56d545e45a82eeda8b724735d68f995dace9bb1df2cdd5f8715d402d46eb6956616e4760567aa794c1da9071e1e0bc221113ac85c3e7413b5508662fd5d6911894e831b40d34b5b508c039f32e869f5a98cfcbf93e8db18ea36644685225e77b53f295d0b9a75601e8e8af377dc6e318cfc4e5299a793269701bcd0f89d4111d0b36cf495fea714080a5023e4af16e2364816580336ad3b799f89a296efab2dc964dc3618af6cf954ccc4897e872799b90bcf25464b19fce9fbf7fb9ea5c1cf50f1d3657637f622e54851a3f51caad54244cf018a159e7ca83f510e26046286b319f4f3e9db83e1727e9425bf3cabd31a399d73909d9c92d790e1fd3d17556f58ac2d7805c09d8b8b13c50d1ded811b5d8fa10a49b2e1bfdb58a815a1970504615905f7002ebf0ec4718c5a3e81ddd0c569a4c4bd6c8b7661f6d9a783dc1ee5aee8089bc411540e9cf16e8feaa62c744c29cb9f34cc066ec56e799d1c7ac4985d3e93b5486e47aa3fdfaa1a0e9eeabcde69cd87044291ade77443b19092284f8bb66a642f07c6dac392e100ea5476f264918eb6bff7a9de8d65a3e21daab2f0806101e9fd8dbbb13d12e001c7e0ab71d2fbeaf7371b7124e6574b6c87d9409e50ff5c2792ad538b1629cad896434faa3736e22184518a850b60a558697b9676b22f5e42df64ef6fd52930ccb7b4d13be7cfc6e2d5dbd2348d5a083dd78db3939807451617ee88ae552b15f8fd2b44a904fbf4b30ff624ca3a8efe1397e66b4d8754c0ed325df9b4a6bd4bdf72b38e84fe81502f0d724a6c248aafef66e131bc19d5bb616c68de64e7cb7cbcf1f1e60e37d68438383c16507b8c2ae574a16d4a82ce57a2adf97a86267797d76c0e80e539056236879c1c8c70cdca4c545c03c920901dd0e4720e0526318f13018e511325be2feaf2ac9b77208409b9fcadb5bcf8b2d1861af856187861bbac198764bfc896cdc9598778fd8bb333d1f78f938157d8167cecd3221d147f8b97fcaeadc73ed36d87875f70f9ce4871f85f47107a700d0639cbac8d0c9d9e45dd8f9611b1b649a659245b4e73da5d7923ba546d2be904836987868398b0ba932ff35d54b695200f7f237360681fddaf7aaf8818cd558ab4bfc6bba98ae1c984ea2962886f5d6ac0bcaf24e867f5805ad51c18e93851eae613d1e9b84583bdcae4a8c51c99a66c9c0f58b6d1b4f0cf9f04941cec057609bc4973d9ba2c597af4c51b0e5dff7d7b3d2fc9c82be6729af447b8773a0668dc2e70854b1c576ef5b4a1567884b92638c9ab7e04e620dc57a7a949578aba227df437d137525684b35765a7f332c935c39b56d6c89e606e4f5d8687b700a355f5ed81e0999ed7b5e41d891b4cba3ebf5c1c43d1b19cf6c019e94375488bb7489a7e705e6011a2b257a7a308e64d9265dc0fc8eed63036b8faec8933a7c16478b8819ba976af56b95ab12ed346d285325111a121ac22824ebf10c3fa13e0dd6510adee56a988ba4b09e28780a231322520de7101e1cdcad1d127c39ef2cce3a76d9f0bff0d42c4122dc8b2bf2078b163e0a4a5461390bbdf7fba9bad74d37183cbe8530e23ea3d37a2b288608fa1b595db0204b2f43d5058701a78c592b121239ca498b4eae939eeba6b965d1b9dae755aef6b3b5efa1aeebf1d532a3edaa4ff9698620e319f2a1e781b21e314cef0f889ffad20d73133058899eae91b003f457dea89c9306ff0bc89f7f25a3d7c8968e8c1b9269b7a1da525d73fecdad4493c28b6dfa01560fa3d19563540268d661c6591d473a031cc21ad5744427d3209d61f189011c850ceb2ced059b99d761f627f1edc7908c20693aee301d00c4c17d57ee787f3785516c36062e734da44bf1f757e5df826742a5b9cfa3e1169cfff65cd293612e7a74912531db3122c32c498b088ad8a0d254550b672d07d415ccf9ac37490d90ee272c60ff2fcf0e16ff570e53f512cbfa7616b683f8ffdfc6caafa254566637236c9290b0d908eb5936b2c8acb81abfb8110beb72b870b84737c8a08e31384cfcacb83b852cf14d2d1f2581647a6cb4674a9e6f362dc22a491af5cffff3b692d3f039bb3e956146e6f33867f0cb0478d610d4fab1a6b84aff733bcdc34c9</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>但算出0xc0太麻烦，可以直接这么用</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span> |= (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">7</span>) | (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">8</span>);<br></code></pre></td></tr></table></figure>
-
-<p>二、清位操作：</p>
-<p>7,8位置0：将想清位的数与0x3f(0011 1111)相与，即与0xc0的取反值相与</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">a <span class="hljs-meta">&amp;= ~(0xc0);</span><br></code></pre></td></tr></table></figure>
-
-<p>但算出0x3f太麻烦，可以直接这么用</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span> &amp;= ~((<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">7</span>) | (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">8</span>));<br></code></pre></td></tr></table></figure>
-
-<p>三、取位操作</p>
-<p>把第8位取出来放在b中：想取位的数与0x80相与(1000 0000)</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">b</span> = a &amp; <span class="hljs-number">0</span>x80<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
-
-<p>但算出0x80太麻烦，可以直接这么用</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">b</span> = a &amp; (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">8</span>)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
-
-<p>形如：取X的低八位</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">X <span class="hljs-meta">&amp; 0xff</span><br></code></pre></td></tr></table></figure>
-
-<p>四、任意位取反</p>
-<p>a ^&#x3D; 1&lt;&lt;17</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -560,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="001节 ARM系统的中断处理方式  对比我们的arm系统：有CPU，有中断控制器。 中断控制器可以发信号给CPU告诉它发生了那些紧急情况，中断源有按键、定时器、有其它的（比如网络数据）。这些信号都可以发送信号给中断控制器，再由中断控制器发送信号给CPU表明有这些中断产生了，这些成为中断(属于一种异常)。 还有什么可以中断CPU运行？ 指令不对，数据访问有问题，reset信号，这些都可以中断CPU">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第014课 异常与中断">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC014%E8%AF%BE_%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="001节 ARM系统的中断处理方式  对比我们的arm系统：有CPU，有中断控制器。 中断控制器可以发信号给CPU告诉它发生了那些紧急情况，中断源有按键、定时器、有其它的（比如网络数据）。这些信号都可以发送信号给中断控制器，再由中断控制器发送信号给CPU表明有这些中断产生了，这些成为中断(属于一种异常)。 还有什么可以中断CPU运行？ 指令不对，数据访问有问题，reset信号，这些都可以中断CPU">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/4ec45ef1f3e481bcc262bd3bc6a4d0e5.png">
 <meta property="article:published_time" content="2023-01-15T12:59:58.013Z">
-<meta property="article:modified_time" content="2023-01-15T13:01:09.641Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/4ec45ef1f3e481bcc262bd3bc6a4d0e5.png">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          814 words
+          7.4k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          7 mins
+          62 mins
         
       </span>
     
@@ -275,44 +273,22 @@
             <h1 style="display: none">第014课 异常与中断</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><strong>001节</strong></p>
-<p><strong>ARM系统的中断处理方式</strong></p>
-<p><img src="/image/4ec45ef1f3e481bcc262bd3bc6a4d0e5.png" srcset="/img/loading.gif" lazyload alt="4ec45ef1f3e481bcc262bd3bc6a4d0e5.png"></p>
-<p>对比我们的arm系统：有CPU，有中断控制器。</p>
-<p>中断控制器可以发信号给CPU告诉它发生了那些紧急情况，中断源有按键、定时器、有其它的（比如网络数据）。这些信号都可以发送信号给中断控制器，再由中断控制器发送信号给CPU表明有这些中断产生了，这些成为中断(属于一种异常)。</p>
-<p>还有什么可以中断CPU运行？</p>
-<p>指令不对，数据访问有问题，reset信号，这些都可以中断CPU，这些称为异常。</p>
-<hr>
-<p><strong>arm对异常(中断)处理过程：</strong></p>
-<p>1.初始化:</p>
-<ul>
-<li>设置中断源，让它可以产生中断</li>
-<li>设置中断控制器(可以屏蔽某个中断，优先级)</li>
-<li>设置CPU总开关，(使能中断)</li>
-</ul>
-<p>2.执行其他程序:正常程序。</p>
-<p>3.产生中断：按下按键—&gt;中断控制器—&gt;CPU。</p>
-<p>4.cpu每执行完一条指令都会检查有无中断&#x2F;异常产生</p>
-<p>5.发现有中断&#x2F;异常产生，开始处理：</p>
-<p>a CPU对于不同的异常，会强制跳去不同的地址。(硬件决定)</p>
-<pre><code class="hljs">- 这地址上，只是一条跳转指令，用来跳去执行某个函数\(地址\)，这个就是异常向量。
-- 如下是异常向量表,对于不同的异常都有一条跳转指令。
-</code></pre>
-<p>b  执行跳转指令，执行函数</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">.globl</span> _start<br><span class="hljs-symbol">_start:</span> <span class="hljs-keyword">b</span>    reset<br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _undefined_instruction    <span class="hljs-comment">//异常向量</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _software_interrupt       <span class="hljs-comment">//异常向量</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _prefetch_abort<br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _data_abort<br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _not_used<br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _irq <span class="hljs-comment">//发生中断时，CPU跳到这个地址执行该指令 **假设地址为0x18**</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">pc</span>, _fiq<br><span class="hljs-comment">//我们先在0x18这里放 ldr pc ,__irq,于是cpu最终会跳去执行__irq代码</span><br><span class="hljs-comment">//irq代码:保护现场，调用处理函数，恢复现场</span><br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="b5e6832a959c16be9268eb48c7a469a126114d28a0ef6cd29e809e1a4b442e67">4630436162ade97ba2718b7d0c4b3b631ce3008cbd2d9c6a68213d361e81f8e100c9e19e88b910bf3517fe1ca99dddf77f4ef0a94d9db13a7be7776b2fb5b0d99fb5bc7228827ba0d4813891fcf613e54f35cd4cd3be4162f2f18fc80eb7334dca0fc5398c3537753f042d708342941edfe52a9e318bf6f40c7c32e5336d1709a3c4d580172bb9e1dcd61dd1c9da902c46b98f00a76010e2ef7716947b13423cfaab5b3b2658e212b170a68849006c9b2c387135288148eb16f218b13cc0d04b98ba3efa47fedba07ed83786a8ba111c367de68a3424ae1b3994ba31ce16803494814dda30f24671e019270e877ae7951e300627bcc6625f5dac6f2ee2d95e004a0783fdc9703d2661312fa2b934d1e5bbc187c2f4e93d922e43ba51a22283686de0d5944688392206188ff05b638004e5975d5ac451cb7440d48831196490853cdae52f012cb973ee7525b90fcc62cfeb25306ce00aafd316f96963dbd502b29e78d053a9763520ebbd9c42a454015a3b9186fc1b659cfcce83209e5a3a719d0b29d10daa98915bb3a7ed8b41c72d0a9ac71f5cbbd674eb76c13e11fc9968f7fe9b7ca6d46e32f6e85d5f848815ee02af60f8da7d3c11f0b3874feb55ea520cf847b90009ef37ce8f8e5bd4bbb89673356b5911ddc1a43a27f3bb56742170bec908a8469d21a39a3f2ce2ba84c83031732b0d42f41d90d6593660b85a1e6f0c50afe3d245c6d9cafde34270733792d9717ba057d65b14b7148561dedfca1abcba549c93c42927f95b675c4be88c02906438ae23088646bd050cac6719d4d3968cd14bcbb8a41586572fdc9fbd333fe275f1f8a5074ddf6a74d2f3e6bfcaae553f15dd6961119bc266a8e81d2e84f53e6be87758e54904959488b239a3ab88e6e27a53371b849bff2136b5c96d5a7b97f7e7cbb400821f84c9543e47d19c1f128c6f8f0d0f44b5a44f0d8105a95a43f8c845216d52de239ba331deaff771da217327779bd982484f391077dc4d6d90c137061f2909db9ca16967dff71377ae47c4ce59a3cde44e0ae2513378844262557b945154b441dd5432f21eb197de3b8d8b779d78564dcf295340910813c583678026cc1612815270d845bca14d8735871f9bbaa6d5540a33494e8925a856312057466be8d09869dfd779a2e9eb1f023b8cc27b6c8c0e1cfba9579fcc8f5fd0b5bde50a90aee959c9895db4ac4a32942e293974d173e34b49eb3897344278fda293cc84a2fc5da371a1f4ccd90f06a128322a433e406c2d0b4ffcc28837282f2996d982ef94867a6711d5dc4ba6e4de122b40f523ea505e9a6fe2ab3bd6dc3e256753224666db3095d5448c3662ca83ab322746d6742028e073471954a1f7ae1d7a4711d96a6a948dbe37b3d4a766d63fd6171d696fab5f2afb00c03ef9ec426f39700b1dd53ce72d6b942c15d9ecb88fd6acf73f8cd6961b49964a1d7caa4a11347a03b818dcd36bc63da97f12a27e3e617ba4a2870eb948d095bbb4781cd3ef7d696d0976a85f4ceb49325172f91ba83fe8128a6bf616e217d8cabf4d0ca85185e6d8d15dc3b7fc452430e7c3e82abcb6f58337ff8284d4f95026b5606f7ed4eccc83c2b41149dc607fff1335c3acb9dc4f7510df7df68f8f982420bb449d5b0718254f142122543cbf61d64c345e34a65902a2d089f562c15cc7cde23474f4a6063d8204514a9bc43f2615b3efd98526947d0cdf5142ff04788d0cf215cebcbda767f2628cddb52fba1ab3e70003cc544c4de61b2838dabdda31f495092a84bf2616eb29b5f41cb4770d05fcd98ec7e40f13ba3c3e8cdd8998119e8db38fb975edf85d35c188e74f0fc11f0dfa5575ca34112832969977a880281f23487d4858b716e2675bc7971b998885b1f910d5953ff2fda44182c0ed7a6ccda1d59a963e4b2b9993ee669ccc074f4bc352fced862d77a989c6fba11ee8ae872d4f8f9b20a6f6bdd033ddfac916649b8e0fc7b03b7eac5c0378f351765cbfd590d4d3deacdd38fa3ce99a48d6b8e2aff7dd5770d075860540468277183b2b8ae6650f13156f04da836390ed10a571ee97c6e4d7d2ffb237610c675184330f59844542f6f80358fc8ff98f3aefe17192f385fe6e6b87baaf7073ec1670b838bf43abedd738d1d2d8704355b83f3240dfc00feb78aa5e89e2f33f4204e8605007ced16e824f786de59bcfa063d2abf46706d0d672fa62bd6130678a207fcd1607d9db16ffc0880078f17d0f96524e1fd92daaa3e4eb54458cc4ece2ed40db702ba6d6e17bb37dfa0271419f64f0771f5981391ac018fa6a8d964425cb789cd784947a5426a0860e75028141afd3b1d4ba018456b07870c4fc0f98be50ef55294b9f09e67d4e74363c39955ce8d1ea666bc9599bb34fdd9f7c6c709e195fff5af19dab85118a92c949e543e7a1310c653311541f7a2ebede71fc566332a901f736569fde4d0cbba23c099c8d4631dd3b6ea2c67d3904a8b0f06d7d79207474fa10c7e1cdd1301f573cbd91fa8251655aa74994a07284e3b4719b11a6bc08db58cd8e8d50e76adfe84ff27dd55efb1f8c63227467a0fb06e4dbca8bd85b36f0d76e54343b653a1a0fb3123f98c250559b7fe42894194375fbdaeac087f874dad6cea6bb20746a17b3301c6815396eb61d05ffdb44605d6ea0be195fd8a814a409d72921e4732f5adc55858baadfef81cb0943efe6d47f8ea0f7020207ce4e86c3ca47094468e9c4a2cbc0c77d122eb5ef85fecfabd4fae4edb6cd9f8a565fa33d17b3857605cd6d002f8a6f23145356253de045a310f162750704d0f81eaaf2ef74db7c05001479b93dbe6f7d1a4843aa679dd4b95dd0c7de9baa4d6e89063554626ffd544a099d227b10ff652dbb626b4837afdc2e5f53bfd3fdf0113a5558ee7041ab2cbeeb0b6373f45e58b3c2461f14162eaaade1a00a5522b79b01522f024beaf7be7814413541c87461a73699aaeafe6b81de8e1ca1554c98cf3a32650e307b7dbdff3bb69f093c7e69072e16f7707ba064e4ea02095b6e943dad3e7ed074555379d3b27825deb02372c4c8447f5d61d5dcf3fd97f2b5f3fbfc83d840e294b40d7add4ee310d4f796907a27fc39b46eab90929eaf5bb79e5dbea5c65f435757b71ba54c5137323abf6cf0966d07d20a5eca46570a26223fedcdb33c90698a9797295969106c649af61804eae4c8ef4cbbba91fb8105a4deadfcea88139861acfa007dadf46af136ca0d14fc923684dfb09b92d7b0c8f39eb8a3ba6d1930173d0202db568e2ba0c9aba1db0116a401a9b473ec4728b663d61a410c1d4d1a9c72358a464c01b090d07a40c12d6e45e884a03ce9af500687c674adbb529ef66558f56143c4430ff2fb3f7257a42a4256329631ab268b1c44cfd4124fd643e8237972548cb37c2450fb377a91a5ea646258cde17144e934d633878db01255aff65875b5b735378a022b9f5ac2f57de28c655d852ad6efc2692a499f7acf877a7409012429aed871c766bdec62b453d227ed3f50070830ce0d2a29694683b4ab1213fd968fe90f4c6ecc1449fe761063d8dd084c36ed94f04a833fda5db27e2746e41c54542276093b733d17887aaec0b70883aa49cd6acf3f627ec6eaabf4593961e8192fdad9e4839f1eed7f558224098214990d29ba8e25d68223e1bd244afbe5b4cf0fdd42961ac8b196a54c57d2c09fc5d21b05ec16dd89b041da537c7a6cff44cf4fe5810fac59d86c3a5fdec86c70515b742b5d945d31b81cc93776f0cc7bb1f94f42f174a8492d07b7f4fa3a768001872a680e4e7a6b162ce916fafb547ec434139abe77bf1e229a91e73360f096ed8394722f99fc7be6e4b26bb85c6393a276775f3f5874088913af4f7f6036028f390362f92d9bb108e4a468e69df85469c930374b0c814638c13b0f06962a03bb75cc9b540918af55f93826ef231b2fd7f012433bd9e62bec22d17fa4ba78f92e4d50a48747fec5d96851b841ec2f245d759a1c55a3645cc6bab8eb44448b8df5fa6ac2531fdcebe048f187690d051a732b229d2ab93c422eb7d38cfac7630f0fb15fb4818defa361ad0a4bf29ee35338c99aaeb5ad38a25f030b68296309fe1012ac9e7bb5a2f1e63cf3be201bae1172dcc020e793461795166dbd3e2122f6d0fa10790cde04656b0c9e594e53f3b217e435fbcb0057b6c78a257c8971fae421cce75bbe323b133170396a05bd7f98bc3ff077c21c493ac63330d90298129c17454a53810a454579f48e20b5aaa64a188d8a4064bd880c899fbbc3f2c6720f89949b0f3dfc000be3b913835bc6be13daf6e04bab27cb6cd988df5f38b95ee1f9cadd4db35a44ddbf89f63e1a6280e9f03bf267807b24d5fae5583f362d5f6de7f771cdb716bd3abcdc3fde68a1c79cfc8fa4be7e9715822b94916dae04e43c66efa4448090c3a5ccaa92605d52b6234a5984c90992a4cae409f3dc3f9734f16718d3b96da4f1578ac56e0a6f38cc15c7323686739c91032e0f206b0f9c8ea859652563fa5706a449f143257a5cff615a5f6f9fa916c0b64e551ab9ecf1bdf96418de0f754a1a5934e223bcc49fc68e8235c2d8fc7bd991d35c389b92a8619e0e6cb2cd421f3a9e949a59bcf15778d504e9f319938aac6ae0cc057cb12fc2789964bea43c52b8f15aebe6abc56debfa4810ff518f8fcb77b930561663a0c5070c20fbcce7fb2f0cd472ebfef469b623de0960e46575439eda819e018ad8e151607d288cfbe944802db7078a9a99cea74ad53e3ca84e8fbbca62783c990dc84dab8a37b0ba7d3b6a15c82c8d8ea4b9314c4660beebe728e5fe5230666b7ec4cd88a98a8588246663189bb3f213ac38aea4d4eaabdf8025ee9935ad023456223e1698ef22f1761db80caa10e5e2d4ae2867a2fd367d33489264ce3324b8fa9be4a13fd558d1cffec452b26506c90d4bae79c192bf5c09cc2af2b7c057504af8cdb1b4617fb77095ccc9ec00430a5dc2745af96af6a9ede3944766c001d5cef9ee9a4e9acc6de4c588708f4fa36302503915670b134e4d415dd92daacda1f6ea403ae43790c6ae4929ddaa428eb444c773f8a40deff661c35c812e4a10357eae1be2c36f3d42a84b1d4a432bff9e9cab5252b5adb3727580caf122a599d07b4d1d47bb60ea35d2a14c629ed7cbbd5aa54252d934</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>6.这些函数做什么事情?</p>
-<p>a 保存现场(各种寄存器)</p>
-<p>b 处理异常(中断):</p>
-<pre><code class="hljs">- 分辨中断源
-- 再调用不同的处理函数
-</code></pre>
-<p>c 恢复现场</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -569,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

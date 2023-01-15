@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content=".owner &#x3D; THIS_MODULE： https:&#x2F;&#x2F;blog.csdn.net&#x2F;heybeaman&#x2F;article&#x2F;details&#x2F;79583649 https:&#x2F;&#x2F;blog.csdn.net&#x2F;lqxandroid2012&#x2F;article&#x2F;details&#x2F;46122311 （一）struct module结构体 我们使用工具insmod插入一个内核模块时，该工具实际上调用了系统调">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content=".owner与THIS_MODULE">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E5%BC%95%E7%94%A8/-owner%E4%B8%8ETHIS_MODULE/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content=".owner &#x3D; THIS_MODULE： https:&#x2F;&#x2F;blog.csdn.net&#x2F;heybeaman&#x2F;article&#x2F;details&#x2F;79583649 https:&#x2F;&#x2F;blog.csdn.net&#x2F;lqxandroid2012&#x2F;article&#x2F;details&#x2F;46122311 （一）struct module结构体 我们使用工具insmod插入一个内核模块时，该工具实际上调用了系统调">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T13:05:50.365Z">
-<meta property="article:modified_time" content="2023-01-15T13:06:08.817Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k words
+          11k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          14 mins
+          92 mins
         
       </span>
     
@@ -273,42 +273,22 @@
             <h1 style="display: none">.owner与THIS_MODULE</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>.owner &#x3D; THIS_MODULE：</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/heybeaman/article/details/79583649">https://blog.csdn.net/heybeaman/article/details/79583649</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lqxandroid2012/article/details/46122311">https://blog.csdn.net/lqxandroid2012/article/details/46122311</a></p>
-<p>（一）struct module结构体</p>
-<p>我们使用工具insmod插入一个内核模块时，该工具实际上调用了系统调用init_module，在该系统调用函数中会调用 load_module，把用户空间传入的整个内核模块文件创建成一个内核模块，返回一个struct module结构体。内核中便以这个结构体代表这个内核模块。（使用rmmod工具卸载模块时，也会调用系统调用delete_module），即：</p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs d"><span class="hljs-keyword">struct</span> <span class="hljs-keyword">module</span><br>&#123;<br>    <span class="hljs-keyword">enum</span> module_state state;<br>    <span class="hljs-keyword">struct</span> list_head list;<br>    <span class="hljs-built_in">char</span> name[MODULE_NAME_LEN];<br>    ...<br>&#125;;<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="dd2510df9698ab747756c857647e8bcca5cbcafa716ce9778ee2aa137d8167a5">4630436162ade97ba2718b7d0c4b3b630085eb62c5d6bbc72317e7a3874193b4ea79006f42f566080dea286d259dadf756ec7c9aa9d9f6b23c4c4870e3dcd090632a0b91b6e69984608fa83c665295ed3245a6edfc3ebb90069d9bcf5068f8f3c40923e412f2373b890061dbad818e2539f7f464d351c056eb5250e97fd979b843f84abde8e9dc1511c609c10dc9fd71f00d7d472c7266d4bc08acc11bbb82cdeb2b032cf1de8651ce218c4617663a6abcacacd4c72c2f9ef0e36f9551d736644e7861a49093b633c1c16abfbbd2c2b1d2782c72dea3a3fb15a5683f3be167ff35015969485887b97587d39abcb6b7b02ecaadd866249bea076109e8c48a54f2cf3925329f81222628b0ad9acfc78149d2353b4e83fa5d0b2014bc2a9c74ea759d97a457a2de94f61da8da229bf5e1a13a710b46c81790c5a3e7363c0a1b809d40a0e2533b39fd1410752c8deb47350d2cf34ca9f0962bec320de1bdf5c35d726e8a3367b576524df58ad6e5ffd40fe1f59aa4872cc3c94d4de11ae78b4023bff6c9e76d99dc51d77584465dfa9f294bc8c5e54f622f0f65334c5299585f2741400126e7676e1a6017fe5ff28c8e3bbf3b806df2b5b82f63a021c57a551d7b9e6a04897741f023cbd281549c44c8599412c34daeb0520b4894f5d3881f2e0569b18853579f147daf09bbbf065ff3877f2a34056d33a57bf9ee85f79a9ecaa46a84f9c85c63eb570792c0c5d0e4ab3cfbfc0b966712c769e3d2b46f4d12fda745719fdc45e292c3849ad7730025537e425d3c88232c6c28acde3c843f95a8594082b622320d7b5ce56cc31a0872e5248277a42f8eb9b286dccd7340edbb03f18ca2ba0c1284ced4a7ee7ab7a93a2c1ebd9d8883521dd625e39d8b5a0fd0f3b5ced65559adc415258fa3ccf3e616bfbe3632e81ad665f650fc426e8f89452a9425bb6222e151460ab56000019f8c5bcaef27b599358e067bd5fd1b4f1ff44634b3882f2733fbd55fc2eeac8a6e93a14442e21e35bbcdf5e6f70f9c37e80a21baf8af5d5ff418fa5f3ad43495e8d54e9700714b734a858ef6443617643ffa479a8fcb7bbacfa40fb9f9fa86d3a9eaea2851f96b1b037ed691b636df24a749de2bbf74fc046825fc20cc6acbaaf5b1fc4627f0801fb99ac88568911568c0878297b845673f5762a559e7d0c3878214793c5fbcbb8822019acda2c856f6e99006fec7da5cd7d90ca80451983b3a79990f238776202e3cf8bae2aeb1fb5beca22737de7fb9b6d3e7097d5c0387c52160ec1a60af623e17ffffeaea10f0598e9119cc72e4ce2d2ae8b80ccd05c97a40196bbf2c7d5da55e59f92babf7ee1f3173e00f128b5e1e5157eb2a245bdf9154533ecd60950cb0b14b911da771ab434e60214dfc1f284c1410abbd24dd7bb5a4ef81ec6ab75bae00ba73a24d99d29934bb9b58fe6c12c4cb75875fcb63cdc0251139b91d3daf1eb7b6e2bc41ae504f2becb428475fb246956f183fe1b73b69537a28f127bf925f9a959e690dde02aa8b469609db957aae944e8f92afa6b8b6e7fec4233a06878e60e69778d2f2a762156af7ac85e1589cf459102671da71f10d316d4f3f0bb0910504360b607dde309773701c7ab020984c537f6795f47c093e00d7f9f82c1629832dc19a1ae1cbea204169002b5fcb3063ddf168a5b97f2bbf9b44ca43217d5e0d0419bb5ecc7c6be27befcd4c7b77668af6c4c035cc13a70209f6e7acb20821cf200d6e311f29a05c3c6ee6efab77a1a97c769f1c8d0202674a70098734a9bd9f0f743cf01c231b2bcdaebe22be7f4420cc642c1c9105aca10db26c692ae4f8c93dfeb8d2645bcb1e298e761b3d44e99cdca217f099ee88cf25667ea75a58ae05d43c7035003b42f21006cc0e49825e146f544b4e9fde56094bdfbd1c431f8601e821a0760fe2fe7d5e30027d5a1953e5341f5cb98afa109d9d68c65095a870040bfa840e59e203a3bd5ba09441d9b4697d1f486038fbf4a713ad926441c2e0a5ba319e18ba989f23df85b1028076bd4db11433a1e826aecea141e50f2a19efc94653c51bb7e26af7ac71da9f75c9969256e706bb9866efdaa7d457772696b3480fe26b2bace96105162b5d388c1b9725ec576a64377c949fb83c62be4d302c96ab70d1ff6f60611e28cdc4722f07479cf8f30c2b5661ec638f2bc1ba96656d56d5fb530a6bfac2b25dba4c14d213c485a4d7e83dfa836c3ea97a90346588e152880bf37330ea3e8425143ac8b25ff98a87ac7e6e53a5599cb907627aeb7952b2108dc1ffa94e395d4aa31b6306b5ed06286a551ed2cf6b0c210cce807cbaa0ee1ff81a5fd15b925fee0062f2c3cbc372fb7d91c29f18564efb102f5171d1ffeb9ff0b191d06aa4f77ca059999cee26078404e99e4f83773a58ccd8a9a0d580696dac94b21f556d4c7f64a9f959bf1d27c88ed4074a9c264fd95a1456d8243952428a1d900b856ce9aeca94feba57ca0d1a790a736a2d3e5dbf8072733d6f1fe852f57e41a7f090368ceebc89b9d05ff07a3b44c282e69ced449c9eb62b21234a84897a61d1f7cb00e8421efd83bbe11671818b936bdc596f59aed9ab1130628f244e0b565435fcec8141d06e49c7608c05e76d289c32d78b8f2df35b10e7bc951e431e5542afac06ed4885a6f3e2a9e6d78e09b8275584eb9f383f053e06a874049e3fe8e08d652cb9972bdc202002a754f86a839fff034578e7d3dd3124b3396cfcf32aece9e1b8004a5ade9a9538db01e99c8aa7fe2c9fe736dd6c8589f5e1f5dca106da7879af5a34fabf8b7f2148ed77c9127cd39e84b61f66e262e1cc7b003dbd114698ba745188e0418a4d547110d247e818e82cd4e1e9c3611010d97c4176776bc4ad79fa425542aa1f377496e50a24b7802fc4674533fb44d84319285a63b5e59a6cd4ea8589fa859602a344d90e55408d5ea61ff7a003a0fee2c7b636aa680a4faa1d9289153c65c3c517012ba8d67c419a27a48549e76c7f124de1b136c6d12d2b82b7fe09440969d566c33dda6d0d64cd964566c5f7517cebf16e1dea8aeb31b060b8f531721e8bff85bda373b5750a7dbd3e13a84463010fc6c7fc373ef25f78766bf4b7973080bac12cd1b4589915191eca306197aff733917694a67519dde137636998cf17a1382fb4f2887530c384cb4af3f0a8557b854d23a74b79677c74edd2042d11a1367da63db829afd628414fe902a4f9037e816b6e633d12660b93e0d3575313323f607762a6faf135500ac314971292cde35c289a4f80fd6e166b89b54a29ee6ba1f741d330deee35d4d2d862cb1e54e48719e0b0e8b64efa565bd3d7313f7293b30d876bd1e2fd0a0f05c7e393952db6e67c74e0a5110663836633eebadd43fbac322f95b5260bb64aa6c9e49ead608ab72638d8f0ef4458e7a577e7385825b71d61641e33a8dee9cc92ac1a8ba122dc7d5e3340ca4657f5b27774e71fd764ebbc257d97c8194d8602c43cf3008853d1924a116795ad076de486a9eae51d76db140ef334aa16f7f9c257512483ec0dfddb9313a997112bc52600206f9b02d12facd6993d2ee77411f96ad9d8ccef5acea2868c058aa0d6510d38b939ba589600d1358c5da3d445273f4db27d30663f26d4baf87166794905b01129975d4a55c24f68f68072ee47cbfb81fe6bfd42889ab7d05025fe37ccc4947a62dbbb9b25c397b87ac396dda459cc9623f23b9573aba9dea6c505ac78770f38a117b8d7bdf4bd125c994ab0e6fac43b98f2e540f72453b4fe17f75875d1dabf8ac102997d7283a50f1196c95da29d2aea638df48f8249791d43eaae6edd506a582195a9f326b35d1bf9c54fbf092692be4154f1df21e44f604d6b2e450b14cfc2c63a74b64b04ac09260810f9ed5489ff83e6eedc7cbae845bb14d17a8a709f26cf1afc7b87f529273bb6746a9237356e3f427c39926eeb0149301b1a0135bac15ca9ebd870727675723cdaf2e489f261a0e0ee9d967683ae2d3baade8525975518bc8925cb4de8d66118d4c5444d33427ecb20ced4722fcb4540badf06858f7b34973980ffbb3fd1d6b08233d9cbd7259b43c0d336f5d9c1b5ee889a0e1c81d3d48084e98fa26437c1efbf3d7c83d5c8a429cf5b840b267799d236725d91fe9a4b4d1749bbec65eac6f2a4922f451679f48fa5419b4210803b0db1058463c039d82d39b6039d839d647cf58b3478a8f7c03f91bbe7a9b82494964d5fe3b6e87a13764fed759322741b3eabcbf3e60979909ba554e204f1c29a35874ba5be63ab828c8b707fa3d80248cd5f9dfdfdd84dc7deea4a960ec37b42f2724e180979fb346fed1ff7074449ba70cd247de821e4c68f00693f03c003f6186f716f30279fa1471d07f35b128426b91a8ea24fbeeccb348634b8888559ed617588f6731fc533c2f94303aff67e4be87270a3d1a11893ffabedcd86e4801588088a35e2fde24a2a5edf4dee514f05c48e1668945e7b793b9b8b7f984ea5af96ed2d25e729a33b1361a9b3d9cbb6684b23954d4f470483b8422783ca14396edd8091ce00681c2b68899b0d6a8489b3e79cd89d0b58edfd20215653fe7f8ac939b6b446547205d18a8e98b5572ced096a4b65d2e7cfec4dae234b09dd2f1d56a14eeb66f2c448a8cf2468003e019107014338b0d1aae49be166e9a09c633bf72491f192add4b70673c5663449f65e78db32467d2b9826b99ab2d5395af907a8179eed2901ee833c390dd6a6c3da735cbea7c2666197be7f539c8778adab116a572bad45422f656b9a3e0b9e8278dd08453f6b216a1a9cc2ecb0535fd249e4169b711c8a343b15c68607a167b41cf75b9ef86a3329bd9ab562fbd54e5e731f23864edcfd89c5fdb11c322365fafd00b1dc2e65a66dc5c9a8272bdcdf2ffb2bfedca93eb7cb6b4f0b6383021e88ea54777764d2804aa1401539324d9d83ec26176dc6eabcb763e9db850fc8298d00d0f4cef931ee396a8c66a043d3b0850ad55a610af391df19ca91d88a653ef44bdb38c37f5f2b3669e479da1d35cb41160e8f39b74727f0733f7738a0a52a8d8969e40e4cc29eff966706db92f83cb56c1291ec83dd9360fd368bd6dde7e550578e693952f105d131b14bce5c2ca6e9e87d225f1d00d63cb98fbdaaf43edbf687e59b0ca08edac5ea797eec364480c8296e8c8067d3d912e88bdbdf60128654902e931b235f13f8ac4462f8d0b5f3be6810727b89d03adf6acc742539625fb85397a5d7935f7cd05db05b85e57ad7334ac1c9bad7c13c2d51e77db272a599effe0955d8b2e8f5738c0c5501a34c64b3f7f9c88e3d7d56bf757ac1190123d0a9998e203fcfcebbc575acf933e9957a6d308772b0489d3f74b41008f534d5ca6bd37d6ea51609434e45421492ec0d666de45c9572736ab6554e9ca4babe97e96f9879fef47bcc93d9bd218551a8f95d6a077a04b8ad1f7bfbbc00aa3e86f3937a3e07bdf16fd158e950ff3b76ab1ef470424531224879afae82956ea4e4165003d4a9fbdc04a464d71fce7de12980cd3cec0b38f837067df9a2a1f1ece98a27e2c9afe77c49f7f0e46402f43db456f0f92d9bfa7fd5b9292679b95b9df6b7ff0de3f78da1db0d1207141e40b59fa831d556fea02084fb3b9ce96d76f82fe12c5215ad264e07bf74f88f75864f55f5a0ce6a071b51ec117c0d7cd7ff18a95c0e7c439a11a3e65578551e92cd74822df8bc502dca513ca66ad6565d404c6db54065784664086540220fc193d563b3729f4a11a3a912a48df2ed0075b43eb23a531251b9c94f010002e6adab305fac53ae02828450aa8b01c130ca565cb087eabee5bcad4c3c747e2dfac37764b9b59985b5e9129fbddcf4883b4841b39252502313750a25a582e92f59a6733f28c6a5d258974ae121c11e08b6e608cafa6278d23ae272edeb61c1069789d5e39d287715d56d0f81702ce94db9d56877f6f745ad231b1eb0a416070041411d74813314f0485b6763aa1f4014284d0f28638c06fb4ee1f081cb44672fbd39243e4e3e4cb1be223a1b1ab370832af21edbea349f118f56e74ee324dadcdb7cebaa3f928b46006266a4c7687a2e0faf79c292f80f26be51eb6ea4a7796fc26309d7be281ae10d18bcd0b1546ffa5e2a77c5480a207b47db0dabdf40e31918d0b6d157535fb0891bf170ea784c31fd9f878e4d77f919b888698585b26a14586eb93c8360a88959e9617acc66e3e2ef6e065a00a1e4f52f491a47fc555efc4861621ea79d8ba0605284d3cdc254f0a434cab1426a56780d8932937fe555f573102b6d0f07913e49371a35ed08c9f081adac9b9f87d5f9fc7aa59ce5b24dc91b64811f668bbba59dbf84b90bf18044cc0b1ded1dbfd0eec9c3f4f1190a7b8175b36d2a7375364d5422dc93a2c1f695813d3bf6f81f3014a8a5a14d2aac67a9a534d43d5cdea988160f250175554adadb38f79e3e8deffc660b8a4658e0649c49d59315c62768c0c6d304f420df7cc8830ede10e6504a2685aed670dc7c78594ca64c3c5e260aad15fe30ac97e57a4886b56c7b957f115fdf232e7a556b8b997164fb270b1a2132021bbb68ebb5694f76b13b5818a1490693dda39be182f4910fe79e9ea788af78efab1e238e6346aaa4dde215d557bc78d8e6ea55534c0466638c4253cf34c73a4e63e4204197da56e47a14e4103d90d9d9696a9f0a2d4ffde339d0d89d0a55782184cadde07517b46b106fcf998e64f30207358f496bebe1c3b99ef7c03ef1e090bb1eeaecead0077c454e52b70b936e40529a59d347cbfd3b3387792e4f8b3a7c53e0c2f7dafaddfb24ae8c91c9a715223d7f9229e6fd1b988875e5ac700efb619e5f55548bd11c6fdb7807541492adffa8453a09c7884233e27ad130d4880cc955e9147fe79eb82ccc6bfb6be8e87c0d673d9228ae49ecb60741b7b0528ef0d3b40a58e01f09ba48cdabe911c887c88222aeb08f4e1445fc197d5c8e8e8a4e89dd0dcf466ec9e09b5e3167f2b26db03566c3bc5317612d5afa54d06dabb269e86d44610aaa5d8f2d0290c7fabd40a0c9d8ac70cc7181bbaf063f5c80898662c968001f653fdf93ca44416d1d202fd58362f503e961e5c5a47184c4c7418f7170feb214bc6d680068951689e0e5e9aebb4487417b5dd92c1c523c922801b8cb3697180223aa77b23a36e88c8aba0761964021e074b6d9f4dd34e61f36364fd68c3dd345be6cf23aeb92a13d70103c98a288cee11f72ddac2a142dd06306a56269b42abbc69c9b9a203cacb2d0b8a224518b60a40724ef2e0effea090860002a908edabbab98b01949b1ab13de18448e6d7aa00d68bc10c20210d5ba299ae1e1822ab848c98f8c408d624e1f8233cf498157230b4f2784168cdefe0c05447d5d8b7972b70a0e0e0e0901931c710bf8bef81bc5544e864b3354c0df100e2f758d276d600f5aca00e719b416432103920d61432008f34c4affe5f4ac8768ce0bfdb0b6b3479e7280569ef61f2a5e8df098c77daae434dd31d201b1f47b8294f9c721086478cfd419af72a9849f3e444176d16608155ec760a92f69b6261d9b77276eb3b60226776f4ad4cc9b2307f94f0ff9f5339206bdc9d917a6e14bcbbda2c83440f46118d6d3bf9302fb9d1ae8cfc120fb202f6b4dddd348a25bf077d0526a0417efc951206152e65f54b6be910bbaece40de0d875bb5b37a481c3ce6464b2fabf295c17689d3295a6ec2c9e595ffb</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>参数：</p>
-<p>（1）state是模块当前的状态。它是一个枚举型变量，可取的值为：</p>
-<ul>
-<li>MODULE_STATE_LIVE：模块当前正常使用中</li>
-<li>MODULE_STATE_COMING：模块当前正在被加载</li>
-<li>MODULE_STATE_GOING：模块当前正在被卸载</li>
-</ul>
-<p>load_module函数中完成模块的部分创建工作后，把状态置为MODULE_STATE_COMING；</p>
-<p>sys_init_module函数中完成模块的全部初始化工作后（包括把模块加入全局的模块列表，调用模块本身的初始化函数)，把模块状态置为MODULE_STATE_LIVE；</p>
-<p>使用rmmod工具卸载模块时，会调用系统调用delete_module，会把模块的状态置为MODULE_STATE_GOING。</p>
-<p>（2）list是作为一个列表的成员，所有的内核模块都被维护在一个全局链表中，链表头是一个全局变量struct module *modules。任何一个新创建的模块，都会被加入到这个链表的头部，通过modules-&gt;next即可引用到。</p>
-<p>（3）name是模块的名字，一般会拿模块文件的文件名作为模块名。它是这个模块的一个标识。</p>
-<p>（二）THIS_MODULE和owner</p>
-<p>关于宏THIS_MODULE，定义如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> THIS_MODULE (&amp;__this_module)</span><br></code></pre></td></tr></table></figure>
-
-<p>__this_module就是一个struct module变量，代表着当前模块，跟current有几分相似。可以通过THIS_MODULE宏来引用当前模块的struct module结构，比如使用THIS_MODULE-&gt;state可以获得当前模块的状态。</p>
-<p>owner正是一个struct module *类型的结构体指针，它是file_operation结构体里的一个成员，这个成员用来防止设备的方法正在被使用时模块被卸载. 几乎所有时间中, 它被简单初始化为THIS_MODULE。</p>
-<p>（三）额外话题</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-title">.owner  =   THIS_MODULE,</span><br></code></pre></td></tr></table></figure>
-
-<p>为什么要加点？</p>
-<p>这是一种特殊的结构初始化方式。这种方式称为指定初始化，采用这种方式的优势就在于由此初始化不必严格按照定义时的顺序。</p>
-<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-keyword">struct</span> <span class="hljs-type">book</span> &#123;<br>char <span class="hljs-built_in">title</span>[MAXTITL];<br>char author[MAXAUTL];<br>float value; <br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-type">book</span> surprise = &#123; .value = <span class="hljs-number">10.99</span> &#125;;     <span class="hljs-comment">//只初始化value</span><br><br><span class="hljs-keyword">struct</span> <span class="hljs-type">book</span> gift = &#123;    <span class="hljs-comment">//按照任意的顺序使用指定初始化项目</span><br>.value = <span class="hljs-number">25.99</span>,<br>.author = \<span class="hljs-string">&quot;James Broadfool\&quot;,</span><br><span class="hljs-string">.title = \&quot;Rue for the Toad\&quot;</span><br><span class="hljs-string">&#125;;</span><br></code></pre></td></tr></table></figure>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -565,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

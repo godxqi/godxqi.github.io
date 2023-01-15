@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="堆与栈的比较： 1.1 申请方式：  栈：系统自动分配 堆：程序员自己申请  1.2 申请后系统的响应  栈：只要有足够空间给你，系统就会为程序提供内存，否则报异常 堆：首先应该知道操作系统有一个记录空闲内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序。由于找到的堆结点的大小不一定正好等于申请的">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="堆与栈">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/%E5%A0%86%E4%B8%8E%E6%A0%88/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="堆与栈的比较： 1.1 申请方式：  栈：系统自动分配 堆：程序员自己申请  1.2 申请后系统的响应  栈：只要有足够空间给你，系统就会为程序提供内存，否则报异常 堆：首先应该知道操作系统有一个记录空闲内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序。由于找到的堆结点的大小不一定正好等于申请的">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:19:10.777Z">
-<meta property="article:modified_time" content="2023-01-15T12:24:21.607Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:27.812Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="未重构">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          766 words
+          5.7k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          7 mins
+          48 mins
         
       </span>
     
@@ -273,50 +273,22 @@
             <h1 style="display: none">堆与栈</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>堆与栈的比较：</p>
-<p>1.1 申请方式：</p>
-<ul>
-<li>栈：系统自动分配</li>
-<li>堆：程序员自己申请</li>
-</ul>
-<p>1.2 申请后系统的响应</p>
-<ul>
-<li>栈：只要有足够空间给你，系统就会为程序提供内存，否则报异常</li>
-<li>堆：首先应该知道操作系统有一个记录空闲内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序。由于找到的堆结点的大小不一定正好等于申请的大小，系统会自动的将多余的那部分重新放入空闲链表中。</li>
-</ul>
-<p>1.3 申请大小的限制</p>
-<ul>
-<li>栈：栈是向低地址扩展的数据结构，是一块连续的内存的区域。即栈顶的地址和栈的最大容量是系统预先规定好的</li>
-<li>堆：堆是向高地址扩展的数据结构，是不连续的内存区域。链表的遍历方向是由低地址向高地址。堆的大小受限于计算机系统中有效的虚拟内存。由此可见，堆获得的空间比较灵活，也比较大。</li>
-</ul>
-<p>1.4 申请效率的比较</p>
-<ul>
-<li>栈：系统自动分配，速度较快。但程序员无法控制。</li>
-<li>堆：由new分配的内存，一般速度比较慢，容易产生内存碎片,不过用起来最方便。</li>
-</ul>
-<p>1.5 存储内容</p>
-<ul>
-<li>栈：在函数调用时，第一个进栈的是主函数中后的下一条指令（函数调用语句的下一条可执行语句）的地址，然后是函数的各个参数，在大多数的C编译器中，参数是由右往左入栈的，然后是函数中的局部变量。注意静态变量是不入栈的。</li>
-</ul>
-<p>当本次函数调用结束后，局部变量先出栈，然后是参数，最后栈顶指针指向最开始存的地址，也就是主函数中的下一条指令，程序由该点继续运行。</p>
-<ul>
-<li>堆：一般是在堆的头部用一个字节存放堆的大小。堆中的具体内容有程序员安排。</li>
-</ul>
-<p>1.6 总结：</p>
-<p>　　堆和栈的主要区别由以下几点：</p>
-<p>　　1、管理方式不同；</p>
-<p>　　2、空间大小不同；</p>
-<p>　　3、能否产生碎片不同；</p>
-<p>　　4、生长方向不同；</p>
-<p>　　5、分配方式不同；</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs">堆都是动态分配的<br>栈有2种分配方式：静态分配和动态分配。静态分配和动态分配都是编译器完成的<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="e94c5b5fecfe63a3b2ca76f9a4447e0e398473903657aa935a534e9fe6ae44e4">4630436162ade97ba2718b7d0c4b3b63fc3e6cfdd0843a959dae6d47a092916351db601b0e3529536f90dcc8c693ebe31825819960e59c49ed6ab875ea46526d1bf1b47e7107f055c23613d65b1227ebe7806f8cf4d0703c2107b080fba77dc0840a6453038d99a3b70fa40087d990c8986d1b8bcd65ef8f0afa9da56509b5d729a4c2fe45701cdf63c9fe56ec4993c112fd129dd320f1b3818f614f66a6366acfe52a4c8e849f23ba860f5f66ca96be7e2ee1d66572dcd134db75b2926faf841e3f787859405afc253497bcb0701500aea9454ef67c62ca89dbab6c2ebba0163146e45e026cd1341783aaabe8c01a05f037109270baa6357efabf981f5afd7e8d3787799027014600d3ec56e0c2835d1a6374aa1873ab5297950013652c8fb2f37a68e04c58ed967f36426424a6cf754ceefe42117bb80aa345a972dc8b1bd461c8255d9dfaea7a84e8bb0cf0440be13e046af11646ad33eaf2fa5e738bf9eefce14a32b0e793f65648d685166afbee37c24153fc4b7f4201fe1894b9f7649398726bfd2fe38072ee33fdbd9893c858ef8c351bb599a05099ab54abcda1dec4fa9d2ead6629cce23984ce879286668c06e2bc9b6b806ea539e68e6d356252015d5a0833dc062eed8a5527bec13a4fff239af35e30fafe0bba301cd693f63929ddc94bbf1e8ea8d8abf6f5fb8375300c5a9dbf26a668ae0baf41fe82d1d31ab236e637c3eda63ca15b723458f699a4b37ccb17968a80f33f6bb2e9da1d4e3c530fbd8c078b52803490c893c3fc201379bdf2d3761d2c76331698a65b69d6ae61cad3071b43bcaa2567a9b1af6c00beb779c1bc2b9e6eea02a1c8677c82ae253589eb852649ca564569ef2129968f254de4fcfc9d80dfe96b6e8ee739417cc85cb5667a2280d983ec316eb1d3cacecc6b8fa10ea72ee90b4e81c508df68830813ba805565dbae389ce2b926ffd9841fb6d1b74958b2b32d7b3753a22c4a75276e6400382e18b92327825c21f6797fd360ed290a01f9c3693a7b6a500bbc68ab8c68360de437cfd7496b695be504df18e02b8bb2d8863ca4307adb4b1f16f4db5da31e86e9dcc8915e6c310b39518a8c16190a038a0a9322d5f88c225c61185dceaa659e8f29d7b40d82b1a3979bae593bf0a47d1a0cdfcb697aa0f79c724b8385d5f5c16ab882b6af0663b1323edcca068f67078434cb1e947b04e11fed62dcbde4f65bd6bf819288bbcc132533f5abdf0a4906243c9aac51b090d4dedffbb01f395fe9575ab642e55c72ff8a83bcb1fb7ac80afde4ac95689b1daf92519b75ae89343aeaa70fde9ead18edbed2d00fc1f5866cd00fe63f570fe10638eae75f96ac775185456870257e58f06bca668e28998c8f4531fd23b7f94c73bb40cde78415cecce6d93f4549302ccac4f616984dd53bee0813e402722bb3ddaa0359623552339f7afa2a2b4ae47a4bd25129d09a6ffa9c60a21e1193627bff63b49e00801f0b9494bbaf6f0dcd7bdfa9eab971d014dea1a2677641148209283a1c9c4ea0d12dfc2ec2adc2f5e44305e1230f12ad8ccdb60226eddba7cdbafcfdb2373c49d2f2786200a5f056172625e0cb2fe002d8f073f51a657eccca4c08a5b148d81c277ef84efcccacdd14f4e8bae4e156ec775937f3b2bdb02d554a14ac4ccf02a4dddd29f7405fd17d73ae6f3453f97073997a3d428c07c33cc9f93cf7faab00c6d13e478b1d23a52f255079bf1dbab1b4ff6244f22eccc757fda42b9fe82d165620bcf3e1655cccc22e4646f00f9906fa4d6f289e99fd78d899b3c9813aad1ac98ff1b4bfe248500059e99c9538718b3c90d8f8fce92899adabd877bf1fc2a94af8ac800ed0580cd1fea3659453d749d28eea134db44c5381e4e80acbe7572f3574351712c0cab661042d974bc693d1e597dfb5b792fcfb47298036a341b3a811ce59b483e9a6d449c7a4cb5856938872b6b2b5bc9b3b3cf94f2e6f2c32537fe665a1612115b53477b2be749773320b06d440d059235c93752dd31370e25e6f9c792929be913a9d5b47678c5e4281942690ce35ebcadd2a85825abd9ebfb433195fe13913dafeb06320a515c67b744349fd75ed8e221b2d3e6c3fbb624db30f2e294a03896cae1b46a0d464b9825c9ef21a827ca8491f294fd975d0b3503e7be44894904f0b4f3a0e7a8befa8776420a72692efe067a792ac4b44ca2630057210d6ff5869d9515ddeb7dd17f5b0f4d5b6e03d1e5fdcb73c8d2fe7919f1b098a43b4e5d8475987eb32ea178000bc8c8e2a8d852f34134d2e674d81c520564adc089de4b96b07a1fffe88256c12ae24148c57f6ef48664aeb7e5259dc4f06966cc28ae3f51987d45515f2218aa3d507a3755eca9a74c8c55340f6d39130029cbfe191171d965c84de35769d5bfb0e8e574039d7dcf8fa712bc30fc5a56eeefa463985c8c2050d614dc7bfa9b6853cc6f7e14f3f7a456fa6ffea82d2112592fcb1095e3071cfda4cad9f94060452624b4d7a0ae2a1860157ca11934d3ec016dfa97ff75570ec38389569b1b5b6361fc8fe218d276770c8f1c760f07ea3d7e42beb2fee02db6f7a30205b5b7e3388af6f44e932df807efb77da7772661e37d686e3e15ca76ca36ff9efa13aecdbd2e5f40538dc4062a8c9c9cee188b37a4723fc6600aa8a2c040ef748e6e49bd76b70e258f0f7fd2a209ba4723d55009d56cf1217e96fa2eced851979cd8981f85260ff8a28208ff347cf81c37a07a6736d342f11190d661b19a312159b43e1d31a610daeb2ce54b810eb01aaf6bc3d93f5b68664a3e6790a591eaa84ba15266c40571ce8df2361adc99b7ef6f67876c4efc00ec2c9eda6ce511eff509d4f636791dca3b339aff7e9f5039ff9940218fd1e694a8db5319eca47b4df4415fdb6da5a8436caa5bd7be523d0f7a86a7979a66906c88479903f1af90eb7531842e29d1ea660b39b89b40e5a75c270c600cdda8ff962bb36acaaf35f69a4f6a95983572af58f6500cbf2d8c66a2dccf76cf9b981b3fe6d8559f85ddb46aa47484aec0b5091e05d37a77ff9025d93db1e922ab3ca281f2769dbbcb17944568b8b43502e1c1b451d8519e1057a5bf6266c63e0c35b31a0efe980d5b791402e537f46b052235d67edd4affac1cd950c77615b9e8345ffe40acdfcc53c55aa2076cce41a30a44d2c6de4b857fb792ceeaa05debbc5c91c95d99098cfca93c638b3313d6fb621556948fe67f1a3a668f69fb3624a2fe1adf055588d6000d9e7ee6e4a7721610574fbaf0896a43f5e564964e3dbac84eb6869118e77aa14a3d907c9004abca19156ebdee96cc8993346482a8c7bf94a9fcba4847f5856bc631f4df32c513342da6583071b12a5abd5f7ffde68042a8a3dc360df7361d11fda329f8ee1795d5bf784091adf9e27d91e40810ae955a5d8de3f07dce3532867b148e5c0c38d7b409f8ccc7f053905136d2a178d35e9b8ef2b7dc04a0e699976a9f432c6f9f72b5e1c5bd48a9da6d85e2f94574701c12348cde2aac86f51ad7ab1f5bd83fa6f0c370e3805612a978817b7d45465fc7b6ae7b8e3783b04f4f4fea1ac4d525651b2119ecf97831322620f173718d54b9f0affc039d68d9e07c2f02f9ef579fbcc6dd90cffc8687a0c99f8d9748f7c256d44e187bf683a027fb5b11ef1f63a0ab55c45914e5137e2c99a625ac0de13a55cd99c0610becd786dfaa3a54115c3fd7e77879b3b0cff9017d6ad3b15c4d59ed6ea5f7513465292a832f4de9f2fd2bfc7cde561dc317884d6970cfbab26fa05447ea6e2e6235edce1377764f7275cfe5cc1a7787cf350b36d07a9e50ac2c16c233687bafca36af440672f88424106f80d9587918d3b10b60bf0a8e0dee3fb61f54a78283a17149fc206dac5ee0cb589dc1d37a71cafe1188fdc182c3f179fd558603da1845ff88891a30b5fe75afb5ddfbe6864b05498efe5fa87163b1f79e04aaf067a80ff63df019f66b328321521c35fdc6d00df5d89</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>　　6、分配效率不同；</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -573,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

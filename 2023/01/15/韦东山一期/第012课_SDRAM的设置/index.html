@@ -16,33 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="2440接了24M的SDRAM，需要设置下内存控制器才能用起来 SDRAM的存储结构：  每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址 所有信号都由内存控制器发出  设置相关寄存器： 1.BWSCON &#x3D; 0x2200 0000 只接了片选6，所以DW7，WS7，ST7都不用管，但最终设">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第012课 SDRAM的设置">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC012%E8%AF%BE_SDRAM%E7%9A%84%E8%AE%BE%E7%BD%AE/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="2440接了24M的SDRAM，需要设置下内存控制器才能用起来 SDRAM的存储结构：  每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址 所有信号都由内存控制器发出  设置相关寄存器： 1.BWSCON &#x3D; 0x2200 0000 只接了片选6，所以DW7，WS7，ST7都不用管，但最终设">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/dae62d1fdc319f2ac2167dc185c4caa7.png">
-<meta property="og:image" content="https://godxqi.github.io/image/15565f1909098b3b52be45a50d948c07.png">
-<meta property="og:image" content="https://godxqi.github.io/image/597b9f1d13d4a7e77cb0215708b69391.png">
-<meta property="og:image" content="https://godxqi.github.io/image/7339344d703256b62499b90713ec6f82.png">
-<meta property="og:image" content="https://godxqi.github.io/image/f8b60a0ab968680ab8698b2bd9b44dd6.png">
-<meta property="og:image" content="https://godxqi.github.io/image/1512529429d4993a111d17909a657cae.png">
-<meta property="og:image" content="https://godxqi.github.io/image/bfa48d2079cd25642b952d2917bc894b.png">
-<meta property="og:image" content="https://godxqi.github.io/image/fbbe816a4a3b78c9316d96d6ba57258a.png">
-<meta property="og:image" content="https://godxqi.github.io/image/6afe43beccfe1f7128c0c82b5c5cbf5d.png">
-<meta property="og:image" content="https://godxqi.github.io/image/ec2cf2a259c484c50f8b61801086e0b7.png">
-<meta property="og:image" content="https://godxqi.github.io/image/7aff4e2089351b0c7e9554d17498bded.png">
-<meta property="og:image" content="https://godxqi.github.io/image/ff72d9096e10366884193da920b7014c.png">
-<meta property="og:image" content="https://godxqi.github.io/image/55c28c57846b923a164b465cff6b05f3.png">
 <meta property="article:published_time" content="2023-01-15T12:59:58.010Z">
-<meta property="article:modified_time" content="2023-01-15T13:00:55.645Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/dae62d1fdc319f2ac2167dc185c4caa7.png">
   
   
   
@@ -235,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          930 words
+          7.4k words
         
       </span>
     
@@ -246,7 +232,7 @@
         
         
         
-          8 mins
+          63 mins
         
       </span>
     
@@ -287,48 +273,22 @@
             <h1 style="display: none">第012课 SDRAM的设置</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>2440接了24M的SDRAM，需要设置下内存控制器才能用起来</p>
-<p>SDRAM的存储结构：</p>
-<p><img src="/image/dae62d1fdc319f2ac2167dc185c4caa7.png" srcset="/img/loading.gif" lazyload alt="dae62d1fdc319f2ac2167dc185c4caa7.png"></p>
-<p>每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址</p>
-<p>所有信号都由内存控制器发出</p>
-<p><img src="/image/15565f1909098b3b52be45a50d948c07.png" srcset="/img/loading.gif" lazyload alt="15565f1909098b3b52be45a50d948c07.png"></p>
-<p>设置相关寄存器：</p>
-<p>1.BWSCON &#x3D; 0x2200 0000<img src="/image/597b9f1d13d4a7e77cb0215708b69391.png" srcset="/img/loading.gif" lazyload alt="597b9f1d13d4a7e77cb0215708b69391.png"></p>
-<p>只接了片选6，所以DW7，WS7，ST7都不用管，但最终设置时需要设置为与BANK6一样的数据</p>
-<p>DW6：我们使用两个16位芯片组成一个32位芯片，设为10</p>
-<p>WS6：假设该内存芯片的读写速度非常慢，当CPU发出读写命令之后，内存控制器开始驱动引脚，在这些时间之内还是没准备好数据，这时内存芯片就可向2440&#x2F;内存控制器发出一个nWAIT信号，请求多点时间；我们这里用不到</p>
-<p>ST6：nBE[3:0]读写某个字节时决定是否操作byte</p>
-<p>         nWBE[3:0]写某个字节时决定是否真正写入</p>
-<p>        该内存是32位的，内存控制器读到的也是32位的数据，它会挑出你需要的字节，所以不需要ByteEnable来屏蔽某个byte</p>
-<p>        故设为0</p>
-<p>2.BANKCON6 &#x3D; 0x18001</p>
-<p><img src="/image/7339344d703256b62499b90713ec6f82.png" srcset="/img/loading.gif" lazyload alt="7339344d703256b62499b90713ec6f82.png"></p>
-<p><img src="/image/f8b60a0ab968680ab8698b2bd9b44dd6.png" srcset="/img/loading.gif" lazyload alt="f8b60a0ab968680ab8698b2bd9b44dd6.png"></p>
-<p>MT用来确认接的是什么，SDRAM设为11</p>
-<p><img src="/image/1512529429d4993a111d17909a657cae.png" srcset="/img/loading.gif" lazyload alt="1512529429d4993a111d17909a657cae.png"></p>
-<p>            SCAN：所选芯片列地址为几位？</p>
-<p><img src="/image/bfa48d2079cd25642b952d2917bc894b.png" srcset="/img/loading.gif" lazyload alt="bfa48d2079cd25642b952d2917bc894b.png"></p>
-<p>            Trcd：先发行地址再发列地址，它们之间有个delay，这个delay可以在芯片手册中查                  到；保险起见选个最大的20ns</p>
-<p>            若2440HCLK &#x3D; 100MHZ，T &#x3D; 10ns，则Trcd &#x3D; 2 clocks &#x3D; 00</p>
-<p><img src="/image/fbbe816a4a3b78c9316d96d6ba57258a.png" srcset="/img/loading.gif" lazyload alt="fbbe816a4a3b78c9316d96d6ba57258a.png"></p>
-<p>3.刷新寄存器：SDRAM中你需要不断地刷新它，不然数据会丢失</p>
-<p><img src="/image/6afe43beccfe1f7128c0c82b5c5cbf5d.png" srcset="/img/loading.gif" lazyload alt="6afe43beccfe1f7128c0c82b5c5cbf5d.png"></p>
-<p>Trp：在芯片手册中搜索，得出最小值18，最大值20；HCLK是100MHZ，周期为10ns，故可以设置为2clocks &#x3D; 00</p>
-<p>Tsrc：在芯片手册中搜索，得不出值，得到Trc&#x3D;Tsrc+Trp;</p>
-<p>          搜索Tsrc取最大值70；70ns &#x3D; Tsrc + 20； Tsrc &#x3D; 50ns；设置01</p>
-<p>4.BANKSIZE &#x3D; 0xb1</p>
-<p><img src="/image/ec2cf2a259c484c50f8b61801086e0b7.png" srcset="/img/loading.gif" lazyload alt="ec2cf2a259c484c50f8b61801086e0b7.png"></p>
-<p>5.MRSRB6 &#x3D; 0x20</p>
-<p><img src="/image/7aff4e2089351b0c7e9554d17498bded.png" srcset="/img/loading.gif" lazyload alt="7aff4e2089351b0c7e9554d17498bded.png"></p>
-<p>CL：查询芯片手册，可以是2或3<img src="/image/ff72d9096e10366884193da920b7014c.png" srcset="/img/loading.gif" lazyload alt="ff72d9096e10366884193da920b7014c.png"></p>
-<p><img src="/image/55c28c57846b923a164b465cff6b05f3.png" srcset="/img/loading.gif" lazyload alt="55c28c57846b923a164b465cff6b05f3.png"></p>
-<p>把MRSR中的CL设置成3，它就会向SDRAM发出指令信号来设置MR，使得里面的CL等于3</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="05aff2942cc8faef537d6f65cd16db02bf1c39d792600ecbc65bcad432a9d3fb">4630436162ade97ba2718b7d0c4b3b634e89070555337f495f646027033f843d17684510ede48669952479f4d99db2b64a5c895adcbbb305b162b663896783f0da3bf1bd2708e90dd1fee2c8b844cf31cd8fd8058e92b06bad40af3529cc3ad1fe0d4084fe5ccf30fe2bad17c5d3ad8542cf2b91403424718b83fa5174671bbbcbf54d30cceb136f15bb9c686ce4eda3fe5698efe90efc4dc4c9ac59a67ca12e99c3342924f72cb67bb02fc02eff494a318b5c00252758970694c3ccc2daf19708e6d317017be91d15574fc9228996661fb4eb7ec8b998d5b0874fb2568d073315a797374f3d75d300e4d719e51247fd748f154deba342b92485a9bf78a322b598e5f7af5698bb66a411aa97750c1ef7229d9c7b1dc6a0ca775df7fca3e1e1e726803ddf05afbda6ea85d2571c6dc87052c16a85f31e1ae059b93cad15f9c4697ce9b82bae56357cf87bf336923a3e69da3776c3e95b1c2f83577075a562fd38da5c199e19444f66db45add05a0db46493b08349d722fcea96055d5cebb0901dd3d1f00f998bf39d12e401845b0763d69e482cbd67d13162c2b984c8028a6347f15da5d4433f3604ddbc548935e40c21a4b805cba62b066ebbe2321cdefd6c56c3b906d6c8fff1f951ee3e74f892c4ad178e5c544df8b55e66b2300f39fed8326074b51bdfab6469dedd01fe518964f2024cda211f2047b78d96aa9fb3b24d33ca9836f43bc0ceb902c4dcbb35c9b021d8cd9e3e2c750da2ec974588fac6082ee84cc1e4e4d990782bb8dfc445b2b920c47b60051649ea6e686413e6afa77dc38ac107aacb494c15810cfaa4e083c3ce33faff1d4fdb31a8f502b3e391c040e2f6c513a592d39018eaa7c14b46a67cd1ed3de851c292054ad9d24b969dc223045acbbf3114ccf8a33364ee61aa0dba664258819bb5daaa6fe9c9f514ffc55a28204acdfb0527eb3f7230d5865a7d1a0159b25570c89d9bf789e20405ea4e31734881d2034d346a81af34e1b07a9c220c63329930329592d2fa00d374cf6a84922e75f4a500cfbffdcbf6b3bf4914896bc47719992d188a1f7622d5a01db10a09f956c4951f4e2ae7dd469513518950c3723ea009c82f666303668ed9ff1905d04c231b1800e725ce44bfc48ddce7b83c49bc48a18afeac5ddf7b835e2e668a6264dd145624b2e7b56ea262a9f107e50c5627f9263c893b96a77cceb5b47a53a6b90ff9c0ec8b262ecdc2ea17e4121c480291d2839dff63d1e416bdb1ee9c29512b655d9931ec3dc028dc58998ef0374ebafcbb487193043058925d00a045af72d5c481fd6a8f8250dff46169168452b155d5f2a3d67ff1f392ebd2719b74ec136c1772ca1481c7306ed30b9306550d4b3a0dfdb9632e1e393002b53a6965325f7f254b1e8d531bba46b7330e3f995d6f510de1ea2739027126f974e84e8abee8e8032d0e270b3d55a5e0cf2f43a86cde529ac62d480ee20a80520ae9b34bf04096a303dd5f49cec0233e29ed390da8d41439acfb9499513b30dd77d408c64e73feee6ee7719eb935822a4616a2a7160f5e59e7345817ddea73fb8c0292eb51e0b07aba9051f10ab72d3f4a12aed47e9e59668d54afc8be17a1d0fad9a9cc38263fbfad3e4adf2881c137a72d0ebc06e9ea2ff58bf616bade407b2e0baa279b7648548e8516d98bf187a8d7018be4ed658b87eb71032bbe5c6f323536376955736c6723f1a03ba351ac5daf371afecc61659fcb3b32ebc259bf2c2150f12ca3e4fbdb8b5bad0e486603a321ea16501a842b739a9f35e74fef7c79e487a3c551be131e1db1af0720912548c7161f067d1706614463be8eeb517114edb8805a48c66f0e1be23fbe5737602fcaa4f55727d6c4affe6dca354ac621d07da41efac93db86a1f28eca32d42eea042d41896a5769db8cfec57457514235ea4b25cca3c5a64a3bb2852c738299aa1684107ca47f043e4cbb7fe1eecce9b267bb6f39cf848f558f8a1f7db00e13e69480c60811331a1437996bd65c453d584136c74d7c2308d062c2c6a8b5b67a713f18139f416088a8ea0d7fbece3c1138f915637e013f79864af4cd48ed6474c05e28cdd347b72c8fe02656736803708edeaa7f8a90c2c8ede622b65c7f5db7b553cd8e374845e975ec55f28d5efe148c9a097808c871a8f8ac27d35c652bc16093d7eb4d2c36a823ff80a781e92687cc9ac5eebc77a700a033f2fbee70b4eb2239d041467f3437eac158169652e62b72cb2fab560dfb09b5d16ed4f7454bcc3e994be66312110a351279b7381f74dcde464142663d7802376466c2d7d9fd4ed5981a17e422e3272f5345b06807cfd96b229166ca93b07d068e1b8e0798cd8e955cdfd905f0eb26fa97ba15eb728bc96cbfdd2529deda736b6cfca4c6cc22b43c71b75d1026527438effcf8d35cd7a378824399dba780108d55d84d79006ecead8b9b68ca848e6bf9bfe170ce02dab881a01767a837ab30d71d2b0db3653c4b8d5265dd85f9285362c69ded16026048af4a5f84ea8b70a76e9b8101c6168f1b569746d4c4adf74c34bb3e2bfe77969609711b09b3c1c6dadcf6c0456e886b9c0ab9500c1c7dc720119ede78afa23c55aa28e139370cf4a6742454460d38dff05b37d9e8072ae769c2a7ec5c01eacc7383914203209f07138608ca41f79d8b70711595382f7e6e1eecb40912deebcb9d585c8f025bbaf629e015f2ac25587e88efeea9854edd86dc38f0acd49d2810431f8ccdd1c87806df6ac72cb67e3579b75f974aec6308fad971b8f723f6e08cb39f909eb3f14c4ad545c707f9585644a218d05d47185348e39157c06ec3256909b5942e25db3dbcfae5fe475f33b910b8ef34a2a0b7b2394383d027c730094a2bc443d6863bf85c2156ea2c3b24038e1345d9065818dcede8cf2d1a8f84c5b5d4a20083b8aa7d5b7557a1b51085e22ab30c0cc4c70ad0767af2d7aff42509ae524c88393d9a49e1138e7dfa600115edc0a169179aefca6df3d4f5148fa2fcb0410065a9cd06463eb121c60b15451d226a92064cff714eef12ece79b9ac5dce9be19a6162c8f64933fe2d7ef40c79047fdbb5bfca88445a90d6509e8b0c2c44008b6b4cece6abffe417daf008bf23657e5e9bfe1b163e14e331f7ae8226a2af8869dfe761ca3ce0c37e76e92792420ddf4d186669ee7e2af408e8fdc776129cfdfedb80f7eb651c542eb2d586276d2fb17bdf8c5dc1af49d052deab3b4dde5eda98884cafbce7e3dc5166b021bcd3de62c070621b0f7767d5ac2b408aa5c70b99ac0daa77e1ec52f1fa43a9b22f52d4879892645c6e497d5b01101e3abf8483c39d547e879c937ad6bdd7e19fbbcc92624797514f8275275bda8139daafd04a43ea76a22c5b14a4ed26282f2e0d41fff4412a5de9a7b3eb1cb81aa668a43f48f29fdcd7353fa19d6ac3d1979f7ec85402d1d126900c3a9f691040de4966ae63e7799c67853ce186d94b365620b39ababfcd5984623e949d3e958feb894128a5b00e4982aba16527de09767f916e5d22a1f811d2491c9ab2ab88ca4c45a9fc1b9aa62f380d6dee50f258689e6d69c5fbf8eb0f1eda183f32553599957ca2af8b9e80231ca33ef595e15980d1cfcce3d794bffd13ec28c258e8b84699c1004ed609cb2c885feb863303c5dc7de4f1ef22ac9749959bd4e2950fa0a67036fb19fd359a306660361f411dd7e70e5ab7504b9ca1dc0b842bea1a3562966da773324d9aa4ab642a2005e3715ab396f83357b1a58aa84548a80fac295c4c75262844af391d79e3c6d92aeb59490e292478233a50f6ded884bc2e3d3872259dbcc1c08ce3e1615d25e4855a01f1480a79166b7f1ad815bbc3b3d6cfadfc5492ad2e0d76a2e4c8d8a8923daaf13197517f59a623621e32bd14bb4206f3aa70cfbfbae963f86c092571276773b4a3249dc006fa5383020f6312de555c840b06ab5984cd561e5703131e421e2a500e3b6cab9e17c87bef161c5b9264ad39b0792c3943c4ca4d27925d82bda65144fa38250cfeb71a0731988e148e4803b99776931e4e9d2db4b178fbdc6d19f7c1719947b80728981326aeda43e25838c4404339c2c7d51e247751481f902aa6c341804d6f669c845011247c6d9646d8e4e2019abe5f955713b9820cfb1c7071745a56440ce3b8b391bca1c1df1281d891e6a92621ae74de006ee62a617faa4d5886fd45a80b6203e9f041c813908c20082ccc5d4194b363e6a91e8d420b9533d774e3d2b8bf78458e272b18a5429bb63748caf9b8269efa8fcb93feb0be46e12871b8bcddf9775ba99207d3cfe13b54691ef1a3007b42ea4b36a5dce67f5c3cf2043c853badde105bfce13b1a3d065bd9aeef40b18387d08a3e8af4ce82609fca7e2b0bbb95afa5bcabd801b6e55a8b1dc1feb5e4871db67772299d00b11fae8c39a2fb49073c97d4f3703c4409146c4621531c821e98582f3b10d24cc090456115e1be0a4a2f5e00eb9216271521dd83792ce9a7877bb3d915060fa4ad7bb776bb387c7dc9c265a8a7e7413b6f77975f2514f3717e16e663a1cade86fdd82a22b3f057bd7d71374ca730e86b19ff618b2a122cc6a3a225a028ce924e4616154a39d86dc564a87a6887b507355cbb246d034273044b22f4f57cd804b186dade6dda7ba6d889ff92e306a39ac100587f02a2137b1dd17016bc5f426e4f32faa7038e870600aa885a9dcf32e398c69f6bd19970af6ecda6b02fb106ac7dcf0315f3e5e458999cad7c21cc93bf55b416df0a69826556d08150f13a8a0bff373d6d5042f10a066ccc05e5d67aec9074c11c2a96fcc47271cf67f0b09376814ef692c96f39e19df2ae112429ee9788c70ad70f6781d2713da157bfcfdf900d155cf7cc2dacf862fa525d2c8181fc1cea3938da73dd3e62bdc6f1ca9fcf33f0f56f8dca4e2a7405dd9ab05b29a8861812b3c4f8bb1c098314a3f2e8bdcbe4a1adc6567031f6f9e38e1b72928f15eb3d448b1cfee4dc97d2645121935fe041d3559e44a888c6e1061b7478532035679ebfc725a56c4d2978b0b3851be7e3687041ccf3eaf2957dfdfb907dfdadf0ee9f08b9fac5577066a6bbe7422cc45ddf8fa1d15e2c8169a783ac462f1e21553def66ed7a9ea663de87a52d00db696a48761bb7597d84a8a382f16fbb396758b4d19d13f7cb2c5f713f73f4707cd4779c9d95a5c274743797f53b6b410e5a513d24893275d0e0303eae87980093c9e3d89250f2c109</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -585,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="目录   001节_简介 002节_编辑器 003节_  简介  名词解释：gcc     gcc是linux系统下主要的编译软件，     gcc的全称是GNU编译器套件（GNU Compiler Collection），     除了可以编译c语言开发的程序外，还可以开发C++、Java等多个语言的程序。     GCC的初衷是为GNU操作系统专门编写的一款编译器。 使用gcc的原因：功能强大">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="裸机开发工具">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E8%A3%B8%E6%9C%BA%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="目录   001节_简介 002节_编辑器 003节_  简介  名词解释：gcc     gcc是linux系统下主要的编译软件，     gcc的全称是GNU编译器套件（GNU Compiler Collection），     除了可以编译c语言开发的程序外，还可以开发C++、Java等多个语言的程序。     GCC的初衷是为GNU操作系统专门编写的一款编译器。 使用gcc的原因：功能强大">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:59:58.028Z">
-<meta property="article:modified_time" content="2023-01-15T13:02:50.896Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k words
+          8.2k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          13 mins
+          69 mins
         
       </span>
     
@@ -273,97 +273,22 @@
             <h1 style="display: none">裸机开发工具</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><strong>目录</strong></p>
-<hr>
-<ol>
-<li>001节_简介</li>
-<li>002节_编辑器</li>
-<li>003节_</li>
-</ol>
-<p>简介</p>
-<hr>
-<p>名词解释：gcc</p>
-<p>    gcc是linux系统下主要的编译软件，</p>
-<p>    gcc的全称是GNU编译器套件（GNU Compiler Collection），</p>
-<p>    除了可以编译c语言开发的程序外，还可以开发C++、Java等多个语言的程序。</p>
-<p>    GCC的初衷是为GNU操作系统专门编写的一款编译器。</p>
-<p>使用gcc的原因：功能强大、稳定、开源免费。</p>
-<p>1）gcc  -v  查看gcc的版本，从而验证了gcc编译器正常。</p>
-<p>不论你使用哪一个版本的gcc，只有后面能够正常编译就可以了。</p>
-<p>2）gcc   -o   输出文件名    源文件</p>
-<p>o:output</p>
-<p>交叉编译模式：</p>
-<p>    通常编译嵌入式程序的平台称为宿主机（如：PC的ubuntu系统，CPU架构为X86架构），</p>
-<p>    运行嵌入式程序的平台成为目标机（如：某款ARM开发板，CPU架构为ARM架构）。</p>
-<p>    在X86平台编辑和和编译器arm-linux-gcc编译ARM架构的程序，</p>
-<p>    两者属于不同的架构平台，从而属于交叉编译模式。</p>
-<p>    然后将程序烧写到ARM开发板中（下载方式有：JTAG、USB、SD卡、网络等多种方式），</p>
-<p>    然后在开发板上运行该程序。</p>
-<p>编辑器</p>
-<p>推荐使用windows平台的source insight和notepad。</p>
-<p>source insight在查看代码、编辑代码等功能时非常好用。</p>
-<p>编译器</p>
-<p>推荐使用arm-linux-gcc</p>
-<p>arm-linux-gcc是基于linux平台的arm编译器。给arm芯片编译程序的，它是开源免费的编译器。</p>
-<p>arm-linux-gcc功能强大、稳定、支持的arm芯片众多、更新速度快。</p>
-<p>入门误区：使用ads、MDK</p>
-<p>ads（停止更新）、MDK，是windows平台的编译器，功能较弱。</p>
-<p>1）只适合个人或者小团队的开发，不适合于中型、大型团队的协作开发。</p>
-<p>2）是收费软件。</p>
-<p>    </p>
-<p>编辑器</p>
-<hr>
-<p>source insight:c文件、h文件、ARM汇编文件</p>
-<p>notepad：其他文件，如Makefile(简单理解为：指明了要编译哪些源文件、指定编译后的输出文件名)    </p>
-<p>source insight是收费软件，但是这个软件可以免费35天。</p>
-<p>推荐版本：3.5</p>
-<ol>
-<li>增加文件类型</li>
-</ol>
-<p>options--&gt;documents options中，将c source file的文件过滤设置为*.c;*.h;*.S</p>
-<ol>
-<li>新建项目(新建工程)</li>
-</ol>
-<p>project--&gt;new project，然后将相应的文件添加到该项目中。</p>
-<ol>
-<li>字体的设置(解决中文乱码)</li>
-</ol>
-<p>options--&gt;documents options中，将screen fonts设置为：宋体、常规、12、GB2312.</p>
-<p>使用alt+F12来调整字体的等宽。</p>
-<ol>
-<li>说明一下source insight的窗口</li>
-</ol>
-<p>项目窗口：指明该项目中有哪些文件。</p>
-<p>主窗口：显示当前打开文件的文件内容。</p>
-<p>符号窗口：显示了当前打开文件的函数名、结构体名、宏定义等等。</p>
-<p>上下文窗口：光标放在某个函数上(变量上、宏定义上)，在下面的上下文窗口就可以看到相应的定义。</p>
-<ol>
-<li>显示行号</li>
-</ol>
-<p>view--&gt;line number</p>
-<ol>
-<li>快速跳转到某一行</li>
-</ol>
-<p>工具栏中有一个go to line。</p>
-<ol>
-<li>高亮关键词</li>
-</ol>
-<p>光标放在关键词上，然后右键菜单---&gt;highlight word</p>
-<ol>
-<li>查看函数定义位置</li>
-</ol>
-<p>光标放在函数上，然后右键菜单---&gt;jump  to defintion，或者ctrl + 鼠标左键。</p>
-<p>go back   (alt + ,)回到上一次光标所在位置，或者使用工具栏中的向左箭头。</p>
-<p>go forward(alt + .)回到下一次光标所在位置，或者使用工具栏中的向右箭头。</p>
-<ol>
-<li>查找</li>
-</ol>
-<p>右键菜单--&gt;lookup reference，或者ctrl + &#x2F; 。</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="acdd192b54770e5972c6619d38dd7617dfda001a5d69af66834a93014bcf0bb5">4630436162ade97ba2718b7d0c4b3b631ce3008cbd2d9c6a68213d361e81f8e19e941bb136bf5879fb0ee9699085f71c8df56f5a84dd55d7cbc90ec6acf424db7581dbe789da42bafe9a6cdcee7da8daf831a69f315753c4c16ca83fda9fcce3171e043856caa657b35e8eca94f094a8f3dacc6847a6a9e94abb2e656124ad69f0582b684a8072df734559672e9ab6983570192388696b485c52f620224d2d7cf70019f3ec577b49a296ec8279ae4a1af67b9da129932b053e8960d999221b2d2a6cd4eb1020232300e4e65241f34fe5250a4a08f33947e31827d09209897881700f0559f1b89c8b9c9de93a180852e5303f535b0fcbbc01728aca5015b23f18b99093c30e66c179f12365f1808d3b76ea6a5b072fd668a8ee2e0b0a1c5280c8bee8715140da0a7e86ef481ae04bbd49bf27abe7e46b5e5dd9951a134504acb59e793131ae53860a174c5d7bfa55ee33002c37712870484d95d90a95fc6f26179b6dda56936660ad3d6a000dcfdc91e1f8843744f4b90140db949758f0b666c8e14584005a85ce310162734f400c23e0dc26903a78b0daa92a847ca3af25381a80e000cc9589709c72a77010703ea2a7493a7a9fc9b67d517cea7af74897691c747415508cfbfe6c229e3c68392cf97da66300cf75fa6bb246e0865121c0454b5481bef5a53fb6581690128768e9e86715bbf43bd9e9e64d923fd2d2f3c35109ac2d23bf10e6ce36f771b9f0e652f7189721129a53a79e3e3e2fe1964eb7e11926e9f68c188358e416524c02b17b9152bf80ac545b6cc3ad84bbc0103aafaa4b86415d156785931927ed747e8cd092799cbdc8ce2c8478b98906cae9bf92ffaaac044f7e5de29d454ce3926557f41c92ebdeedd8dc78d3663ae064fc747403b7ea5eb97e88eeadf6fbe30b585fe5d57b85a6b84d5406c3da7c9e89d34b76ef88a0b104b9cecaea2fabd77fe5f3ef585ad46bcf13f302432e203cc7a6b73757927d64dbc2854cc399a8cba363b6085bb9879aee89bfe59af71c8e8cc3322c36ee368a66cd5d74fb3b870c4e00c01ac410b04ad1f381a9376426c4cf473916591334616609b01d6fb955a86d91371ddeaa0c8295b47958e6cc0f2e09dc1e2b19e66d1b46b8496a60eb56d6d33d793329ba1f427ddf6fc0c568dc52f614b49c9e9aafb24b9210daaf58c31745cf33aacc480d0e9e0ea9cea3550b7893a183038a818409c709e13344c5e5a0f3b786e5240c260043507871c53c69dee2ef3a4a6427a187b380d8c3e7d2d264924316f76531c874d18ffcbb9f9257905380ab6f2232d36749b76901ffdad444d3ee57f36d5fe226eb56d81a2c3d9d150b09efc877e9f756a548bbb10d25b9133853f5fe1a4a5ff864b2f2b0b99b430dd6984a48d34ab597e2fb45167bea75bd58204fdbce3b275e5b5ded9e0d0b99ee647e42d31b8150aa116ac6168082df4d0613fed12a6195756d0ea4ac6991336e7ac5a6794e3afe27e511152a993fd4816edf103c5e7e52e1744705c5ba687bb3f8c5d67770ace83002fd5ecb5eb7d34de61998efc58cfdc612667a135f8e73779492a1a3db7717f43c138bfa428ec098e166f120730c6b12e5407a61213c96c4a66d952862b6d5d408c0f13bf6e5c599fd222de06287c843359f1c689dcdaf09064751e641bb40b9c52d8d2b28acbc783dbc9f56e98232fd039170c63209baa9648346392d326b7e9378ea8f85b16a67b08db132da0b962a4d313997e010aba6494713ea6e7c170e4f736bda400ca2ec806e463e055fe854c36a3a1d2b5e0e577f7f34596cb9185d87bca90bfb856a0e5c044b7575ea7f53a3508939ff6ea33fb69f6397ddea234ef35568bf36bfa7546c3786fba0414a31c8f5abc394bfa3173863f0d600c8624df0ba4316ee08108c8031d04736cd3419a565a38fd055f1c23133355b99fb61689d74bbf63fc502e7f84bf00575e70573fd060c955048e88f5efcdc06bb46cca286f33a83595cc841adf6019888da4d89f62a7ac0767fc538f0dbcdab6fa32da265d4ab0e62e9bbec8b179f45e63c99c1584fd909e131d6b97c1bff35679eb4ffa95c10b0880d95b75a3a05a3849f4bfb8f9a2a62fa4e8a1eb14fa65e1d1b5d958b24bfeb3b72837c933f404da719583abaa8db845d86d5f6beba725827232de38908acbcef48df4d6419b1dd46ce197d022ec4153f9b5701aa76ca0fea01fa1075d49bb441ea07b0a85acf3acbe2b77130731a06d6c6213ef5d7bdf2b4c82c6d227f2abb8bc98b4c55492c1d964221a9349ed4f0fcba7e51d672c900d94856343b643dfa66f827c2c563d7c70caf0a88b8fe9690f55bcc65c694f6a7d839dc266e3ac43f8adaf87260fc601efbabb288a5516af437ff52aa16610031be59e6a51eee8de1b452cd0fffb1464953968c7c1e63ee3ead01dcecd86f448e181b9d55cc72e44b6bfa4b8f9f4d174cacb2b41e959239df0e8d7fa0dbc48cf21065d4fbf8f2a9d7a34bb16016ad5817492e9d847a98279ea74f7e47916af175b4eaa7245656eb216d6223ce396a4adf244ad3712163fd76e4fccfd56b7f4372d4d2256abd0205f98c3e5de173e58ecb602654e8fcafa57c18d658c871fa6dbe6c807a364be418cc87d797ce7f6dc811a57cc71808b0d3647ea0ff67ccc52552a26ce37de101175302fe3ff1343d23ccf01217cc5b7fc8ce67461ca769b7eb0c957083246694c4bcdecb083e4f59e05191a97700f431762428ef2e1d1c716d248f9a1b9978e220041946d557ce0dfa3cefa5bb7ef6c199600dc8e06e71b2b3a4ac277e6a80cd8e9839cd6e4ab269882806371f4b2d66bbc441e16f5fb534f68801c06cfb3d960b9126500004d1b7c47fd6fcb572e1f2b24e1b3639fe9e6684e2c98cda1c410920c4bea527e46d8944833f2c2085cfcf5929d76acbf427cbeb3f9fa5043130c4bf31a82d4940890a196819625fcbe4238f8d169d8a3101dbfd87157fdafdea570a0a6967c45e8a5571ecf79f7891dabe7cc8e430e7a12f2489076de403dbd17f8b3d7d5cde67e3a83a905751c62b917fe8a0700c9d576197864bafd36b8fb5cca7f460e2ceb5f3dfc13a3620b46da01ee5f7b322c6e65942773a791b928aeb6c3de8aa9c68d49da04f260e4448465d343e76fcce762620b8410fd84915b2012359f138156b8cefa90e0a9abe3204800ea67ef166b06d24291751a569c7d74432770aca0b65656a9b782ea44909c95a2ee001efba0a9832cac7f951beda10765225e7c115bac3a9c9601716cb704daa19ecb1dbdd8fb52ea54db85646f965cbba4a9dc20101c396124276190c55ff919c81f4bbffc363d52449b1ff0cc2969d7b72549c49f4b6c8b4c9a657be7a4627c5f13702d0e9592baec30f1b406a0301ba835a32eb766aca855f2171ad574313b76505540d5b7c68e23bf3a35e664d74a494ead5539e8cf3b9a624667c93cea4693bffe63326004726721dae749a7e8ca704d5176281d2249c4b544fc79529abaf6fa83d2a2506a1e540f801da559eb412e9fdc7592d270e606c00a2d06a1a8825b90276fa0276218784ebe2c7ccd4da41f1908292ddaf93071892113cfd524990a5eee5dedd06de29e9b9b590977dc27019ca4bb556d5a06ee37d18ca2597c0b558806dfc135e739e7f327c6962e46577bb6d6fcda1b243cdcf01b74b7f857a9ce96c5bc2002a41959894cc4f962a28f8d81fb83f0f94c4dacf9a20f306519b902cddb4545ac0356e2534b0244264620d7546e9f3eadc76be2ba9be6d0992413b9db4e542046aa2500ee844ffe19a3d49b4f5f93ddb8f6bce62b503b04073fa7badfb6a22eb50702b3dd6bbf21c28327371a83cc813f1344a05c988531cedf17c4ebadd0bc25a9d0a36b721921d9fd600f914b14ce205bf59e9a3740b8b4123ef32740306e4f398b672e7041d6701d6ba14afabc7665c4654e6adabc364b092670dcc48a9708e63791c9bc02edea9a7e49e24a33ddae75ad165509961e45c16ced9c11f1a23e9ab5f6bc9194f4f0a6b6154910aa6a080876bf8ddd21f657eb2aae86f4503c13bb9007e2702b7ccd714fe53f099ce3d7bac76b50b8e1e07510f602eb2b2d7cff77d6bbca2f55a69d3cc1036cb960c99f03532c6a7e0416bb66e6d9769dd038642824c2d1386369cdfbc503ebb00cdc81b73bbfe069b23682ea8864e891f862c40f6696d1d78dd82cf4d8c41637b087b769278189ffe13c3d3625bbcb8ab69e5e5ca81c242ba6c4f935ef32cabaa9f7cc6aa03177c6a9791e22a426aa96f988940e8422b61985d2e2aa6c67919385f09c389b3f224172b0af5f0593a385e1ccd7461ebf0910dba231914da42ebef1c2f7f828ac9795367d9dc67cdba45621624a6dbe0013a06a3803847f886f4d0e920fd7ef465e9adce87fd972ac010b09a3de7e9fb7be2eaa07780019b11e6a27bfa8c663607664c6c46d7d8fe1757629c0604e0c180662e3fd84c978cb6ab96ccede947aa998d23bb34dd85b805d545037b82a3f45899aa02ba2eade09842ccd5b63e2ec8226c9a143944e5178227def8e4bbf809cd6c724acae2b02bbeef6fc0c769034878e541ecf906cfab85481fdcf4e755b5aaab9d3c9bd8ab53687ab15ac75509e8e4339a2d7671a1afb876883d6b63defa7f8ae713b27f74d8006e31766fa8f50938aadceaa887f2ba9a55710c4643ec2a2968d07d0fd8577a36f48bcb11cd61f0e889536945c7016e48d946335ec80488d5ee4fc183ee0e2935e33f996e526a6d157886ea62614db116dbea88df698cd4b4b551908e01e121162098e0b93e5c346bc92c85d3c4b60e5baf873bc7abe99410b20d96a2e3223fd0dfbab260d80149c009caac93d6e4b3c769eda6fd7e43261efee5110bbec77ad387a25d76b32e78bded6c64a5113a2693414aa9b949b8ea763ba25f2c59a51a05ae43bd43d3deda617d4c3271553bfd0a39da6be6351880053777c87b0b3d5965ec967f23abc94e4d405cdb0d159af188fd409b42a05376b6e46545f8cf40d2b73bb1959b9310914918bc906e8d61c68d74ba7ed6be2a401a61bed2b94719b20331da5c0d9a6974fb03bb7395820cdd7f6def85f5afc4d690db6c5419d592c9db29fae48e3b3a954f183a08ba0b5bb33b8b1eb172de4e32910a74ca0afb93298a073f9d6854efbdbaa27d612bdb11237817068bf0aea0cc2c534778e07c0511311b162bf14c40978ff52c6ac1a851893dd63eda2c685afbbafb074813abb1b6e3357ce4e0e4b2d56e0a357d96e49e82580d5bcc4783bf51719b631681477fd39faa70078b195f1d6969158a33af8883401f8980098e3808a7fc0e3545d399769cb306526223ad82617e10fefa9d74729b44dc91cd715aa9e07076d3bfabc51df968e95b902d522588ee6e8a5b1c3ac9b3df30911717c12f23d8637e762dcfd4c9ecc5a3f9f2dee547435bafdb0e4026410d7635ac34ea1d3ce2f4ea2648d3b494fc2d43fb7633b67ddfab41c98836b76046aefc85225c4fdf79cbd76fd5d5fc339a64239019cec97ab78f78d5d7469646a2876561aeb006b15138e032f44be15398286d708d9885a544772eca194411f4e48d857e0d14bd20d1d50858ce3db8facde06d4e96a9cb46527f62507c1a3fa5013752ca73a9917bee66213b8f742ab463bd140832fe381da9c8c87934cf42fed5a2f8ff78d48774b0ba866330cf9e7c56192f1b2be81568e8e43f8a6f76f09094b87a3b19611e44f3945822839ede533682e5ea1c5da3048716f33b8e0a530e9d3a746a8bcc0215ef4bce</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -620,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

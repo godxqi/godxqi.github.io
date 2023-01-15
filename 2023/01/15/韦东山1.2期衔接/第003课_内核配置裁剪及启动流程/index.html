@@ -16,29 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="郝斌老师数据结构课程笔记 001  两个文件：linux-2.6.22.6.tar.bz2；linux-2.6.22.6_jz2440_v1.patch  解压缩  打补丁  配置  make menuconfig：每一项都自己配置 使用默认配置，在默认配置进行修改 在arch&#x2F;arm&#x2F;configs找到相似的配置文件XXX_defconfig   输入make XXX_def">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第003课_内核配置裁剪及启动流程">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC003%E8%AF%BE_%E5%86%85%E6%A0%B8%E9%85%8D%E7%BD%AE%E8%A3%81%E5%89%AA%E5%8F%8A%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="郝斌老师数据结构课程笔记 001  两个文件：linux-2.6.22.6.tar.bz2；linux-2.6.22.6_jz2440_v1.patch  解压缩  打补丁  配置  make menuconfig：每一项都自己配置 使用默认配置，在默认配置进行修改 在arch&#x2F;arm&#x2F;configs找到相似的配置文件XXX_defconfig   输入make XXX_def">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/0b15a0b8a47b572f63a1d287cb9ffad1.png">
-<meta property="og:image" content="https://godxqi.github.io/image/5ab94be7d57483b65640beb6b0880e73.png">
-<meta property="og:image" content="https://godxqi.github.io/image/be0aca5d6ec88c68a9964b339d5f31c0.png">
-<meta property="og:image" content="https://godxqi.github.io/image/95b245b7fe35e2219c3bb976e27455e4.png">
-<meta property="og:image" content="https://godxqi.github.io/image/d8ef5295a2c23127c05040599410b562.png">
-<meta property="og:image" content="https://godxqi.github.io/image/a186d0d6ab47179c924fe6e117474a9e.png">
-<meta property="og:image" content="https://godxqi.github.io/image/04dc7b4cddc71ef540b7a96f607d489e.png">
-<meta property="og:image" content="https://godxqi.github.io/image/c30a5402b5abc444222a6df24c97eece.png">
-<meta property="og:image" content="https://godxqi.github.io/image/68ed26f6690cf7ab713defcc26b95ab7.png">
 <meta property="article:published_time" content="2023-01-15T12:55:06.490Z">
-<meta property="article:modified_time" content="2023-01-15T12:56:32.320Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/0b15a0b8a47b572f63a1d287cb9ffad1.png">
   
   
   
@@ -231,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1k words
+          6.5k words
         
       </span>
     
@@ -242,7 +232,7 @@
         
         
         
-          9 mins
+          54 mins
         
       </span>
     
@@ -283,77 +273,22 @@
             <h1 style="display: none">第003课_内核配置裁剪及启动流程</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>郝斌老师数据结构课程笔记</p>
-<p>001</p>
-<hr>
-<p>两个文件：linux-2.6.22.6.tar.bz2；linux-2.6.22.6_jz2440_v1.patch</p>
-<ol>
-<li><p>解压缩<img src="/image/0b15a0b8a47b572f63a1d287cb9ffad1.png" srcset="/img/loading.gif" lazyload alt="0b15a0b8a47b572f63a1d287cb9ffad1.png"></p>
-</li>
-<li><p>打补丁<img src="/image/5ab94be7d57483b65640beb6b0880e73.png" srcset="/img/loading.gif" lazyload alt="5ab94be7d57483b65640beb6b0880e73.png"></p>
-</li>
-<li><p>配置</p>
-<ul>
-<li>make menuconfig：每一项都自己配置</li>
-<li>使用默认配置，在默认配置进行修改<ul>
-<li>在arch&#x2F;arm&#x2F;configs找到相似的配置文件XXX_defconfig<img src="/image/be0aca5d6ec88c68a9964b339d5f31c0.png" srcset="/img/loading.gif" lazyload alt="be0aca5d6ec88c68a9964b339d5f31c0.png"><br>  <img src="/image/95b245b7fe35e2219c3bb976e27455e4.png" srcset="/img/loading.gif" lazyload alt="95b245b7fe35e2219c3bb976e27455e4.png"></li>
-<li>输入make XXX_defconfig-&gt;结果保存在.config里<img src="/image/d8ef5295a2c23127c05040599410b562.png" srcset="/img/loading.gif" lazyload alt="d8ef5295a2c23127c05040599410b562.png"></li>
-<li>输入make menuconfig<img src="/image/a186d0d6ab47179c924fe6e117474a9e.png" srcset="/img/loading.gif" lazyload alt="a186d0d6ab47179c924fe6e117474a9e.png"></li>
-</ul>
-</li>
-<li>使用厂家提供的配置文件<ul>
-<li>输入 cp config厂家 .config<img src="/image/04dc7b4cddc71ef540b7a96f607d489e.png" srcset="/img/loading.gif" lazyload alt="04dc7b4cddc71ef540b7a96f607d489e.png"></li>
-<li>输入make menuconfig</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>编译：make uImage</p>
-</li>
-</ol>
-<p>烧写编译好的uImage，插入usbdevice线</p>
-<p>在uboot界面输入k：下载linux内核uImage。uboot就会等待usb发送过来的数据</p>
-<p>用dnw.exe来发送uImage,uboot开始烧写</p>
-<p><img src="/image/c30a5402b5abc444222a6df24c97eece.png" srcset="/img/loading.gif" lazyload alt="c30a5402b5abc444222a6df24c97eece.png"></p>
-<p>烧写完成后，输入b命令来启动。</p>
-<p>若无文件系统，内核启动失败</p>
-<p><img src="/image/68ed26f6690cf7ab713defcc26b95ab7.png" srcset="/img/loading.gif" lazyload alt="68ed26f6690cf7ab713defcc26b95ab7.png"></p>
-<p>004</p>
-<hr>
-<p>内核启动要做什么：</p>
-<ol>
-<li>处理uboot传入的参数：从arch&#x2F;arm&#x2F;kernel&#x2F;head.S一路分析</li>
-</ol>
-<p>&#x2F;* 第一阶段：处理机器ID *&#x2F;</p>
-<p>①判断uboot是否支持这个CPU</p>
-<p>②判断uboot是否支持这个单板（uboot启动内核时传入的机器ID）</p>
-<p>③建立页表</p>
-<p>④使能MMU</p>
-<p>⑤跳转到start_kernel（内核的第一个C函数）</p>
-<p>&#x2F;* 处理启动参数 *&#x2F;</p>
-<p>①初始化、输出Linux版本信息</p>
-<p>②setup_arch    &#x2F;&#x2F;解析uboot传入的启动参数</p>
-<p>③setup_command_line    &#x2F;&#x2F;解析uboot传入的启动参数</p>
-<p>④parse_early_param</p>
-<p>do_easy_param</p>
-<p>从__setup_start到__setuo_end，调用early函数</p>
-<p>⑤unknown_bootoption</p>
-<p>obsolete_checksetup</p>
-<p>从__setup_start到__setup_end，调用非early函数</p>
-<p>⑥rest_init</p>
-<p>kernel_init</p>
-<p>prepare_namespace</p>
-<p>mount_root    &#x2F;&#x2F;挂接根文件系统</p>
-<p>init_post    &#x2F;&#x2F;执行应用程序</p>
-<p>…</p>
-<p>挂接：根文件系统</p>
-<p>最终目的：应用程序</p>
-<p>root &#x3D; &#x2F;dev&#x2F;mtdblock3，而Flash无分区表，分区只能在代码中写死，可以找到代码段修改</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="ee30c4a0272f14cb88ccdcf686f546a04bc09135760b8d5ee9ceb90f925e0476">4630436162ade97ba2718b7d0c4b3b636919fccf6b8fa34494c93c249a1db4451af5013c86174e38a8c11b773f6586f08fbe75418d04f265fd8ad0ac94f6d17a05950f38d887a0cef611eba5a43d469ebc2fcd253132b301ea68598e138df61556bab34bbc7c68dfdaea58d5923b8d89c4c4a24e9601c26449c07b76e237d12cc7e82afa1ac3a82cac8cb4e95febe4fcd244d7c23f4a944561130ac00294ec9f83dd7ab2fa3fe3294f1337ab685d7e722bd9ae6e78c7693e2ed872fa243e4bfa80475b8ed5ddea63abc67500abec139fb1be9f1c616779a096045428a43457ea8583aaf38a769bb39b0d7f54513e592f83d9da80ac6418fe5e22af20ed5fcdb10fe58e88dac3e18e2b3bd90599174ab26ce473dbc4f3cec7403153f8296649d33b5738810797d83e1adee6d639bfa240f1c7e10fef3e250b427b87f69693e9b69f1f12f98f54b70bb2c71122f321fcfcea190efd37dd6bbe5298fa9d22ea83358d86fe27824e6f2857c375466dbf61d1117acaeba86272ae5cde2d08adc1fc39512913b40cf3351b47eaa91a902c4331753e0c3ce67f6841403f20ea1098d16b523277e64f33baa46ad898fa64f7c5f7797c638f0c751c7add8be04f20fc94d64e748e7a5737aa59c5ce67e45992af11047019fb474f8088e19043e41aacd6d5ddf38737ee37c9004be380ce74144e2977b9d3df16f93c42802cea460c9d498015e547c704420073a86cf8090e2c0db65d0a89bd2854a95adb244c36d74c70f3b7fa444643b9e468a6b9d25e351e010d4109e1cb95ebdd357373203f5d403d2c154384b70d435645ca068b7de7c9e74b78cb1c925848c37b8af6d19e72dd23f1efee3b286ee5220d61de12bf411c701526455f0e78dd775fd141ad3134f84d1f5a064fea59b7ef7f04b9602741d34d4d4733e6df61877bdc25996f37acf83660f9ecb7101c43da3cd12213d6954c23db4c2ed0da712f8ec634161828514e5dee15d3dce178b9ec2e78dc56f65ce55a71530d1d632ffe7b66173a2cd8143db29fb5797d551fb33cc25cc1d2a8c7df57d3d2eb42a4bc6eb2969453f9dea311ae8c250e358f66e8b8e2ede17596cb81eba06813c0d947611c8fe48a49cdb3798578b809bf7e72bd2e35b2e8dc2952f5b81dcbe63bf0edfd106e86135c617f6365e64169f52cc82be9fb2ecbac4a848d06e23110d1d7f487e8885f39fb5ba814fb9c962f9b6dea29835f83859d328ecdab88886c63c1f96af259286c3d0bd65d770c770d46d7b5dea3b38d888b8127f6b6cafb4269f669721a8c795a499018a30af9a1f38fd4f8003bc9eaa1ae33a9d76e7cbccf4a3d644d5b6b3f0c8aa747193b80864e730c16e9e294b74e19475ac493b488c134ae443a359096877bcab085ddf5d1086d61c946cdcb83fcbebb96b786ba6013d459db8f3cd4bbb78c4c95b650616d04bc01d7e9e190de10b4804bfbaf608f01b310f7107aad21fbfd10406fffdef00b421ba8724211559a866ff951d6e9803c5e4d64fc853498ebeb8ac02895e56399759689a7ff1dd8b56d1eb3b9af42210127b3a085934947b92632daf3e4fa8aeaa496bccce2456f383346d8fcd760913815211723b3df0bab09d55aba06c4ba695281fdb1bd9710e9003737ada8cc60625afdea15fa1f2d879d46515f4e693f94fb7289214cd9afe1815f108ecf7cda537d3e745145c175c808ad585179b6be9587ea31336c02d5f912968bc75074015d4a08fd03204f7cdd373184cd9857ab40aafdaabddb20e311a1df53a71887f35e96c17d4b64b5b902afb72fa7ae2b109a81e37b4cae4783aaa1b5fcc52b61529798cfc1186c5b4cad2ec20e871263d31f5b9d8fe643a73bea62995d6198ca30171182278b65d1c435fd0b871691b207910368111fea5ba7c64d6aad736aab2c52576fa0b02d6c77d625bac120b446e638cff731a18383ee19c67fc2e9973fe4a9912fc743507f7cf6d3a25f4532a16e48fc1e2a32d41b6f588100277272cfc78121113bf9bcc0cdfcec70647ebe4e972ee8212f0baca827dc5d57f6c001c5b5d5512207ceb30e3c251ba0c2b99750cacb6993dd4bde2c7fd1483be2bbdc04d989959946e058c954d618b96b77158ce639eede1ccd1976cc5aaa0502331eb96cdfafadedc4d89a6bd1f70b24d9cd2d9f1b325a6f6337e7d3d3549be616004872a03574ad5f9d4ba4f527df6f7cd9eb7740d577ad3ee419ca2e47eca8cf1c7cd944896737b74e5d8892f2ba56c791476776dfc9c962ebc3a05b0cb4bfb0dc3d064433d8de8f3a6a983608869980507e33cabbfe37deb45ed62868d9446c08af20f9087aa5613c37e326041d7ffc4f45d0b261ed2637a499cbc8b3790c621faf7b259605e13587956bb930d4961d5120fa2d32dd6e8b3bdf2ae0015ed03749a10af21add13a4c17c834337768f7451e644fd448e38553635af39f19c90c00d432a8af568e685764f60889ff79f19320b02e194393a91de7c069a34d31d22ae577c09908d49b6ec82f89d7f6a5685e12987e2891530a91236cd91c0d57eb26c1c9a0cfb534bd9f987b02e1febd2065d56a5d355dd34806913ce2a0ebd4d272b2c66e64e425470a860efe8982d519aa27071b3ebcefa948e07883a5e7f701f9edd3656cea4ee9acc53d494640256bdd09a42b72fa70efed06e6f100bf0c511a618aa3aa4cc2ecded47efe070a09280fbbb5b0b4cf4c324ed647d3f5e22e5a57770baba62e9f37469696dcc6ba1625c562a362317ad042beec6c26408ff7d44f9ad75df42bf5e98eacf852b661b9c1d17a589f3a6538303e2c7e9fc9c8a9cafa9c89faabf0360b382a111a842df4f3f3fcd8e7e45b7ed53a27c1dddc3ad540593b9612ab3e623c89b4f4b653a61ba8d6e2cb5eebf68dda97bfa687f062f884022115e28663b49aa7810f98e1611e49f94eb2ec61378a44274aebddda80fc48f4dde9b780357f3d2038656a1441ddd539c9185ddd38f6c2c03056449c13be13540226e82761e6382934d1f3a8343055fe1e8adf497066ce00ee0dad1a9d18aeb7694a7301b33fe2ec8af9018b179cbd4b60740d7cab785c17945b225019748c92c3d39d821e2da8c3a33ebfbe9d46f67818ccbebcbbaa1e21ba4ce1b5da2be3ad169a8405656751a2728a7c4f8446baa3f57ddb14a75de6af1ef98416df964df923eceee8845da4cec913c3adbcab78df373e0d166be292558ac8fe75a6e6eba19eb076b7e89b2bdfc34abfa4835599be7d4f43ad960f2c71774d7821d210c9ab0f3055af9e65f3d94336286729b3087687a45ef6c7307bb57569f783e996b468e38a51ae42234d51f60d82df9be292ae6e0a1fffb2fcb02cecbf98624f2ece0b787f93c23a74b128574738d0dda3b22a4b742018402c151e773f802e5189f512187188a56c20f81748ef405ae52529b01d5811435e72bb276d2b1483539216cd89aa8b08832ea2abb8cc1f26269c7a2f72aa51b51a2d8fb13219c5be26c6937e42a311e335de1a345b18166abf155402508b27c1b75a95937ab7363540cfef181896f9a42c55ff69d17a6f7f1e2c5f23f8a6420cfcbdd496fe11173d02e4a9ebcef88c0e154d53ed5689c57967c5a428faf6519a1eece4d217ee4a0f5472b60742d633bdb57e255d1931502986a4996ab29c1f56531467f0fa198d443ba7e69054dd709fd0c69fae4ede5153214e38e47831a873a2f747436ddc6ff36a4a705f6e0f08e14be497513f49947db4f2f9950ecd4e8d603b8b1e2fc6267569beac9660e38583517b6df5e95f3d0b27a0fbb889e9b068bc99080a2a2cb2e9d68a7f1a75486d69d99621a3a3b587f6901f5ad390dd396439f4dc64581246a0b846aabb55092a67612a547f569cf01cc069b8af611492dda46b8eca5082e9e787378909a5578d533417f8aac9bfb93ec5d021f1fadabc055d0dc6ab7a4ddbf3367f067ba0456886d48e00e95981019b49963dd3e1c7e659b44761766610c9f3cc393b05291f9ae5f620e8c300a18728b694a1152130cd5562aec2fbf0b4b715b0f31fb53c0b2c94711b001e85664356ef16b217428b60276861ac8bc4534e4b824af142a0d8860b1a566e0af5ba2cc3602675c32c6898300c1fa9ae5fc5e40a5ffc7956c8702a695a2e38666552698cd3f7bdcdeb21495b6b69967ea658299099a080d28256c656532c4afb7981a2d42573cffe3f1467aec9039a87241ebc07ee836d75d65fc673364cbd2bfc847dd22238b8805d58deb2d28a17748ee663ddec37d15bce8fc053173b2361fe65e2c1fa48b91c553eb8faf690cc417ef1111d07c032ea2dbe685b146f9951c014c9a59fda2f9b7429b474de4c7c9721f5a56c0dcabfd2a37b5ecf86f8e080c69d92733404f1ac98ca0c7b5b53d3207160313a40f27a04d9768f08474664335cd23a9430ebd70451b8ceafac31b0740c9284c2e1aa267a53f90db052702fd0252cee7dadf29c4f63900af0f13a9d3fd3fa5059aad1d3eb514171bb18382e1dcddfa82113abdf2d61c40586c79779886d748e2e769502f7dd6</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -443,9 +378,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC004%E8%AF%BE_%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" title="第004课_根文件系统">
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC005%E8%AF%BE_%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="第005课_字符设备驱动">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">第004课_根文件系统</span>
+                        <span class="hidden-mobile">第005课_字符设备驱动</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -610,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

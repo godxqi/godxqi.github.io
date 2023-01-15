@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="用途： 1.定义一种类型的别名，而不只是简单的宏替换 需要注意的是int 和 unsigned int是不同的类型，需要起不同的别名 2.帮助struct声明新对象 3.用typedef来定义与平台无关的类型。 比如定义一个叫 REAL 的浮点类型，在目标平台一上，让它表示最高精度的类型为： typedef long double REAL; 在不支持 long double 的平台二上，改为：">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="typedef">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/typedef/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="用途： 1.定义一种类型的别名，而不只是简单的宏替换 需要注意的是int 和 unsigned int是不同的类型，需要起不同的别名 2.帮助struct声明新对象 3.用typedef来定义与平台无关的类型。 比如定义一个叫 REAL 的浮点类型，在目标平台一上，让它表示最高精度的类型为： typedef long double REAL; 在不支持 long double 的平台二上，改为：">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:19:10.756Z">
-<meta property="article:modified_time" content="2023-01-15T12:28:12.941Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:28.038Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="未重构">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          457 words
+          4k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          4 mins
+          34 mins
         
       </span>
     
@@ -273,33 +273,22 @@
             <h1 style="display: none">typedef</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>用途：</p>
-<p>1.定义一种类型的别名，而不只是简单的宏替换</p>
-<p>需要注意的是int 和 unsigned int是不同的类型，需要起不同的别名</p>
-<p>2.帮助struct声明新对象</p>
-<p>3.用typedef来定义与平台无关的类型。</p>
-<p>比如定义一个叫 REAL 的浮点类型，在目标平台一上，让它表示最高精度的类型为：</p>
-<p>typedef long double REAL;</p>
-<p>在不支持 long double 的平台二上，改为：</p>
-<p>typedef double REAL;</p>
-<p>在连 double 都不支持的平台三上，改为：</p>
-<p>typedef float REAL;</p>
-<p>也就是说，当跨平台时，只要改下 typedef 本身就行，不用对其他源码做任何修改。</p>
-<p>例如：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> int64;<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="fb6f61a94987fef1c43b6820ead060a3d0627e23dd9e793f7e3361ea876eb885">4630436162ade97ba2718b7d0c4b3b63b032b09086075d456f5ff75d8d12e4e1bd4188af77b54bf4001f73a7383758edcef8a6db6d7dbb9df56ce679abaa63535e4aa27fb973cdeb2b963bba7944e858521c87a81dd6804378e06f3421c18ce1219bb94200b8db1dfbb230ca06e331ea212626839e7d859cd03c91b77c62a72b6ea3e312f6259231e1a31e56d9d68154e9c81efdcf2e537b04d0225f1df1926f51d048b592f9dbc65eb8f6da1357ec533797aea6f0501291eafccafefb7bf4490dca58328a8c7723a6fe5b85d798de34a334bbba9657ab067a4ffb61eea48a0f1caa46870f149740351c27a525e5e582b7bef111f01ca574d65239f332c644e5ccc24f779dd1624f6f498200914ba3ce86f1b4c85003f6ba43496e488fb9ec02b3758b1c32411639b07687591acca65097f3291496bd5eec8961698d8c7fe28f77d0ffc0870bc64b304693a6a17a9122e29b667df7a1ba10d724a9e2b79a5a0f8d9ee3588b8f6bfb916a67911ea96e4500ebc347357a5041b93f0da7ffdb4720fc4c54c547b42fc0f37f71baba793ac6d1ede2fac10264715290d3ee2b64fe4d6d6f57352e060ff0176d231e8070bb5edf1014f6b2851f99d08a0081c65ca925131342fc3fdcffc5b589f342ea1e3d94db07dd51f05acfc68d6f68f1525b81bc4b6b2b6be1775983fe6460c2f0b185b66d249f4a31b19f078ffcb47ec4eb52400ed24197985ffd63c9e436606ac544757bf5b7e48e9f69253cc571d86fe08e138e6af9e8c16522ffc0e4e95208d70f5474f0dc9e4e64c5643c15967aa9a8948d1a077df05e4629859a49212a28503692c7820773310a4159ac2d07983302c4ead3066cc65d083d2de6771de75b418c88219c706a369433a0dfad817fa66d4d5bda29939667d34335e85ba1395d0308226135c12bae1381e8d9efe16dd9600ac6a8cb79c08ab34bc7ff91e80103a59c0e92a739d7021f7dc0fcb456791955cf2f88043cc53d2db8a2624ce2eba1e1a6aec603f657523606aed663ef5ab68a6b452d1b8ba2b049e6b85c7b0e71080e94a4df20818aec5241174c39ea212a060545ace1645a018be6fed2ba7a23b536306cfdbbc620c00b6dad9cd530facce65d2b02d47f0e83e544239d857387c99d06df52c8864ce5a4daca04be8bf6efee6093ca3d2fe823d19b602f63ef647f65b2e292fe8774a4cb5f85abe33e269efeb46f8b9591bb0e99c7de99d639179d06ab3c7c27701f10a59de2c36b28ff8f21b7c5439b0d9edd032db7ac2996a0a9be449c19a4e751ae9844ae18fe26441cf06e0dccd0b65692dfda0712de779a685907e306f6a7b18cc8c76ead7c669d4168a3f828757d178a3f2d73b1926f9907a8383b2170aa074dfadd7a1f897435eae918b754a5c28c299b28179ecf056c80782bde73a8ce2bacb2f4dc1301047790a3c17217ebebbfbe92bafd6d0e0a6bc0a3c193fb968c3626a766be134dd0dd58a4326ef71d78586bdf58d171c7a9204a1bed37a2ad7041890b48083bc280adc3ab5b0e9670623c6bdf78b5aeb485bb836595e1422c6f4ea55a4821610381638d310da3a9ad5e44e56b56b784965c01da3559cddcc26ed7d246985a959afbd26196beb041c829e4700b4632090cb7c4293308497ac76971dbfdae72d001b4b44af6e34f2f3a996d551a46318f2c30c7abc63ddf3aa951c8ad7ffc21f3f1f81b262cb0c0d94007433fc683881501c9f009999205ec435c0a4564ca613b75b71a2ff30ed76f87f9f2aee65da9a1fa36c52a8ef6998a516d2c1c13c2bf3dbed7d14aff09a0f6df54ba9311d6eb775d83361e97808ae768647b64c00179202a9cba1da792b6267179b3e07d10137a378ee9c293602fdf03ef8e6dbc10ea95f0346e09b28e6951cccfecfaac734e84526711b2935fac78f20c5ac08e3e3a873521978cdfa995b6a7edc41fee048166150696a226154ddea221f1503c7592cc86d1f07583be23b542a6b47000145e0c4a948e854ebe6f9728680bc401e03853b5d11f936701a985957a9971bb9d9a1309fca15406f0f28113e20daf638ca75dfd8f28fc8bea786a347c753b898f7e3c459dab9663e68fbe73d20d4f84b3c28a34f6b81ad27d496193c306447d1e7bc09325278a50bdb326de98b8fae79f6f0e62f0ad56c11b83a8d414aa17d224ce17477da2388687f0a43432cbe3938404387dee7aa5b1b261fd275dbbfeb32c01134a1f8bd552e7db9949fcbdf0e4f94424e7269bbb2a472ed4ffc71f4a22b9ac6228d8d0c231965752673bb02cc20907302af135e622ca0a5a6dc292e63684ed649060d9ef07225b5ea7cb478a8ec5d09113ff40b4091100bf0f33b05f15aec24745ed8f16d6102e9a6f2b093ff9b5cb2c70e715699883139e587900e42f8629af0fbf89441c4bd9930e80d4e7d7d44154df859eb10ef21f16f2cf5a9cb5a0249d46963f4c59284b6f1279069198742d6a34aa07572f1892016db122446aecacf15f71f3368c75df517b452fac148362c20072c2bc6702a769f3b525f896a881106760e6f78856547b63a2290caa54527fe0fea2731d416f125eb6a7aeeabc7224180fab86cc10ccdfbb6aeec05b252747070ace67e607655ac3680c8a67ae1460e2569443feaf95929cad0a31ea8df528558d51fb6e1eb862c89caf37b07bf0fbfcddccfbac91573c21a85f847fec33c707a038110152df7bbd32e0fd956235507ae87627dba0017db051558eced3483b703d5846379da98323e2f0ba6f9cbe7e7fc19b1a001f3156d033b8ce61f42aafb112841654c84f</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>要给long long改名的原因是，VC6没有long long，只有__int64。于是在其它编译器写好的代码一弄到VC6里面就不能编译过了，所以在开始位置加一个</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> int64;<br></code></pre></td></tr></table></figure>
-
-<p>当移到VC6中编译时，只用改成</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">typedef</span> __int64 <span class="hljs-built_in">int64</span>;<br></code></pre></td></tr></table></figure>
-
-<p>4.typedef和#define</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -556,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

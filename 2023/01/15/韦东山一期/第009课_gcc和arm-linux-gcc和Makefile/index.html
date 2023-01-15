@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="gcc的使用方法： gcc  [选项]   文件名 gcc常用选项：   -v：查看gcc编译器的版本，显示gcc执行时的详细过程   -o &lt;file&gt;                Place the output into &lt;file&gt;                            指定输出文件名为file，这个名称不能跟源文件名同名   -E">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第009课_gcc和arm-linux-gcc和Makefile">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC009%E8%AF%BE_gcc%E5%92%8Carm-linux-gcc%E5%92%8CMakefile/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="gcc的使用方法： gcc  [选项]   文件名 gcc常用选项：   -v：查看gcc编译器的版本，显示gcc执行时的详细过程   -o &lt;file&gt;                Place the output into &lt;file&gt;                            指定输出文件名为file，这个名称不能跟源文件名同名   -E">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/2f55eb4d7fbbf169e61984ff99e3e10d.png">
 <meta property="article:published_time" content="2023-01-15T12:59:58.008Z">
-<meta property="article:modified_time" content="2023-01-15T13:00:41.996Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/2f55eb4d7fbbf169e61984ff99e3e10d.png">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          8.5k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          14 mins
+          71 mins
         
       </span>
     
@@ -275,61 +273,22 @@
             <h1 style="display: none">第009课_gcc和arm-linux-gcc和Makefile</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>gcc的使用方法：</p>
-<p>gcc  [选项]   文件名</p>
-<p>gcc常用选项：</p>
-<p>  -v：查看gcc编译器的版本，显示gcc执行时的详细过程</p>
-<p>  -o &lt;file&gt;                Place the output into &lt;file&gt;</p>
-<p>                           指定输出文件名为file，这个名称不能跟源文件名同名</p>
-<p>  -E                       Preprocess only; do not compile, assemble or link</p>
-<p>                           只预处理，不会编译、汇编、链接</p>
-<p>  -S                       Compile only; do not assemble or link</p>
-<p>                           只编译，不会汇编、链接</p>
-<p>  -c                       Compile and assemble, but do not link</p>
-<p>                           编译和汇编，不会链接    </p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>gcc  -v：查看gcc编译器的版本</p>
-<p>方式1：</p>
-<p>gcc hello.c  输出一个a.out，然后.&#x2F;a.out来执行该应用程序。</p>
-<p>gcc -o hello hello.c  输出hello，然后.&#x2F;hello来执行该应用程 序。</p>
-<p>方式2：</p>
-<p>gcc -E -o hello.i hello.c</p>
-<p>gcc -S -o hello.s hello.i</p>
-<p>gcc -c -o hello.o hello.s</p>
-<p>gcc -o hello hello.o</p>
-<p>.o:object file(OBJ文件)</p>
-<p>小结：</p>
-<p>1）输入文件的后缀名和选项共同决定gcc到底执行那些操作。</p>
-<p>2）在编译过程中，除非使用了-E、-S、-c选项(或者编译出错阻止了完整的编译过程)</p>
-<p>   否则最后的步骤都是链接。</p>
-<p>   <img src="/image/2f55eb4d7fbbf169e61984ff99e3e10d.png" srcset="/img/loading.gif" lazyload alt="2f55eb4d7fbbf169e61984ff99e3e10d.png"></p>
-<p>方式3：(简化方式需掌握 )</p>
-<p>gcc -c -o hello.o hello.c</p>
-<p>gcc -o hello hello.o</p>
-<p>gcc会对.c文件默认进行预处理操作，-c再来指明了编译、汇编，从而得到.o文件</p>
-<p>再通过gcc -o hello hello.o将.o文件进行链接，得到可执行应用程序。</p>
-<p>链接就是将汇编生成的OBJ文件、系统库的OBJ文件、库文件链接起来，</p>
-<p>最终生成可以在特定平台运行的可执行程序。</p>
-<p>       crt1.o、crti.o、crtbegin.o、crtend.o、crtn.o是gcc加入的系统标准启动文件，</p>
-<p>       对于一般应用程序，这些启动是必需的。</p>
-<p>       -lc：链接libc库文件，其中libc库文件中就实现了printf等函数。</p>
-<p>        -nostdlib：卜连杰系统标准启动文件和标准库文件，只把指定的文件传递给连接器</p>
-<p>        gcc -v -nostdlib -o hello hello.o会提示因为没有链接系统标准启动文件和标准库文件，而链接失败。(-v显示编译过程)</p>
-<p>       这个-nostdlib选项常用于裸机&#x2F;bootloader、linux内核等程序，因为它们不需要启动文件、标准库文件。</p>
-<p>一般应用程序才需要系统标准启动文件和标准库文件。</p>
-<p>因为裸机&#x2F;bootloader、linux内核等程序不需要启动文件、标准库文件。</p>
-<p>动态链接使用动态链接库进行链接，生成的程序在执行的时候需要加载所需的动态库才能运行。</p>
-<p>动态链接生成的程序体积较小，但是必须依赖所需的动态库，否则无法执行。</p>
-<p>静态链接使用静态库进行链接，生成的程序包含程序运行所需要的全部库，可以直接运行，</p>
-<p>不过静态链接生成的程序体积较大。</p>
-<p>gcc -c -o hello.o hello.c</p>
-<p>gcc -o hello_shared  hello.o                            (默认使用动态链接库进行链接)</p>
-<p>gcc -static -o hello_static hello.o                    (使用静态库进行链接)</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="4eea4369612ce330c25cb7bcb442769a876a0d3c6f5b78e18a96ff6f6c4a6fd6">4630436162ade97ba2718b7d0c4b3b63d653db7db1bc196284675d91af800b21762428ec0f6829b2b28c381b4207d0fedf52276143bdd4bf603070bfa3331a9753648810f0658ed899684971c37782b3d1b07e7ccc840f2b408150c76606aa70b96336c8bda494dd8b41b085ae65eb84e761df324ed0aacd5cf491a3d63dfcc736325057c8a6a88e2cc00ced017f7a6bed996a4fedda4983e8d6da60859cf2270bd3fe9513a58cb04b2635e8cce952f8252756f9ea33790b47c9b3f7c0a91a4b9e9090e02b5ec33886f747ffc86876f59eee941851540f5bbac95e548ceecafc3d70d0ed991b497600c3eb1a5dc8e1bf1268ddaae3916af3aa6bdccbff6ad226a874c2c455660e6d19f96cb43a3ccdcfc0b75afa1eb2f40036ce89e2b545fbfad145cd7d13a8a4a6a0dafc11ccc09214f39b814f891ba3f00e37eaa33e2e3aaf49a72edfa5f2ad85dc961f105c426e7305923cea1d234caefc5cd8a98d0a303c867e8b4e5cdde9322d2e53e1fce3c4ab9a212ffbddbc04828ab55b66da89c26ade51fa35ca65d7dbee4b29240590dc06c90e83b53b01495f07387739a3a25c76fb2305e95ade5a7c1818c411d928c2aebc5e470f1417cf39e4d6cfa3101d7dd5dcf795e80d840dbff5fc7cb6db8277aea40228caae3eae80494642cc2c5990f0a72f2de6530b2c87b5b48309b1cbc4e27afc74893ddd0e6ead134d37333ae2b0958db918317bc8be47d49304663f1a63b34650b0fcf7609f8e208b42f6c6179aa8c166f3480f7efb2635a005ba913b1f9a26d8f71f7ea7a80b8ddb2e66c3569d24d696e1676bd265f7608b7e6ddb88166fa141536bb3974effe75681acd350ab193177423279f32a4f1d7467d3bfda43748f735f2e72cdd9ea0524d794f53ec9a436c008c153e7a77940a8f412ce4c1bd6fba0e308f1dfabf655dea93df285ec178b61499a60601ffa12ef019e814921e83470215274a6147cf8a9b50b9889463dc7fe7c1bba8c0f9a7551f521202453fc7c33bb6db433df8aeac49b1c45ae932438809241928bad61227c00a6ad82429b797770a360de83305a66e720233b0334fb33e3df7a2c4e7c09f745b2ee8e5074ba04f4b0653e6ab7deb9924f7600dc0f4d97595777f10eeaeffcdeb216a6f0bb8ec95d357e2073d81e68459eddd6407759c9fdf1e113501356f31f2d510c6b6bbba5c833305fe5a8fabd2063f4fea84b23d37b37fe5e72e8ffa8c9325bf6107e59b28bfcf34d50e8ac256310b7460fc721abf326323155d9cfcdb90bd985ff84c2a4166dbb570269024f0f0fc3e326d4833b53d9d526f546f092d85d8a9fcde94792b24fc78ae62def775443a556676e94725194a55878f7563f9fe99f8ccd8981f4801536b6d571977d10d9cf197e06cacbd3d1ffe5c20813649cd9cfa0b89add5e42f1a1f7ab553b5d180d39af0e56400098c7778f83602fc9132dc762fe53031a62a16cb456b67cd2b4e8c40467deeeedcd54bb9e0ccdee76a384d4b607645b39249923ca5ad705f28fda500f0184337009222fb966a32caae38f6df6b97322e85c9fe845be4f23cef161468c5164d643f12180512b5a4f19c87d00177c885453e7f58ab7d6c4317921eeef64d19df087ac0ae6fad480ef7acdf52c06736da2b777d16bd504115cd0d08111849da082b57cb5e60e8a2dc9ee6d7a6ebf78849d63321ea29be56688589d2507190b1ed1d5ea758e1cd555a59d40cdb907d9eeadf19585b1e0b95223f1b407ad307837adc942db487a0fb9ce7458357365219e3356aa271cf9af74424a9af41c7cdcc2e821425e23db152369e400fcec847bf8490956d08e6b2c9ba423742c499b2c35b05d9be2dc69c71b07a2c759c831a1aa3f8e1b89e58e2b337a714f61b148f57c731fbfea0385ee784cf757260e41b311b43f4810e1f964782b81fff65d22e47757a3080fd1327d467d13c87cc144616a4a24f55d670272a7fe097edecc1b9c4266b5ca220292db3fc35e4ecc5b2f7600b04ee9c24e286032645cea9d93b66de2b5227c81eb0876840ad893ccd446b318582b3f4a6da5da75e8767b0953fe91da0c4f3fe8c4324f0eb5b90024eeff472f40e4eaa6500a18ebd9f59147c289a156ea0b0ff741c53003fe78e8face7cd3d9fcca19c6bd0b5a8a7fb288bbf70c33baf51fe548e2a55c9ef1fd60178435b315f67eff0cba483a8e2c631bcb35e415007bbf4d4a6ec4fb221900086f4258680548b4bf34560b0236e2f3cb2a9bb2e1b84cb059be54e5ff489083dba6652f26d550de4a971ca3200ed98b495afb4b2f2dd245b59332098007b2e7363e0203b494069178f4388e40cbda9e2b78f4a6b6d019a96ce81dd204cb7bb059de3ae012945d90f76fc91331d1db8e8ab50d9d929483387bcd9a35f36ce5e50775b8127b42061edbed3b166a782d9fe2f589a28b26913340336247a56d8d1535964335dee3641f962ab549a0406af0b41f54d6f76f3306875eb5a78b829e8d5ec03b8e82effc51ee4cb3a66c7d5e7bdee0a955b7b0c5853c672a6188f7e50f60c819f1499ed092b2042a58d1be16a92e69d9565f2f3b20c6e46bfe68179a4372eef5ed12c1051d974f8e6b8cc4621a13ebb3be2fc1647f074049fee65670b5c98aea6db2017cf41fa0dd5b9f520c0ac12666988279fedc62438d979158cfc42a9ce854205595051f7cd13c6556d8b6d40fe75c8823b45a4a0a5daecb88c340a3cbe5cd41b2e0876944d4b6612d18abc795108ff10b63dca6f3f512b764efcacf549a6e5f08d10673530c5f15042b5d8c952744398c390c5f2b98b8cdc7fc97642f1ee3d206420ab39cb7fdef04d14a222ff276928748d0e4da16b4104ae61e90261a27db5b7fc94af918d3b6197d1c56228f92d6b4a52b31616b265b78af1d6d03725ff1b8b59bac7177b2d4e83eb274554d6c19c65361177539a5043d9acbb756581b4e6efc74f989c0d286d98ac2f952fcbfdc66b7b677dbf78db2a9a35e46262ae44891c627b0e53a431aae7cf3ced3d41173824ad3f06be8378297bc1f350c67b4a252c2383de75126837c635637562c23652d4354a8d1edc43801d6c2dc25ddab5eff030ce869900b41a5af1cd34b09a71b837f4d8fde367d735be49feb8214a815c820f0e7006a88854767169f30d2cc8dfac9779126d1f3f6c44e1977f93bb9a39997543e351bbdc9df5d315f8ec5a6612331940aa1b7bbc91732d11bc7994c6a492136fb7e9d29853675205deae22ea756bd3dfe3ff0cfd9b8f956df9c6220962500d9d61eaa105610045e588810d67f20d31554fa0be20c7d1cfee2ef02ced55c9cf62f96806e847e8ba41562d771bdd807b3352ee0434b53ac57a1822c2de58b89c309611f1e9fa77a621cae1e77ececa6ea4804cfd3dc74d0f101ce8c14ce8d99f22e89b3270553a5ab8603335430ffc70d42ec15a502e4baf5f2bf24e2c63a8b290033227344b3c6c682f6aec65876ffa60e6566ad3b765ddd07ba50430c3d922c720b5ea7116d84b61e6e1b494d9e37dce5cb45ffdc0b78af2467d792daf8af19c77651194a11a2db9291ae7412ff333fdf6f8d1e9b95224d2e05ccc89595add963559cbe78dab6c52bebfdd4a03971a8060522fc01eaddb266d35895b997034314aa69ddd16f2028db7b66e1ebaa7635a3e6ad797a4d262c09800c05b496d2f4a94bd0aadfd6782f4cb70e6bfb86d7397c438c10682f47c2778247082a0edc1f1116108380fd6e332c83dee1598540d6108732d717f6645023e4530400479497c32f6c710ec8f8010395df25a0e0ef40a3a8a714a22fed31d78a7e044eb61fdffc49a3f09d43dcc71777ddff22615b6b8376150ea2c39750e5adbbc9ebb9ebf8c6a97459d80f834a89553f7a1e19081b13e995bf0401c7ce47ac0e9c86011cf007988cd3e5c8ff8d9d0013fa6a4e39d3489647601da0967135da6c606b97325dcf14e9a17f242d4bf09f6f26119490ad5a3958b9bfbe5f9af89714e9f9d1d0b8f7b531917004fb6d5422d78c63150195ead5569b73c727d45fe9249b9483264ef2f061288cdfde3e3b9f24e765c82ca4bc725fd3b451805e5468321941cb90b0fe0e83f0226aef027b5a8ee1c231dbc2c67b787a87d9790d5e39de923bf5feef4e85dc06a821b797cbef907f4403d195c89d9deeb0abe8969c07e03a6cbbd940a9623e1906610ee040ca28cf3fa2636b396a354c1f879f4beb930c2c482553e765f4d5bdc3e098cec46e10802bf63c3ff9ad309c3932409a97ac0b0c2c0d85ce054ef36359dd00705c15e95c57cdafda07481c2b273d4952861d86f046ed1b7bb0cd60918ca64780b123d4eb1fbb850ee821cfd05103d06a3b82d7f5ebda6dde558d142ae168b91cea64b5b66f04d28f0f47bd8e90f26bd607586b2c507dd1c92a93a962916e7304c7d501689c3032da8d4000fa724a49b08daa6b07d6c95e4053e5e9d847d0a298e3a3bc94d2dfcd728002bcf0a21c2ddff101af70880fad6b964e450e9fafc9fc35006345639ade02731c9d78e4bc5baeffc745350dc14c74b173fef41f4bcb8cde83b389338967c041e2feadce2f9b6117e81e70f63df791e4acf7fc4952da8e0257916e51542746dfd03994e41c77a7bff0a3fc7c85197df0116a38709f1c3cc3a71db23b0f40e5a9f8bb6a0ecf3267f384ce036c5e0cc233e943785d2fde450027ac4dd53f7b01af2c4b17474e781ac7f30f01d7f7e5bcb3492b6f49d7e879dd0fec5f3b602da1d0cac88fb221e1f34458b3927e5f0cb59ae8db3149953ec6c85c566d2fe54db47c4b26a9e3f8e318a9ce264cb5fa50468c65cdaed9a41bcece0fa08da56896e36aa85fbcd7fc5dfee7d240aef65cc82e28ebf9589cbef957e12a0705a146cbf8af71d9d682ce767cb9e3940a2ad7aa93fcec3d41c31684c2941a9ad97cd80b5da8e437300628b5706fbf560271f6b023afaf9eb674c5cee89661662b2b0f74c7098ff3c6e70be283f7116fdc4a51806eaa7444766e859604cf7d46499b1927c6461407fda702a074564830cf2e74b4feed0bc99af6981cf2921687b646cd8704ccc604b71fb42d65cafc23769e0250ed20ea58a2708c338dfb8cb7794b7a16a6bed0ec562c68942af121a6a49bb2285fbeaa8d89fabe069b699a274a7bdb3a545867ee3e9cbb1376444553dd0b31e465bab2c97c305ba1c4d9d380ea348506feb599515f433791f79224399ca5766f53a3b111109cb509cc3deb5e2afaaa72d365e56b8e6a268491aa7bd09c9b208d5b1adba3c76026c4d77e25d739cdaaf57c1bbcf11885927eea2c90f6b784d1fa87235cc8cc19b064c2e9db1d1058a0c678935f2eb4c2d9774604fbb7d5d4a84b867b5c6db9f97c06baa8db8d5b0b34aeedd1c500d498049df12977a27df5977fd89d6b6bb94a771d215446c722a0f0c5b7b5d10dce224c9d9514cf9765d1b2d4d54a362b09718d0eb5b03049dcbf0fb68a20d53097373e79f32811ee16c778227764f7f118cf7a46bdcb91e9ef94b1fcf06b4a004ff6cbd365356645b5239942169af1135761be6ed30e72377bb6bb4496d589117a9b01d34292c6ff28966e34660f056e1d9495922faf6a4de36c6ea82c8517411572d4a28945b6376a7a85e162c092a4507b64cb8dd268b1dab0ad20e066825bc847b7751458d63afd8c1bf57e44731fe46603a0f2995572347d18673c7db5ce487ff7ec964839ae5c7791988eafc5dbf5338ffc4df0cb495cdd88d699c88027cf91b190a2e617bb342f70bd8bcebd61ab29dd32b4ece0a0ccc0880b072be26c74444aba958015aa952a5a1ec8747b1a633d1219d1f16b943852fab893bd5c619a026236e4b735508c0be773d740d1b8e4bf01f63954b7620bdb058ab5fd32a87b8b4f019514067ab120272ed2e42b03e1b836c07d87af4479b98c04d77aa7b72179845ee891a69d9b9e825ac4c2bc70706ae81233437ab46f5f</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -586,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

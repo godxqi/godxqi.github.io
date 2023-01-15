@@ -16,25 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_37671794&#x2F;article&#x2F;details&#x2F;108416003 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_36521904&#x2F;article&#x2F;details&#x2F;80595119?spm&#x3D;1001.2014.3001.5501  UART(通用异步收发器) 串口的作用：">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="(待修改)第011课 串口UART">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/(%E5%BE%85%E4%BF%AE%E6%94%B9)%E7%AC%AC011%E8%AF%BE_%E4%B8%B2%E5%8F%A3UART/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_37671794&#x2F;article&#x2F;details&#x2F;108416003 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_36521904&#x2F;article&#x2F;details&#x2F;80595119?spm&#x3D;1001.2014.3001.5501  UART(通用异步收发器) 串口的作用：">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/b44ffa58c3697037869bd580c7f419d7.png">
-<meta property="og:image" content="https://godxqi.github.io/image/20180606150226624.png">
-<meta property="og:image" content="https://godxqi.github.io/image/e4a576d3170fe05c122cdbb7bd0acf62.png">
-<meta property="og:image" content="https://godxqi.github.io/image/79703a73150b11bb63e414448cafaafe.png">
-<meta property="og:image" content="https://godxqi.github.io/image/d48e2ff691f6dcde8ff9b10047ec5b3d.png">
 <meta property="article:published_time" content="2023-01-15T12:59:57.995Z">
-<meta property="article:modified_time" content="2023-01-15T13:28:25.243Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/b44ffa58c3697037869bd580c7f419d7.png">
   
   
   
@@ -227,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k words
+          9.3k words
         
       </span>
     
@@ -238,7 +232,7 @@
         
         
         
-          15 mins
+          78 mins
         
       </span>
     
@@ -279,58 +273,22 @@
             <h1 style="display: none">(待修改)第011课 串口UART</h1>
             
             
-              <div class="markdown-body">
-                
-                <hr>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37671794/article/details/108416003">https://blog.csdn.net/m0_37671794&#x2F;article&#x2F;details&#x2F;108416003</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36521904/article/details/80595119?spm=1001.2014.3001.5501">https://blog.csdn.net/qq_36521904&#x2F;article&#x2F;details&#x2F;80595119?spm&#x3D;1001.2014.3001.5501</a></p>
-<hr>
-<p>UART(通用异步收发器)</p>
-<p>串口的作用：  </p>
-<ol>
-<li>打印调试信息</li>
-<li>连接各种外部设备</li>
-</ol>
-<p>使用串口时：1.波特率</p>
-<p>                    2.格式：数据位、停止位、校验位、流量控制</p>
-<p>怎么发送1Byte，比如A？（ARM----&gt;PC）</p>
-<p>“A” 0x41 0b01000001</p>
-<p>                    1.双方约定波特率(每一位所占据的时间)</p>
-<p>                    2.原来是高电平，ARM拉低，保持1bit时间</p>
-<p>                    3.拉低的瞬间，PC在低电平开始处计时</p>
-<p>                    4.ARM根据数据驱动TXD电平：先发送最低位</p>
-<p><img src="/image/b44ffa58c3697037869bd580c7f419d7.png" srcset="/img/loading.gif" lazyload alt="b44ffa58c3697037869bd580c7f419d7.png"></p>
-<p>一开始是高电平，要发送数据了会拉低点平，这样接收端才知道从这时开始计时</p>
-<p>PC在数据位的中间(t0,t1)读取引脚状态 Data[0]&#x3D;RxD[t0]</p>
-<p>以前技术不稳定，为了数据传输的可靠性，引入了校验位；校验位可以分为奇校验和偶校验，”数据位+校验位”中为1的位的个数是奇&#x2F;偶</p>
-<p>RS232：适用于长距离传输</p>
-<p>2440串口结构图如下：</p>
-<p><img src="/image/20180606150226624.png" srcset="/img/loading.gif" lazyload alt="20180606150226624.png"></p>
-<p>ARM把数据发送给PC：</p>
-<p>程序从内存中把数据写入到FIFO，在UART单元中再把数据从FIFO放入移位器(Transmit Shifter)中，逐位发送出去</p>
-<p>PC把数据发送给ARM：</p>
-<p>数据逐位发送到ARM的移位器(Receive Shifter)中逐位接收，然后放入FIFO，程序再把数据从FIFO中读取出来写入内存</p>
-<p>Transmit Shifter和Receive Shifter都可在接收数据后中断CPU，由寄存器设定</p>
-<p>波特率：115200</p>
-<p>115200，8n1：八个数据位，没有校验位，一个停止位</p>
-<p>每一位：t&#x3D;1&#x2F;115200</p>
-<p>传输1Byte：需要10位(Start,Data,Stop)，t&#x3D;10&#x2F;115200</p>
-<p>每秒能传输：1&#x2F;t&#x3D;115200&#x2F;10&#x3D;11520byte</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p><img src="/image/e4a576d3170fe05c122cdbb7bd0acf62.png" srcset="/img/loading.gif" lazyload alt="e4a576d3170fe05c122cdbb7bd0acf62.png"></p>
-<p>平时要让他处于高电平，要把它的内部上拉，因为(上面已标注)</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>编程</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/* 设置引脚用于串口 */</span>    <span class="hljs-regexp">/* 使能内部上拉 */</span><br><span class="hljs-regexp">/* 设置波特率 */</span><br><span class="hljs-regexp">/* 设置数据格式 */</span><br><br>int putchar(int c)<br>&#123;<br>    <span class="hljs-regexp">/* UTRSTAT0 */</span><br>    <span class="hljs-regexp">/* UTXH0 */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="e63d9e544fc991bf4cb89a884386bfeba6ad6d8fcf1043982aa4a7625f325986">4630436162ade97ba2718b7d0c4b3b63915a0d1fcc0688ef73a2faf95b19d4bce4eaf24c710e6b7deaf8558773fc4d12a34189cdf7ee40d1d9d08f91a54f95348844c3636748cef5d3d890fc8ce3fe24fa9c0b9355b311ece02152969b0e3069d1941b1502f854e8f2b4a1b23af25aac9bff570fbfedf3774c9802eec500d58f53beca6d5cf10afa0d40f74186ef9b41b0275930493c8b14675f75ffc9d16c287a567f9562ab399a22b8b4bb4999d23326aa11f5b54485bb2226b366dc30497531c5b11dd697f9fb8d5c78e574aaccf1237b14be29b488d8e8b297432150e85eb241bf02455b975e2a2eb89bb4165569f69afe985298891162cf885df96caaef0ec5f4e1855c2891ac4f77fa36ca7eb7da7385e7802e93dc2a864ad828b05a86743b25df5573e47798852bc481e07943e390af088551a9605875e5a99b86c6cceee61b7b1462f6a739abc694ea19ba3ef18bcc76215d3f490975df42329cd71d782170c8f0f81b28800b133e7eda5c6ab669091fc1e15df218f1f705f5d8d003859a98d8ba1bb99024f0e1a14f876abfc628736fb7192e2442a26c3ee68eb2956834e4c57aa6c7581bbaba50dbc5b04b0b7b6acdda58679f68291ea5de190d9d05e0c5caa313b13ac27cb7db661f6b7f87366604972549ae329f600a0a4bd8d4b6106d27087f7785517cf05f0092e3a50606c5d136308b651d606ce15242453bbcf1c0f9586f0cf2f557302e0933c5ff9b3685be6c8d955f5f4e6747fa8eb642ac89158e763ad937eeaa58a5be2147a34f2678c05aac38b60a0ea7c6b3e4696238c5dd9235f3faa6b6cfe0a4ebbef82dc422279af92639629d0cf8bdebd9ce62474b11de0c4e4f001569b0e45ec2d87786e7d0debef146ad5dbaa627947f9e9083e7919f562f4a68581a12f5fb63112fdcecddf6b88f8f84744570120277872c65bb1be2a5aff07bce02958fd494ad501ab6cc63fa60e66fe81ea6bca89d8d6bfb460613d5857eb735439ff1efab36a73187397b53ff9262807813b58ebd5ac650c7e40c3bac8d7a89150fdea2d848cd9a9529f735840de65d73540d644decd9499da7090a6de7743f3c5e26c1aeeb450bd9ee7f39cb1afeb77ab0c66267b103dc067ad0e63317f6e33cd55a3aa508b97324d374b78a0e55c9f0e9824756f376c394a2788200463ca8accfb87dc488a4f223b6fb70c759ab0bc9a0990efa8658af647743d7fd733f39002553fad4037e9d4e640491c6045096bd9b5cd3ec937eaeea4c98a4478f626cc1ef3410442cc495476c6e0f817ab9d327fb8e04a72b347427426752a0f54c8fefb706aeff708203436a32cf76a82fb977043b99ece6ba046cc2591ba6c5d31eab639b79badfcb21e12c71dadab01bd085b027d8b839a26188c91cf7508af23cf37ecb43780956b0234b65b091174473dcf3b5a18b9490e16b72a3eb25bb8e74619ad53d1222dd442a9a14e3c406787247b1482c35b011e57a7fe71ec9853f20fe4e3bca96323679539aed1fb4d9479159d01bea1bc154241d3b7f80fff1cfeef93f2341b58fd38fd0408f38b136ccb4606a4c67dc8e3af782b91ffa82e5cc0c75b2a552c7b955cef6e0e4116e9f48b562092602c54398cf1e777543a7a51d33460b60edbba69cb2fb801d1d8452504d8f0d71bc42c46f0f42843c2ac2314ae0a096c3e28c6fccd020b1a48c1f8a79191d6872e0a5f844700ff84a30e51c23e712cfb4fa3ff15ee46a45690b358f56d250192f9eada44775cdb8ced3492305ddb9d53f7a2d3ab826c6f9c20776c935e833abe7d1624f94cf01d28a89e723bbbbd576245653693697622e7fdced04256102d6377cc9b9bc21a110a73f98f0722c80f82f5c4adb97e697e5deb83ed3582c4d5e83e66fce27e1bd6ce9598920d7c81ffa2cdb3f55de94ccee1e581d2fd59f4a2fcaad143e1ad27d922058144d82b428fee99a28dee36481e3881e0322fa3d4399add8412aea834397e848baa9fe5eb060308594b7a9b00e9bacdc05d2f7480c494506f62e0ac235fb0a57f122f8d1631d08944bdad4a630c3bee3ddfdfa8add3c8574c0c62ec129dc3d43ef93a5ee620619e1cb9f8082109fff1c6abdad4156d2637de1d3ebdab75b7e227f3cc7ac6c4ded00fcc1bb0268ff49e47e0c58539ec24bd3ef951e06a63896f04c0f4c2d4f75ea394d1356dd9452b6f31587ae6e4d9c372e6c0d8bf41877e8e0aa0d4427144c3e6b3b8dddfd3e0fcdb1747361710fa453013f01512063d08073cee9770417e87eb052dc92de2d34ab76b7b28df6d2806715570899456428f734dad1977ba11eb35d579cd90f43b2b52d2b43ab0988075f5863e53b2594d01f7f104c7855681abdee52b1d763aee6b7978ba01bf4eec5badc632fe8d9e41d3565eb48375e1bcf367d64c8946728d459d4ba7f5cbde969aa50fabfd525c18c881bf1213461ec1d81301a1e060eda2116aec5a1308318edc2a4e90346318c2b594b22052cf63235005571da259de031d16a6c415d57a423291143599d02fd6289c9c254272112192f1dde800685e47ae86b575e8e7fd4fe904997243f898530b428dc4d8550c42405812146769d7ff4c1fe2310d34ea3f1e27d05925491bf09d97c273e09c24a2a8ec87d81e7d8caf1880d4237f2b84d5347fe35a4fc11ade87a097ea0ca3b3f29c70737b8e93b0e7e0954d17c35ebca50069d6936b84bd248e47b715387af13e1b8dc54d3d54b39b3e40e2f5a649a30b76aed834ced4caf4c8681a509a1cb6411de59ae3c13c2452eb8e8e128abcfbbfc25d91f6a0012596d651a8ee91b735818e5e1fedc592c9426d892428af05a9d0cec83dce806c93b6a7ee5b3324e8271191e0e3bf24020d8e9040a16c682b2ec4fb8e7319dd0878650f510ca4a942ee5c5425846fecac85dbb328f5732b2408a9b295684aa85ddf8ad0ca1a1e2c554a4c0fb58aa73e6213d0af8b32855c06d351f2d8c09b778904055bd3c555589d9ecf08d0f847516005ee28151aeca10ff8f5090cb16371ce5dc3a69c96f515adb72f779ee37cfbf6d8fb224a2af4fd8d0adcccda459a37a44babc0b7a37b3f1c89efd29ae52f684078ad2525e527a39147d280a8d775558b742bad652203ccd20a11312df23cbb7e59d84e6b0dff4e040954d4b85a25fd175833361a37940f5caf5566da59236cf4bae524196de53f5aea38ef3ede766a2be3dc41260570eefb6f57e0671d63ce73745c7861005ac70866076ae535d94ca4b5202e3cb36b9611f333ee5b29f508637f015df6ec05b0468e9d71a867b8cd52f2b622acceefa5163c8984947349b115b7389b263b4fd7028ea743ccd0d4725256aef13692434971b4c0420726076ec4bb4aad0eb0ee67aea037b5d634ee0aca2bf997e2206b60c17ffca3a78dcc32052ab312dd05c4d5575fcd96e4e478a7d22df9b3dfa1c2b452897d455644526c2bec99ea9075a11c5a8cd858e1a4c47e12bee5cef910d4d338f88b0f4bade728835d457100d682c354e92a233a734a4330de9af7b665fe664e4dd2570facf7b40642547a8b257153c8aca76567375b20ec3a71cf327a8945ef5d6c013e58fb97876526881b5196cf1ccbf85df17b9111f285fded08461913d0fd99c862b4d9b2c9528fa4fa13ce258da9dc3ff7885d1ebbafb1d1ad97b3257043e4821577d80e76cc47d612a64a63f1a7b73d3052f77502ee209677cdee668bb5da88390477ead588c97591708f73ebd4510179eb6d4094e308bc73e15d7fb72358d157233f7f5e6f3afbd48e6c32de2a0e4fff937e32c71a605c29857986df0f2bd3d893a1da9bbd13975fab5a91cbe72c31dd3b0192d5bd9785416e9e983cb61bc0f6c06802f569389312c524419b862b940d8b07b42ec546734f1bd58d9f330c12ac2ba2bbc8af22137a8b65d2956b9cfdf871b1369d8d306cba505fe85823f096d8f10a012424f328bb29c2e420464b882e66c0e8c470b18d9b684bc60e7b3316ab97f524c4f4a25d2fb06234370eb525bcc5608da3c33af6c0bd1509ed038b4d18eab5afc1f80152ed15f5c221863533e1e0fc02b8f0b41c27a75e98576b3b86b91b5246994b559d74bd55ca3cd180797bfe0017a2b8790ef279ae065817f33e796bacb7e00cd567abf60ddc4059161e43e6cffe94b4ea5a81650641ec19aa6202fffd9c8d66621384cfe97c4fd85008dd5bbaaaeffd66a9d9026737d770abfdf306dfa8282d251c7bf7f3592d4507ed5395b552623fe509c790de2571258a7eaac838aa1c772cd1c5799a819de7fa74fb51391cf58af3fe4c66783c3631cc0a60209a831af13441e18b25d6485eafc3a72e0b7084ed9023a87e6f694309cde0c9c9a2b0c0c1fcf8bada1eebc8a1744baea5cfc362c73d65a53945b55fb2609037aa7946e3757acb5675b1e53ac07b200bb52b9227af40e4990342e96d417cc3cd083c3325ff4028ac1caad800609bb915c5a438925405de9b3b049cefbed90487915cdfa37937c5754888c4ce60b67c7e29189b06a621f7b8f7e9c44aef665e84405d3bf3c8460e9f1716ad370b0278472c8dbbb82d5b553f935d4f123b19f352a23efc9b8bd83f57d092d7cf713a7042f5830559e8a102c416f37b7ce3cc3250c4bb0ed27d0856e575963df31fc7a348647adafc2b2a6039634d51e051e8d4dc996d00ff25ff5d938fddc39a93b9998607ddef2027be68d6f363d30e98e4c4cb4c2d22ad74be84bf1c9eadb0f1d56c1f15ae25b11c39662decaa900ddabdce40bc9060875d25aad335f924a014d8abbd8be7c0456aab9fb46d78c633c0d2eb6161fdf079b3e5042a1fafa219a4b7b6014f1b44e2108251b39c8b52857f3c86ba0c811d8052fa35da63ae457c7b2c9bb015033b8d81db9d5ae2556329fa25ab392eec9714dabf3a32cea5548f7ab6502b38ab6255d3c6ec984bc33e777b8403170e5acf0248990780973b8b437ca926141406dd007307610c53c905c99c86f7d43f8d148fc4a238331efc1660d4909505b5a790c87c2c92efc56cb2af602a83712652a55468aa2e895c2d7071e50cf9a9603a6e442c1050d7d02297dc4e748d645ed736ffdc2dd2adebe4b5222d1e6ce980ccf34ecef4417ec861c0f6b89cd6e9d3fc0cc714f0cd233d105c30e7db90b05534e3c037e6cc42460b0abe368ec3c78cce4b3181c031b25580c7b1f62e75ad1ba0cc26603acab2f50994885bf44c51da2a701f4c8c3064d9bfafdac753c5babb18ae51d67d70ab03d58c66f0c711b72d6b1d008b0a6299e7bdeea2c4a180e46c7b83899ed8a19177a2b8615e1f19a5f1739d647c678cb448be32cf637376b204164ca1cbf9bd603182d261a90cd81bf06ea2e2c79a18cb6cf1384c0fd90725fcbb9727e0f7763f4a32a45ea62702a990691f75fe4d86be1b49691ab1a41b74cba491fba1d151a40510aec1a036c8710a864959e6af7ec0fc2cf45c5979f6c0a7ccdd8e2ae020bfe21fdc1a10f73807148b65bd7a0189a6ea1a113eec2edcb9a66cfff9347d8a02e2bff6b93adc8a1fc563b5a639fbffa7cbd9906d0b15da769d55e35fc83dc79d4760ae04df7a73fcda4c2f0fd4c181e15f5707c7a7ce3f84b66eed04bf46d5d6ec23efc59feeec14733eac4d3422d1e0b4414a901a38d1aacb00c5fcc115d9476c823e5da31ba0d1c561cfaabb08232e63941083a493186a34a31f9b8d304594229f24771d46f36e8e4f9045eb85733a29a1a14d2df1b71c33012c17947c48ec775025789047a0d70ca96c082e1712b0df9956be5eb7951c9341b09bf800744efbcc91bbcdb86ece1c96ec57ee70b44f52806f6ab0168d5e65046fc35699a2c77bd3dfb4275aa901aa87da4114fb24d8bf22246bdac2199b48aa102cef4519bd91a586f786bdd41166a2f4f2cf91f00c53330e23bcbc5c88d345c0efc85b7ee06c7df0d9e58386041d6399350e9eb0e861412a974169fa5d11c1125704d089e961b50ea64e9c73f2a99a4612251ecff302d01e3b525c0ddcd5b530244fa61ba354179d5c842af95ab85be547bc486c194243a87dbd823aad2f2a3124accbe1e5bbb95e750e5628b769701113d7766d21890a9cef5240d089b2fc53eb26c6d8fed3774014806de9efbe496d9d0d34bb0b8c217f777c8febce2e554858a988e270971a36b4f29f5d820f79a8f1e08b1520c981f0561599225dd7fc06c59ac68eb3f06749037407ac835f9e5e30f4c4f3a4ae3ee4d3156e7b79524e273acb90920d40ef65e6f531618c2ed7597db57bae2c1a811674ee442268bbdf2875754bff75206e25e334b53237110de0c65202d85b60a06dab2f08855900a9a57ff740c5917f9e235b87576d883f53f20d0342c9150001c2850d2eb055b4b62af06187ee32ff559ca0101035a21c60b1fa1f04df635f06ab112c6d0af3fa4250348e5dca25159ff9a18e16c60879e5858b4d518552f61b3eaca2af69726f69b123c55d586a765938495ae1661e1b176bd7ab2083aa717f43958135517a218f79503b60490715683ea3376e33ce80421d31c7cc6df2e5f3b4dc3ec2a7ad00a43f0</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-<p>判断数据是否发送出去了</p>
-<p><img src="/image/79703a73150b11bb63e414448cafaafe.png" srcset="/img/loading.gif" lazyload alt="79703a73150b11bb63e414448cafaafe.png"></p>
-<p>把内存的数据写入UART中，用于传输</p>
-<p><img src="/image/d48e2ff691f6dcde8ff9b10047ec5b3d.png" srcset="/img/loading.gif" lazyload alt="d48e2ff691f6dcde8ff9b10047ec5b3d.png"></p>
-<p>volatile unsigned char *</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -587,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

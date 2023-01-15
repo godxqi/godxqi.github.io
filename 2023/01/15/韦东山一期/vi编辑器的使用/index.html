@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="vi编辑器的配置  cd &#x2F;etc&#x2F;vim cp vimrc ~&#x2F;.vimrc cd ~ gedit .vimrc 在.vimrc中加入如下内容： “关闭兼容功能 set nocompatible “显示行号 set number “编辑时 backspace 键设置为2个空格 set backspace&#x3D;2 “编辑时 tab 键设置为4个空格 set ta">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vi编辑器的使用">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/vi%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="vi编辑器的配置  cd &#x2F;etc&#x2F;vim cp vimrc ~&#x2F;.vimrc cd ~ gedit .vimrc 在.vimrc中加入如下内容： “关闭兼容功能 set nocompatible “显示行号 set number “编辑时 backspace 键设置为2个空格 set backspace&#x3D;2 “编辑时 tab 键设置为4个空格 set ta">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/vi%E7%BC%96%E8%BE%91%E5%99%A8.png">
 <meta property="article:published_time" content="2023-01-15T12:59:58.005Z">
-<meta property="article:modified_time" content="2023-01-15T13:04:21.086Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/vi%E7%BC%96%E8%BE%91%E5%99%A8.png">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k words
+          11k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          12 mins
+          91 mins
         
       </span>
     
@@ -275,100 +273,22 @@
             <h1 style="display: none">vi编辑器的使用</h1>
             
             
-              <div class="markdown-body">
-                
-                <p><strong>vi编辑器的配置</strong></p>
-<hr>
-<p>cd &#x2F;etc&#x2F;vim</p>
-<p>cp vimrc ~&#x2F;.vimrc</p>
-<p>cd ~</p>
-<p>gedit .vimrc</p>
-<p>在.vimrc中加入如下内容：</p>
-<p>“关闭兼容功能</p>
-<p>set nocompatible</p>
-<p>“显示行号</p>
-<p>set number</p>
-<p>“编辑时 backspace 键设置为2个空格</p>
-<p>set backspace&#x3D;2</p>
-<p>“编辑时 tab 键设置为4个空格</p>
-<p>set tabstop&#x3D;4</p>
-<p>“设置自动对齐为4个空格</p>
-<p>set shiftwidth&#x3D;4</p>
-<p>“搜索时不区分大小写</p>
-<p>set ignorecase</p>
-<p>“搜索时高亮显示</p>
-<p>set hlsearch</p>
-<p><strong>vi编辑器的模式</strong></p>
-<hr>
-<p>三种模式:</p>
-<p>1）一般模式（光标移动、复制、粘贴、删除）</p>
-<p>2）编辑模式（编辑文本）</p>
-<p>3）命令行模式（查找和替换）</p>
-<p><img src="/image/vi%E7%BC%96%E8%BE%91%E5%99%A8.png" srcset="/img/loading.gif" lazyload alt="vi编辑器.png"></p>
-<p>注意：</p>
-<p>1）当不知道处于何种模式时，按ESC键返回到一般模式。</p>
-<p>2）wq(write quit)    i(insert)</p>
-<p><strong>vi编辑器的基本操作</strong></p>
-<hr>
-<p>1.打开文件、新建文件、保存文件：</p>
-<p><span style="background-color: #ffaaaa">vi</span> 文件名：打开文件</p>
-<p>在编辑完成时，需按esc返回一般模式：</p>
-<p>1）输入<span style="background-color: #ffaaaa">:w</span>则保存文件，如果已经保存文件，输入<span style="background-color: #ffaaaa">:q</span>则退出文件</p>
-<p>2）直接输入<span style="background-color: #ffaaaa">:wq</span>保存并退出。文件存在，:wq保存并退出文件；文件不存在，:wq就可以新建并保存文件</p>
-<p>3）如果不想保存被修改的内容，则<span style="background-color: #ffaaaa">:q!</span>强制退出。</p>
-<p>2.进入编辑模式</p>
-<p><span style="background-color: #ffaaaa">i</span>(在光标前开始插入文本)</p>
-<p><span style="background-color: #ffaaaa">a</span>(在光标后开始插入文本)</p>
-<p><span style="background-color: #ffaaaa">o</span>(在当前行之下新开一行，并到行首)</p>
-<p>3.光标移动</p>
-<p>在一般模式下，hjkl这四个按键就可以移动光标</p>
-<p><span style="background-color: #ffaaaa">h(左)j(下)k(上)l(右)</span></p>
-<p>←↓↑→</p>
-<p>4.快速的定位到某一行：</p>
-<p>定位到文件头：<span style="background-color: #ffaaaa">ngg</span>光标移至第n行的行首（n为数字），</p>
-<p>            如1gg就跳到第一行的行首，就是文件头</p>
-<p>            如2gg就跳到第二行的行首</p>
-<p>定位到文件尾：<span style="background-color: #ffaaaa">G</span></p>
-<p>            注意：ngg和G是在一般模式</p>
-<p>在某一行快速定位到某一列：</p>
-<p><span style="background-color: #ffaaaa">0<span style="background-color: #ffaaaa">(</span></span>数字零)光标移至当前行行首</p>
-<p><span style="background-color: #ffaaaa">$</span>光标移至当前行行末</p>
-<p><span style="background-color: #ffaaaa">fx</span>搜索当前行中下一个出现字母x的地方</p>
-<p>注意：0、$、fx是在一般模式</p>
-<p>5.vi的难点：</p>
-<p>1）vi操作之前，先判断一下当前是哪一种模式，再看光标所在位置。</p>
-<p>当你不知道处于何种模式时，使用esc键返回到一般模式。</p>
-<p>再看光标，难点在于移动光标，可以做到快速切换到某一行某一列。</p>
-<p>6.文本复制、粘贴、删除、撤销</p>
-<p><span style="background-color: #ffaaaa">yy</span>复制当前行(y:yank(复制))   </p>
-<p><span style="background-color: #ffaaaa">nyy</span>复制当前行及其后的n-1行(n是数字)</p>
-<p>        使用<span style="background-color: #ffaaaa">P</span>键来粘贴(p:paste)</p>
-<p><span style="background-color: #ffaaaa">dd</span>  删除光标所在行(d:delete)</p>
-<p><span style="background-color: #ffaaaa">ndd</span> 删除当前行及其后的n-1行(n是数字)</p>
-<p>        按<span style="background-color: #ffaaaa">u</span>键来撤销上一步操作</p>
-<p><span style="background-color: #ffaaaa">x</span>删除光标所在位置的字符</p>
-<p>替换 　　「r」：替换光标所在处的字符。 ,按一下”r”然后输入要即可.</p>
-<p>注意：</p>
-<p>yy&#x2F;nyy&#x2F;dd&#x2F;ndd&#x2F;x&#x2F;u都是在一般模式。</p>
-<p>7.查找和替换</p>
-<p><span style="background-color: #ffaaaa">&#x2F;</span>pattern 从光标开始处向文件尾搜索pattern，后按下n或N</p>
-<p>注意：</p>
-<p><span style="background-color: #ffaaaa">        n</span>在同一个方向重复上一次搜索命令</p>
-<p><span style="background-color: #ffaaaa">        N</span>在反方向重复上一次搜索命令</p>
-<p>        n(N)来源于next</p>
-<p>注意：在&#x2F;pattern之前先跳到第一行则进行全文件搜索。</p>
-<span style="background-color: #ffaaaa">
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="286b6968ae9263aadd28099f1c132f8885c0360141c5eded3992d22324ca338e">4630436162ade97ba2718b7d0c4b3b631ce3008cbd2d9c6a68213d361e81f8e1216d005019bfc3294dd2c603edd0058c6146b67b0e78de6349afb8085bbcd3336a7276f0e5423ba79a215445e2a0033438c5ee3e69c3592bed28ec600ce70c72c95405661a349336cb0998da98b99680cd40cfee9227232201e5d7c31a979bac07a6f2cc0cafe9e9b85440724965330b3d040abf516ab1948d367f458049d6e26e56a973ba52e1f5403e9dd3f660848c786b77ac2eb4d3a1c45db4a69c25333dc22df750d850e5d3da5a5fc874888a353e88e6e0b34b30d923feea9fc4debd6f59a88cccdb0738b70a47503b3133b97263352fe6f93735c65e9a6ef9c5c95e48895bcc8c47828c2e0261709ebfd37e05deaa35c7ba33e8811291baa11a6ffc33c2f34ec45adeb8c0115f8c741b371bfdd4bc19e2c5e7ceda0bbb465bb81fc38bd71d70a6717245d7e1c31a716fed7322fcee05e2a8d32cfd73f35bd8fd781f005825a665b557ff9be1924b3f6378131e8647de8c077d6d06b8e6af3eeb5e88544b5ec8edd86e5b19a645e04cb34618d73de5bdbed8a1eb38abab0edf6b721b93c79beab03dcec20703015ee683ca2553fe31bc1f05f841607f6e73b1f6571ad20637e43add344337dadd7b44b1d40b7903f466c2f575fb9fc41183f3683b7ca89d7925c23ed4cf95f7197bbba9e871ef52f21086da0434c6fd7f945d207b65ad44dc46b86a1617c0e5e3803104cb6638876a7f6e60a6085c12ce2208c27e315cfc50a8cb196cb59cc99291370cc01577a4e5c7d07a597ac810cd649f04d5e79ad33f5d8052811e62d2e116d362d6a9864525f61bfa5bc96da403d954df5d7146e6401b4b9ce445a1a5ba69a99016f47ac65b276456f0ee057c0bfccb8aed4d729d057e6a71dbfce44b15ecc5b7870a1a19e0f2f6487d2ab437fb4d68d55523725d48843fe496f3223a446feea60b3b2d4c0ca7eb7ef99ee737b61ec06b530853b7d9314fe53c37ce4abc72c8e861838132dc00b7e8e48f917a810de389d152060b3a6f2694b3b66c04366893afe582c072b1ca41f1a5dba57b855c261e73cee8f30979b7a306ae4a13be3ab03f7acc62cf8b3990906778d29b4c28361cd73d16e9e748d568edb2150ce0ca15e6f6c975d52e41003a59b62f8c6bfd4e5f58bf822a3f362c3e3ce5cf41ab5bfde455a02ab22bed90490b1a35dc50e1457c89477b200e4d8ba5991e3d737ccfdf3d455af095a22c263ad03222d46794bd4431360fc6de8026b7debc94ea73e98c626a066de6e2d22db6f0b7e7fb8a189b98a7f566471a5e5ab182c8246cbc8346780d0da60e890b4d6e59b94583d3deb8c53676617650e3f2ada5c7da0f621d2752b250573373bffde17428eb933a65dc66f0908ac9195a0c970d55aef05fe29fd84f24622be536027c1ed98993a6ecc086646726c5d8a1ccce10364248c4e19b8a013a036a7cd28291acdb92803c627a3add3714efafd1c212f4bb52d86918aa781af91ed66e13865561ddc6c5a3f43a84d24345ba7fdc996b1bf9d70e008c8ec9bfee710bee60094c75e5495ab0ff65d2cb17c6347b5839b5955fac9bb43173269d25f95918c85fc45b233e3432e788377f6e1dc244fc24e38ebdd3b26a426bd8659ca7a9b8f2053a6186e145dda3f2188c3aaeb03289359e602737bbfac5b4ca7cc1406d5c338b8659d80c07ac4a3a9a546fcf8e426b8f5d13cbbf5146dbe508202351b6bf1d8e76585093aef341c2a1280572366724924b486e8bb87575bb751f081baa1a7d5f09f4d24def611f54d9b302d593375ddb66ffa6a558f74813625275b7a9e8d0300685996e021228e868d755fe1f4cf481ab6896f1334ed5545c09c3795b63e3da0a411c4abf02e0ac3fb7ab74426b0bfdb748533077a658301a93890b545959b648bd95328b86a4221ed59c8c82b0c7bacf2a8bbf803f4a57d12b7ee223fc560d57f41da08953eb3cf26157dd3bffd5ced542d30848da824a7cc56db0cd9856cf8ac3884ebc4cb7a1c5e621bab7aba72a179eb42a01bae401bc66f8cad507b68554bc44fddcb1ccd1690e1ac87393e2c53f5d8c71d26928b863ce7bf3db76cdf6a411ca2660fde6dc36f26843912c9891d4552a98cc8e1af9f6de6d5d65a44001a29a14b5c4c13e7383b171b76e514a84173414365bb202ae8c40a5cf5f4f981093cd766bf8bde25cf75090b3cc6c60aae2d26024927d65971b5a2abab411126a9ed1ad186e6e26a2281316729c8416694da89b98e6d226a987f5111f7ed268987ad27a3ef03059470d8f486ce38c5f30c4c05b70c4fe6cba7503afae3ef0f6e9e3a9781b16d7af696ebdc5ff33e5ade93098c6c04f4a40bc3eaf3ceb9d9234897291c074684cd4c298c9032c3c110b76b7792420729c76a557163f115525f62623b1f9ef2a074fb0790c5e27530de239c8a2e26562aa6433832a477e5037320e4b604289f4fd83827d65ca152f2f26cf34dabb149635ca1dc667a6caaec94cec0341ab73fb3a7b4416bfa900259f011d57000ad5349e208ddd58bf9943814825a7d01dd34c65723959a8e282b46a7fdf37f4e46ec6c7bca925fdaa3d1242846a0c51177f41548c807813584d0597e5e575902b9ee86fab5f6e5b312e427a23cccc6fae0ae031ea838a6827aa059524494e987d09d024188bfd86c81146ff3b3b7a65b6a5f5c662d2a8d85b79057eb6a7bfad1ad5b70f505f68e95c7cb8549c6ccf24590d96f15c82fc231d161c10ab47ee23ed914e900c766d3db4f11c0a8235739cc6158670b3030d748f4278b9185e586942686075c22594ef1f47144f24b4708c8d50196556bab9d871ab2895002873233ec221b73175fa770b74421eb7fc942a2161499d97d821dbc1556fee3e7895647a846e726d33aa0884463394ab01c2464397b35b31d7673165fdcae7adea28b58b4efa217af4d12dcc88c512cced1eab48ae118782c5e33b450df9eec88ea8e37b332b38abc1c37ad182deeededa27541e3a3d7f7b804c45a444ee84b0a337ce19b982b24ce1e25d4f2b96de1178b4389396817cf6ae5b165e7b67b862d84c4784494d13b4b1b142d87e7254c5ddb36c786ac55a9fc042303e7c9e7e209a1054fe6a9e8aa23386d8ca6b20f6ceb56bf2024e767a6a78f9adace2e3a4d343cb39b963cdd8852d9bcbb4ab867e1dd299a16632be92d3ea06bee7d748492a70d95431915058278cf467d3cc8fb5654f064b50352f5d4940d9247f5fcb13850a4e2c6b1b81a6568cf144982575d5e3e9b53d5214abccb387f70776f2c3b4ba0dbda28d3f2120bbb5e7e3f4b2cde6cb9c39e24fb266accdeee5995b0f43a91ad30fdae137cdea6368b1b92d001afb63b5dadd2664bad94aa9284f98a6d619a2df96c81f1ff2f4e236624b993d4232ae9c92cf1ded7e99fe497cf520c1cfd6e0b0d43aaeee5044ff06efccda3da63a7011d5462527ec90366f736b1944a434172b3bc4e071e5a63916bb76154e81f5b3a039d711df2c4a5f84e55b72d86b34f77fe4b0c9c2b2e0c7f0465cb7c5a56a86f1320acd389f52b8d988f65e9ca6131e3555e315b7d8dbc8d0388284c2364a838b0291f0bc5e68c154d2da8b4620edcafa60725385d335c567fbd1bc1947efa7a0e05f0c42c0092ae657e7e6370cfe4a62b25be7dfa5fe2aff5f2ae3528926d617c418868dcd5c7497039b96188998a1128c2aade974969ab132a64a3c0a870d0429ea6598a7f40820d6b09029bc0dff7000ac61a952ded72d053dd91df78e181b25399552d1d4d55d0f344449a557ce82e66b076a8e6f13a89aaeb3ee25d657cff879e66c96ee72924c35aa829f8203fe9c5e6c16da662ef283bbffbb761b735aec0e32d172a1f4e010e404749ae16dcdaa91a0718fb644c774c315ea142b44eced392cb50b64c7cb9e07e5ada48879d318358f8a0b5b4152ad0a683dc884c3dba794ed84ce25116ac157cfab1c920d050b9da8055eb9d542f116e2b8c0fca166cb79272f0d8e3900efe7b5b0347d9d769ef091e619dc2254ffea08befb5cdc06442774f3167191bfacae7ade3ba120242beaf2be9c2d1fe3bc16eceb15c3ab99ff2c61fcc1cd63c901afdb86a25aec7897991e9b424a999c85e1114e9a1e70c3229355c765cdfe2b428cff5ca42b7dc9fc3c9428edc8760687e052fcb418255636c169fc2a7779d31fb8dd6bcf651b398614e6959c823986cf11ea7f9d317ccc241c3601de1d467b178a50d408d93bdcdb0c3877f54886be1f2e7e858fab1b3d8ff767305260a5f050fd86800f5d82c2ed0c588359727b2f94bd89fe3ec00b5f810a31a08b38f1835a093f63f49fdf678f1907fd80af50b1b4a2a7ad16e51999bccab18588c75d948bd506a16db25327c602fd44dae6c01ef15b20b2e4f715d99ca1fa9ef7d5fbaa25c4af609f4958e7a8d55f0d0dd4f35fcabfb1afdfac2a74142460152555852021efd678272bd0fabd7b45feca9888027e7b112d5201fab9e3cf99a9af3ca44b7338002b3c02010624527d58b28ba001553c3f175cf93790f3b0f54a99ae8b7cbf70e736a3d966ba1e8a669a7ffec61b5350189cde15e2fe21468ee58ffa7aecdeec2ae5537d8e66785fa58d97dec810d9ca6f7f0599e098a28d2491600e2837b8c742fe1ae26d842bfc21d886f1f5f1774c28a2c4ba9b12e679998721582bc9ff8426f6f914cba4b4dd242af8ebf5d32709c991a5ecffd127c573107d35f74e9efbc413661d7dd726b12e61ac3a7f157c939f05e2fa9d00ff2d4ddb744fe7dd9db5a7d7e9343209ef8413c461887e04ae1415519a250c9a5fa98f610845cda8465428390629301a63a42dbe22a52ab7c137d1468acbe5ee107b6242677cd607e86fbd231cc18a31e60e321cea1cab0bebf04e899583efd1250ff686754bfd82658f0c3a1de1c8de25e7ef7f3c16c0db1dddead44525894d5ca64ad454cd9fbc88ecb22d22a26765b0414dd77ffa76017da39415f25967172eb2439752a5e00e8d0c9d6abb5719b1644e7b8da0f7b4a8d9feac577d4e4156c9dfa3ad1f3834dbbce5b419449318b92ba42013ba4b93da9e69294047391f3584b9c8c3e783bf793ec2ff7da286f802dd470fdd5de1ff6a570b9360893ea3bb176b8c199071ef8ae24f97ca5020b07964bd0995c59d1454da6fd24afcbf2d13f0a8237bfe5643ac1f0f53e009801bfacff3855139a4cc73936f85dc8ac119122b81bcd734988b3132c84b98f7454d8278ff7208d87e35e372b82a1f4787ea44380f9f2014a841a1396aedbabd9bd8b0f5b4cae3f9db4399a7ab7b7f9b964fbfaa6a4a50fb96d22cf72620b7002436e65821133b440f2e8467fd8e516ed9fb92396019bb1e66b3268bc0740737fcd5580d4c8eb6c6f9999990190ca82f32a12e0cb95770a3f765d59fcb2d129ac77b3e2ef1894081cd89ec2b27c2c8104d2132c556766f2a61f5aa60ddaa21db34d023870aa7487d890b6c979e880028f93c9f422abcc63d1e5e61da1cf37ff13cc2cfbc9685f3d6e6c3d18f014a38f51dc190c428f9ad9f781dc7d37500680916f369254a28e0cf22752f42b52f189442e1bd7578492054a5c72e013a97a83d879de89f5c5640cf6bf82c84ce26958e1f6b830766913d8b58d8d9d491cda6340a15619470371a649c4c579587009c5f6c88bfae0fe6396138d082b95b33a5ad5b8bb02fdc792433db36ecb1203245f5ba749677674aa0474c4a3387bfdf51840b083622b7d8c102f201973a87a4d5f685a5827574d6cb210b4e78f185f10347a1dbca9d8f2c260fc2bd58a0c8dfebf451cb179151c64fb63ae0c4a3ca8fddb39e0655fe168a55b9a4a781e5acce2358f850bc98f62878dbe88ae825d13cd6917c43d0379b8940f3f0b3e283a03cdd43191f349161564b6655cb7c449614712be531c9c6939ccc1aba27867e12659d2c05058a08c5ee55e8b3d48a0db3715f4bdea8abc35cfe2f1caa74edce3fcc1789ea28ed52736751b16e949643361b7ae5b3197881f14f99937fa638992933967f762453ac2ec1a21c9915742666a5abb4c3908f740799b1102cf3999d591c2539b6cfa75dfc233e264685a02cf4dcccbc1386022da83f36588e2a327468220b847fd894b68399b7ca38aef5a2ae8d33524f897837674404da82e3c57def4951cd60c1f0e95d2e75d1863e021da1a9ce402ca1d8a5e859d152cd391d4c9b71606c9d89ec4117beffe68c9991a7292e11a207acdaf7453e4385432af6204f2c7622a18ab65cea892bfa2990edb9c28bd2f661936b8c736670fd929fd9e869f5eba7b3c7a4be85ead60f1d684e76e2bd4b5ecea190fb565bd00f6b31e62fb62722ebc44727c7cb4f6e189941aef3055bb78336262793804c547c4839eefbc9611b76e32157d4f278ef3b82dfa74217fbce9ca88e44050c2e08ef1a1e8066b854a5a68b88ec6cc7fe745c87ff1624742dcebb1f292c7e23b7a3d562b4d19b44e62efaf244e665d48e35db4aa44fc29e8e40519c03b4d69e140e82d4eaa844562b00bfad23076f7adbb73bd4d9ae6419d81827d29e194132098e66eb3e973b4540428eb5143bc3a92ab44e65089dc9ff45fa368608e3583f410eafca0d1ae2ee61928085413a9feadf9ce27fad695f3c1e223c1d5b2898df8db7c2b8ec540ea4f842f36004f2d520ad4e9c4dba98099df069aa65ab29f3b348f0fa889506eb88be3eaa2e80035bf18f56d2008c4240007b4ef3719d03204f4e2cc102c797e1d3564c06fc555231e5f60bb810c266b1b31d02aa106dead06efa0d89fcbda7f946d09b9e552e18e54b8f4e3f230da448b990432ee7b940ac627ba824e310037800b270e33ba45e308979447209bd094ce99dfe1e50b2a468f275903b08af96385847c18380f3857e4d766ce1cd70be66fef6f2a832e89c2a407dc18add1eb90054e2683b9093db4b01f49c2f2eed348e875261c94f19548c5d1b7bf2b30dd81fc89a01070fd9614dc70054e5c09e41f37ea69bd05091d9703ff7524c334d4e8d8a74995f958ae7c02e859984e1a1da68f91d90f98d1c1327161e3bf6a0c922ba1804fb30b8c53e58992f41226aed710918a6f2404356d77eddc9da6eb7ba9fedbfa26a1223e2f74dda241d39bd5c2ae53519d850118c3cbbe5cb7c99f64a372e6e9fddbffa7546f2760f21a12b3d0d3ee48118393bd69dd21f26524e79ec5ea927b1d2fd04349e2fe406f31a9aa2c452eeda3b8dfbb1ed796f40a68bccdbe52609993152a4274c41c6ef6e6d7562e54c9165ef95581b938e811325b30fa4ead42f769f211e2f60c921261013795ed702796027a980ef9a709b2791bac16eff870582da31cb38f63bf5343c269ca29f9bbcba85a87d2e5eb1c7d0b46983f04f044af06ae67181156202d771cb336827e360e21a5fc4d16981100a97e3e5694c2cd5ecf5a0d2fc9f4214086e1fd8e3f85dd55a4fe57768def80128034d18b7dc38df381e5d5ab8fd20f22e28a376a03a9f551722bfa3f4b3668a38ee4fbe4efbe22286c0609cb4b51a9ae66d7fd36fd1765a38f6bc3ccaff3e4a9b613aab956d45ac37a494dc819d35f4749a25548a6f91037bcdea619b275a739cad269c4610fe41cd26dcb651a7be0d4bac9ef02fba5e984bb2ac56b70cf6d5458fbc4541bfea0d335f1da4f94474cec13e8d24c11db428d05f</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-</span>
-
-<p><span style="background-color: #ffaaaa">:%s&#x2F;p1&#x2F;p2&#x2F;g</span>将文件中所有的p1均用p2替换</p>
-<p><span style="background-color: #ffaaaa">:%s&#x2F;p1&#x2F;p2&#x2F;g</span>c替换时需要确认</p>
-<p><span style="background-color: #ffaaaa">s</span>:substitute替换</p>
-<p><span style="background-color: #ffaaaa">g</span>:global全局</p>
-<p><span style="background-color: #ffaaaa">c</span>:confirm确认</p>
-
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -625,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

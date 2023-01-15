@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="目录   第001节_u-boot分析之编译体验 第002节_u-boot分析之Makefile结构分析 第003节_u-boot分析之源码第1阶段 第004节_u-boot分析之源码第2阶段 第005节_u-boot分析之u-boot命令实现 第006节_u-boot分析_uboot启动内核  第001节_u-boot分析之编译体验  PC上window系统如何启动： PC-&gt;BIOS-&amp;">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第001课_U-boot分析与使用">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC001%E8%AF%BE_U-boot%E5%88%86%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="目录   第001节_u-boot分析之编译体验 第002节_u-boot分析之Makefile结构分析 第003节_u-boot分析之源码第1阶段 第004节_u-boot分析之源码第2阶段 第005节_u-boot分析之u-boot命令实现 第006节_u-boot分析_uboot启动内核  第001节_u-boot分析之编译体验  PC上window系统如何启动： PC-&gt;BIOS-&amp;">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/20140522192814781.png">
 <meta property="article:published_time" content="2023-01-15T12:55:06.487Z">
-<meta property="article:modified_time" content="2023-01-15T13:10:22.125Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/20140522192814781.png">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1k words
+          5.3k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          9 mins
+          44 mins
         
       </span>
     
@@ -275,59 +273,22 @@
             <h1 style="display: none">第001课_U-boot分析与使用</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>目录</p>
-<hr>
-<ol>
-<li>第001节_u-boot分析之编译体验</li>
-<li>第002节_u-boot分析之Makefile结构分析</li>
-<li>第003节_u-boot分析之源码第1阶段</li>
-<li>第004节_u-boot分析之源码第2阶段</li>
-<li>第005节_u-boot分析之u-boot命令实现</li>
-<li>第006节_u-boot分析_uboot启动内核</li>
-</ol>
-<p><strong>第001节_u-boot分析之编译体验</strong></p>
-<hr>
-<p>PC上window系统如何启动：</p>
-<p>PC-&gt;BIOS-&gt;引导操作系统windows-&gt;识别C、D盘-&gt;运行应用程序</p>
-<p>嵌入式系统启动与PC如何对应：</p>
-<p>嵌入式系统-&gt;bootloader-&gt;Linux内核-&gt;挂接根文件系统-&gt;运行应用程序</p>
-<p>bootloader最终目的：启动内核</p>
-<p>打补丁过程：解压缩、打补丁(patch -p？ &#x2F;…补丁文件)、配置(make 100ask24x0_config)、编译(make)</p>
-<p>编译完成后烧写到开发板，可进入uboot的命令行</p>
-<p>uboot最终目的：启动内核-&gt;从Flash读出内核，放到SDRAM，启动内核</p>
-<p>uboot要实现的功能：</p>
-<ol>
-<li>从Flash读出内核-&gt;写Flash从网卡或USB得到(为了开发方便)</li>
-<li>初始化SDRAM-&gt;初始化时钟,关闭看门狗(让系统运行更快)-&gt;初始化串口</li>
-<li>启动内核</li>
-</ol>
-<p>通过分析Makefile来分析uboot的功能和结构</p>
-<p><strong>第002节_u-boot分析之Makefile结构分析</strong></p>
-<hr>
-<p><strong>第003节_u-boot分析之源码第1阶段</strong></p>
-<hr>
-<p>第一阶段是硬件初始化</p>
-<p><strong>第004节_u-boot分析之源码第2阶段</strong></p>
-<hr>
-<p><strong>第005节_u-boot分析之u-boot命令实现</strong></p>
-<hr>
-<p>lds，重定位</p>
-<p><strong>第006节_u-boot分析_uboot启动内核</strong></p>
-<hr>
-<p>启动内核的两个命令：从Flash读出内核，启动内核</p>
-<p>从哪里读？从kernel读，这是个分区</p>
-<p>代码里写死分区，mtd查看分区，查看karnel分区从其中读出内核</p>
-<p>Flash上存的内核：UImage（压缩过的内核：头部+真正的内核）</p>
-<p>头部（64字节）里有in_load加载地址,in_ep入口地址等</p>
-<p>bootn：根据头部移动到合适的地方；启动：do_bootn_linux（在启动之前，1.uboot告诉内核一些启动参数-&gt;设置启动参数；2.跳到入口地址启动内核）</p>
-<p>1.uboot在某个地址以某种格式(TAG)保存需要给内核的数据，因为启动内核后uboot就不存在了</p>
-<p>三个参数：0，机器ID，启动参数所存地址</p>
-<p><img src="/image/20140522192814781.png" srcset="/img/loading.gif" lazyload alt="20140522192814781.png"></p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="4f35580bcf1a765e36c215343c0617fc544aded36bf57621164f6d4c384e4276">4630436162ade97ba2718b7d0c4b3b6334abbcf551598fe34a160f1b7448f2d0fc05cad78a572bc9de7bb2fdbcf96a785dd0744e8882b220a307b9e6833bfc0a8e3e8d0b425990a7d2eaba7788f9be46b606745567b4f8b029eb59ba0386d942865a522df7b881b2adb8a6d394e8aa4bbdb56227db682cef9f0efab4f62e2132ba6f4f22fffb10129b7403b55cce3bc4c1cb1a3316c3f95ba695364109cb2b780b94040f0cc0214f4c4f09bb7fdb5a370b298b90849e53967179da19c7f403d362cb6d20e692b8baecec7da0b35f5a9c7181d8f8bbb874607e5ccdd841c780e3d867cfd76c6e5135333b2285102816e19910ed5fa8622a3d9d142bdd24bb19c84e6285f905a11eb5f43caccafde2016813a369345393974db8c978ceeb13a4456e472f37d3152ef8fbd1975561ff712a51933d49ad30e51b2742b6668790899a115bb97f80c561217554e303558b4a486bed5362b42a392bc8c25034931d60e77e249ef95d78848c18b00d23195d862245dbea16fe5008de3dcd11a52829bf7a6a9a10b09566a417b4cb6ddaa6e2f1bf7250dcf6b851b51d5cbbab2f8d7b104276d9b02d47440e7265a49ca650e87bf9b7107b9db48ac1aad901efb15c4ec7a3851126a3bce745668cc5f0939a4bae0ff10871e674b1c7546191fd1a9cc1bebaba309d755a7c2c21a5004b65e32322c5575aeb2f16605668090d4910c9d9fdb9432d0e1bc92a058dcc2210f9e4170eda1c73d79e59bf129602a647a28e0fbd599f6f0e94dd81844242d405657731e12277ca055c311c507dba265d16e5c0b2ba49b227a5c029e0488535a4934a2413a61256cfa16a0e0cb122a748a18fad2ebb45fd6ab1b6a8bfde5cf972b857f2ab6635824cc5d0a239407c69f9fe36a02c1f9e94c2d61313c79349a71cb55b653b48aa1032b98bd171f2091493bea2549ccfc311969773bcfbe3f524161ddca4e7389942fd9fa486daa898e75a49a3f88f98397e39e127504335030fc1ba7135ca27e8ffcda949db4b54d46feb7b3d939c08a2b195985d1c71c93c74837369f3b5c3ca138dbd3f698c1e35ed279c6be8a1b979a4d577f8a7f5c35c2721595f4aa79bb381951755c3735ddd316fe573b1040446fbf242487908aec824b4f453a079d4ff21b15b603e932a608ae84949474a310e6fcdaa1eb438093a4a21258658d77cab680e03e9927dde657263f85b85054d440f1d4a9e92a59cd34dfa594f74b4fd02586d6f59c728f6fe3ae1ce4fb22936de581ddff83605e0e12d9ba91241977b33e22d6640191195b079cc1eb1f93bcd690a500c22a2d1cb08bf1217192a5ca7373cb982485ddb0f3cc724372b4372ee4b8576409618984db1187b69232957673e305321a31fdefa4e910cac40e153bcd5702fe338d98f7cea2178f65de14d9911a07a3f2c5d430e4f445d5bbf0b16bd44338d471e47e1f3c3f41d6c98292bab46f58fde0d5b742eb9036fedcca010f4050c49d69d8bf4219d7201a000b25c6e732ba1fd9b3c3176faf24c1356af2c938d429ed6777ffdf53629d10356181e48418a7923947bfd148f14fa01c1f472a98f8eb69d40d4f6b69d45f3585f1987f9c40b5448759ecdace234215ca3862375a1e9dc2446c3edaf51c14c6e6098388f309a50db59fb7c17d8bb24a9a3357bdbaa2b6be599b45ed5a2f7d237c5b711b339c289a60d125d72e04922e8f056dae7e5fbf8a341986122e52364852bc8d44603799411dfdaa8af9201639211d1c9dd7c114d9bd4753bebe2f073b4ad04b5547f9a456996c53c5df8357d8192a9916fd3ef9acff2ecac4abed7924772dbb6f5d184509c8eb3f25ec22036554874a2928e2efe018715ba75aa6f635c42526ef91be0cd8a93ee6f6f62cf96cf6ebc4b8565d8aee66b3578f0ed509ca1b4d381ed78a2c6f85f88656cb4a425a020f06837d50e9853e1284a84a8c0604ebc5201ffb09f56cc2342d06ba190e2cf2cea725d7a0b4e77e955290c07bd952b6915780e633aaef3d69f5d6b9c89a45bf331a1ae852e77ffb189c32f52767d74dedc55a64a8ea1bde102983db897eea108831a5ca98c285066c9bcd892cb82cf3333ee6c40acb0893066555d810d74ea995e9ede5ee24a7b36de7e01230fa43d10e8d91d80bbc692ebc2bfcd09fca8f499813acdfc0fb759f08ac2ed8631c80705d48035384e107591bc56281935df3c89fedc0fea30afe5b44261807d978fe1894fc46b5fcf7e293e6ee5ac1b20ababe4a98ca581865aec15c2a20b4900b4da8fd7c8817acf9f4ed93f337dbb8d285534edd76e81f3201a6a6c864215804b587c28ba0cec46e112731906f8d85a485e77b3b3bc0ac6e948d95592df965cc4690ffa6916955752199b55bd99ad53d3125c9476de8dcc94ac2c1b10afdfabde7687d288dbd06ca3aa26675f5d02ee123abfd295220cf7732a446e7e5917d83d12b80f8ae0b2356aa819a55cbb31a3f782a58200fe2ec13daf2be9b9a0daa7a204151dd2fab54af372566a9e6d16c2777d68f890eb7b71b4a6abd17efe2d66d02addee9293522a9ce15137d77b2186b61e73ae58c1dfb6053133379090fb7aedb31c10bcc0cc52b2d2b1e922e48d4f2c1598e5aaf522f30be1bb138978efe0df6eb93197d3605ca5c719188f0f74436996d61d588a3cbbae11d800f5a865f58afd44b56a3148fd901756a0a177841c001ad95980731930c767b122c241599d04c2d1d57742d9dcbf6d7ea87fef1138314cd9ab05de5b81976516843d9af052b6832e6b4f778f8a9eb513b6b3f9f9f8afe94bc3dd0407a1241c6977a85975c94f566d05ab6cee0852086a6234c2295432f7b781b80ff7f6f36971eaff2491549044d414b9fa6847c007d67f9b1948d820387ed1b86186272845a0aa91fe9bedd71adabb4136baf0e9221047be212f5888606c97f2ed30c8eb9f6fa010af33a1aced8f3f72e271d92e3930ed3b144ec142c6ad732c8ed2cfce689f22be8512b0f6a454ce57f256a7fa39776b8b1696ec4f482f0b7a71f2182aab1aa15a8a07900d0823024d7eb226a23eeb78ec7c8fde2be8eb00bd3d06e9095479565e4248d869c703ba86efef618d9d278d79610e358781992139b3d01630040e1322077fd31013c3e19efc9a89332bd829907c8ad14415d593f0311ed5f19d2de03bbec8ac34de0960df21d5b4256ec0c5b4c7057b0433a8704d6253675977d25f46adbede499f034b31eaa69b2e06ec5c9a041fcaa09dca26ed082351892f98036c468bdd6bc82c6164b77676801d463f1e1f3e121994a7dc503d6833e86daeb12bc0fd2a4c4438db7b04a10cd8486f03a96397bf14d71d65b4c1fa2238941a84fca0563a3ad878c978fa74a8d0586c607621acd547fba8203c14f7e0114b7ef1bed56b7ad4b148a4ac321688a391b965df3dd6190f26955eed3532e331a942d7da0f161fabb9bff2c076b8343c0b69796879ed58d98428ae93295b15451baa1cbcc2f3f2b8a284a9af8bbe9abaec86e36cbcf920df636c276cce027239cafc2656ad33fd60093a1b036b95e04d443f0fc2b830433177352e74e302b7d6d911c1a30ed962c09ef3d28bd24c7ac976952fec7e981758352faf6d1b3be9c3910690d5eff1015f5146cf9aa6f8b034313be9a4547ba270f6bd3fcf2e377559720d8999a813ce97e8449ab126bef133433b25e7203ea3fbbb83852c16</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -584,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

@@ -16,15 +16,15 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="链接地址： arm-linux-ld -Ttest 0x3000000 来指定了代码段的起始地址，也就是说代码的链接地址，就是在链接的是时候确立的。 存储地址： 我们编写的C代码，会被编译成汇编指令，在汇编阶段进一步变成机器码，最后加载到arm的内存中。即我们的汇编指令被存储在内存之中，而指令对应的地址，就是他的“存储地址”。其实“存储地址”的值，一直由pc这个寄存器所记载着。想改变“存储地址”的">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链接地址，存储地址的理解">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E9%93%BE%E6%8E%A5%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%AD%98%E5%82%A8%E5%9C%B0%E5%9D%80%E7%9A%84%E7%90%86%E8%A7%A3/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="链接地址： arm-linux-ld -Ttest 0x3000000 来指定了代码段的起始地址，也就是说代码的链接地址，就是在链接的是时候确立的。 存储地址： 我们编写的C代码，会被编译成汇编指令，在汇编阶段进一步变成机器码，最后加载到arm的内存中。即我们的汇编指令被存储在内存之中，而指令对应的地址，就是他的“存储地址”。其实“存储地址”的值，一直由pc这个寄存器所记载着。想改变“存储地址”的">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:59:58.027Z">
-<meta property="article:modified_time" content="2023-01-15T13:02:44.049Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          701 words
+          4.3k words
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          6 mins
+          36 mins
         
       </span>
     
@@ -273,20 +273,22 @@
             <h1 style="display: none">链接地址，存储地址的理解</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>链接地址：</p>
-<p>arm-linux-ld -Ttest 0x3000000 来指定了代码段的起始地址，也就是说代码的链接地址，就是在链接的是时候确立的。</p>
-<p>存储地址：</p>
-<p>我们编写的C代码，会被编译成汇编指令，在汇编阶段进一步变成机器码，最后加载到arm的内存中。即我们的汇编指令被存储在内存之中，而指令对应的地址，就是他的“存储地址”。其实“存储地址”的值，一直由pc这个寄存器所记载着。想改变“存储地址”的值直接改变pc好了（汇编指令和机器码是一一对应的，汇编其实就是机器码的助记符）</p>
-<p>他们之间的关系是什么？</p>
-<p>链接地址是指令应该运行的地方，也就是说，正常情况下指令的存储地址和链接地址应该是相同的，不然程序会出错。链接地址是在程序一开始链接时就已经确定了，目的就是规划整个程序，比如确定这个全局变量放在哪？那个静态又搁在哪？事前就确定好，那么到时程序访问的时候，就可以按照原先说好的位置去找他，那么这个“链接地址”就是我所说的“原先说好的位置”。而“存储地址”，就是“实际存在的位置”，如果说“原先说好的位置”和“实际存在的位置”不一样，那么出问题是必然的。</p>
-<p>但是为什么说是可能出问题呢？那就是说存在：即使“链接地址”和“存储地址”不一样，也不会出错的代码——位置无关码。例如一些相对跳转指令b，bl（首先他们得不会去访问一些全局变量或者是静态变量）他们只需要在当前位置加上偏移量即可，不需要一个确切的地址。也就是说他们根本用不到链接地址，那么自然也就不会出错了。</p>
-<p>为什么会存在两种地址？</p>
-<p>引出代码重定位：当我们打开电脑的时候，硬盘上的程序会加载到内存中运行，这就是代码重定位！“实际存在的位置”是硬盘，“原先说好的位置”是内存。</p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="a51e1aabcec2e8db43aae4928f291218a28c81093706cdf4d3dcefe54c9cc10f">4630436162ade97ba2718b7d0c4b3b63e49b539b8df71fae0d1f8cbf4a229d4caba83731df0fdfce4c6534fcfcf8b6fb5938d6799a46bac0dbd75cb6bd1f0f3fcf0130ea5c703f21c72dd73a8c52530da9063043812535a18c18e4414db08936942ce35c46f98d2955535e95cd3e6341b335d450e40909eabe627e659680976ac42d4fb37cf5802853e1cf78986b4fdfb27eaef5d6573e528874240bef21ccc567bb40963354b6d0b202d308df801e2be94f34db8fda46aadb4bd06dc0a9217377981484c9bda8b192cce59e6536b7e02e04bf5d45a82f3a9333956eebe435740f664f62fa28302d702a4e9b58db4ad519b73fa184679d6dc3623d9aefb8dab35dfb8389ff54d1252fef9da00d38657416fade07cb8c65ba6d9fd8bf5a7a29d0870ae4c96da49b060b44b0aef1885b7eab2aab41cfa131828fb374ba52ed34b43a1a7daa775cf5f33b1a6c40d39494391912adb8585e21c49026e9d85cc444023e50b04228c5cfa3e59d303cf28e4f7c044d4f932a44052094c59b7452b9ebaf89af3a33a517ca8a0906c6a0f208c6dd200d6f9523306632770569dd0e4d2eee29df775a316472b9a5730d697f29921a35f9d045722b0c5e1c1211cf1323a0017a719e9c9896b1c3e02058697295fc41ee43a99ccc1ccb423ee8df0a6af6ae0348c73522b93f27b07be51481fb434b181675eeef084b143a5362327f01cd1726f2dba128bc97568e6d9c2ee5bdf2e4ad0a3b3664b4bbd65079cf5ee31b043b4cfbb0ba4233fff7f1b87da907a5f2af178831b2572eb74c0be57597c24efa1b5cce4691cea0a948a2e4b689990287513f58f4e71e58bc0a9fd00fefaed50292b4813745f1041f42afb556215c1bbe9cb0adf6640563b63aef3dd864df6804bae8e46131b71da00edc3374e6b9d4932a9d179bc58df12c76afb84340e86b2f5363065f30d86d39471f7f570c3694efdf7332053ea3d70642c0092afe1e18dfbf5dd3ee94632bc5f76ad617bba37fbac4adba749ceb8cd616cf73ab92173d823a311d7810b120ff8ae4a3cd97b2b6cea8e07b3876b6e73fe49398b7fd39434e1884d017684e68045d55248facfd127b71392d0cb8b155e89cb4e280fd4c0eac5da183b34e4cc120168b55fd2c9c96c7b661141d2956b3b097ff7ec2ef0116a478f4dd2280c9de86ea011ff1e0407de84f81dc9af2cd6fcbcb103d8d6a905b9ea1d7cfb14db0eb81fb0aedfb31c9be0a69ae08167a6f67fba429696fdae20f168576866887d2a8cc3001c76a5388872d82f3bb686e8fc7ca3908fac1700867d569595e1e12de6c5fc0a7cff2b5b6dc71369d62b0aede736ca9881d686ec456fa825f43871827669d51806fae4fe24ca5096b8caba48bea7b91f21de62d3986098831d0e3857f66071732e28ea31dca3889e3900413bccfd1a0b4109430e4253c0c27cae9129f4f3c758c30466e5a81213400ae6b2bc9deea86ebc370317c56a4b4e813cdcece38677fd19a672789cb2d9258258d640d374106aee1a7ae5ea51ad8037652aaa5f10767c6a75023cefe41943b7b6992fa7a48f2bb7be9fc3fb3ce0345a0069bfd21a94ccf91400a4c06e938f79179ddad1674fb4586b988fcf8207becb3bd4a5877a296783da1af3c97c73be08d3cd1007cc97aaf12e29be8f4cc7afb8b30c4d0550cc9478e3454ba639733c8dec180fc277a4846934cf51e67405ab8b7e4abd5c12790c9040cc7c136def8111bdad836c7104113c17c9bc6bb9a4ba5635f3e0b28763afa84f027088cd1e64ae1d9aa8bb7a85f3bef5c666a976ad179587b2bf6bd53e1c41bff5804284193b2ec6b4bbf782f7e2eaff975247348269eca24e6f479826bce6d53d917cb0b53f2242956fa4da3af9cef183daeb790d6d5382085be804e49cd5a33929309527b84d69ce3c8a871c1ee2451a690ecaf6a94fab4e628a7ac2a0554983a0246731f2aa88e9182d7ae96a7523f7e021eeb4694acd406e1a7a146050b63717135c6af235b2edcc1b7cbd1039df4c291fe5feb312f49b55bc6e53a3f4f12c643497b30195a6df028fc7d0cd51dd70bfb308d0aa19f6c2c22d86490c932657f479424d6c550d85cf0111b8d979060bde7b4ef90d77113c08fac71d5310c3d0e5c41b61b9f4152603ec839c74febb62cf6f059bcca9581539358370f01c00c9f6f4f1cb2970d417e5f5e78b1a35cd58740600822479fec5270ef95da617198505d32490ab7719c15d0f682e4de6d9ca5675b75a64148f29e6a839a6ba397471593ab4f91a62b642c813ff257d1e86befa222b91f338047ff9821662fa8474141b0255162d047df0e951befa8d61930a446a2558ba996b8a5aceb2887f3554588e80b187d6d44e68030c5749b005e14473c0d4415ca7e01b4fdd4df71715ce7817f2a014a0c5427da48e6971ab44048ed8e3b17a39711ba1f942dd2d27965e82d8cd4142d8d911a609364f8ebf1282587f92e3eecf339816e81d5f26b862cabb528e23a9799d4f4fe19603cfadddca63ec3392272892c9a2d3d266fe797c83c70951701df2e2e70cf77f03156879f578efccb93bc6b8aa374c4010014d32c8bc58f780c8cbd1384c1227916d1fb8510a8aa92d995ef1c08744b2dbaa0e62a8f7dee4bf5a2298f4bcf56343df453652ec8a50a55f7e95e3ddfc85b805c391981a8767726f043d009c6997debc38918535401b940fda590874ea128e772ade071b6c9bf2e4d618aaed901ca0fba63479bcecf699e7aecb059e157aae0231eb3e24300b17e2847029beed82ba1943278a4d0ac533683aa58d272c14d3681c453f9a775de01ade4cbe1b14e4ef5fb68ac19cf232a6d0746181e01568a7d91d30523c21c7d7ae5531261d505028ddf70b96a54a6ce6344ad0c2e0ca8cd9e52c258342c6fd57bc2e06f24d88a6f8deec65c3aad2d13c8070d30ad278708df644b30b15d0e2153686789e425ba221f980a776063868728033ce7ba4f5beca62f870145714e772f3357</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -543,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   

@@ -16,21 +16,19 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="复习一下C语言中的指针 在64位机器中用八个字节表示指针，在在32位机器中用四个字节表示指针 &#x2F;* 第一步 : 所有变量都保存在内存中，我们打印一下变量的存储地址 *&#x2F; &#x2F;* 第二步：所有变量都可以保存某些值,接着赋值并打印 *&#x2F;     &#x2F;* 第三步：使用指针：1)取值  2)移动指针 *&#x2F;      &#x2F;&#x2F;&amp;#x3D">
+    <meta name="description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C语言指针复习">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E5%A4%8D%E4%B9%A0/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="复习一下C语言中的指针 在64位机器中用八个字节表示指针，在在32位机器中用四个字节表示指针 &#x2F;* 第一步 : 所有变量都保存在内存中，我们打印一下变量的存储地址 *&#x2F; &#x2F;* 第二步：所有变量都可以保存某些值,接着赋值并打印 *&#x2F;     &#x2F;* 第三步：使用指针：1)取值  2)移动指针 *&#x2F;      &#x2F;&#x2F;&amp;#x3D">
+<meta property="og:description" content="这有一个加密的内容，请输入密码后访问。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://godxqi.github.io/image/c%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E5%A4%8D%E4%B9%A0.jpg">
 <meta property="article:published_time" content="2023-01-15T12:59:57.997Z">
-<meta property="article:modified_time" content="2023-01-15T13:03:24.895Z">
+<meta property="article:modified_time" content="2023-01-15T14:03:14.506Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="未重构">
 <meta property="article:tag" content="嵌入式">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://godxqi.github.io/image/c%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E5%A4%8D%E4%B9%A0.jpg">
   
   
   
@@ -223,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          5.5k words
         
       </span>
     
@@ -234,7 +232,7 @@
         
         
         
-          11 mins
+          46 mins
         
       </span>
     
@@ -275,55 +273,22 @@
             <h1 style="display: none">C语言指针复习</h1>
             
             
-              <div class="markdown-body">
-                
-                <p>复习一下C语言中的指针</p>
-<p>在64位机器中用八个字节表示指针，在在32位机器中用四个字节表示指针</p>
-<p>&#x2F;* 第一步 : 所有变量都保存在内存中，我们打印一下变量的存储地址 *&#x2F;</p>
-<p>&#x2F;* 第二步：所有变量都可以保存某些值,接着赋值并打印 *&#x2F;    </p>
-<p>&#x2F;* 第三步：使用指针：1)取值  2)移动指针 *&#x2F;    </p>
-<p><img src="/image/c%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E5%A4%8D%E4%B9%A0.jpg" srcset="/img/loading.gif" lazyload alt="c语言指针复习.jpg"></p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>&amp;变量,目的：获得变量在内存中的地址</p>
-<p>      返回: 变量在内存中的起始地址</p>
-<p>结论：指针变量所存储的内容是所指向的变量在内存中的起始地址。</p>
-<p>小端模式：低字节--&gt;低地址        高字节--&gt;高地址</p>
-<p>0x12345678所以ia的地址由高到低保存为12,34,56,78</p>
-<p>    高--&gt;低</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>指针对连续空间进行操作时：</p>
-<p>1）取值   </p>
-<p>2）移动指针</p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p>指针加数值的问题</p>
-<p>抽象T *t; t是一个指针变量，里面装的是一个地址值。</p>
-<p>          经过t&#x3D;t+n(数值),t的值增加了n*sizeof(T)个字节，</p>
-<p>        </p>
-<p>char *pc;pc&#x3D;pc+1; sizeof(char)&#x3D;1字节,经过pc&#x3D;pc+1之后，pc加了1个字节  </p>
-<p>int *pi;pi&#x3D;pi+1;  sizeof(int)&#x3D;4字节,经过pi&#x3D;pi+1之后，pc加了4个字节      </p>
-<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;    </p>
-<p>char ca[3]&#x3D;{‘A’,’B’,’C’};</p>
-<p>char *pc &#x3D; ca;</p>
-<p>      pc是指向字符数组的字符指针,pc就是数组首元素的地址,pc&#x3D;&amp;a[0]</p>
-<p>char *pc&#x3D;”abc”;</p>
-<p>      pc是指向字符串的字符指针,pc就是字符串”abc”的首字符’a’的地址</p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
-<p>    </p>
+              
+              <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码不对呀，再试一遍吧" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="3bddb9edac7bf4ced1918d1b09dbaacece78b721aab59924dae68a2da7361c0f">4630436162ade97ba2718b7d0c4b3b63a145d85c070c0e4aa237f2aadb88f2d6847141d0889e004562a81854862736bf77f4ef0083d0a8cf072d725596ef0287ba71515f1054bfc08ea97f3dc627969c02b4ed199525d5c9fe39e837ca9260cb3b04d7bc99e8ce2d55bb93819ed1d8d04a59282a310c6f7e002bb74ebfdac656d9bdd9d5bfa198032b24dec3958adc8230679ec28fdae0b4adc11674e18df7ca30107c5bba42cf1f66ac44db2919f77c69211309264d4878c6d6dd3fa05c4c0a70d954b83d079c1314beb5de6904ad06675b2b09e7af8783dee777a0e2255c6eb9692b45bdfcbc595d1a502bd6f80c628e0de777005d23740e981c28253a46d9953a0e8fd5a3939d09522b2c69cb421d5f546e2f5c28676d834fe88474867f649b5e124375760f31e3709b401c221dc35c55a35a005eb80f794e9fc4acdaf576cb3077906a16e551f93e6a18406680080f79c80dfc13ca38fb0042fb1380e31a23614796e210d186dd228664b1ad4747383990f77672c9d341b476aa4b9b3d32d9f324eee6715ac92599b16e0f3aac7dd270d7be99cd1ce5f6b4eadb43e840ab22e740d222098640a7eb4403674435525a938bb6e1941de60c95f036c157212c69a93bf5ce254cc3a7b09e4d51a2aae42e34886a17a46eabd13c5ed91148db3377de15a46a0693b602e888d9c40dd0ad2f27e3bde8bc2e17dadbd579cc60807cb5e95bee8bd4c46ba255672f30025059777b5c4f590285d2d0d681eab0cc4a1ba3e8b219ae7e4f45618ce8eb21d4289ac4093ed1c1e9076ca1a43fc77b05c0fd0b58529a575c04912dd2c9dc7768b4791d8241cf7a007e3ea9bf2f5c89c53f09091ce89e88b3ef68dfe3c4928c56e4094da37a4ef011e7f29614044738eacb7e37d81819f9f83e51a67c36ca706a0eab347c794ff16c7859d9746fb8793f58ee6f66245d89c0a7c1ffc244d6210e0b74c16df73bd1c0df2b83902dd3d0b6d2046c3fc55b9b74fff8c3e9680f89d5e5c06bfc33ffce8aabcff6f51c95e953e035556abff60231ab4ca4923f772ceb7a3eed180bd45851906efd5e8402f1e59fb52e74462e7ef0a3197ba5e3426b2c2d8b827f7dc3e5e9d7fdf053ddcc6812c3b1a5cee834a9b7e81149bec0f2e594bd7e73eccb21438391ea0eb7a54a2b1097dc6b9feaddf535880884510462d5c0e2e666ad02b9220e2ced90a55a789b604b762f6400f101dc705b861c4ee615cbb7a65e4d551fe911e6a65cdb6e311af624ea45bfdf10c61290ff86c587adafb57e74f2e36f16124acc65f9afb3cf9900b57e419064c2111f66a4d1c6db0667a304ef6c519937169925e3ff50d11cc193dc46c2ca7ef8a5881b73dfa34a6d639efe727ff4f62a07e55c67e744c237536a3f19eb614fa4222189626270bbdf1263bfdd7d53255a7d908f947c697236487eca91217cbb58e3b075a2f4dd688a442f8ff62412ea82255e6bdf504642e8f65c792d02bb4902fe9a4169789d356f79d7c1caaf64a7dce8df224540ee708b12f770966d64885e3b519f63cfa61e695c1a98d2e3852bc2ac8bd730fefb93b120e6f62adbc90e891c406689e0c8cbea1f519a26a419b22ee661f7433822eac606004df021de236a93aaba7bc617ec8274d7e8a541c8973d221b3e4c843529b996b89636f01f2447c7ab90d841e2d430e70f5c8d95448f41435cb03dd15afa4daddd854460301d2130d34bffbc8f04f9b51975684d7516a515b056c83ab63d9c07c2c85c23a7bbbb0e06b9d39410d3ebe54f0c6eececa06ca70b80e0128f8f3be7be660c5b1b8ad1be6d0ce90a76ee8bda0c5891ba882488a5d2b7f7a9ec711c761401c1e0322d9558c7b4e13a25c8202e593602d3253cfa34fd6f3dd9adace592d4fdbf623afebb4b530b7bd7ecd7a6e4c1c668c372d128c7e43f26357bddb2e3f9754c6bc9de6256ed821cd9548513f137aaa4083e86b03f29c4583030923e7dc4d3f0e2ff43a3355cb46f09461922af593c834533e3e18620f4163385f9eaa0dcf20942fac49749c73e6b58e7477330f3ec70bc5f26315c1cb85f35f8bf9407ea938c991cd81dbb792e218b4f6b42bc16f880604eea53d3930bee8f4c7d15dba49ca6d7bc29b58b3bce3ec2afce7a7d33c7d27f8f2e5eb90507bcb54fc4e00f9990ce3a503945a559231c0dfffbad9d907a79928e5dab0b8997822fc97247eff7a57e78e67ba5287913af3a6e85a9564fb7e5b8e44a154b433175ac109644f8327b6023d414d18532f7d8ddde424e9ad6b282ced494f22989e4c4cfe0cded071a6df92d0b08e869b50666cab8ef67023e401a676b6c06a840254786ad5dee71dd5c8c1a58cbac4d75485c3ffa38316cf56901181f8589169a8b38a980215853006689a09ac2228f8f3fda85a2a608587f4b60321518c485e817a37253bd69868c50783ee90335f029463ffd7a46f78bcd1d6af4205f3a25556f65c69b18865131e175c5128ef0ba5e10f01c739af06bd52b6ac209db7f4bed10a511e657cafd15211fb9685b80af88e07bb5ab4db57cbc23bcc1250289260b421403f108692e13c9507d0585d13dd1d5ca48730e94d97de8cd8d33cb97cb87d8dbaff116470949f9598f7cd60035cafb7f6c421030af1eb40e3db541132a2de7951d3362aeaff4ee0622c09aadaf9698dd870aca582150a7fb7025f4b21e6ff2671925a684e3bd5f92def19baa0af7246063a6910d1724264a900a51bd20af19b7ef54ea5f465786f2e243c9df38add509a77c9883410f816f5001852fd0da2313593c1f535864e8babc3fed46e477d8941f9715438ff2bf6c73c7ae3360730dd54589ec4508ad2f549741fc684ece7e0e5a43854c2aa63acf17985d213b0ce4b8228d55d3cd11b207013e8452557ce50ed544090008f1bfdf649124080032bb9b2e2c9cdf88b204c516513168debcd10bcd0fd4431caa19942dc8973231e7f6531d5ec2fc37c84a4aeb39fa2a5ef6c83a742808a23e3c7ffe8e2eb80645f8d97b09533b4b0e56927fc063507d2a1ef5ded1c302fd3f46125959ab72fea3259413637e0990527aaaa97c553ec51708deaf864410e9e82314b5027eae6df73da5ccea2f1b5158c93935a28f874a3f6ee91c750142fe0b2c4779de641dc06d242dc200ae1798d815a279edc15fdedd1526ace54aea01c06b8039530490c59c5bde03536beda25958995adb156698cee15c0bc9c0472c1cb209f4a5702d7b0883acc9d85353537c472ac8048f95fb3febd3a26b04be691134a15ee019e1f722e2401f2279cc78edcbc258e2146336d95be181342115baded785d56e9917366bc213e5370fc6c759a0968486c331e8d58087d396864aa7e460463dec283c63859e221a37cb65ebb3e77cb74a349401d8b0ccd457e045e68ffa8613b54107ece10c96958c8fef316f7b12d38974cd94bf07bd4de697eb3e94ea358b471d13272ed28ad87c2fd5c93cc8c147aed52be42703b660039a335d90d736747a6291587969cc0dc926b29f7726007f9e23533c7abaec9e9a6be0c1a9a0e9ab7fc577a38dc38c4f3101f725353455602248e9087bbd1ba3bdd472c09865d43dcad40fdfc456aacdd07c5284e115c961058f2b0a6bcf7e37bc69f8c0a8180175798d2c35a6c64baf34b341adb5ccf8104d8930dc1a72341655017b38d2fa750eb117c287f584a6e92fbacb92277bec247f2e9b28dfef5e2984dccd80b8811f32bfc133e469dd319d89383ba5e125e2eb4ded64dac6ba8fa17cae0d9170fb5ceb258afaa3fdbfd0459d948f9f4fb647a3130712b1b95f45a78edb48081d6523c15a11175b716778a12a73c5551c7129c8</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="嗨哥们，这东西还在加工，如果你想访问，请输入密匙。">嗨哥们，这东西还在加工，如果你想访问，请输入密匙。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+              
 
-                
-              </div>
+              
             
             <hr/>
             <div>
@@ -580,6 +545,23 @@
   
 
 
+
+
+  
+  <script defer>
+    if (document.getElementById('hbePass')) {
+      Fluid.utils.waitElementLoaded('hbe-prefix', function() {
+        var hbePrefix = document.querySelector('hbe-prefix');
+        hbePrefix.parentElement.classList.add('markdown-body');
+        Fluid.utils.retry(function() {
+          if (Fluid.boot && Fluid.boot.refresh) {
+            Fluid.boot.refresh();
+            return true;
+          }
+        }, 100, 10);
+      })
+    }
+  </script>
 
 
   
