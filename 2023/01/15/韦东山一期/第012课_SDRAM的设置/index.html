@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2440接了24M的SDRAM，需要设置下内存控制器才能用起来 SDRAM的存储结构：  每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址 所有信号都由内存控制器发出  设置相关寄存器： 1.BWSCON &#x3D; 0x2200 0000 只接了片选6，所以DW7，WS7，ST7都不用管，但最终设">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第012课 SDRAM的设置">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC012%E8%AF%BE_SDRAM%E7%9A%84%E8%AE%BE%E7%BD%AE/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="2440接了24M的SDRAM，需要设置下内存控制器才能用起来 SDRAM的存储结构：  每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址 所有信号都由内存控制器发出  设置相关寄存器： 1.BWSCON &#x3D; 0x2200 0000 只接了片选6，所以DW7，WS7，ST7都不用管，但最终设">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/dae62d1fdc319f2ac2167dc185c4caa7.png">
+<meta property="og:image" content="https://godxqi.github.io/image/15565f1909098b3b52be45a50d948c07.png">
+<meta property="og:image" content="https://godxqi.github.io/image/597b9f1d13d4a7e77cb0215708b69391.png">
+<meta property="og:image" content="https://godxqi.github.io/image/7339344d703256b62499b90713ec6f82.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f8b60a0ab968680ab8698b2bd9b44dd6.png">
+<meta property="og:image" content="https://godxqi.github.io/image/1512529429d4993a111d17909a657cae.png">
+<meta property="og:image" content="https://godxqi.github.io/image/bfa48d2079cd25642b952d2917bc894b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/fbbe816a4a3b78c9316d96d6ba57258a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/6afe43beccfe1f7128c0c82b5c5cbf5d.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ec2cf2a259c484c50f8b61801086e0b7.png">
+<meta property="og:image" content="https://godxqi.github.io/image/7aff4e2089351b0c7e9554d17498bded.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ff72d9096e10366884193da920b7014c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/55c28c57846b923a164b465cff6b05f3.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.010Z">
+<meta property="article:modified_time" content="2023-01-15T13:00:55.645Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/dae62d1fdc319f2ac2167dc185c4caa7.png">
+  
+  
+  
+  <title>第012课 SDRAM的设置 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第012课 SDRAM的设置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          930 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第012课 SDRAM的设置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>2440接了24M的SDRAM，需要设置下内存控制器才能用起来</p>
+<p>SDRAM的存储结构：</p>
+<p><img src="/image/dae62d1fdc319f2ac2167dc185c4caa7.png" srcset="/img/loading.gif" lazyload alt="dae62d1fdc319f2ac2167dc185c4caa7.png"></p>
+<p>每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址</p>
+<p>所有信号都由内存控制器发出</p>
+<p><img src="/image/15565f1909098b3b52be45a50d948c07.png" srcset="/img/loading.gif" lazyload alt="15565f1909098b3b52be45a50d948c07.png"></p>
+<p>设置相关寄存器：</p>
+<p>1.BWSCON &#x3D; 0x2200 0000<img src="/image/597b9f1d13d4a7e77cb0215708b69391.png" srcset="/img/loading.gif" lazyload alt="597b9f1d13d4a7e77cb0215708b69391.png"></p>
+<p>只接了片选6，所以DW7，WS7，ST7都不用管，但最终设置时需要设置为与BANK6一样的数据</p>
+<p>DW6：我们使用两个16位芯片组成一个32位芯片，设为10</p>
+<p>WS6：假设该内存芯片的读写速度非常慢，当CPU发出读写命令之后，内存控制器开始驱动引脚，在这些时间之内还是没准备好数据，这时内存芯片就可向2440&#x2F;内存控制器发出一个nWAIT信号，请求多点时间；我们这里用不到</p>
+<p>ST6：nBE[3:0]读写某个字节时决定是否操作byte</p>
+<p>         nWBE[3:0]写某个字节时决定是否真正写入</p>
+<p>        该内存是32位的，内存控制器读到的也是32位的数据，它会挑出你需要的字节，所以不需要ByteEnable来屏蔽某个byte</p>
+<p>        故设为0</p>
+<p>2.BANKCON6 &#x3D; 0x18001</p>
+<p><img src="/image/7339344d703256b62499b90713ec6f82.png" srcset="/img/loading.gif" lazyload alt="7339344d703256b62499b90713ec6f82.png"></p>
+<p><img src="/image/f8b60a0ab968680ab8698b2bd9b44dd6.png" srcset="/img/loading.gif" lazyload alt="f8b60a0ab968680ab8698b2bd9b44dd6.png"></p>
+<p>MT用来确认接的是什么，SDRAM设为11</p>
+<p><img src="/image/1512529429d4993a111d17909a657cae.png" srcset="/img/loading.gif" lazyload alt="1512529429d4993a111d17909a657cae.png"></p>
+<p>            SCAN：所选芯片列地址为几位？</p>
+<p><img src="/image/bfa48d2079cd25642b952d2917bc894b.png" srcset="/img/loading.gif" lazyload alt="bfa48d2079cd25642b952d2917bc894b.png"></p>
+<p>            Trcd：先发行地址再发列地址，它们之间有个delay，这个delay可以在芯片手册中查                  到；保险起见选个最大的20ns</p>
+<p>            若2440HCLK &#x3D; 100MHZ，T &#x3D; 10ns，则Trcd &#x3D; 2 clocks &#x3D; 00</p>
+<p><img src="/image/fbbe816a4a3b78c9316d96d6ba57258a.png" srcset="/img/loading.gif" lazyload alt="fbbe816a4a3b78c9316d96d6ba57258a.png"></p>
+<p>3.刷新寄存器：SDRAM中你需要不断地刷新它，不然数据会丢失</p>
+<p><img src="/image/6afe43beccfe1f7128c0c82b5c5cbf5d.png" srcset="/img/loading.gif" lazyload alt="6afe43beccfe1f7128c0c82b5c5cbf5d.png"></p>
+<p>Trp：在芯片手册中搜索，得出最小值18，最大值20；HCLK是100MHZ，周期为10ns，故可以设置为2clocks &#x3D; 00</p>
+<p>Tsrc：在芯片手册中搜索，得不出值，得到Trc&#x3D;Tsrc+Trp;</p>
+<p>          搜索Tsrc取最大值70；70ns &#x3D; Tsrc + 20； Tsrc &#x3D; 50ns；设置01</p>
+<p>4.BANKSIZE &#x3D; 0xb1</p>
+<p><img src="/image/ec2cf2a259c484c50f8b61801086e0b7.png" srcset="/img/loading.gif" lazyload alt="ec2cf2a259c484c50f8b61801086e0b7.png"></p>
+<p>5.MRSRB6 &#x3D; 0x20</p>
+<p><img src="/image/7aff4e2089351b0c7e9554d17498bded.png" srcset="/img/loading.gif" lazyload alt="7aff4e2089351b0c7e9554d17498bded.png"></p>
+<p>CL：查询芯片手册，可以是2或3<img src="/image/ff72d9096e10366884193da920b7014c.png" srcset="/img/loading.gif" lazyload alt="ff72d9096e10366884193da920b7014c.png"></p>
+<p><img src="/image/55c28c57846b923a164b465cff6b05f3.png" srcset="/img/loading.gif" lazyload alt="55c28c57846b923a164b465cff6b05f3.png"></p>
+<p>把MRSR中的CL设置成3，它就会向SDRAM发出指令信号来设置MR，使得里面的CL等于3</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第012课 SDRAM的设置</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第012课_SDRAM的设置/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC010%E8%AF%BE_ARM%E8%8A%AF%E7%89%87%E6%97%B6%E9%92%9F%E4%BD%93%E7%B3%BB/" title="第010课 ARM芯片时钟体系">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第010课 ARM芯片时钟体系</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC009%E8%AF%BE_gcc%E5%92%8Carm-linux-gcc%E5%92%8CMakefile/" title="第009课_gcc和arm-linux-gcc和Makefile">
+                        <span class="hidden-mobile">第009课_gcc和arm-linux-gcc和Makefile</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

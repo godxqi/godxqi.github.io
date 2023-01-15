@@ -16,21 +16,23 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Linux内核中的指针函数返回错误码在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    &#x2F;*">
+    <meta name="description" content="在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    &#x2F;* 4k *&#x2F;#define IS_ER">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GODXQI&#39;s Blog">
+<meta property="og:title" content="Linux内核中的指针函数返回错误码">
 <meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E9%94%99%E8%AF%AF%E7%A0%81/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="Linux内核中的指针函数返回错误码在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    &#x2F;*">
+<meta property="og:description" content="在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    &#x2F;* 4k *&#x2F;#define IS_ER">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-15T12:19:10.752Z">
-<meta property="article:modified_time" content="2021-03-21T02:50:12.000Z">
+<meta property="article:modified_time" content="2023-01-15T12:45:27.629Z">
 <meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="未重构">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>GODXQI&#39;s Blog</title>
+  <title>Linux内核中的指针函数返回错误码 - GODXQI&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="Linux内核中的指针函数返回错误码"></span>
           
         </div>
 
@@ -268,12 +270,12 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">Linux内核中的指针函数返回错误码</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Linux内核中的指针函数返回错误码"><a href="#Linux内核中的指针函数返回错误码" class="headerlink" title="Linux内核中的指针函数返回错误码"></a>Linux内核中的指针函数返回错误码</h1><p>在linux内核中，一个返回指针的函数如何表示错误返回呢？</p>
+                <p>在linux内核中，一个返回指针的函数如何表示错误返回呢？</p>
 <p>首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。</p>
 <p>内核中：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_ERRNO    4095    <span class="hljs-comment">/* 4k */</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> IS_ERR_VALUE(x) unlikely((x) &gt;= (unsigned long)-MAX_ERRNO)  <span class="hljs-comment">/* &gt;=0xfffff001 */</span></span><br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> *<span class="hljs-title">ERR_PTR</span><span class="hljs-params">(<span class="hljs-type">long</span> error)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span> *) error;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">long</span> <span class="hljs-title">PTR_ERR</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *ptr)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-type">long</span>) ptr;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">long</span> <span class="hljs-title">IS_ERR</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *ptr)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">IS_ERR_VALUE</span>((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)ptr);<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -289,6 +291,36 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C%E8%AF%AD%E8%A8%80/" class="category-chain-item">C语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C</a>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+    </div>
   
 </div>
 
@@ -298,7 +330,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>Linux内核中的指针函数返回错误码</div>
       <div>https://godxqi.github.io/2023/01/15/C语言/Linux内核中的指针函数返回错误码/</div>
     </div>
     <div class="license-meta">

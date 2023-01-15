@@ -1,0 +1,918 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录   第001节_NAND_FLASH操作原理 第002节_NandFlash时序及初始化 第003节_NandFlash的芯片id读取 第004节_NandFlash的数据读取 第005节_NandFlash的擦除与烧写  第001节_NAND_FLASH操作原理  NAND FLASH原理图   上图是常见的Nand Flash所拥有的引脚（Pin）所对应的功能，简单翻译如下：  I&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第016课 Nand Flash">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC016%E8%AF%BE_Nand_Flash/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="目录   第001节_NAND_FLASH操作原理 第002节_NandFlash时序及初始化 第003节_NandFlash的芯片id读取 第004节_NandFlash的数据读取 第005节_NandFlash的擦除与烧写  第001节_NAND_FLASH操作原理  NAND FLASH原理图   上图是常见的Nand Flash所拥有的引脚（Pin）所对应的功能，简单翻译如下：  I&amp;#x">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter16_lesson1_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/1362557976_6234.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson1_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson1_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson1_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b428c25bb72b17946d079bda117732a9.png">
+<meta property="og:image" content="https://godxqi.github.io/image/e9c3be8df1635af51e589f2cbd77fcfe.png">
+<meta property="og:image" content="https://godxqi.github.io/image/17872e17638863d18976f28271831714.png">
+<meta property="og:image" content="https://godxqi.github.io/image/0b748ab15390630340f243d91daecb6d.png">
+<meta property="og:image" content="https://godxqi.github.io/image/d497bd3b8615bb3eac96f71a3e6ea6c8.png">
+<meta property="og:image" content="https://godxqi.github.io/image/d33a0a9998f2792809115551a64706c8.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8e2ccf915757eee6d476d74390c8a486.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a4e9577f5d4e4bde439169397cf0543e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/38396d514bbadd73fcf35b6675312557.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b497bd21815bb8296a0d5243ad82311a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson2_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson2_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson2_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson2_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson2_005.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson2_006.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson3_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson3_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson4_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter16_lesson4_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson4_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson4_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson4_005.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson5_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter16_lesson5_002.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.014Z">
+<meta property="article:modified_time" content="2023-01-15T13:01:22.093Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/Chapter16_lesson1_001.png">
+  
+  
+  
+  <title>第016课 Nand Flash - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第016课 Nand Flash"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          112 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第016课 Nand Flash</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>目录</strong></p>
+<hr>
+<ol>
+<li>第001节_NAND_FLASH操作原理</li>
+<li>第002节_NandFlash时序及初始化</li>
+<li>第003节_NandFlash的芯片id读取</li>
+<li>第004节_NandFlash的数据读取</li>
+<li>第005节_NandFlash的擦除与烧写</li>
+</ol>
+<p><strong>第001节_NAND_FLASH操作原理</strong></p>
+<hr>
+<p>NAND FLASH原理图</p>
+<p><img src="/image/Chapter16_lesson1_001.png" srcset="/img/loading.gif" lazyload alt="Chapter16_lesson1_001.png"></p>
+<p><img src="/image/1362557976_6234.jpg" srcset="/img/loading.gif" lazyload alt="1362557976_6234.jpg"></p>
+<p>上图是常见的Nand Flash所拥有的引脚（Pin）所对应的功能，简单翻译如下：</p>
+<ul>
+<li>I&#x2F;O0 ~ I&#x2F;O7：用于输入地址&#x2F;数据&#x2F;命令，输出数据</li>
+<li>CLE：Command Latch Enable，命令锁存使能，在输入命令之前，要先在模式寄存器中，设置CLE使能</li>
+<li>ALE：Address Latch Enable，地址锁存使能，在输入地址之前，要先在模式寄存器中，设置ALE使能</li>
+<li>CE#：Chip Enable，芯片使能，在操作Nand Flash之前，要先选中此芯片，才能操作</li>
+<li>RE#：Read Enable，读使能，在读取数据之前，要先使CE＃有效。</li>
+<li>WE#：Write Enable，写使能,在写取数据之前，要先使WE＃有效。</li>
+<li>WP#：Write Protect，写保护</li>
+<li>R&#x2F;B#:Ready&#x2F;Busy Output,就绪&#x2F;忙,主要用于在发送完编程&#x2F;擦除命令后,检测这些操作是否完成,忙,表示编程&#x2F;擦除操作仍在进行中,就绪表示操作完成.</li>
+<li>Vcc：Power，电源</li>
+<li>Vss：Ground，接地</li>
+<li>N.C：Non-Connection,未定义，未连接。</li>
+</ul>
+<p>NAND FLASH是一个存储芯片</p>
+<p>那么: 这样的操作很合理”读地址A的数据，把数据B写到地址A”</p>
+<p><strong>问1：原理图上NAND FLASH和S3C2440之间只有数据线，怎么传输地址？</strong></p>
+<p>答1：复用，在DATA0～DATA7上既传输数据，又传输地址当ALE为高电平时传输的是地址，</p>
+<p>那么在数据线上是不是只传输数据和只传输地址呢？</p>
+<p>我们参考NAND FLASH的芯片手册可以知道，对NAND FLASH的操作还需要发出命令，下面有个NAND FLASH的命令表格</p>
+<p><img src="/image/800px-Chapter16_lesson1_002.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson1_002.png"></p>
+<p>左边是可执行的命令，右边是需要进行的操作</p>
+<p><strong>问2：从NAND FLASH芯片手册可知，要操作NAND FLASH需要先发出命令怎么传入命令？</strong></p>
+<p>答2：在DATA0～DATA7上既传输数据，又传输地址，也传输命令：</p>
+<ol>
+<li><p>当ALE为高电平时传输的是地址。</p>
+</li>
+<li><p>当CLE为高电平时传输的是命令。</p>
+</li>
+<li><p>当ALE和CLE都为低电平时传输的是数据。</p>
+</li>
+</ol>
+<p><strong>问3： 数据线既接到NAND FLASH，也接到NOR FLASH，还接到SDRAM、DM9000等等</strong></p>
+<p><strong>那么怎么避免干扰？</strong></p>
+<p>答3：这些设备，要访问之必须”选中”，没有选中的芯片不会工作，相当于没接一样。</p>
+<p><strong>问4：假设烧写NAND FLASH，把命令、地址、数据发给它之后，NAND FLASH肯定不可能瞬间完成烧写的，怎么判断烧写完成？</strong></p>
+<p>答4：通过状态引脚RnB来判断：它为高电平表示就绪，它为低电平表示正忙</p>
+<p><strong>问5：怎么操作NAND FLASH呢？</strong></p>
+<p>答5：根据NAND FLASH的芯片手册，一般的过程是：</p>
+<p>a. 发出命令</p>
+<p>b. 发出地址</p>
+<p>c. 发出数据&#x2F;读数据</p>
+<p>看上面的命令表格，不容易看，我们看一下读ID的时序图，</p>
+<p><img src="/image/800px-Chapter16_lesson1_003.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson1_003.png"></p>
+<p>每个NAND FLASH都内嵌一些ID(譬如：厂家ID，设备ID)，时序图从左往右看，纵向放是一列一列的看。</p>
+<p>这个时序图是针对Read ID这个操作的，从图中可以看出在发出第一个命令90h之前，需要使能CLE引脚，说明你将要通过I&#x2F;O复用端口发送进入Nand Flash的是命令；还要使能CE引脚，因为你既然要向Nand Flash发命令，那么先要选中它；还有使能WE引脚，因为接下来是往nand Flash里面写命令；然后发出90h这条命令说明我们要使用Read ID操作，然后使能ALE引脚，说明我们接下来输入的数据是一个地址(<span style="background-color: #ffaaaa">输入要读的是哪个地址</span>)，发出00h这个数据了然后就可以读数据了，可以看到RE引脚使能，在I&#x2F;Ox引脚(即八条数据线)上得的数据第一个是ECh，第二个是Device Code………</p>
+<p>tAR,tREA是操作时序</p>
+<p>2440和外设连接的简易图，如下图所示</p>
+<p><img src="/image/800px-Chapter16_lesson1_004.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson1_004.png"></p>
+<p>对于s3c2440来说，内部集成了一个NAND FLASH控制器，s3c2440内部的nand flash控制器 做了大部分的工作，你需要做的基本就是设置 几个时间参数而已。然后nand flash会自动进行这些时序操作。当然如果处理器上没有集成 nand flash的控制器 那么久必须要自己来写时序操作了</p>
+<p>NAND FLASH控制器，帮我们简化了对NAND FLASH的操作，下面来分析一下不使用NAND FLASH控制器和使用NAND FLASH控制器对外设NAND FLASH的操作。</p>
+<p><strong>发命令：</strong></p>
+<p><img src="/image/b428c25bb72b17946d079bda117732a9.png" srcset="/img/loading.gif" lazyload alt="b428c25bb72b17946d079bda117732a9.png"></p>
+<p><strong>发地址：</strong></p>
+<p><img src="/image/e9c3be8df1635af51e589f2cbd77fcfe.png" srcset="/img/loading.gif" lazyload alt="e9c3be8df1635af51e589f2cbd77fcfe.png"></p>
+<p><strong>发数据：</strong></p>
+<p><img src="/image/17872e17638863d18976f28271831714.png" srcset="/img/loading.gif" lazyload alt="17872e17638863d18976f28271831714.png"></p>
+<p><strong>读数据 ：</strong></p>
+<p><img src="/image/0b748ab15390630340f243d91daecb6d.png" srcset="/img/loading.gif" lazyload alt="0b748ab15390630340f243d91daecb6d.png"></p>
+<p>写脉冲：WE 读脉冲：RE</p>
+<p>用UBOOT来体验NAND FLASH的操作：</p>
+<p>1). 读ID</p>
+<p><img src="/image/d497bd3b8615bb3eac96f71a3e6ea6c8.png" srcset="/img/loading.gif" lazyload alt="d497bd3b8615bb3eac96f71a3e6ea6c8.png"></p>
+<p>.b 一字节  .w 两字节  .l四字节</p>
+<p>下图是读操作时序图</p>
+<p>对于存储为256M的NAND FLASH，需要28条地址线，来表示这个地址值，根据原理图可以，只用8根地址线，所以需要4个周期的地址，为了兼容更大容量的NAND FLASH，要发出5个周期的地址：（如下图所示）</p>
+<p><img src="/image/d33a0a9998f2792809115551a64706c8.png" srcset="/img/loading.gif" lazyload alt="d33a0a9998f2792809115551a64706c8.png"></p>
+<p><img src="/image/8e2ccf915757eee6d476d74390c8a486.png" srcset="/img/loading.gif" lazyload alt="8e2ccf915757eee6d476d74390c8a486.png"></p>
+<p><img src="/image/a4e9577f5d4e4bde439169397cf0543e.png" srcset="/img/loading.gif" lazyload alt="a4e9577f5d4e4bde439169397cf0543e.png"></p>
+<p>因为现在是0地址，所以五个地址都是C0</p>
+<p>2). 读数据</p>
+<p><img src="/image/38396d514bbadd73fcf35b6675312557.png" srcset="/img/loading.gif" lazyload alt="38396d514bbadd73fcf35b6675312557.png"></p>
+<p><strong>第002节_NandFlash时序及初始化</strong></p>
+<hr>
+<p><img src="/image/b497bd21815bb8296a0d5243ad82311a.png" srcset="/img/loading.gif" lazyload alt="b497bd21815bb8296a0d5243ad82311a.png"></p>
+<p>一般一个块&#x3D;64个页</p>
+<p>NAND FLASH控制器的时序，是为了让NAND FLASH外设工作起来，假如外接不同的 NAND FLASH外设，那么它的操作时序可能就会不同，所以NAND FLASH控制器发出 的时序图，就是不一样的，所以我们根据NAND FLASH外设要求的时序来设置NAND FLASH控制器，</p>
+<p><img src="/image/800px-Chapter16_lesson2_001.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson2_001.png"></p>
+<p>NAND FLASH时序图，如下所示：</p>
+<p><img src="/image/800px-Chapter16_lesson2_002.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson2_002.png"></p>
+<p><img src="/image/800px-Chapter16_lesson2_003.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson2_003.png"></p>
+<p><img src="/image/800px-Chapter16_lesson2_004.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson2_004.png"></p>
+<p>我们在汇编语言中已经设置HCLK为100MHZ，一个周期T &#x3D; 1000&#x2F;100 &#x3D; 10ns</p>
+<ul>
+<li>①表示我们在发出CLE&#x2F;ALE信号之后再过多长时间才能发出写使能，即TACLS的值。<ul>
+<li>在4.1这个表中我们可以看到这个时间就是tCLS-tWP，</li>
+<li>在时间参数表中又可以发现它们的差值为0，即TALCS&#x3D;0 同时tALS也为12，说明CLE,CE,ALE这三个可以同时发出</li>
+<li>查看NFCONF寄存器说明，应将其中的bit12,bit13应写为0；</li>
+</ul>
+</li>
+<li>②表示写使能信号WE的持续时间，即TWRPH0的值<ul>
+<li>查看4.1表发现就是tWP的时间</li>
+<li>看时间参数表中得为12ns</li>
+<li>查看NFCONF寄存器说明，根据公式得:10*(m+1)&gt;&#x3D;12，m&gt;&#x3D;1，取m&#x3D;1，即TWRPH0&#x3D;1，配置寄存器的bit8,bit9,bit10为1</li>
+</ul>
+</li>
+<li>③表示WE信号释放后过多久CLE&#x2F;ALE信号释放<ul>
+<li>在4.1这个表中我们发现这个时间就是tCLH或者tALH</li>
+<li>看时间参数表中得为5ns</li>
+<li>查看NFCONF寄存器说明，根据公式得:10*(n+1)&gt;&#x3D;5，m&gt;&#x3D;0，取m&#x3D;0，即TWRPH1&#x3D;1，配置寄存器的bit4,bit5,bit6为0</li>
+</ul>
+</li>
+</ul>
+<p><img src="/image/800px-Chapter16_lesson2_005.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson2_005.png"></p>
+<p>所以NFCONF寄存器设置如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span>  TACLS   0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span>  TWRPH0  1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span>  TWRPH1  0</span><br><span class="hljs-comment">/*设置NAND FLASH的时序*/</span><br>NFCONF = (TACLS&lt;&lt;<span class="hljs-number">12</span>) | (TWRPH0&lt;&lt;<span class="hljs-number">8</span>) | (TWRPH1&lt;&lt;<span class="hljs-number">4</span>);<br></code></pre></td></tr></table></figure>
+
+<p>在s3c2440_soc.h中设置NFCMD、NFADDR、NFDATA、NFSTAT的__REG为__REG_BYTE</p>
+<p>到此设置NAND FLASH的时序已经设置完了，我们接着来使能，使能NFCONT。</p>
+<p><img src="/image/800px-Chapter16_lesson2_006.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson2_006.png"></p>
+<p>MODE [0]: 设置为1，使能NAND FLASH。</p>
+<p>Reg_nCE [1]: 设置为1，禁止片选。因为我们现在还没有使用。为防止错误的操作。</p>
+<p>InitECC [4]: 初始化ECC的编码器，后边要使用，我们设置为1，来初始化。</p>
+<p>所以NFCONF寄存器设置如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/*使能NAND FLASH控制器,初始化ECC，禁止片选*/</span><br>NFCONT = (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>) | (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>) | (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>第003节_NandFlash的芯片id读取</strong></p>
+<hr>
+<p>上节课我们讲解了NAND FLASH的初始化，这节课我们来讲解读取NAND FLASH的ID, 我们可以参考NAND FLASHh的芯片手册，如下图所示：（NAND FLASH读操作时序图）</p>
+<p><img src="/image/800px-Chapter16_lesson3_001.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson3_001.png"></p>
+<p>我们一般先操作片选使能，只有片选使能之后才能进行后边的操作，片选是能代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">nand_select</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-comment">/*使能片选*/</span><br>        <span class="hljs-variable constant_">NFCONT</span> &amp;=~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>有使能片选，一定有禁止片选，禁止片选的代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">nand_deselect</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-comment">/*禁止片选*/</span><br>        <span class="hljs-variable constant_">NFCONT</span> |= (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>读ID的操作时序图，如下所示</p>
+<p><img src="/image/800px-Chapter16_lesson3_002.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson3_002.png"></p>
+<p>我们按照从左往右的时间点，来分析，片选信号像一个总开关，只有使能了片选信号，后续的操作才会有意义，我们使能片选信号之后，片选引脚nCE后续一直为低电平，在前面的命令时序图中知道tCLS和tWP最小的时间参数都是12us，就表明CLE和nWE这两个信号可以同时发出，就表示要命令了，对于写什么命令，就要看数据总线上要发送的命令了，当CLE从高电平变为低电平后，表示上次的写操作已经结束了。</p>
+<p>对于上面复杂的时序，我们可以使用2440上的NAND FLASH控制器简化操作，只需要往NFCMMD寄存器写入要传输的命令就可以了，NAND FLASH控制器默认把上面复杂的时序发出来。</p>
+<p>发命令后，后面就需要发送地址了，当nWE和ALE有效的时候，表示写地址，上图中，要写入的地址是0x00，当ALE从高电平变为低电平的时候，表示写地址结束，我们可以简化为:往NFADDR寄存器中写值就可以了，比如：NFADDR&#x3D;0x00。</p>
+<p>下面我们写代码：发命令的函数，和发地址的函数代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">nand_cmd</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> cmd)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> i;<br>        NFCCMD = cmd;<br>        <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span>; i++);    <span class="hljs-comment">//延时</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">nand_addr_byte</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> addr)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> i;<br>        NFADDR = addr;<br>        <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">10</span>; i++);    <span class="hljs-comment">//延时</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>接下来就可以读取数据了，数据可以直接通过读取NFDATA寄存器里面数据来获得数据，根据时序图，是读5个字节的数据，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> <span class="hljs-title">nand_data</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">return</span> NFDATA;        <span class="hljs-comment">//NFDATA的数据一次是一个字节的</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>读芯片ID之前先打开片选， 读取芯片ID函数，代码如下：</p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-variable">void</span> <span class="hljs-title function_">nand_chip_id</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-variable">unsigned</span> <span class="hljs-variable">char</span> <span class="hljs-variable">buf</span>[<span class="hljs-number">5</span>]<span class="hljs-operator">=</span>&#123;<span class="hljs-number">0</span>&#125;;<br>        <br>        <span class="hljs-title function_">nand_select</span>();<br>        <span class="hljs-title function_">nand_cmd</span>(<span class="hljs-number">0x90</span>);<br>        <span class="hljs-title function_">nand_addr_byte</span>(<span class="hljs-number">0x00</span>);<br><br>        <span class="hljs-variable">buf</span>[<span class="hljs-number">0</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">nand_data</span>();<br>        <span class="hljs-variable">buf</span>[<span class="hljs-number">1</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">nand_data</span>();   <br>        <span class="hljs-variable">buf</span>[<span class="hljs-number">2</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">nand_data</span>();<br>        <span class="hljs-variable">buf</span>[<span class="hljs-number">3</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">nand_data</span>();<br>        <span class="hljs-variable">buf</span>[<span class="hljs-number">4</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">nand_data</span>();   <br>        <span class="hljs-title function_">nand_deselect</span>();  <br>        <br>        <span class="hljs-comment">/* 打印数据 */</span><br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;maker   id  = 0x%x<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-variable">buf</span>[<span class="hljs-number">0</span>]);<br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;device  id  = 0x%x<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-variable">buf</span>[<span class="hljs-number">1</span>]);      <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;3rd byte    = 0x%x<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-variable">buf</span>[<span class="hljs-number">2</span>]);              <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;4th byte    = 0x%x<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-variable">buf</span>[<span class="hljs-number">3</span>]);                      <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;page  size  = %d kb<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-number">1</span>  <span class="hljs-operator">&lt;&lt;</span>  (<span class="hljs-variable">buf</span>[<span class="hljs-number">3</span>] <span class="hljs-operator">&amp;</span> <span class="hljs-number">0x03</span>));   <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;block size  = %d kb<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-number">64</span> <span class="hljs-operator">&lt;&lt;</span> ((<span class="hljs-variable">buf</span>[<span class="hljs-number">3</span>] <span class="hljs-operator">&gt;&gt;</span> <span class="hljs-number">4</span>) <span class="hljs-operator">&amp;</span> <span class="hljs-number">0x03</span>));   <br>        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;5th byte    = 0x%x<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>,<span class="hljs-variable">buf</span>[<span class="hljs-number">4</span>]);<br>&#125;<br><br><span class="hljs-comment">//64 &lt;&lt; ((buf[3] &gt;&gt; 4) &amp; 0x03)：取buf[3]的bit5,bit6；</span><br><span class="hljs-comment">//64 &lt;&lt; 0x0001：即(0100 0000)&lt;&lt; 1 = 128</span><br></code></pre></td></tr></table></figure>
+
+<p>下面我们再写一个打印菜单的函数，在菜单中调用读取芯片ID的函数，代码如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">oid <span class="hljs-title">nand_flash_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">char</span> c;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                <span class="hljs-comment">/* 打印菜单, 供我们选择测试内容 */</span><br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[s] Scan nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[e] Erase nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[w] Write nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[r] Read nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[q] quit\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter selection: &quot;</span>);<br>                c = <span class="hljs-built_in">getchar</span>();<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%c\n\r&quot;</span>, c);<br>                <span class="hljs-comment">/* 测试内容:          </span><br><span class="hljs-comment">                 * 1. 识别nand flash          </span><br><span class="hljs-comment">                 * 2. 擦除nand flash某个扇区          </span><br><span class="hljs-comment">                 * 3. 编写某个地址          </span><br><span class="hljs-comment">                 * 4. 读某个地址          </span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-keyword">switch</span> (c)                 <br>                &#123;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;q&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Q&#x27;</span>:<br>                                <span class="hljs-keyword">return</span>;<br>                                <span class="hljs-keyword">break</span>;<br>                                <br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;S&#x27;</span>:<br>                                <span class="hljs-built_in">nand_chip_id</span>();<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;e&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;E&#x27;</span>:<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;w&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;W&#x27;</span>:<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;r&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;R&#x27;</span>:<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">default</span>:<br>                                <span class="hljs-keyword">break</span>;<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在主函数中调用nand flash的初始化函数，和nand flash的测试函数。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs scss">int <span class="hljs-selector-tag">main</span>(void)<br>&#123;<br>        <span class="hljs-built_in">led_init</span>();<br>        <span class="hljs-comment">//interrupt_init();  /* 初始化中断控制器 */</span><br>        <span class="hljs-built_in">key_eint_init</span>();   <span class="hljs-comment">/* 初始化按键, 设为中断源 */</span><br>        <span class="hljs-comment">//timer_init();</span><br>        <br>        <span class="hljs-built_in">puts</span>(&quot;\n\rg_A = &quot;);<br>        <span class="hljs-built_in">printHex</span>(g_A);<br>        <span class="hljs-built_in">puts</span>(&quot;\n\r&quot;);<br>        <span class="hljs-comment">//nor_flash_test();</span><br>        <span class="hljs-built_in">nand_init</span>();<br>        <span class="hljs-built_in">nand_flash_test</span>();<br>        <br>        return <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>第005节_NandFlash的擦除与烧写</strong></p>
+<hr>
+<p>在上节 我们实现了芯片ID的读取，可是那个程序已经超过了4k，我们想把它烧到开发板的话，必需把它烧写到NOR FLASH上去，这节我们来讲解NAND FLASH数据的读取，并且实现超过4k的程序从NAND FLASH启动。</p>
+<p>下图为NAND FLASH内部结构图，从图中可以可以知道，一个page含有2k 字节的页数据，和64字节的oob区，后面会介绍页数据和oob区有什么关系。</p>
+<p><img src="/image/800px-Chapter16_lesson4_001.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson4_001.png"></p>
+<p>下图的表格，来说明NAND FLASH内部结构，前面2K(0<del>2047)表示页数据，后边64字节(2048</del>2111)表示oob(Out Of Bank)。</p>
+<p><img src="/image/Chapter16_lesson4_002.png" srcset="/img/loading.gif" lazyload alt="Chapter16_lesson4_002.png"></p>
+<p><strong>问：CPU想读取，第2048个数据，它是哪以一个？</strong></p>
+<p>答：是Page1的第0个字节。CPU使用某个地址访问数据的时候，是在页数据空间来寻址的，根</p>
+<p>本就看不到oob区。</p>
+<p>我们知道NAND FLASH 和 NOR FLASH相比有个缺点，NAND FLASH读或写一页数据的时候，可能会发生位反转，里面可能有一位是错误的，为了解决这个问题，引入oob区， 它写页数据的时候，把数据写进页数据的同时会生成一个校验码，把这个校验码写进oob区里面，当读数据的时候，读出1页数据，读取1数据里面有可能有某一位发生错误，它继续读出原来的校验码，使用oob区里面的校验码，来修正页数据里面的数据。</p>
+<p>从这里我们可以得出一个结论，oob区的存在是为了解决NAND FLASH的缺陷而存在的。</p>
+<p>CPU: 只关心数据，不需要看到oob区的校验码(把数据读出来，然后进行校验再把正确的数据返回，就可以了)。CPU想使用某个addr来访问数据的时候，addr是在页数据区来寻址的，addr根本不会在oob区里面寻址。</p>
+<p>为了形象在下面说一个幽默的对话来说明一下CPU和NAND FLASH的功能：</p>
+<p>CPU大爷: 小nand啊，你的性能比不上小nor啊，听说你有位反转的毛病</p>
+<p>Nand  : 是的，大爷，位反转是我天生的毛病，时有时无</p>
+<p>CPU大爷: 靠，你说你价格便宜容量大，这不是害我嘛</p>
+<p>Nand  : 没事，我有偏方，用OOB就可以解决这问题</p>
+<p>CPU大爷: 得得得，你那偏方是什么也别告诉我，我只管能读写正确的数据</p>
+<p>Nand  : 是的，大爷，我这OOB偏方也就我自个私下使用。您就像使用nor一样使唤我就可以了</p>
+<p>下面我们开始写程序，想去读NAND FLASH应该怎样操作,下面是nand flash的。</p>
+<p><img src="/image/800px-Chapter16_lesson4_003.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson4_003.png"></p>
+<p>下图为读NAND FLASH的时序操作：</p>
+<p><img src="/image/800px-Chapter16_lesson4_004.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson4_004.png"></p>
+<p>读NAND FLASH步骤：(从程序的角度来说)，我们需要先发出00命令再发出5个周期的地址(由地址周期表得应为两个col列地址，三个row行地址)，再发出30命令，然后就可以读数据了。比如：我想访问某个地址的数据，需要确定在哪一行page(row)，在哪一列col(0~2047)。从NAND FLASH的地址周期中可以看出来，先发出2个col(列地址)，再发出3个(Row)行地址。 下面是程序的编写：</p>
+<p><img src="/image/800px-Chapter16_lesson4_005.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson4_005.png"></p>
+<p>wait_ready函数等待NAND FLASHh空闲，从上图可以看出当NFSTAT寄存器[0]的值为1时NAND FLASH是空闲的，我们可以通过该位来判断NAND FLASH是否繁忙。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">wait_ready</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-keyword">while</span> (!(<span class="hljs-variable constant_">NFSTAT</span> &amp; <span class="hljs-number">1</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>nand_read函数为NAND FLASH的读函数，代码如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void nand<span class="hljs-constructor">_read(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">addr</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">buf</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">len</span>)</span><br>&#123;<br>        <span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>;<br>        <span class="hljs-built_in">int</span> page = addr<span class="hljs-operator"> / </span><span class="hljs-number">2048</span>;<br>        <span class="hljs-built_in">int</span> col  = addr &amp; (<span class="hljs-number">2048</span> - <span class="hljs-number">1</span>);<br>        <br>        nand<span class="hljs-constructor">_select()</span>;<br><br>        <span class="hljs-keyword">while</span> (i &lt; len)<br>        &#123;<br>                <span class="hljs-comment">/* 发出00h命令 */</span><br>                nand<span class="hljs-constructor">_cmd(00)</span>;<br><br>                <span class="hljs-comment">/* 发出地址 */</span><br>                <span class="hljs-comment">/* col addr */</span> <br>                nand<span class="hljs-constructor">_addr_byte(<span class="hljs-params">col</span> &amp; 0xff)</span>;        <span class="hljs-comment">//看地址周期表可得怎么发地址</span><br>                nand<span class="hljs-constructor">_addr_byte((<span class="hljs-params">col</span>&gt;&gt;8)</span> &amp; <span class="hljs-number">0xff</span>);<br><br>                <span class="hljs-comment">/* row/page addr */</span><br>                nand<span class="hljs-constructor">_addr_byte(<span class="hljs-params">page</span> &amp; 0xff)</span>;<br>                nand<span class="hljs-constructor">_addr_byte((<span class="hljs-params">page</span>&gt;&gt;8)</span> &amp; <span class="hljs-number">0xff</span>);<br>                nand<span class="hljs-constructor">_addr_byte((<span class="hljs-params">page</span>&gt;&gt;16)</span> &amp; <span class="hljs-number">0xff</span>);<br><br>                <span class="hljs-comment">/* 发出30h命令 */</span><br>                nand<span class="hljs-constructor">_cmd(0x30)</span>;<br><br>                <span class="hljs-comment">/* 等待就绪 */</span><br>                wait<span class="hljs-constructor">_ready()</span>;<br><br>                <span class="hljs-comment">/* 读数据 */</span><br>                <span class="hljs-keyword">for</span> (; (col &lt; <span class="hljs-number">2048</span>)<span class="hljs-operator"> &amp;&amp; </span>(i &lt; len); col++)<br>                &#123;<br>                        buf<span class="hljs-literal">[<span class="hljs-identifier">i</span><span class="hljs-operator">++</span>]</span> = nand<span class="hljs-constructor">_data()</span>;                   <br>                &#125;<br>                <span class="hljs-keyword">if</span> (i<span class="hljs-operator"> == </span>len)        <span class="hljs-comment">//len：读多少字节的数据</span><br>                        break;<br><br>                col = <span class="hljs-number">0</span>;<br>                page++;<br>        &#125;<br>        <br>        nand<span class="hljs-constructor">_deselect()</span>;  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在init.c文件中，加上如下代码，用来判断所使用的FLASH是NOR FLASH还是NAND FLASH。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">isBootFromNorFlash</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *p = (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *)<span class="hljs-number">0</span>;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> val = *p;<br><br>        *p = <span class="hljs-number">0x12345678</span>;<br>        <span class="hljs-keyword">if</span> (*p == <span class="hljs-number">0x12345678</span>)<br>        &#123;<br>                <span class="hljs-comment">/* 写成功, 对应nand启动 */</span><br>                *p = val;<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在init.c文件中的copy2sdram函数里面加上如下代码，用来支持NAND FLASH启动，当isBootFromNorFlash函数的返回值为1时，是从NOR FLASH启动，当isBootFromNorFlash函数的返回值为0是，是从NAND FLASH启动。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">    <span class="hljs-keyword">if</span> (is<span class="hljs-constructor">BootFromNorFlash()</span>)<br>    &#123;<br>        <span class="hljs-keyword">while</span> (dest &lt; <span class="hljs-keyword">end</span>)<br>        &#123;<br>            *dest++ = *src++;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        nand<span class="hljs-constructor">_init()</span>;<br>        nand<span class="hljs-constructor">_read(<span class="hljs-params">src</span>, <span class="hljs-params">dest</span>, <span class="hljs-params">len</span>)</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>第005节_NandFlash的擦除与烧写</strong></p>
+<hr>
+<p>我们本节需要做的事情：</p>
+<ol>
+<li>实现nand_erase</li>
+<li>实现nand_write</li>
+<li>实现测试菜单</li>
+</ol>
+<p>下面我们逐个来实现他们：</p>
+<p>本节讲的NAND FLASH的烧写和擦除还是比较简单的，它只涉及到页数据区，不涉及到oob区，擦出的时候是以块为单位。下图为擦除的时序图：</p>
+<p><img src="/image/800px-Chapter16_lesson5_001.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson5_001.png"></p>
+<p>我们就根据擦除的时序图发出对应的命令和地址，NAND FLASH是以块为单位进行擦除的，假如我们传入len的值为1，但是它仍然会擦出一个块（128k字节），我们根据芯片手册，来操作NAND FLASH的擦出操作，函数功能：从addr地址开始，擦除len长度的数据。代码如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">nand_erase</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> len)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> page = addr / <span class="hljs-number">2048</span>;<br><br>        <span class="hljs-keyword">if</span> (addr &amp; (<span class="hljs-number">0x1FFFF</span>))    <span class="hljs-comment">//如果不是整的128K</span><br>        &#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;nand_erase err, addr is not block align\n\r&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">if</span> (len &amp; (<span class="hljs-number">0x1FFFF</span>))<br>        &#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;nand_erase err, len is not block align\n\r&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>        <br>        <span class="hljs-built_in">nand_select</span>();<br><br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                page = addr / <span class="hljs-number">2048</span>;<br>                <br>                <span class="hljs-built_in">nand_cmd</span>(<span class="hljs-number">0x60</span>);<br>                <br>                <span class="hljs-comment">/* row/page addr */</span><br>                <span class="hljs-built_in">nand_addr_byte</span>(page &amp; <span class="hljs-number">0xff</span>);<br>                <span class="hljs-built_in">nand_addr_byte</span>((page&gt;&gt;<span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>);<br>                <span class="hljs-built_in">nand_addr_byte</span>((page&gt;&gt;<span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xff</span>);<br><br>                <span class="hljs-built_in">nand_cmd</span>(<span class="hljs-number">0xD0</span>);<br><br>                <span class="hljs-built_in">wait_ready</span>();<br><br>                len -= (<span class="hljs-number">128</span>*<span class="hljs-number">1024</span>);    <span class="hljs-comment">//擦除完成，len-128k</span><br>                <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span>)<br>                        <span class="hljs-keyword">break</span>;<br>                addr += (<span class="hljs-number">128</span>*<span class="hljs-number">1024</span>);    <span class="hljs-comment">//擦除完一个块，发现没有擦完，指向下一个块</span><br>        &#125;<br><br>        <span class="hljs-built_in">nand_deselect</span>();  <br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>操作NAND FLASH之前要，选中芯片，然后就可以根据芯片手册来操作NAND FLASH的擦除操作了，操作完之后，要取消片选。</p>
+<p>往NAND FLASH写数据时，只需要把要写的数据复制给NFDATA寄存器即可。代码如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void nand<span class="hljs-constructor">_w_data(<span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-params">val</span>)</span><br>&#123;<br>        NFDATA = <span class="hljs-keyword">val</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>下图为烧写的时序图：</p>
+<p><img src="/image/800px-Chapter16_lesson5_002.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter16_lesson5_002.png"></p>
+<p>从上图中的NAND FLASH烧写时序图可以知道对于NAND FLASH的烧写，先发出0x80命令，再发出地址周期，然后发出要烧写的数据，最后发出0x10，就开始内部烧写，然后等待烧写成功。（我们写数据的时候是逐页写的，开始要烧写的数据地址可能不是该页的起始地址）。操作之前需要选中片选，操作完之后取消片选，代码如下</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/* 把buf中len长度的数据写到地址addr */</span><br>void nand<span class="hljs-constructor">_write(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">addr</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">buf</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">len</span>)</span><br>&#123;<br>        <span class="hljs-built_in">int</span> page = addr<span class="hljs-operator"> / </span><span class="hljs-number">2048</span>;<br>        <span class="hljs-built_in">int</span> col  = addr &amp; (<span class="hljs-number">2048</span> - <span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>;<br><br>        nand<span class="hljs-constructor">_select()</span>;<br><br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                nand<span class="hljs-constructor">_cmd(0x80)</span>;<br><br>                <span class="hljs-comment">/* 发出地址 */</span><br>                <span class="hljs-comment">/* col addr */</span><br>                nand<span class="hljs-constructor">_addr_byte(<span class="hljs-params">col</span> &amp; 0xff)</span>;<br>                nand<span class="hljs-constructor">_addr_byte((<span class="hljs-params">col</span>&gt;&gt;8)</span> &amp; <span class="hljs-number">0xff</span>);<br>                <br>                <span class="hljs-comment">/* row/page addr */</span><br>                nand<span class="hljs-constructor">_addr_byte(<span class="hljs-params">page</span> &amp; 0xff)</span>;<br>                nand<span class="hljs-constructor">_addr_byte((<span class="hljs-params">page</span>&gt;&gt;8)</span> &amp; <span class="hljs-number">0xff</span>);<br>                nand<span class="hljs-constructor">_addr_byte((<span class="hljs-params">page</span>&gt;&gt;16)</span> &amp; <span class="hljs-number">0xff</span>);<br><br>                <span class="hljs-comment">/* 发出数据 */</span><br>                <span class="hljs-keyword">for</span> (; (col &lt; <span class="hljs-number">2048</span>)<span class="hljs-operator"> &amp;&amp; </span>(i &lt; len); )<br>                &#123;<br>                        nand<span class="hljs-constructor">_w_data(<span class="hljs-params">buf</span>[<span class="hljs-params">i</span><span class="hljs-operator">++</span>])</span>;<br>                &#125;<br>                nand<span class="hljs-constructor">_cmd(0x10)</span>;<br>                wait<span class="hljs-constructor">_ready()</span>;<br><br>                <span class="hljs-keyword">if</span> (i<span class="hljs-operator"> == </span>len)<br>                        break;<br>                <span class="hljs-keyword">else</span><br>                &#123;<br>                        <span class="hljs-comment">/* 开始下一个循环page */</span><br>                        col = <span class="hljs-number">0</span>;<br>                        page++;<br>                &#125;<br>        &#125;<br>        nand<span class="hljs-constructor">_deselect()</span>;  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们封装擦除操作NAND FLASH函数的时候，每一次擦除的大小是一个块(128*1024)代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_erase_nand_flash</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;<br>        <br>        <span class="hljs-comment">/* 获得地址 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the address of sector to erase: &quot;</span>);<br>        addr = <span class="hljs-built_in">get_uint</span>();<br><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;erasing ...\n\r&quot;</span>);<br>        <span class="hljs-built_in">nand_erase</span>(addr, <span class="hljs-number">128</span>*<span class="hljs-number">1024</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们封装读取操作NAND FLASH函数，我们实现NAND FLASH每次的读取，每次读取64字节数据。把从地址addr读取得到的64字节数据存放到buf缓冲区中，然后通过串口显示出来，代码如下图所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_read_nand_flash</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;<br>        <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *p;<br>        <span class="hljs-type">int</span> i, j;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> c;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> str[<span class="hljs-number">16</span>];<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> buf[<span class="hljs-number">64</span>];<br>        <br>        <span class="hljs-comment">/* 获得地址 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the address to read: &quot;</span>);<br>        addr = <span class="hljs-built_in">get_uint</span>();<br><br>        <span class="hljs-built_in">nand_read</span>(addr, buf, <span class="hljs-number">64</span>);<br>        p = (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *)buf;<br><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Data : \n\r&quot;</span>);<br>        <span class="hljs-comment">/* 长度固定为64 */</span><br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++)<br>        &#123;<br>                <span class="hljs-comment">/* 每行打印16个数据 */</span><br>                <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; j++)<br>                &#123;<br>                        <span class="hljs-comment">/* 先打印数值 */</span><br>                        c = *p++;<br>                        str[j] = c;<br>                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%02x &quot;</span>, c);<br>                &#125;<br><br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;   ; &quot;</span>);<br><br>                <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; j++)<br>                &#123;<br>                        <span class="hljs-comment">/* 后打印字符 */</span><br>                        <span class="hljs-keyword">if</span> (str[j] &lt; <span class="hljs-number">0x20</span> || str[j] &gt; <span class="hljs-number">0x7e</span>)  <span class="hljs-comment">/* 不可视字符 */</span><br>                                <span class="hljs-built_in">putchar</span>(<span class="hljs-string">&#x27;.&#x27;</span>);<br>                        <span class="hljs-keyword">else</span><br>                                <span class="hljs-built_in">putchar</span>(str[j]);<br>                &#125;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n\r&quot;</span>);<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>NAND FLASH的烧写封装函数代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_write_nand_flash</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> str[<span class="hljs-number">100</span>];<br>        <span class="hljs-type">int</span> i, j;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> val;<br>        <br>        <span class="hljs-comment">/* 获得地址 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the address of sector to write: &quot;</span>);<br>        addr = <span class="hljs-built_in">get_uint</span>();<br><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the string to write: &quot;</span>);<br>        <span class="hljs-built_in">gets</span>(str);<br><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;writing ...\n\r&quot;</span>);<br>        <span class="hljs-built_in">nand_write</span>(addr, str, <span class="hljs-built_in">strlen</span>(str)+<span class="hljs-number">1</span>);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>NAND FLASH的测试菜单函数代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">nand_flash_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">char</span> c;<br><br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                <span class="hljs-comment">/* 打印菜单, 供我们选择测试内容 */</span><br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[s] Scan nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[e] Erase nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[w] Write nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[r] Read nand flash\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[q] quit\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter selection: &quot;</span>);<br><br>                c = <span class="hljs-built_in">getchar</span>();<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%c\n\r&quot;</span>, c);<br><br>                <span class="hljs-comment">/* 测试内容:          </span><br><span class="hljs-comment">                 * 1. 识别nand flash          </span><br><span class="hljs-comment">                 * 2. 擦除nand flash某个扇区          </span><br><span class="hljs-comment">                 * 3. 编写某个地址          </span><br><span class="hljs-comment">                 * 4. 读某个地址          </span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-keyword">switch</span> (c)                 <br>                &#123;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;q&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Q&#x27;</span>:<br>                                <span class="hljs-keyword">return</span>;<br>                                <span class="hljs-keyword">break</span>;<br>                                <br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;S&#x27;</span>:<br>                                <span class="hljs-built_in">nand_chip_id</span>();<br>                                <span class="hljs-keyword">break</span>;<br><br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;e&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;E&#x27;</span>:<br>                                <span class="hljs-built_in">do_erase_nand_flash</span>();<br>                                <span class="hljs-keyword">break</span>;<br><br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;w&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;W&#x27;</span>:<br>                                <span class="hljs-built_in">do_write_nand_flash</span>();<br>                                <span class="hljs-keyword">break</span>;<br><br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;r&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;R&#x27;</span>:<br>                                <span class="hljs-built_in">do_read_nand_flash</span>();<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">default</span>:<br>                                <span class="hljs-keyword">break</span>;<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>问题</strong></p>
+<hr>
+<p>一、对于存储为256M的NAND FLASH，需要28条地址线，来表示这个地址值，根据原理图可以，只用8根地址线，所以需要4个周期的地址。4个周期怎么算的？</p>
+<p>二、为什么读操作下“因为现在是0地址，所以五个地址都是C0”</p>
+<p>三、为什么要在s3c2440_soc.h中设置NFCMD、NFADDR、NFDATA、NFSTAT的__REG为__REG_BYTE(按字节形式)，可以从芯片手册的寄存器控制中找到吗</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第016课 Nand Flash</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第016课_Nand_Flash/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC017%E8%AF%BE_LCD%E7%BC%96%E7%A8%8B/" title="第017课 LCD编程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第017课 LCD编程</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC014%E8%AF%BE_%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/" title="第014课 异常与中断">
+                        <span class="hidden-mobile">第014课 异常与中断</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;zqixiao_09&#x2F;article&#x2F;details&#x2F;50850004?utm_medium&#x3D;distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&amp;depth_1-utm_source&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几个关键结构体">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E7%BB%93%E6%9E%84%E4%BD%93/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;zqixiao_09&#x2F;article&#x2F;details&#x2F;50850004?utm_medium&#x3D;distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&amp;depth_1-utm_source&amp;#x">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/7918efff75c9e9eeb6783d1dd21240c5.png">
+<meta property="og:image" content="https://godxqi.github.io/image/20160310214827977.gif">
+<meta property="article:published_time" content="2023-01-15T12:55:06.493Z">
+<meta property="article:modified_time" content="2023-01-15T12:57:00.448Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/7918efff75c9e9eeb6783d1dd21240c5.png">
+  
+  
+  
+  <title>几个关键结构体 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="几个关键结构体"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:55" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">几个关键结构体</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zqixiao_09/article/details/50850004?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param">https://blog.csdn.net/zqixiao_09&#x2F;article&#x2F;details&#x2F;50850004?utm_medium&#x3D;distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&amp;depth_1-utm_source&#x3D;distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_7943319e01018m3w.html">http://blog.sina.com.cn/s/blog_7943319e01018m3w.html</a></p>
+<p>用户空间使用 open() 函数打开一个字符设备 fd &#x3D; open(“&#x2F;dev&#x2F;hello”,O_RDWR) , 这一函数会调用两个数据结构 struct inode{…}与struct file{…} ，二者均在虚拟文件系统VFS处。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">open</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *pathname, <span class="hljs-type">int</span> flags, <span class="hljs-type">mode_t</span> mode)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>（一）file文件结构体</p>
+<p>定义在&#x2F;linux&#x2F;include&#x2F;linux&#x2F;fs.h(Linux 2.6.11内核)</p>
+<p>file结构体指示一个已经打开的文件（设备对应于设备文件），其实系统中的每个打开的文件在内核空间都有一个相应的struct file结构体，它由内核在打开文件时创建，并传递给在文件在进行操作时需要的任何函数，直至文件被关闭。如果文件被关闭，内核就会释放相应的数据结构。</p>
+<p>在内核源码中，struct file要么表示为file，或者为filp(意指“file pointer”), 注意区分一点，file指的是struct file本身，而filp是指向这个结构体的指针。</p>
+<p>1.重要成员：</p>
+<p>（1）fmode_t f_mode：设置对文件的访问模式,例如：只读，只写等。</p>
+<p>        此文件模式通过FMODE_READ, FMODE_WRITE识别了文件为可读的，可写的，或者是二者。在open或ioctl函数中可能需要检查此域以确认文件的读&#x2F;写权限，你不必直接去检测读或写权限，因为内核在调用你的方法之前，内核本身就对其权限进行检测</p>
+<p>（2）loff_t f_pos：表示当前读写文件的位置</p>
+<p>        64位。如果想知道当前文件当前位置在哪，驱动可以读取这个值而不会改变其位置。对read,write来说，当其接收到一个loff_t型指针作为其最后一个参数时，他们的读写操作便作更新文件的位置，而不需要直接执行filp -&gt;f_pos操作。 这个规则的一个例外是在 llseek 方法中, 它的目的就是改变文件位置。</p>
+<p>（3）unsigned int f_flags：文件标志，表示打开文件的权限</p>
+<p>        如O_RDONLY, O_NONBLOCK以及O_SYNC。在驱动中应当检查O_NONBLOCK标志查看是否有非阻塞请求，其它的标志较少使用。特别地，读写权限的检查是使用f_mode而不是f_flog。所有的标志定义在头文件中</p>
+<p>（4）struct file_operations *f_op：指向与文件关联的操作，即file_operation结构体</p>
+<p>        当文件需要迅速进行各种操作时，内核分配这个指针作为它实现文件打开，读，写等功能的一部分。filp-&gt;f_op 其值从未被内核保存作为下次的引用，即你可以改变与文件相关的各种操作，这种方式效率非常高</p>
+<p>        file_operation 结构体解析如下： <a href="evernote:///view/18988257/s16/5461058e-553f-4071-bae8-ec2bba99c211/5461058e-553f-4071-bae8-ec2bba99c211/">file_operation结构体解析</a></p>
+<p>（5）void *private_data</p>
+<p>        在驱动调用open方法之前，open系统调用设置此指针为NULL值。你可以很自由的将其做为你自己需要的一些数据域或者不管它，如，你可以将其指向一个分配好的数据，但是你必须记得在file struct被内核销毁之前在release方法中释放这些数据的内存空间。private_data用于在系统调用期间保存各种状态信息是非常有用的。</p>
+<p>（6）struct dentry *f_dentry;</p>
+<p>        关联到文件的目录入口( dentry )结构. 设备驱动编写者正常地不需要关心 dentry 结构, 除了作为 filp-&gt;f_dentry-&gt;d_inode 存取 inode 结构.</p>
+<p>（二）inode结构体</p>
+<p>inode 译成中文就是索引节点，一个索引节点就代表了一个具体的文件，在文件创建时创建文件删除时销毁，但是索引节点仅在当文件被访问时，才在内存中创建，且无论有多少个副本访问这个文件，inode只存在一份。</p>
+<p>它与表示一个已经打开的文件描述符的结构体(即file 文件结构)是不同的，我们可以使用多个file 文件结构表示同一个文件的多个文件描述符，但此时，所有的这些file文件结构全部都必须只能指向一个inode结构体。</p>
+<p>inode结构体包含了一大堆文件相关的信息，但是就针对驱动代码来说，我们只要关心其中的两个域即可：</p>
+<p>(1) dev_t i_rdev;</p>
+<p>表示设备文件的结点，这个域实际上包含了设备号。</p>
+<p>(2) struct cdev *i_cdev;</p>
+<p>struct cdev是内核的一个内部结构，它是用来表示字符设备的，当inode结点指向一个字符设备文件时，此域为一个指向inode结构的指针。</p>
+<p>(3)const struct file_operations *i_fop; </p>
+<p>文件操作方法集合，该设备文件所能拥有的所有能力。</p>
+<p>（三）chardevs 散列表</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> CHRDEV_MAJOR_HASH_SIZE 255</span><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-title">DEFINE_MUTEX</span><span class="hljs-params">(chrdevs_lock)</span></span>;<br><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">char_device_struct</span> &#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">char_device_struct</span> *next; <span class="hljs-comment">// 结构体指针</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> major;              <span class="hljs-comment">// 主设备号</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> baseminor;          <span class="hljs-comment">// 次设备起始号</span><br>    <span class="hljs-type">int</span> minorct;                     <span class="hljs-comment">// 次备号个数</span><br>    <span class="hljs-type">char</span> name[<span class="hljs-number">64</span>];<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">cdev</span> *cdev; <span class="hljs-comment">/* will die */</span><br>&#125; *chrdevs[CHRDEV_MAJOR_HASH_SIZE];      <span class="hljs-comment">// 只能挂255个字符主设备</span><br></code></pre></td></tr></table></figure>
+
+<p>char_device_struct描述了设备号的使用情况，全局数组 chrdevs 包含了</p>
+<p>255(CHRDEV_MAJOR_HASH_SIZE 的值)个 struct char_device_struct的元素，每一个对应一个相应的主设备号。 如果分配了一个设备号,就会创建一个 struct char_device_struct 的对象,并将其添加到 chrdevs 中；这样,通过chrdevs数组,我们就可以知道分配了哪些设备号。</p>
+<p><img src="/image/7918efff75c9e9eeb6783d1dd21240c5.png" srcset="/img/loading.gif" lazyload alt="7918efff75c9e9eeb6783d1dd21240c5.png"></p>
+<p>设备号注册函数register_chrdev_region( )等解析如下： <a href="evernote:///view/18988257/s16/f38a8271-bd69-43bc-bf4b-2965fe9dfb17/f38a8271-bd69-43bc-bf4b-2965fe9dfb17/">register_chrdev_region( )等设备号注册函数</a></p>
+<p>（四）cdev结构体</p>
+<p>  在Linux内核中，使用cdev结构体来描述一个字符设备，cdev结构体的定义如下：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gauss">&lt;include/linux/cdev.h&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-type">cdev</span> &#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-type">kobject</span> kobj;                  <span class="hljs-comment">//内嵌的内核对象.</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-type">module</span> *owner;                 <span class="hljs-comment">//该字符设备所在的内核模块的对象指针.</span><br>    const <span class="hljs-keyword">struct</span> <span class="hljs-type">file_operations</span> *ops;    <span class="hljs-comment">//该结构描述了字符设备所能实现的方法，是极为关键的一个结构体.</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-type">list_head</span> list;                <span class="hljs-comment">//用来将已经向内核注册的所有字符设备形成链表.</span><br>    dev_t dev;                            <span class="hljs-comment">//字符设备的设备号，由主设备号和次设备号构成.</span><br>    unsigned int count;                   <span class="hljs-comment">//隶属于同一主设备号的次设备号的个数.</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>（1）使用cdev结构体来描述字符设备;</p>
+<p>（2）通过其成员dev_t来定义设备号（分为主、次设备号）以确定字符设备的唯一性;</p>
+<p>（3）通过其成员file_operations来定义字符设备驱动提供给VFS的接口函数，如常见的open()、read()、write()等;</p>
+<p>（五）文件系统中对字符设备文件的访问</p>
+<p>对于一个字符设备文件, 其inode-&gt;i_cdev 指向字符驱动对象cdev, 如果i_cdev为 NULL ,则说明该设备文件没有被打开.</p>
+<p>由于多个设备可以共用同一个驱动程序.所以,通过字符设备的inode 中的i_devices 和 cdev中的list组成一个链表</p>
+<p><img src="/image/20160310214827977.gif" srcset="/img/loading.gif" lazyload alt="20160310214827977.gif"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>几个关键结构体</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山1.2期衔接/几个关键结构体/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%90%86%E8%A7%A3/" title="驱动程序的理解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">驱动程序的理解</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC004%E8%AF%BE_%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" title="第004课_根文件系统">
+                        <span class="hidden-mobile">第004课_根文件系统</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

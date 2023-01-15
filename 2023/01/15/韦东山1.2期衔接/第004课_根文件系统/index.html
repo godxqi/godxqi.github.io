@@ -1,0 +1,1091 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="001  u-boot目的：启动内核 内核目的：启动应用程序-&gt;构建根文件系统 与 Windows 的 C 盘类似， Linux 也需要在一个分区上存放系统启动的必要文件，比如内核启动运行后的第一个程序（ init进程）、用于挂接文件系统的脚本、给用户提供操作界面的 shell 程序，应用程序所要依赖的库等，这些必要、基本文件的集合称为根文件系统，它们存放在一个分区中。 （一）内核如何启动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第004课_根文件系统">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC004%E8%AF%BE_%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="001  u-boot目的：启动内核 内核目的：启动应用程序-&gt;构建根文件系统 与 Windows 的 C 盘类似， Linux 也需要在一个分区上存放系统启动的必要文件，比如内核启动运行后的第一个程序（ init进程）、用于挂接文件系统的脚本、给用户提供操作界面的 shell 程序，应用程序所要依赖的库等，这些必要、基本文件的集合称为根文件系统，它们存放在一个分区中。 （一）内核如何启动">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/4eaf080e68fbd5d9c59ec453a340da3a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/0716276d130a78d9083e1ce231e178f2.png">
+<meta property="og:image" content="https://godxqi.github.io/image/250977202f84525eb3f21cccaa284289.png">
+<meta property="og:image" content="https://godxqi.github.io/image/c406affa5d43148b16536729a500a587.png">
+<meta property="og:image" content="https://godxqi.github.io/image/86fea52c060c0417e1785f1df6fbb134.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8c991fbc348b3090a593aeb4c132d77b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/20160914140317654.png">
+<meta property="og:image" content="https://godxqi.github.io/image/db82ecfeef99f57af86a9e669ecf947e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ecfbf84fbaf95f0b06de8e7767b07df7.png">
+<meta property="og:image" content="https://godxqi.github.io/image/722a4f2c53d27ee1ff82a18a92821608.png">
+<meta property="og:image" content="https://godxqi.github.io/image/e4e6f141afbc64b99de5881f79579abd.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f1af354222758a6d5bedb6e52dc6f8b1.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b09bed110089cc6b8c1c84437b4c7e98.png">
+<meta property="og:image" content="https://godxqi.github.io/image/42b4378e27546c7c384fbae80cdbf74e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/6e775a76802ce3a964ac4f849dbdbf93.png">
+<meta property="og:image" content="https://godxqi.github.io/image/21e64c498acf7ce202f0a37b69c28841.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f43a9ded84a47c405ad92b35146357be.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f984b32394baf5967eca4f827748e332.png">
+<meta property="og:image" content="https://godxqi.github.io/image/3994b1b65cd72ae20f2a842bd174cba0.png">
+<meta property="og:image" content="https://godxqi.github.io/image/4ae452064d6ed2c5b08f3c86e1e11479.png">
+<meta property="og:image" content="https://godxqi.github.io/image/2abc1702f4660c5020bb9fcffabb7014.png">
+<meta property="og:image" content="https://godxqi.github.io/image/94e987923c10a65e49f02bd1d630f384.png">
+<meta property="og:image" content="https://godxqi.github.io/image/34e94d84ba0e5bb5499061bd33d3721c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/76d5759b45264de360b44ade10cd44c0.png">
+<meta property="og:image" content="https://godxqi.github.io/image/af480f33bea4a5f6c7824262da59bdaf.png">
+<meta property="og:image" content="https://godxqi.github.io/image/3043cd9638e417a4c40fa2440228c35a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b453f1d33a87c0864ae04d281236959a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ed9eb2418d2cdd44263de7f44dbc4902.png">
+<meta property="og:image" content="https://godxqi.github.io/image/442d3ac9c8255fd282bf3293b2d65ceb.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a0cab523ae5d46870743ec791f7ab377.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8cc040f0d6df47031648bbf2d025103c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a6d6ef84f8d03dbbaaee182c4df8faff.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ce18fa9498f311ffe717b89ed7f66f4f.png">
+<meta property="og:image" content="https://godxqi.github.io/image/1bfa0b2e84b200d55cab29bca8881f6b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8e96ac4e4bcee4bd45531ac8fb221c0a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/fb74a46611ffe60c884bfbc0985b8ffc.png">
+<meta property="og:image" content="https://godxqi.github.io/image/80c0459842d8185ff2dc97be4e822874.png">
+<meta property="og:image" content="https://godxqi.github.io/image/450aa144b20087688ee554d30a3e4e1d.png">
+<meta property="og:image" content="https://godxqi.github.io/image/578af17cddc21d228a4daae3c4c8846c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/20d6efaef1b5f7b6d7414e88c09723da.png">
+<meta property="og:image" content="https://godxqi.github.io/image/bff8fca29b49e62197bf99d3fa47a6e8.png">
+<meta property="og:image" content="https://godxqi.github.io/image/4a1dc991b3070e2642e44bc4c9e59da0.png">
+<meta property="og:image" content="https://godxqi.github.io/image/921e4f7aa94e8da2d46d10a98ad56996.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b7a81118a66bdf60ac37b0bb731debb0.png">
+<meta property="og:image" content="https://godxqi.github.io/image/cecbcdfd5ea0dfe1159791a6f34a4f07.png">
+<meta property="og:image" content="https://godxqi.github.io/image/2513e855635895550ec0e4cc25c288a4.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a5bab9c083db5ea96e04aaf9b195d004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/bb2c7ffd20bf31f8b0ede1d710edaa65.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8742a7f32e150af40f7cc9bc1c86f737.png">
+<meta property="og:image" content="https://godxqi.github.io/image/e25e56215e012af2c29d36a54cca133f.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f3b9934719b4739166f24e77fd337885.png">
+<meta property="og:image" content="https://godxqi.github.io/image/dff4988f290703b0007c36a8e09c83e5.png">
+<meta property="og:image" content="https://godxqi.github.io/image/201135a0ab37dcb954b2820262f51c84.png">
+<meta property="og:image" content="https://godxqi.github.io/image/74c5725fd002c2c2fa5918d064df82cb.png">
+<meta property="og:image" content="https://godxqi.github.io/image/72fc5c456cc61693ef14150da8317547.png">
+<meta property="og:image" content="https://godxqi.github.io/image/76cbb4ca3cea10e5fd4d341d9f05ead3.png">
+<meta property="og:image" content="https://godxqi.github.io/image/7838c54fb219dea456f09131801be963.png">
+<meta property="og:image" content="https://godxqi.github.io/image/c52bf373b607836828314019d838961e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/87b928fda6a718a2d18bb2cf5639b527.png">
+<meta property="og:image" content="https://godxqi.github.io/image/1675aa170c37ec19d4f6ac4efe785103.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ab7b5531dec51bd7c86ebf6eed3e45d4.png">
+<meta property="og:image" content="https://godxqi.github.io/image/063e85b85a3a82b5cb7ac0260811289c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b6e0f35ff3f2be8fd9d501769d970f31.png">
+<meta property="og:image" content="https://godxqi.github.io/image/308339ca928c8d98d4f4cbefad2ebe99.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b1b5d13062a2fc5cc435325a97f55397.png">
+<meta property="og:image" content="https://godxqi.github.io/image/71a141302f934629e0d3681beafb462a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/10d6ae2ad9ffd62d3425863a0f505568.png">
+<meta property="og:image" content="https://godxqi.github.io/image/6eee005331550ae994ca89c7bea2ea54.png">
+<meta property="og:image" content="https://godxqi.github.io/image/ccec79fe480464ab11013b564cc29c1e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/44b6e8f3d277cfb7f54508aedefe15fb.png">
+<meta property="og:image" content="https://godxqi.github.io/image/92ce7921e9e91591e668cc451aa6df87.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f0f7fed8f9f2655df8849a7b41eb404d.png">
+<meta property="og:image" content="https://godxqi.github.io/image/63778e95c4169ebf684ddf1d4347e1cb.png">
+<meta property="og:image" content="https://godxqi.github.io/image/01cb58b54a9ebc3845850478460b5e17.png">
+<meta property="og:image" content="https://godxqi.github.io/image/6c2446d56ad3c061df02d893f1620dcf.png">
+<meta property="og:image" content="https://godxqi.github.io/image/1c239aaa13bf8c73829d48a39b8488d4.png">
+<meta property="og:image" content="https://godxqi.github.io/image/6c2869ff6f212e04d6f11d520c70ec29.png">
+<meta property="og:image" content="https://godxqi.github.io/image/873a7a31a5a7cf96042f8f219fd8a6eb.png">
+<meta property="og:image" content="https://godxqi.github.io/image/2d8749d064feb4d6138ff9cb1028a016.png">
+<meta property="og:image" content="https://godxqi.github.io/image/7fab32ae35387f750380f038edf9803a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/2a5e0f124af1485cd340003db228a56b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/7855bbe9a795507df565889e5a74d67f.png">
+<meta property="og:image" content="https://godxqi.github.io/image/9a9e72a2f154a8ff58fbe824a0ff286a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/d959e4fe47905959f66d94b122b665ed.png">
+<meta property="og:image" content="https://godxqi.github.io/image/739f4ace9475b880dd7e1f2233b53a35.png">
+<meta property="og:image" content="https://godxqi.github.io/image/812534e05df2fa6cdcc954bb865e46cf.png">
+<meta property="og:image" content="https://godxqi.github.io/image/81f95948d5a9c4a732d979ffc04176ea.png">
+<meta property="og:image" content="https://godxqi.github.io/image/03e30b6b94e518e774ec47d99d147ded.png">
+<meta property="og:image" content="https://godxqi.github.io/image/e2e92f16a463ba9e8dedc0a1b310d1c1.png">
+<meta property="og:image" content="https://godxqi.github.io/image/c2aeb0eb11ac66a89888452901827135.png">
+<meta property="og:image" content="https://godxqi.github.io/image/16366f098defc50b43c2184a0ec28325.png">
+<meta property="article:published_time" content="2023-01-15T12:55:06.491Z">
+<meta property="article:modified_time" content="2023-01-15T12:56:41.350Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/4eaf080e68fbd5d9c59ec453a340da3a.png">
+  
+  
+  
+  <title>第004课_根文件系统 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第004课_根文件系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:55" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          69 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第004课_根文件系统</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="/image/4eaf080e68fbd5d9c59ec453a340da3a.png" srcset="/img/loading.gif" lazyload alt="4eaf080e68fbd5d9c59ec453a340da3a.png"></p>
+<p>001</p>
+<hr>
+<p>u-boot目的：启动内核</p>
+<p>内核目的：启动应用程序-&gt;构建根文件系统</p>
+<p>与 Windows 的 C 盘类似， Linux 也需要在一个分区上存放系统启动的必要文件，比如内核启动运行后的第一个程序（ init进程）、用于挂接文件系统的脚本、给用户提供操作界面的 shell 程序，应用程序所要依赖的库等，这些必要、基本文件的集合称为根文件系统，它们存放在一个分区中。</p>
+<p>（一）内核如何启动第一个应用程序init进程（init_post()）？</p>
+<p>首先要挂接根文件系统再启动</p>
+<p>代码并不复杂，与init启动最强相关的就是run_init_process这个函数了，它运行指定的init程序，注意：一旦run_init_process运行创建进程成功，它将不会返回，而是通过操作内核栈进入用户空间。所以上面并不是运行了四个init进程，而是根据优先级，一旦某一个运行成功，就不往下继续执行了。</p>
+<p>下面详细描述一下该函数的执行过程：</p>
+<ol>
+<li>打开标准输入、标准输出和标准错误设备</li>
+</ol>
+<p>Linux中最先打开的3个文件分别称作标准输入(stdin)、标准输出(stdout)和标准错误(stderr)，它们对应的文件描述符分别是0、1、2.。</p>
+<p>如下代码就是执行这个操作，先打开文件&#x2F;dev&#x2F;console作为保准输入，然后将文件描述符复制给文件描述符1、2，这样使得标准输入、标准输出以及标准错误都使用&#x2F;dev&#x2F;console这个文件。注意代码上面的注释”该函数不能失败，也就是说至少&#x2F;dev&#x2F;console必须存在”。</p>
+<p>&#x2F;dev&#x2F;console-&gt;终端&#x2F;控制台：所有打印信息，输入，输出都是从这个文件</p>
+<p><img src="/image/0716276d130a78d9083e1ce231e178f2.png" srcset="/img/loading.gif" lazyload alt="0716276d130a78d9083e1ce231e178f2.png"></p>
+<ol>
+<li>如果变量ramdisk_execute_command为空，则将其指向&#x2F;init程序，如果该程序存在，则运行该程序，并且进程不会返回；如果该程序不存在，则置变量ramdisk_execute_command为NULL，代码片段为：</li>
+</ol>
+<p><img src="/image/250977202f84525eb3f21cccaa284289.png" srcset="/img/loading.gif" lazyload alt="250977202f84525eb3f21cccaa284289.png"></p>
+<ol>
+<li>如果变量execute_command指定了要运行的程序，则运行它，并且不会返回：</li>
+</ol>
+<p>uboot传给内核的命令行参数定义了init &#x3D; xxx，传递值给execute_command并启动execute_command</p>
+<p><img src="/image/c406affa5d43148b16536729a500a587.png" srcset="/img/loading.gif" lazyload alt="c406affa5d43148b16536729a500a587.png"></p>
+<ol>
+<li>依次尝试几个常见的init，一旦某一个成功，则不返回：</li>
+</ol>
+<p><img src="/image/86fea52c060c0417e1785f1df6fbb134.png" srcset="/img/loading.gif" lazyload alt="86fea52c060c0417e1785f1df6fbb134.png"></p>
+<ol>
+<li>如果以上执行都失败，那么内核就挂了</li>
+</ol>
+<p><img src="/image/8c991fbc348b3090a593aeb4c132d77b.png" srcset="/img/loading.gif" lazyload alt="8c991fbc348b3090a593aeb4c132d77b.png"></p>
+<p>（二）如何通过USB设备下载根文件系统：</p>
+<p>uboot界面输入y，再使用DNW下载映像fs_mini.yaffs2</p>
+<p>烧写完成，在uboot界面输入b启动，等待一会进入根文件系统，用ps命令可以查看有什么应用程序</p>
+<p>002</p>
+<hr>
+<p>（一）Busybox介绍：</p>
+<p>Busybox将众多的UNIX命令集合进一个很小的可执行程序中，可以用来替代GNU fileutils、shellutils等工具集。</p>
+<p>Busybox在编写过程中对文件大小进行了优化，并考虑了系统资源有限(比如内存等)的情况。</p>
+<p>Busybox按模块设计，可以很容易地加入、去除某些命令，或增减命令的某些选项。</p>
+<p>在创建根文件系统的时候，如果使用Busybox的话，只需要在&#x2F;dev目录下创建必要的设备节点，在&#x2F;etc目录下增加一些配置文件即可，当然，如果Busybox使用动态链接，那么还需要再&#x2F;lib目录下包含库文件。</p>
+<p>（二）init进程分析</p>
+<p>init进程是由内核启动的第一个(也是唯一一个)用户进程，init进程根据配置文件决定启动哪些程序，例如：执行某些脚本、启动shell或运行用户程序等等，init也是后续所有进程的发起者。</p>
+<p>Busybox是ls、cp、cd等命令的主核，执行ls、cp时实际上执行的是busybox程序，即ls &#x3D; busybox ls</p>
+<p>而“sbin&#x2F;init”实际也是到busybox的链接，所以我们想知道“sbin&#x2F;init”init进程做了什么我们需要分析busybox的源码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp">猜测<span class="hljs-keyword">init</span>程序主要目的：<br><span class="hljs-number">1.</span>读取配置文件（配置文件指定了后续要执行哪些程序）<br><span class="hljs-number">2.</span>解析配置文件<br><span class="hljs-number">3.</span>根据配置文件执行用户程序<br></code></pre></td></tr></table></figure>
+
+<p><img src="/image/20160914140317654.png" srcset="/img/loading.gif" lazyload alt="20160914140317654.png"></p>
+<p>busybox-&gt;init_main</p>
+<p>parse_inittab</p>
+<p>file &#x3D; fopen(INITTAB, “r”)    &#x2F;&#x2F;打开配置文件&#x2F;etc&#x2F;inittab-&gt;根据配置文件的内容调用new_init_action（将&#x2F;etc&#x2F;inittab里的每一条配置项做成一个init_action结构体并添加到具有相同执行时机的init_action_list）</p>
+<p>new_init_action    &#x2F;&#x2F;没有配置文件&#x2F;etc&#x2F;inittab-&gt;调用new_init_action来构造默认配置项（同上）</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">new_init_action</span><span class="hljs-params">()</span></span>做了什么<br><span class="hljs-number">1</span>. 创建结构体init_action，填充：执行时机，对应执行程序，终端<br><span class="hljs-number">2</span>. 将结构体放入链表init_action_list<br></code></pre></td></tr></table></figure>
+
+<p>run_actions(SYSINIT);    &#x2F;&#x2F;运行SYSINIT这一类动作</p>
+<p>waitfor(a, 0);    &#x2F;&#x2F;执行应用程序,等待它执行完毕</p>
+<p>run(a)    &#x2F;&#x2F;创建子进程</p>
+<p>waitpid(runpid, &amp;status, 0)    &#x2F;&#x2F;等待它结束</p>
+<p>delete_init_action(a);    &#x2F;&#x2F;在init_action_list链表里删除</p>
+<p>run_actions(WAIT);</p>
+<p>waitfor(a, 0);    &#x2F;&#x2F;执行应用程序,等待它执行完毕</p>
+<p>run(a)    &#x2F;&#x2F;创建子进程</p>
+<p>waitpid(runpid, &amp;status, 0)    &#x2F;&#x2F;等待它结束</p>
+<p>delete_init_action(a);    &#x2F;&#x2F;在init_action_list链表里删除</p>
+<p>run_actions(ONCE);</p>
+<p>run(a)    &#x2F;&#x2F;创建子进程</p>
+<p>delete_init_action(a);    &#x2F;&#x2F;在init_action_list链表里删除</p>
+<p>while(1){</p>
+<p>run_actions(RESPAWN);</p>
+<p>if(a-&gt;pid &#x3D;&#x3D; 0){</p>
+<p>a-&gt;pid &#x3D; run(a);</p>
+<p>}</p>
+<p>run_actions(ASKFIRST);</p>
+<p>if(a-&gt;pid &#x3D;&#x3D; 0){</p>
+<p>a-&gt;pid &#x3D; run(a);</p>
+<p>打印：Please press Enter to activate this console</p>
+<p>等待回车</p>
+<p>创建子进程</p>
+<p>}</p>
+<p>wpid &#x3D; wait(NULL);    &#x2F;&#x2F;等待子进程退出</p>
+<p>while(wpid &gt; 0){</p>
+<p>a-&gt;pid &#x3D; 0;    &#x2F;&#x2F;退出后就设置pid &#x3D; 0</p>
+<p>}</p>
+<p>}</p>
+<p>inittab格式：</p>
+<p>&lt;id&gt;:&lt;runlevels&gt;:&lt;action&gt;:&lt;process&gt;</p>
+<ul>
+<li>id项：&#x2F;dev&#x2F;id     用作终端（终端：stdin-printf,stdout-scanf,stderr-err）</li>
+</ul>
+<p>会加上一个&#x2F;dev 前缀。作为“控制终端”（controlling tty）。</p>
+<p>id可以省略。</p>
+<ul>
+<li>runlevels项：完全可以忽略掉。</li>
+<li>action项：指示程序何时执行。</li>
+<li>process项：是应用程序或脚本。</li>
+</ul>
+<p>（三）最小根文件系统：</p>
+<ol>
+<li><p>打开终端：&#x2F;dev&#x2F;console，&#x2F;dev&#x2F;NULL（不设置inittab格式中的id(标准输入、输出和标准错误)时，就定位到&#x2F;dev&#x2F;NULL中去）</p>
+</li>
+<li><p>init程序：例如&#x2F;sbin&#x2F;init,来源于busybox .</p>
+</li>
+<li><p>需要配置文件：&#x2F;etc&#x2F;inittab</p>
+</li>
+<li><p>配置文件若指定了某些应用程序或执行脚本--这些必须存在，不存在会有默认的。</p>
+</li>
+<li><p>应用程序需要c库（fopen、fwrite等函数需要）。</p>
+</li>
+</ol>
+<p>003</p>
+<hr>
+<p>解压busybox源码并进入目录</p>
+<p><img src="/image/db82ecfeef99f57af86a9e669ecf947e.png" srcset="/img/loading.gif" lazyload alt="db82ecfeef99f57af86a9e669ecf947e.png"></p>
+<p>如何编译busybox：</p>
+<p><img src="/image/ecfbf84fbaf95f0b06de8e7767b07df7.png" srcset="/img/loading.gif" lazyload alt="ecfbf84fbaf95f0b06de8e7767b07df7.png"></p>
+<ol>
+<li>配置：make menuconfig</li>
+</ol>
+<p><img src="/image/722a4f2c53d27ee1ff82a18a92821608.png" srcset="/img/loading.gif" lazyload alt="722a4f2c53d27ee1ff82a18a92821608.png"></p>
+<p>（1）配置busybox</p>
+<p>①首先是给嵌入式系统编译的，所以要有个交叉编译工具。</p>
+<pre><code class="hljs">    - 在配置文件中没法在配置图形项\(make menuconfig\)中定义，所以就在Makefile 中定义。直接在CROSS\_COMPILE项加上前缀arm\-linux\-
+</code></pre>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">CROSS_COMPILE？<span class="hljs-operator">=</span>arm-linux-<br></code></pre></td></tr></table></figure>
+
+<p><img src="/image/e4e6f141afbc64b99de5881f79579abd.png" srcset="/img/loading.gif" lazyload alt="e4e6f141afbc64b99de5881f79579abd.png"></p>
+<pre><code class="hljs">    - 或者：make时加上“CROSS\_COMPILE=arm\-linux\-”，即make CROSS\_COMPILE=arm\-linux\-
+</code></pre>
+<p>（2）指定库<img src="/image/f1af354222758a6d5bedb6e52dc6f8b1.png" srcset="/img/loading.gif" lazyload alt="f1af354222758a6d5bedb6e52dc6f8b1.png"></p>
+<p><img src="/image/b09bed110089cc6b8c1c84437b4c7e98.png" srcset="/img/loading.gif" lazyload alt="b09bed110089cc6b8c1c84437b4c7e98.png"></p>
+<p>将BusyBox 编译成一个静态的程序时，那么那些C库也不需要了。除非用户的应用程序指定需要库。这里不选表示用动态的。C库有两种，glibc 和uclibc，如果是用glibc静态编译时，会有提示一个警告信息，可能在以后使用时出问题，所以这里不用静态编译。而用动态链接。</p>
+<p>（3）命令补全</p>
+<p><img src="/image/42b4378e27546c7c384fbae80cdbf74e.png" srcset="/img/loading.gif" lazyload alt="42b4378e27546c7c384fbae80cdbf74e.png"></p>
+<p><img src="/image/6e775a76802ce3a964ac4f849dbdbf93.png" srcset="/img/loading.gif" lazyload alt="6e775a76802ce3a964ac4f849dbdbf93.png"></p>
+<p>（4）压缩命令，默认已经选上</p>
+<p><img src="/image/21e64c498acf7ce202f0a37b69c28841.png" srcset="/img/loading.gif" lazyload alt="21e64c498acf7ce202f0a37b69c28841.png"></p>
+<p>（5）模块加载命令，默认也是选上的</p>
+<p><img src="/image/f43a9ded84a47c405ad92b35146357be.png" srcset="/img/loading.gif" lazyload alt="f43a9ded84a47c405ad92b35146357be.png"></p>
+<p>（6）支持medv</p>
+<p><img src="/image/f984b32394baf5967eca4f827748e332.png" srcset="/img/loading.gif" lazyload alt="f984b32394baf5967eca4f827748e332.png"></p>
+<p>（7）ifconfig</p>
+<p><img src="/image/3994b1b65cd72ae20f2a842bd174cba0.png" srcset="/img/loading.gif" lazyload alt="3994b1b65cd72ae20f2a842bd174cba0.png"></p>
+<ol>
+<li>编译：make</li>
+</ol>
+<p><img src="/image/4ae452064d6ed2c5b08f3c86e1e11479.png" srcset="/img/loading.gif" lazyload alt="4ae452064d6ed2c5b08f3c86e1e11479.png"></p>
+<ol>
+<li>安装：make install ，一定要指定安装目录，不然就破坏了我们正在使用的系统。命令混淆了。</li>
+</ol>
+<p>使用：make CONFIG_PREFIX&#x3D;&#x2F;work&#x2F;nfs_root&#x2F;first_fs install，指定安装目录</p>
+<p><img src="/image/2abc1702f4660c5020bb9fcffabb7014.png" srcset="/img/loading.gif" lazyload alt="2abc1702f4660c5020bb9fcffabb7014.png"></p>
+<p><img src="/image/94e987923c10a65e49f02bd1d630f384.png" srcset="/img/loading.gif" lazyload alt="94e987923c10a65e49f02bd1d630f384.png"></p>
+<p><img src="/image/34e94d84ba0e5bb5499061bd33d3721c.png" srcset="/img/loading.gif" lazyload alt="34e94d84ba0e5bb5499061bd33d3721c.png"></p>
+<p>004</p>
+<hr>
+<p>（一）创建最简单的文件系统（yaffs）：</p>
+<ol>
+<li>创建两个设备文件：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mkdir</span> dev<br><span class="hljs-attribute">cd</span> dev/<br><span class="hljs-attribute">sudo</span> mknod console c <span class="hljs-number">5</span> <span class="hljs-number">1</span>    //c 表示字符型设备，<span class="hljs-number">5</span> 是主设备号，<span class="hljs-number">1</span>是次设备号。<br><span class="hljs-attribute">sudo</span> mknod null c <span class="hljs-number">1</span> <span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/image/76d5759b45264de360b44ade10cd44c0.png" srcset="/img/loading.gif" lazyload alt="76d5759b45264de360b44ade10cd44c0.png"></p>
+<ol>
+<li>.init程序本身就是busybox，所以这一步已经完成。</li>
+<li>创建&#x2F;etc&#x2F;inittab配置文件</li>
+</ol>
+<p>若不构造，则使用默认的配置项（前面init进程分析）：<img src="/image/af480f33bea4a5f6c7824262da59bdaf.png" srcset="/img/loading.gif" lazyload alt="af480f33bea4a5f6c7824262da59bdaf.png"></p>
+<p>写最简单的，只写一条::askfirst:-&#x2F;bin&#x2F;sh </p>
+<p>在first_fs目录下创建etc目录，再在etc下创建inittab文件。</p>
+<p><img src="/image/3043cd9638e417a4c40fa2440228c35a.png" srcset="/img/loading.gif" lazyload alt="3043cd9638e417a4c40fa2440228c35a.png"></p>
+<p><img src="/image/b453f1d33a87c0864ae04d281236959a.png" srcset="/img/loading.gif" lazyload alt="b453f1d33a87c0864ae04d281236959a.png"></p>
+<p>编辑内容：console::askfirst:-&#x2F;bin&#x2F;sh</p>
+<p><img src="/image/ed9eb2418d2cdd44263de7f44dbc4902.png" srcset="/img/loading.gif" lazyload alt="ed9eb2418d2cdd44263de7f44dbc4902.png"></p>
+<p>表示它里面只执行一个askfirst一个&#x2F;bin&#x2F;sh程序，&#x2F;bin&#x2F;sh这个程序的标准输入、输出和标准错误都定位到“&#x2F;dev&#x2F;console”里面去。</p>
+<ol>
+<li>配置文件指定的某些应用程序或执行脚本-&gt;没有指定用户程序，暂时没必要</li>
+<li>安装glibc库</li>
+</ol>
+<p><img src="/image/442d3ac9c8255fd282bf3293b2d65ceb.png" srcset="/img/loading.gif" lazyload alt="442d3ac9c8255fd282bf3293b2d65ceb.png"></p>
+<p>将所有.so 文件拷贝过来即可。-d 是本来是个链接文件，则也保持是个链接文件。不然就拷贝成了真正的文件，这样会很大。</p>
+<p><img src="/image/a0cab523ae5d46870743ec791f7ab377.png" srcset="/img/loading.gif" lazyload alt="a0cab523ae5d46870743ec791f7ab377.png"></p>
+<p><img src="/image/8cc040f0d6df47031648bbf2d025103c.png" srcset="/img/loading.gif" lazyload alt="8cc040f0d6df47031648bbf2d025103c.png"></p>
+<p>这是所有的库。其中.a 的文件是静态库，我们只要动态库。</p>
+<p><img src="/image/a6d6ef84f8d03dbbaaee182c4df8faff.png" srcset="/img/loading.gif" lazyload alt="a6d6ef84f8d03dbbaaee182c4df8faff.png"></p>
+<p>libnss_dns.so是一个链接文件，链接到libnss_dns.so.2 若拷贝时不加-d ，则会libnss_dns.so拷贝成libnss_dns.so.2 的内容。这个库就会显得很大。</p>
+<p><img src="/image/ce18fa9498f311ffe717b89ed7f66f4f.png" srcset="/img/loading.gif" lazyload alt="ce18fa9498f311ffe717b89ed7f66f4f.png"></p>
+<p>拷贝动态库文件。</p>
+<p><img src="/image/1bfa0b2e84b200d55cab29bca8881f6b.png" srcset="/img/loading.gif" lazyload alt="1bfa0b2e84b200d55cab29bca8881f6b.png"></p>
+<p>这就是最小根文件系统（第四部未做）</p>
+<p><img src="/image/8e96ac4e4bcee4bd45531ac8fb221c0a.png" srcset="/img/loading.gif" lazyload alt="8e96ac4e4bcee4bd45531ac8fb221c0a.png"></p>
+<p><img src="/image/fb74a46611ffe60c884bfbc0985b8ffc.png" srcset="/img/loading.gif" lazyload alt="fb74a46611ffe60c884bfbc0985b8ffc.png"></p>
+<p><img src="/image/80c0459842d8185ff2dc97be4e822874.png" srcset="/img/loading.gif" lazyload alt="80c0459842d8185ff2dc97be4e822874.png"></p>
+<p><img src="/image/450aa144b20087688ee554d30a3e4e1d.png" srcset="/img/loading.gif" lazyload alt="450aa144b20087688ee554d30a3e4e1d.png"></p>
+<p>（二）制作映像文件</p>
+<ol>
+<li>获取工具</li>
+</ol>
+<p>书上的方法是制作yaffs1的，适合小页的的NAND FLASH，每页512字节。现在大NAND是2048字节，需要使用yaff2</p>
+<p><img src="/image/578af17cddc21d228a4daae3c4c8846c.png" srcset="/img/loading.gif" lazyload alt="578af17cddc21d228a4daae3c4c8846c.png"></p>
+<p>解压yaffs工具，得出<img src="/image/20d6efaef1b5f7b6d7414e88c09723da.png" srcset="/img/loading.gif" lazyload alt="20d6efaef1b5f7b6d7414e88c09723da.png"></p>
+<p><img src="/image/bff8fca29b49e62197bf99d3fa47a6e8.png" srcset="/img/loading.gif" lazyload alt="bff8fca29b49e62197bf99d3fa47a6e8.png"></p>
+<p><img src="/image/4a1dc991b3070e2642e44bc4c9e59da0.png" srcset="/img/loading.gif" lazyload alt="4a1dc991b3070e2642e44bc4c9e59da0.png"></p>
+<p>在&#x2F;utils目录执行make，生成mkyaffs2image工具。</p>
+<p><img src="/image/921e4f7aa94e8da2d46d10a98ad56996.png" srcset="/img/loading.gif" lazyload alt="921e4f7aa94e8da2d46d10a98ad56996.png"></p>
+<p>将这个工具拷贝到PC机的&#x2F;usr&#x2F;local&#x2F;bin 目录下。再加上可执行属性就可以直接使用了（sudo）。</p>
+<p><img src="/image/b7a81118a66bdf60ac37b0bb731debb0.png" srcset="/img/loading.gif" lazyload alt="b7a81118a66bdf60ac37b0bb731debb0.png"></p>
+<p><img src="/image/cecbcdfd5ea0dfe1159791a6f34a4f07.png" srcset="/img/loading.gif" lazyload alt="cecbcdfd5ea0dfe1159791a6f34a4f07.png"></p>
+<ol>
+<li>开始制作</li>
+</ol>
+<p><img src="/image/2513e855635895550ec0e4cc25c288a4.png" srcset="/img/loading.gif" lazyload alt="2513e855635895550ec0e4cc25c288a4.png"></p>
+<p><img src="/image/a5bab9c083db5ea96e04aaf9b195d004.png" srcset="/img/loading.gif" lazyload alt="a5bab9c083db5ea96e04aaf9b195d004.png"></p>
+<p>得到第一个文件系统的映像文件</p>
+<p><img src="/image/bb2c7ffd20bf31f8b0ede1d710edaa65.png" srcset="/img/loading.gif" lazyload alt="bb2c7ffd20bf31f8b0ede1d710edaa65.png"></p>
+<p><img src="/image/8742a7f32e150af40f7cc9bc1c86f737.png" srcset="/img/loading.gif" lazyload alt="8742a7f32e150af40f7cc9bc1c86f737.png"></p>
+<p>将文件拷贝到PC，进入uboot界面输入y等待烧写，再使用DNW发送到开发板中进行烧写</p>
+<p>输入b启动，<img src="/image/e25e56215e012af2c29d36a54cca133f.png" srcset="/img/loading.gif" lazyload alt="e25e56215e012af2c29d36a54cca133f.png"></p>
+<p>输入回车启动正常。</p>
+<p><img src="/image/f3b9934719b4739166f24e77fd337885.png" srcset="/img/loading.gif" lazyload alt="f3b9934719b4739166f24e77fd337885.png"></p>
+<p>（三）完善根文件系统</p>
+<ol>
+<li>挂载虚拟的根文件系统</li>
+</ol>
+<p>在内核中，当前有哪些应用程序在跑，这些信息如何收集。是内核提供了一个虚拟的文件系统，叫proc 文件系统，将这个proc系统挂载。</p>
+<p>（1）创建proc目录：mkdir proc（此时ps看也没有内容）</p>
+<p>输入mount -t proc none &#x2F;proc（手工挂载：在运行了最小根文件系统的单板上制作）</p>
+<p><img src="/image/dff4988f290703b0007c36a8e09c83e5.png" srcset="/img/loading.gif" lazyload alt="dff4988f290703b0007c36a8e09c83e5.png"></p>
+<p><img src="/image/201135a0ab37dcb954b2820262f51c84.png" srcset="/img/loading.gif" lazyload alt="201135a0ab37dcb954b2820262f51c84.png"></p>
+<p>去&#x2F;proc 目录看下有哪些程序。</p>
+<p><img src="/image/74c5725fd002c2c2fa5918d064df82cb.png" srcset="/img/loading.gif" lazyload alt="74c5725fd002c2c2fa5918d064df82cb.png"></p>
+<p>1表示上面PID为1的程序就是init这个程序</p>
+<p><img src="/image/72fc5c456cc61693ef14150da8317547.png" srcset="/img/loading.gif" lazyload alt="72fc5c456cc61693ef14150da8317547.png"></p>
+<p>里面的fd就指向了&#x2F;dev&#x2F;console,三个分别是标准输入、输出和标准错误。</p>
+<p>（2）使挂载自动配置：在使用mkyaffs2image工具制作文件系统时，也建立proc目录</p>
+<p>-修改配置文件&#x2F;etc&#x2F;inittab，加入一个脚本”rcS”</p>
+<p><img src="/image/76cbb4ca3cea10e5fd4d341d9f05ead3.png" srcset="/img/loading.gif" lazyload alt="76cbb4ca3cea10e5fd4d341d9f05ead3.png"></p>
+<p><img src="/image/7838c54fb219dea456f09131801be963.png" srcset="/img/loading.gif" lazyload alt="7838c54fb219dea456f09131801be963.png"></p>
+<p>-创建脚本文件rcS，在rcS中加入mount -t proc none &#x2F;proc，并加上可执行属性</p>
+<p><img src="/image/c52bf373b607836828314019d838961e.png" srcset="/img/loading.gif" lazyload alt="c52bf373b607836828314019d838961e.png"></p>
+<p><img src="/image/87b928fda6a718a2d18bb2cf5639b527.png" srcset="/img/loading.gif" lazyload alt="87b928fda6a718a2d18bb2cf5639b527.png"></p>
+<p><img src="/image/1675aa170c37ec19d4f6ac4efe785103.png" srcset="/img/loading.gif" lazyload alt="1675aa170c37ec19d4f6ac4efe785103.png"></p>
+<p>（3）除了 mount -t….还可以直接使用 mount -a这个命令，这个命令依赖etc&#x2F;fstab 中的内容。</p>
+<p>查看busybox的源码中fstab的说明：</p>
+<p><img src="/image/ab7b5531dec51bd7c86ebf6eed3e45d4.png" srcset="/img/loading.gif" lazyload alt="ab7b5531dec51bd7c86ebf6eed3e45d4.png"></p>
+<p>格式说明：</p>
+<p>-device：要挂接的设备。对于虚拟文件系统proc 格式中此处的名字可以随便写，上面写的是“proc”。</p>
+<p>-mount-point ：是挂载到哪里去。&#x2F;proc</p>
+<p>-type：文件系统类型。此时是“proc”虚拟文件系统。</p>
+<p>-options：参数。</p>
+<p>编辑&#x2F;etc&#x2F;fstab，etc&#x2F;init.d&#x2F;rcS</p>
+<p><img src="/image/063e85b85a3a82b5cb7ac0260811289c.png" srcset="/img/loading.gif" lazyload alt="063e85b85a3a82b5cb7ac0260811289c.png"></p>
+<p><img src="/image/b6e0f35ff3f2be8fd9d501769d970f31.png" srcset="/img/loading.gif" lazyload alt="b6e0f35ff3f2be8fd9d501769d970f31.png"></p>
+<p>这时可以再mkyaffs2image first_fs first_fs.yaffs2 制作一次文件系统。烧到开发板。</p>
+<p>在单板上执行 cat &#x2F;proc&#x2F;mounts，可以查看当前挂载的文件系统</p>
+<p><img src="/image/308339ca928c8d98d4f4cbefad2ebe99.png" srcset="/img/loading.gif" lazyload alt="308339ca928c8d98d4f4cbefad2ebe99.png"></p>
+<p><img src="/image/b1b5d13062a2fc5cc435325a97f55397.png" srcset="/img/loading.gif" lazyload alt="b1b5d13062a2fc5cc435325a97f55397.png"></p>
+<ol>
+<li>完善dev目录</li>
+</ol>
+<p>dev 目录下对应设备和驱动。一个个创建会很麻烦，使用udev机制。</p>
+<p>udev 是linux下自动创建dev 目录下的设备节点。</p>
+<p>busybox 中有个简化版本mdev，且busybox目录下有一个mdev.txt 有说明要做如下6项。</p>
+<p><img src="/image/71a141302f934629e0d3681beafb462a.png" srcset="/img/loading.gif" lazyload alt="71a141302f934629e0d3681beafb462a.png"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">[<span class="hljs-number">1</span>] mount -t sysfs sysfs /sys 首先挂载一个文件系统到 sys 目录中去。<br>[<span class="hljs-number">2</span>] echo <span class="hljs-regexp">/bin/m</span>dev &gt; <span class="hljs-regexp">/proc/</span>sys<span class="hljs-regexp">/kernel/</span>hotplug<br>[<span class="hljs-number">3</span>] mdev -s<br>[<span class="hljs-number">4</span>] mount -t tmpfs mdev /dev 还要挂载一个文件系统到 dev 目录中去。<br>[<span class="hljs-number">5</span>] mkdir <span class="hljs-regexp">/dev/</span>pts<br>[<span class="hljs-number">6</span>] mount -t devpts devpts <span class="hljs-regexp">/dev/</span>pts<br></code></pre></td></tr></table></figure>
+
+<p>第一步和第四部：打开&#x2F;etc&#x2F;fstab，写入以下内容</p>
+<p><img src="/image/10d6ae2ad9ffd62d3425863a0f505568.png" srcset="/img/loading.gif" lazyload alt="10d6ae2ad9ffd62d3425863a0f505568.png"></p>
+<p>第二、三、五、六部：打开&#x2F;etc&#x2F;init.d&#x2F;rcS，写入以下内容</p>
+<p><img src="/image/6eee005331550ae994ca89c7bea2ea54.png" srcset="/img/loading.gif" lazyload alt="6eee005331550ae994ca89c7bea2ea54.png"></p>
+<p><img src="/image/ccec79fe480464ab11013b564cc29c1e.png" srcset="/img/loading.gif" lazyload alt="ccec79fe480464ab11013b564cc29c1e.png"></p>
+<p><img src="/image/44b6e8f3d277cfb7f54508aedefe15fb.png" srcset="/img/loading.gif" lazyload alt="44b6e8f3d277cfb7f54508aedefe15fb.png"></p>
+<p>完善之前：<img src="/image/92ce7921e9e91591e668cc451aa6df87.png" srcset="/img/loading.gif" lazyload alt="92ce7921e9e91591e668cc451aa6df87.png"></p>
+<p>完善之后重新烧写会发现mdev自动创建了一堆设备文件</p>
+<p><img src="/image/f0f7fed8f9f2655df8849a7b41eb404d.png" srcset="/img/loading.gif" lazyload alt="f0f7fed8f9f2655df8849a7b41eb404d.png"></p>
+<p><img src="/image/63778e95c4169ebf684ddf1d4347e1cb.png" srcset="/img/loading.gif" lazyload alt="63778e95c4169ebf684ddf1d4347e1cb.png"></p>
+<p>以上最小的根文件系统基本完善</p>
+<p>（四）构建其他文件系统：jffs2</p>
+<p>用jffs2 文件系统映象。这是一般用在NORFLASY 上的，但也可以用在NAND 上。</p>
+<ol>
+<li>首先编译制作工具</li>
+</ol>
+<p>这个mkfs.jffs2工具需要zlib压缩包，先安装zlib。找到zlib源码zlib-1.2.3.tar.gz，进行如下操作</p>
+<p><img src="/image/01cb58b54a9ebc3845850478460b5e17.png" srcset="/img/loading.gif" lazyload alt="01cb58b54a9ebc3845850478460b5e17.png"></p>
+<p>--shared 是会编译出它的动态库</p>
+<p>--prefix 是指安装到哪个目录</p>
+<p>然后编译mkfs.jffs2，就生成了mkfs.jffs2这个工具</p>
+<p><img src="/image/6c2446d56ad3c061df02d893f1620dcf.png" srcset="/img/loading.gif" lazyload alt="6c2446d56ad3c061df02d893f1620dcf.png"></p>
+<ol>
+<li>制作映像文件</li>
+</ol>
+<p><img src="/image/1c239aaa13bf8c73829d48a39b8488d4.png" srcset="/img/loading.gif" lazyload alt="1c239aaa13bf8c73829d48a39b8488d4.png"></p>
+<p>-n 表示不要在每个擦除块上都加上清除标志。</p>
+<p>-s 指明一页的大小是多少。此处NAND每页是2048字节.</p>
+<p>-e 是一个擦除块的大小 （单位 KiB）。此处NAND是每块128KiB</p>
+<p>-d 是制作哪个目录为文件系统</p>
+<p>-o 是输入文件系统</p>
+<ol>
+<li>烧写</li>
+</ol>
+<p>若重启发现还是以yaffs文件系统来挂接的。<img src="/image/6c2869ff6f212e04d6f11d520c70ec29.png" srcset="/img/loading.gif" lazyload alt="6c2869ff6f212e04d6f11d520c70ec29.png"></p>
+<p>这显然不对。得指定下根文件系统的类型。不能自动识别则在命令行中强制指定。再启动。</p>
+<p><img src="/image/873a7a31a5a7cf96042f8f219fd8a6eb.png" srcset="/img/loading.gif" lazyload alt="873a7a31a5a7cf96042f8f219fd8a6eb.png"></p>
+<p>现在正常<img src="/image/2d8749d064feb4d6138ff9cb1028a016.png" srcset="/img/loading.gif" lazyload alt="2d8749d064feb4d6138ff9cb1028a016.png"></p>
+<p>（五）nfs挂载根文件系统</p>
+<p>改进：每改一次就要重新烧写，使用网络文件系统不用来回烧写。</p>
+<p>网络文件系统：这个文件系统放在服务器上，内核启动时识别服务器上这个目录，将这个目录当成根文件系统。</p>
+<p><img src="/image/7fab32ae35387f750380f038edf9803a.png" srcset="/img/loading.gif" lazyload alt="7fab32ae35387f750380f038edf9803a.png"></p>
+<p>设置同一网段，ping测试</p>
+<p><img src="/image/2a5e0f124af1485cd340003db228a56b.png" srcset="/img/loading.gif" lazyload alt="2a5e0f124af1485cd340003db228a56b.png"></p>
+<p><img src="/image/7855bbe9a795507df565889e5a74d67f.png" srcset="/img/loading.gif" lazyload alt="7855bbe9a795507df565889e5a74d67f.png"></p>
+<ol>
+<li>从flash上启动根文件系统，再用命令挂接NFS：</li>
+</ol>
+<p>-服务器允许那个目录被挂接。启动nfs 服务（在&#x2F;etc&#x2F;exports这个配置文件中定义这个目录）。</p>
+<p><img src="/image/9a9e72a2f154a8ff58fbe824a0ff286a.png" srcset="/img/loading.gif" lazyload alt="9a9e72a2f154a8ff58fbe824a0ff286a.png"></p>
+<p>重启nfs服务</p>
+<p><img src="/image/d959e4fe47905959f66d94b122b665ed.png" srcset="/img/loading.gif" lazyload alt="d959e4fe47905959f66d94b122b665ed.png"></p>
+<p>测试，在PC机上测试下是否可以自已挂接自已：</p>
+<p><img src="/image/739f4ace9475b880dd7e1f2233b53a35.png" srcset="/img/loading.gif" lazyload alt="739f4ace9475b880dd7e1f2233b53a35.png"></p>
+<p><img src="/image/812534e05df2fa6cdcc954bb865e46cf.png" srcset="/img/loading.gif" lazyload alt="812534e05df2fa6cdcc954bb865e46cf.png"></p>
+<p>测试成功</p>
+<p>-单板去挂接</p>
+<p><img src="/image/81f95948d5a9c4a732d979ffc04176ea.png" srcset="/img/loading.gif" lazyload alt="81f95948d5a9c4a732d979ffc04176ea.png"></p>
+<p><img src="/image/03e30b6b94e518e774ec47d99d147ded.png" srcset="/img/loading.gif" lazyload alt="03e30b6b94e518e774ec47d99d147ded.png"></p>
+<p>在单板上创建一个挂接目录，再挂接。这样在服务器上改变那个目录下的文件时，单板上挂接的这个目录里也会改变。</p>
+<p>这种方法是开发板启动之后去挂载的。</p>
+<p>2.直接从NFS启动-&gt;修改命令行参数</p>
+<p><img src="/image/e2e92f16a463ba9e8dedc0a1b310d1c1.png" srcset="/img/loading.gif" lazyload alt="e2e92f16a463ba9e8dedc0a1b310d1c1.png"></p>
+<p>上面是从“&#x2F;dev&#x2F;mtdblock3”启动的。</p>
+<p>应该修改成bootargs&#x3D;noinitrd root&#x3D;&#x2F;dev&#x2F;nfs init&#x3D;&#x2F;linuxrc console&#x3D;ttySAC0</p>
+<p>设置NFS启动参数：</p>
+<p>1.服务器IP、目录</p>
+<p>2.自己的IP</p>
+<p>在linux内核的Documention\nfsroot.txt中有说明用法。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs ruby">nfsroot=[&lt;server-ip&gt;<span class="hljs-symbol">:</span>]&lt;root-dir&gt;[,&lt;nfs-options&gt;]<br>ip=&lt;client-ip&gt;<span class="hljs-symbol">:&lt;server-ip&gt;</span><span class="hljs-symbol">:&lt;gw-ip&gt;</span><span class="hljs-symbol">:&lt;netmask&gt;</span><span class="hljs-symbol">:&lt;hostname&gt;</span><span class="hljs-symbol">:&lt;device&gt;</span><span class="hljs-symbol">:&lt;autoconf&gt;</span><br>noinitrd root=<span class="hljs-regexp">/dev/nfs</span> nfsroot=[&lt;server-ip&gt;<span class="hljs-symbol">:</span>]&lt;root-dir&gt;[,&lt;nfs-options&gt;]  ip=&lt;client-ip&gt;<span class="hljs-symbol">:&lt;server-ip&gt;</span><span class="hljs-symbol">:&lt;gw-ip&gt;</span><span class="hljs-symbol">:&lt;netmask&gt;</span><span class="hljs-symbol">:&lt;hostname&gt;</span><span class="hljs-symbol">:&lt;device&gt;</span><span class="hljs-symbol">:&lt;autoconf&gt;</span><br><br>[&lt;server-ip&gt;<span class="hljs-symbol">:</span>] 服务器<span class="hljs-variable constant_">IP</span>。<span class="hljs-number">192.168</span>.<span class="hljs-number">1.19</span><br>&lt;root-dir&gt; 服务器上哪个目录设置成被单板挂载。/work/nfs_root/first_fs<br>[&lt;nfs-options&gt;] 用中括号表示的参数可以省略。尖括号的不可省略。此处不设置<br>&lt;client-ip&gt; 表示单板的<span class="hljs-variable constant_">IP</span>。<span class="hljs-number">192.168</span>.<span class="hljs-number">1.11</span><br>&lt;server-ip&gt; 服务器<span class="hljs-variable constant_">IP</span>。<span class="hljs-number">192.168</span>.<span class="hljs-number">1.19</span><br>&lt;gw-ip&gt; 网关，单板和服务器同一网段。<span class="hljs-number">192.168</span>.<span class="hljs-number">1.1</span><br>&lt;netmask&gt; 子网掩码。<span class="hljs-number">255.255</span>.<span class="hljs-number">255.0</span><br>&lt;hostname&gt; 不关心这个，不要。<br>&lt;device&gt; 网卡，如 eth0\eth1。eth0<br>&lt;autoconf&gt; 自动配置，这个不需要。off<br></code></pre></td></tr></table></figure>
+
+<p>输入设置命令：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">set</span> bootargs noinitrd <span class="hljs-attribute">root</span>=/dev/nfs <span class="hljs-attribute">nfsroot</span>=192.168.2.100:/work/nfs_root/first_fs <span class="hljs-attribute">ip</span>=192.168.2.123:192.168.2.100:192.168.2.1:255.255.255.0::eth0:off <span class="hljs-attribute">init</span>=/linuxrc <span class="hljs-attribute">console</span>=ttySAC0<br></code></pre></td></tr></table></figure>
+
+<p>原来的启动参数：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">noinitrd <span class="hljs-attribute">root</span>=/dev/mtdblock2 <span class="hljs-attribute">init</span>=/linuxrc <span class="hljs-attribute">console</span>=ttySAC0 <span class="hljs-attribute">mem</span>=64M<br></code></pre></td></tr></table></figure>
+
+<p>save保存，print查看参数</p>
+<p><img src="/image/c2aeb0eb11ac66a89888452901827135.png" srcset="/img/loading.gif" lazyload alt="c2aeb0eb11ac66a89888452901827135.png"></p>
+<p><img src="/image/16366f098defc50b43c2184a0ec28325.png" srcset="/img/loading.gif" lazyload alt="16366f098defc50b43c2184a0ec28325.png"></p>
+<p>设置好输入boot启动单板，这样单板就挂接好了nfs网络文件系统了。</p>
+<p>测试：在服务器上写一个程序hello.c，再使用arm-linux-gcc编译生成了hello文件，再到这个nfs 文件系统上启动，就可以在单板上直接运行。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第004课_根文件系统</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山1.2期衔接/第004课_根文件系统/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E7%BB%93%E6%9E%84%E4%BD%93/" title="几个关键结构体">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">几个关键结构体</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC005%E8%AF%BE_%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="第005课_字符设备驱动">
+                        <span class="hidden-mobile">第005课_字符设备驱动</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

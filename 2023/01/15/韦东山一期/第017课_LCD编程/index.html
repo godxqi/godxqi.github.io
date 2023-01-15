@@ -1,0 +1,1091 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录   第001节_LCD硬件原理 第002节_S3C2440_LCD控制器 第003节_编程_框架与准备 第004节_编程_抽象出重要结构体 第005节_编程_LCD控制器 第006节_编程_LCD设置 第007节_编程_简单测试 第008节_编程_画点线圆 第009节_编程_显示文字 第010节_编程_添加除法 第011节_编程_使用调色板  第001节_LCD硬件原理  先简单介绍下LCD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第017课 LCD编程">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC017%E8%AF%BE_LCD%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="目录   第001节_LCD硬件原理 第002节_S3C2440_LCD控制器 第003节_编程_框架与准备 第004节_编程_抽象出重要结构体 第005节_编程_LCD控制器 第006节_编程_LCD设置 第007节_编程_简单测试 第008节_编程_画点线圆 第009节_编程_显示文字 第010节_编程_添加除法 第011节_编程_使用调色板  第001节_LCD硬件原理  先简单介绍下LCD">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/400px-Chapter17_lesson1_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson1_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson1_003.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/d528c75e7c2fb0735c8dcd5bfdf65ced.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson1_005.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson2_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson2_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson3_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson3_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_005.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_006.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson5_007.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter17_lesson6_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson8_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson8_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter17_lesson10_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson11_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter17_lesson11_002.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.015Z">
+<meta property="article:modified_time" content="2023-01-15T13:01:27.973Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/400px-Chapter17_lesson1_001.jpg">
+  
+  
+  
+  <title>第017课 LCD编程 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第017课 LCD编程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          24k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          198 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第017课 LCD编程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>目录</strong></p>
+<hr>
+<ol>
+<li>第001节_LCD硬件原理</li>
+<li>第002节_S3C2440_LCD控制器</li>
+<li>第003节_编程_框架与准备</li>
+<li>第004节_编程_抽象出重要结构体</li>
+<li>第005节_编程_LCD控制器</li>
+<li>第006节_编程_LCD设置</li>
+<li>第007节_编程_简单测试</li>
+<li>第008节_编程_画点线圆</li>
+<li>第009节_编程_显示文字</li>
+<li>第010节_编程_添加除法</li>
+<li>第011节_编程_使用调色板</li>
+</ol>
+<p><strong>第001节_LCD硬件原理</strong></p>
+<hr>
+<p>先简单介绍下LCD的操作原理。 如下图的LCD示意图，里面的每个点就是一个像素点。</p>
+<p><img src="/image/400px-Chapter17_lesson1_001.jpg" srcset="/img/loading.gif" lazyload alt="400px-Chapter17_lesson1_001.jpg"></p>
+<p>想象有一个电子枪，一边移动，一边发出各种颜色的光。这里有很多细节问题，我们一个一个的梳理。</p>
+<ul>
+<li><ol>
+<li>电子枪是如何移动的？</li>
+</ol>
+</li>
+</ul>
+<p>答：有一条CLK时钟线与LCD相连，每发出一次CLK(高低电平)，电子枪就移动一个像素。</p>
+<ul>
+<li><ol start="2">
+<li>颜色如何确定？</li>
+</ol>
+</li>
+</ul>
+<p>答：由连接LCD的三组线：R(Red)、G(Green)、B(Blue)确定。</p>
+<ul>
+<li><ol start="3">
+<li>电子枪如何得知应跳到下一行？</li>
+</ol>
+</li>
+</ul>
+<p>答：有一条HSYNC信号线与LCD相连，每发出一次脉冲(高低电平)，电子枪就跳到下一行。</p>
+<ul>
+<li><ol start="4">
+<li>电子枪如何得知应跳到原点？</li>
+</ol>
+</li>
+</ul>
+<p>答：有一条VSYNC信号线与LCD相连，每发出一次脉冲(高低电平)，电子枪就跳到原点。</p>
+<ul>
+<li><ol start="5">
+<li>RGB线上的数据从何而来？</li>
+</ol>
+</li>
+</ul>
+<p>答：内存里面划分一块显存(FrameBuffer)，里面存放了要显示的数据，LCD控制器从里面将数据读出来，通过RGB三组线传给电子枪，电子枪再转成红绿蓝三个颜色依次打到显示屏上。</p>
+<ul>
+<li><ol start="6">
+<li>前面的信号由谁发给LCD？</li>
+</ol>
+</li>
+</ul>
+<p>答：有S3C2440里面的LCD控制器来控制发出信号。</p>
+<p>通过JZ2440原理图对上面进行验证，下图的LCD控制器接口图。</p>
+<p><img src="/image/700px-Chapter17_lesson1_002.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson1_002.jpg"></p>
+<p>①是时钟信号，每来一个CLK，电子枪就移动一个像素；</p>
+<p>②是用来传输颜色数据；</p>
+<p>③是垂直方向同步信号，FRAME(帧)；</p>
+<p>④是水平方向同步信号，LINE(行)；</p>
+<p>再来看看LCD的芯片手册。</p>
+<p><img src="/image/700px-Chapter17_lesson1_003.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson1_003.jpg"></p>
+<p>先是VLED+、VLED-背光灯电源。VDD、VDD是LCD电源。</p>
+<p>R0-R7、G0-G7、B0-B7是红绿蓝颜色信号。</p>
+<p>PCLK是像素时钟信号。DISP是像素开关。</p>
+<p>HSYNC、VSYNC分别是水平方向、垂直方向信号。</p>
+<p>DE数据使能。X1、Y1、X2、Y2是触摸屏信号。</p>
+<p>内存中划分出一个区域为FrameBuffer，在FrameBuffer里我们构造好每个像素对应的颜色的数据，而这些值最终会被lcd控制器读出来，通过RGB三组线传给电子枪，电子枪再把它们转成红绿蓝三组颜色打到像素上去，即每个像素在FrameBuffer里都有它对应的存储空间，里面存有它的值(颜色)</p>
+<p>可以看出LCD有很多信号，这些信号要根据时序图传输才能正确显示。参考JZ2440_4.3寸LCD手册_AT043TN24的时序如下：</p>
+<p><img src="/image/d528c75e7c2fb0735c8dcd5bfdf65ced.png" srcset="/img/loading.gif" lazyload alt="d528c75e7c2fb0735c8dcd5bfdf65ced.png"></p>
+<p>从最小的像素开始分析，电子枪每次在CLK下降沿(本开发板是下降沿)从数据线Dn0-Dn7上得到数据，发射到像素上，然后移动到下一个位置。Dn0-Dn7上的数据来源就是前面介绍的FrameBuffer。就这样从一行的最左边，一直移动到一行的最右边，完成了一行的显示，假设为x。</p>
+<p>当打完一行的最后一个数据后，就会收到Hsync行同步信号，根据时序图，一个Hsync周期可以大致分为五部分组成：thp、thb、1&#x2F;tc、thd、thf。thp称为脉冲宽度，这个时间不能太短，太短电子枪可能识别不到。电子枪正确识别到thp后，会从最右端移动最左端，这个移动的时间就是thb，称之为移动时间。thf表示显示完最右像素，再过多久Hsync才来。</p>
+<p>同理，当电子枪一行一行的从上面移动到最下面时，会收到一个Vsync信号，Vsync垂直同步信号就让电子枪移动回最上边。Vsync中的tvp是脉冲宽度，tvb是移动时间，tvf表示显示完最下一行像素，再过多久Vsync才来。 假设一共有y个Hsync,每个Hsync有x个像素，则LCD的分辨率就是x*y。</p>
+<p>关于显示原理，可以参考这篇博客：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/shangdawei/p/4760933.html">http://www.cnblogs.com/shangdawei/p/4760933.html</a></p>
+<p>里面有一个LCD显示配置示意图如下：</p>
+<p><img src="/image/700px-Chapter17_lesson1_005.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson1_005.jpg"></p>
+<p>当发出一个HSYNC信号后，电子枪就会从最右边花费HBP时长移动到最左边，等到了最右边后，等待HFP时长HSYNC信号才回来。因此，HBP和HFP分别决定了左边和右边的黑框。</p>
+<p>同理，当发出一个VSYNC信号后，电子枪就会从最下边花费VBP时长移动到最上边，等到了最下边后，等待VFP时长VSYNC信号才回来。因此，VBP和VFP分别决定了上边和下边的黑框。 中间灰色区域才是有效显示区域。</p>
+<p>再来解决最后一个问题：每个像素在FrameBuffer中，占据多少位BPP(Bits Per Pixels)？ 前面的LCD引脚功能图里，R0-R7、G0-G7、B0-B7，每个像素是占据3*8&#x3D;24位的，即硬件上LCD的BPP是确定的。</p>
+<p>虽然LCD上的引脚是固定的，但我们使用的时候，可以根据实际情况进行取舍，比如我们的JZ2440使用的是16BPP，因此LCD只需要R0-R4、G0-G5、B0-B4与SOC相连，5+6+5&#x3D;16BPP，每个像素就只占据16位数据。</p>
+<p>我们写程序的思路如下：</p>
+<ol>
+<li>查看LCD芯片手册，查看相关的时间参数、分辨率、引脚极性；</li>
+<li>根据以上信息设置LCD控制器寄存器，让其发出正确信号；</li>
+<li>在内存里面分配一个FrameBuffer，在里面用若干位表示一个像素，再把首地址告诉LCD控制器；</li>
+</ol>
+<p>之后LCD控制器就能周而复始取出FrameBuffer里面的像素数据，配合其它控制信号，发送给电子枪，电子枪再让在LCD上显示出来。以后我们想显示图像，只需要编写程序向FrameBuffer填入相应数据即可，硬件会自动的完成显示操作。</p>
+<p><strong>第002节_S3C2440_LCD控制器</strong></p>
+<hr>
+<p>LCD控制器主要功能和需要的设置：</p>
+<ol>
+<li>取：从内存(FrameBuffer)取出某个像素的数据；之后需要把FrameBuffer地址、BPP、分辨率告诉LCD控制器；</li>
+<li>发：配合其它信号把FrameBuffer数据发给LCD；需要设置LCD控制器时序、设置引脚极性(高&#x2F;低脉冲有效)；</li>
+</ol>
+<p>这里主要的难点就是如何配合其它信号，需要我们阅读LCD芯片手册，知道其时序要求，然后设置相应的LCD控制器。</p>
+<p>S3C2440芯片手册介绍了LCD控制器支持TFT和STN两种LCD，我们常用的都是TFT材质的，因此主要看TFT相关的部分。</p>
+<p>先看下S3C2440芯片手册上的LCD控制器框图：</p>
+<p><img src="/image/700px-Chapter17_lesson2_001.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson2_001.png"></p>
+<p>LCDCDMA会自动(无需CPU参与)把内存上FrameBuffer里的数据，通过VIDPRCS发送到引脚VD[23:0]上，再配合VIDEOMUX引脚的控制信号，使LCD正确的显示出来。</p>
+<p>通过设置REGBANK(寄存器组)来设置TIMEGEN，从而控制LCD控制器让这些引脚发出合适的时序极性.</p>
+<p>翻开芯片手册</p>
+<p>使用8BPP会使用到调色板</p>
+<p><strong>调色板的概念：</strong></p>
+<p>画油画的时候，通常先在调色板里配好想要的颜色，再用画笔沾到画布上作画。LCD控制器里也借用了这个概念，从FrameBuffer获得数据，这个数据作为索引从调色板获得对应数据，再发给电子枪显示出来。</p>
+<p><img src="/image/700px-Chapter17_lesson2_002.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson2_002.jpg"></p>
+<p>如图，假如是16BPP的数据，LCD控制器从FB取出16bit数据，显示到LCD上。</p>
+<p>当如果想节约内存，对颜色要求也没那么高，就可以采用调色板的方式，调色板里存放了256个16bit的数据，FB只存放每个像素的索引，根据索引去调色板找到对应的数据传给LCD控制器，再通过电子枪显示出来。调色板就是一块内存</p>
+<p>假设现在想要LCD只显示一种颜色怎么办？</p>
+<p>如果是16BPP&#x2F;24BPP需要修改FB里面的数据，填充同一个值。</p>
+<p>如果是8BPP可以修改FB为同一种颜色，也可以设置调色板为同一种颜色，对于S3C22440有个临时调色板的特性，一旦使能了临时 调色板，不管FB里面是什么数据，都只调用临时调色板的数据。</p>
+<p><strong>第003节_编程_框架与准备</strong></p>
+<hr>
+<p>本节主要有两个目的：</p>
+<ul>
+<li>讲解后续程序的框架；</li>
+<li>准备一个支持NAND、NOR启动的程序；</li>
+</ul>
+<p>我们的目的是在LCD显示屏上画线、画圆(geomentry.c)和写字(font.c)其核心是画点(farmebuffer.c)，这些都属于纯软件。此外还需要一个lcd_test.c测试程序提供操作菜单，调用画线、画圆和写字操作。</p>
+<p>往下操作的是LCD相关的内容，不同的LCD，其配置的参数也会不一样，通过lcd_3.5.c或lcd_4.3.c来设置。</p>
+<p>根据LCD的特性，来设置LCD控制器，对于我们开发板，就是s3c2440_lcd_controller.c，假如希望在其它开发板上也实现LCD显示，只需添加相应的代码文件即可。</p>
+<p>这就是LCD编程的框架，尽可能的“高内聚低耦合”。</p>
+<p><img src="/image/700px-Chapter17_lesson3_001.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson3_001.jpg"></p>
+<p>我们先实现LCD控制器，再实现lcd_4.3.c，最后在framebuffer.c里实现画点，在画点的基础上在geometry.c中实现画线化圆写字，然后写下lcd_tet.c来提供测试菜单</p>
+<p>为了让程序更加好扩展，下面介绍“面向对象编程”的概念。</p>
+<p>假如我们写好程序后，有两款尺寸大小的lcd，如何快速的在两个lcd上切换？</p>
+<p>首先我们抽象出lcd_3.5.c和lcd_4.3.c的共同点，比如都有初始化函数init(),我们可以新建一个lcd.c，然后定义一个结构体：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">struct</span> lcd_opr<br>&#123;<br>    <span class="hljs-keyword">void</span> (*<span class="hljs-keyword">init</span>)(<span class="hljs-keyword">void</span>);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>用户不接触lcd_3.5.c和lcd_4.3.c，只需要在lcd.c里通过指针访问对应的结构体的函数，也就调用了不同init()。</p>
+<p><img src="/image/700px-Chapter17_lesson3_002.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson3_002.jpg"></p>
+<p>前面我们的程序大小都没超过4K，因此无论Nor&#x2F;Nand启动，都是正常的，现在的LCD相关代码比较大，超过4K，因此需要修改启动部分的代码。</p>
+<p>目前还未讲解nand flash，因此直接将19课准备的nand_flash程序部分复制到当前代码里即可，关于这部分可以参考nand flash讲解部分。</p>
+<p><strong>第004节_编程_抽象出重要结构体</strong></p>
+<hr>
+<p>面向对象编程结构化编程&#x2F;：</p>
+<p>假设面向不同尺寸的lcd有lcd_3.5.c和lcd_4.3.c两个程序，我们抽象出lcd_3.5和lcd_4.3的共同点：比如init函数</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs csharp">那么定义一个结构体<br><span class="hljs-keyword">struct</span> lcd_opr&#123;<br>    <span class="hljs-keyword">void</span> (*<span class="hljs-keyword">init</span>)(<span class="hljs-keyword">void</span>)<br>&#125;<br>同样在lcd_3<span class="hljs-number">.5</span>.c和lcd_4<span class="hljs-number">.3</span>.c两个文件中定义如下结构体<br><span class="hljs-keyword">struct</span> lcd_opr lcd_3_5_opr&#123;<br>    .<span class="hljs-keyword">init</span> = lcd_3_5_init;<br>&#125;<br><span class="hljs-keyword">struct</span> lcd_opr lcd_4_3_opr&#123;<br>    .<span class="hljs-keyword">init</span> = lcd_4_3_init;<br>&#125;<br>在这两个程序的上层lcd.c定义<br><span class="hljs-keyword">struct</span> lcd_opr *lo;<br>当想使用<span class="hljs-number">3.5</span>寸或者<span class="hljs-number">4.3</span>寸的时候，将lo指向对应的结构体(lcd_3_5_opr或lcd_4_3_opr)<br>同理于lcd_controller.c和s3c2440_lcd_controller.c与ti_lcd_controller.c<br></code></pre></td></tr></table></figure>
+
+<p>就是说将lcd.c这些上层代码与下层分开，当你换开发板或lcd时只要修改或增加下层的调用代码即可，而无需动上层的代码，增加了代码的拓展性</p>
+<p>开始正式编写程序，根据前面的框架，新建如下文件：</p>
+<p>font.c、framebuffer.c、geometry.c、lcd.c、lcd_4.3.c、lcd_controller.c、s3c2440_lcd_controller.c、lcd_test.c</p>
+<p>首先编写lcd_controller.c，它向上要接收不同尺寸LCD的参数，向下要使用这些参数设置对应的LCD控制器。</p>
+<p>前面我们列举了LCD的参数，例如引脚的极性、时序、数据的格式bpp、分辨率等，使用面向对象的思维方式，将这些参数封装成结构体放在lcd.h中：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-comment">/* lcd.h */</span> lcd.h是所有参数<br><span class="hljs-keyword">enum</span> &#123;<br>        NORMAL = <span class="hljs-number">0</span>,<br>        INVERT = <span class="hljs-number">1</span>,<br>&#125;;<br><br><span class="hljs-comment">/* NORMAL : 正常极性(默认的为低电平有效) </span><br><span class="hljs-comment"> * INVERT : 反转极性 </span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">typedef</span> struct pins_polarity &#123;                <span class="hljs-comment">//引脚极性，将可能反转的引脚打包</span><br>        <span class="hljs-built_in">int</span> vclk;  <span class="hljs-comment">/* normal: 在下降沿获取数据 */</span><br>        <span class="hljs-built_in">int</span> rgb;   <span class="hljs-comment">/* normal: 高电平表示1 */</span><br>        <span class="hljs-built_in">int</span> hsync; <span class="hljs-comment">/* normal: 高脉冲 (看时序图猜，不对再修改)*/</span><br>        <span class="hljs-built_in">int</span> vsync; <span class="hljs-comment">/* normal: 高脉冲 (看时序图猜，不对再修改)*/</span><br>&#125;pins_polarity, *p_pins_polarity;<br><br><span class="hljs-keyword">typedef</span> struct time_sequence                 <span class="hljs-comment">//时序，将要设置的时序打包</span><br>&#123;<br>        <span class="hljs-comment">/* 垂直方向 */</span><br>        <span class="hljs-built_in">int</span> tvp; <span class="hljs-comment">/* vysnc脉冲宽度 */</span><br>        <span class="hljs-built_in">int</span> tvb; <span class="hljs-comment">/* 上边黑框, Vertical Back porch */</span><br>        <span class="hljs-built_in">int</span> tvf; <span class="hljs-comment">/* 下边黑框, Vertical Front porch */</span><br><br>        <span class="hljs-comment">/* 水平方向 */</span><br>        <span class="hljs-built_in">int</span> thp; <span class="hljs-comment">/* hsync脉冲宽度 */</span><br>        <span class="hljs-built_in">int</span> thb; <span class="hljs-comment">/* 左边黑框, Horizontal Back porch */</span><br>        <span class="hljs-built_in">int</span> thf; <span class="hljs-comment">/* 右边黑框, Horizontal Front porch */</span><br><br>        <span class="hljs-built_in">int</span> vclk;<br>&#125;time_sequence, *p_time_sequence;<br><br><span class="hljs-keyword">typedef</span> struct lcd_params         <span class="hljs-comment">//存储了lcd的参数</span><br>&#123;<br>        <span class="hljs-comment">/* 引脚极性 */</span><br>        pins_polarity pins_pol;<br>        <br>        <span class="hljs-comment">/* 时序 */</span><br>        time_sequence time_seq;<br>        <br>        <span class="hljs-comment">/* 分辨率, bpp */</span><br>        <span class="hljs-built_in">int</span> xres;<br>        <span class="hljs-built_in">int</span> yres;<br>        <span class="hljs-built_in">int</span> bpp;<br>        <br>        <span class="hljs-comment">/* framebuffer的地址 */</span><br>        unsigned <span class="hljs-built_in">int</span> fb_base;<br>&#125;lcd_params, *p_lcd_params;<br></code></pre></td></tr></table></figure>
+
+<p>以后就使用lcd_params结构体来表示lcd参数。</p>
+<p>比如在lcd_4.3.c中</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nim">lcd_params lcd_4_3_params = <span class="hljs-meta">&#123;...&#125;</span>;    //以后完善<br></code></pre></td></tr></table></figure>
+
+<p>这些参数传递给lcd_controller.c</p>
+<p>对于有多个lcd的情况，再定义个一个结构体，包含指针初始化函数和使能函数，放在lcd_controller.h里面：</p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs thrift"><span class="hljs-comment">/* lcd_controller.h */</span><br><span class="hljs-comment">/* lcd_controller.c下面有很多开发板，这些板子的lcd控制器的操作肯定不一样，连寄存器都不一样，所以我们需要再抽象出一个lcd控制器的操作结构体(lcd_con_opr)，即以下的lcd_controller结构体.(结构体一般定义在h文件中) */</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">lcd_controller</span> </span><br><span class="hljs-class"></span>&#123;<br>        <span class="hljs-keyword">void</span> (*init)(p_lcd_params plcdparams);    <span class="hljs-comment">//lcd.c中的lcd参数结构体指针，不同lcd有不同的参数</span><br>        <span class="hljs-keyword">void</span> (*enable)(<span class="hljs-keyword">void</span>);        <span class="hljs-comment">//使能这个lcd控制器</span><br>        <span class="hljs-keyword">void</span> (*disable)(<span class="hljs-keyword">void</span>);<br>&#125;lcd_controller, *p_lcd_controller;<br></code></pre></td></tr></table></figure>
+
+<p>最后在lcd_controller.c里传入lcd参数，再通过指针函数初始化对应的lcd控制器：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/* lcd_controller.c */</span><br><span class="hljs-regexp">/* 上层将参数传递给它，它在使用这些参数设置下面选中的某一个lcd控制器 */</span><br>void lcd_controller_init(p_lcd_params plcdparams)    <span class="hljs-regexp">//</span>lcd.c中的lcd参数结构体指针<br>&#123;<br>        <span class="hljs-regexp">/* 比如调用2440的LCD控制器的初始化函数 */</span><br>        lcd_controller.init(plcdparams);        <span class="hljs-regexp">//</span>调用lcd_controller中的某一个init函数，并把参数传递给它，而调用的函数就在对应板子的lcd_controller中实现<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在s3c2440_lcd_controller.c还需构造一个当前soc的lcd控制器结构体：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/* s3c2440_lcd_controller.c */</span><br>struct lcd_controller s3c2440_lcd_controller = <br>&#123;<br>        .init    = xxx,<br>        .enalbe  = xxx,<br>        .disable = xxx,        <span class="hljs-regexp">//</span>三个待构造函数<br>&#125;;    <br></code></pre></td></tr></table></figure>
+
+<p><strong>第005节_编程_LCD控制器</strong></p>
+<hr>
+<p>s3c2440_lcd_controller.c：对传入的参数进行符合s3c2440板子的操作，按照s3c2440的lcd控制器的规范将参数写入对应寄存器</p>
+<p>继续上一节的代码，修改s3c2440_lcd_controller.c：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs llvm">struct lcd_controller s<span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">2440</span>_lcd_controller <span class="hljs-operator">=</span> <br>&#123;<br>        .init    <span class="hljs-operator">=</span> s<span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">2440</span>_lcd_controller_init<span class="hljs-punctuation">,</span><br>        .enalbe  <span class="hljs-operator">=</span> s<span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">2440</span>_lcd_controller_enalbe<span class="hljs-punctuation">,</span><br>        .disable <span class="hljs-operator">=</span> xs<span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">2440</span>_lcd_controller_disable<span class="hljs-punctuation">,</span><br>&#125;<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>然后对每个函数进行功能实现，首先是s3c2440_lcd_controller_init，按照芯片手册依次设置LCD控制器寄存器，先是LCD寄存器1：</p>
+<p><img src="/image/700px-Chapter17_lesson5_001.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_001.png"></p>
+<p>[27:18]为只读数据位，不需要设置；</p>
+<p>[17:8]用于设置CLKVAL(像素时钟频率)，我们使用的是TFT屏，因此采用的公式是VCLK &#x3D; HCLK &#x2F; [(CLKVAL+1) x 2]，其中HCLK为100M。LCD手册里面(Timing Characterisitics)Clock cycle的要求范围为5-12MHz即可，即假设VCLK&#x3D;9，根据公式9&#x3D;100&#x2F;[(CLKVAL+1)x2],算出CLKVAL≈4.5&#x3D;5。VCLK为plcdparams-&gt;time_seq.vclk，则clkval &#x3D; HCLK&#x2F;plcdparams-&gt;time_seq.vclk&#x2F;2-1+0.5;</p>
+<p>[7]不用管，默认即可；</p>
+<p>[6:5]TFT lcd配置为0b11；</p>
+<p>[4:1]设置bpp模式，根据传入的plcdparams-&gt;bpp配置为相应的数值；</p>
+<p>[0]LCD输出使能，先暂时关闭不输出；</p>
+<p>寄存器2：</p>
+<p><img src="/image/700px-Chapter17_lesson5_002.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_002.png"></p>
+<p>对比2440LCD部分时序图和LCD时序图，得出两者之间关系，以后就可通过plcdparams传参数进来设置相关寄存器。</p>
+<p>[31:24] : VBPD &#x3D; tvb - 1</p>
+<p>[23:14] : LINEVAL &#x3D; line - 1</p>
+<p>[13:6]  : VFPD &#x3D; tvf - 1</p>
+<p>[5:0]  : VSPW &#x3D; tvp - 1</p>
+<p>寄存器3：</p>
+<p><img src="/image/700px-Chapter17_lesson5_003.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_003.png"></p>
+<p>[25:19] : HBPD &#x3D; thb - 1</p>
+<p>[18:8]  : HOZVAL &#x3D; 列 - 1</p>
+<p>[7:0]  : HFPD &#x3D; thf - 1</p>
+<p>寄存器4：</p>
+<p><img src="/image/700px-Chapter17_lesson5_004.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_004.png"></p>
+<p>[7:0]  : HSPW&#x3D; thp - 1</p>
+<p>寄存器5：</p>
+<p><img src="/image/700px-Chapter17_lesson5_005.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_005.png"></p>
+<p>用来设置极性, 设置16bpp, 设置内存中象素存放的格式</p>
+<p>[12] : BPP24BL</p>
+<p>[11] : FRM565, 1-565</p>
+<p>[10] : INVVCLK, 0 &#x3D; The video data is fetched at VCLK falling edge</p>
+<p>[9]  : HSYNC是否反转</p>
+<p>[8]  : VSYNC是否反转</p>
+<p>[7]  : INVVD, rgb是否反转</p>
+<p>[6]  : INVVDEN</p>
+<p>[5]  : INVPWREN</p>
+<p>[4]  : INVLEND</p>
+<p>[3]  : PWREN, LCD_PWREN output signal enable&#x2F;disable</p>
+<p>[2]  : ENLEND</p>
+<p>[1]  : BSWP</p>
+<p>[0]  : HWSWP</p>
+<p>然后再设置framebuffer地址，先是 LCDSADDR1：</p>
+<p><img src="/image/700px-Chapter17_lesson5_006.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_006.png"></p>
+<p>[29:21] : LCDBANK, A[30:22] of fb</p>
+<p>[20:0]  : LCDBASEU, A[21:1] of fb</p>
+<p>即用[29:0]表示起始地址的[30:1]。</p>
+<p><strong>LCDSADDR2：</strong></p>
+<p><img src="/image/700px-Chapter17_lesson5_007.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson5_007.png"></p>
+<p>[20:0] : LCDBASEL, A[21:1] of end addr</p>
+<p>即framebuffer的结束地址。</p>
+<p>最后还要设置相关引脚，包括背光控制引脚、LCD专用引脚、电源控制引脚：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">jz2440_lcd_pin_init</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-comment">/* 初始化引脚 : 背光引脚 */</span><br>        <span class="hljs-variable constant_">GPBCON</span> &amp;= ~<span class="hljs-number">0x3</span>;<br>        <span class="hljs-variable constant_">GPBCON</span> |= <span class="hljs-number">0x01</span>;<br><br>        <span class="hljs-comment">/* LCD专用引脚 */</span><br>        <span class="hljs-variable constant_">GPCCON</span> = <span class="hljs-number">0xaaaaaaaa</span>;<br>        <span class="hljs-variable constant_">GPDCON</span> = <span class="hljs-number">0xaaaaaaaa</span>;<br><br>        <span class="hljs-comment">/* PWREN */</span><br>        <span class="hljs-variable constant_">GPGCON</span> |= (<span class="hljs-number">3</span>&lt;&lt;<span class="hljs-number">8</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>LCD所有寄存器的具体设置如下：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-comment">#define HCLK 100</span><br><br><span class="hljs-literal">void</span> jz2440_lcd_pin_init(<span class="hljs-literal">void</span>)<br>&#123;<br>        <span class="hljs-comment">/* 初始化引脚 : 背光引脚 */</span><br>        GPBCON &amp;= ~<span class="hljs-number">0x3</span>;<br>        GPBCON |= <span class="hljs-number">0x01</span>;<br><br>        <span class="hljs-comment">/* LCD专用引脚 */</span><br>        GPCCON = <span class="hljs-number">0xaaaaaaaa</span>;<br>        GPDCON = <span class="hljs-number">0xaaaaaaaa</span>;<br><br>        <span class="hljs-comment">/* PWREN */</span><br>        GPGCON |= (<span class="hljs-number">3</span>&lt;&lt;<span class="hljs-number">8</span>);&#125;<br><br><span class="hljs-comment">/* 根据传入的LCD参数设置LCD控制器 */</span><br><span class="hljs-literal">void</span> s3c2440_lcd_controller_init(p_lcd_params plcdparams)<br>&#123;<br>        int pixelplace;<br>        unsigned int addr;<br><br>        jz2440_lcd_pin_init();<br>        <br>        <span class="hljs-comment">/* [17:8]: clkval, vclk = HCLK / [(CLKVAL+1) x 2]  </span><br><span class="hljs-comment">         *                   9  = 100M /[(CLKVAL+1) x 2], clkval = 4.5 = 5  </span><br><span class="hljs-comment">         *               CLKVAL = 100/vclk/2-1  </span><br><span class="hljs-comment">         * [6:5]: 0b11, tft lcd  </span><br><span class="hljs-comment">         * [4:1]: bpp mode  </span><br><span class="hljs-comment">         * [0]  : LCD video output and the logic enable/disable  </span><br><span class="hljs-comment">         */</span><br>        int clkval = (double)HCLK/plcdparams-&gt;time_seq.vclk/<span class="hljs-number">2</span>-<span class="hljs-number">1</span>+<span class="hljs-number">0.5</span>;<br>        int bppmode = plcdparams-&gt;bpp == <span class="hljs-number">8</span>  ? <span class="hljs-number">0xb</span> :<span class="hljs-string">\</span><br>                                  plcdparams-&gt;bpp == <span class="hljs-number">16</span> ? <span class="hljs-number">0xc</span> :<span class="hljs-string">\</span><br>                                  <span class="hljs-number">0xd</span>;  <span class="hljs-comment">/* 0xd: 24bpp */</span><br>        LCDCON1 = (clkval&lt;&lt;<span class="hljs-number">8</span>) | (<span class="hljs-number">3</span>&lt;&lt;<span class="hljs-number">5</span>) | (bppmode&lt;&lt;<span class="hljs-number">1</span>) ;<br><br>        <span class="hljs-comment">/* [31:24] : VBPD    = tvb - 1  </span><br><span class="hljs-comment">         * [23:14] : LINEVAL = line - 1  </span><br><span class="hljs-comment">         * [13:6]  : VFPD    = tvf - 1  </span><br><span class="hljs-comment">         * [5:0]   : VSPW    = tvp - 1  </span><br><span class="hljs-comment">         */</span><br>        LCDCON2 = ((plcdparams-&gt;time_seq.tvb - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">24</span>) | <span class="hljs-string">\</span><br>                  ((plcdparams-&gt;yres - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">14</span>)         | <span class="hljs-string">\</span><br>                  ((plcdparams-&gt;time_seq.tvf - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">6</span>)  | <span class="hljs-string">\</span><br>                  ((plcdparams-&gt;time_seq.tvp - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">0</span>);<br><br>        <span class="hljs-comment">/* [25:19] : HBPD    = thb - 1  </span><br><span class="hljs-comment">         * [18:8]  : HOZVAL  = 列 - 1  </span><br><span class="hljs-comment">         * [7:0]   : HFPD    = thf - 1  </span><br><span class="hljs-comment">         */</span><br>        LCDCON3 =      ((plcdparams-&gt;time_seq.thb - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">19</span>) | <span class="hljs-string">\</span><br>                       ((plcdparams-&gt;xres - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">8</span>)          | <span class="hljs-string">\</span><br>                       ((plcdparams-&gt;time_seq.thf - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">0</span>);<br><br>        <span class="hljs-comment">/*   </span><br><span class="hljs-comment">         * [7:0]   : HSPW        = thp - 1  </span><br><span class="hljs-comment">         */</span><br>        LCDCON4 = ((plcdparams-&gt;time_seq.thp - <span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">/* 用来设置引脚极性, 设置16bpp, 设置内存中象素存放的格式     </span><br><span class="hljs-comment">     * [12] : BPP24BL  </span><br><span class="hljs-comment">     * [11] : FRM565, 1-565  </span><br><span class="hljs-comment">     * [10] : INVVCLK, 0 = The video data is fetched at VCLK falling edge  </span><br><span class="hljs-comment">     * [9]  : HSYNC是否反转  </span><br><span class="hljs-comment">     * [8]  : VSYNC是否反转  </span><br><span class="hljs-comment">     * [7]  : INVVD, rgb是否反转  </span><br><span class="hljs-comment">     * [6]  : INVVDEN  </span><br><span class="hljs-comment">     * [5]  : INVPWREN  </span><br><span class="hljs-comment">     * [4]  : INVLEND  </span><br><span class="hljs-comment">     * [3]  : PWREN, LCD_PWREN output signal enable/disable  </span><br><span class="hljs-comment">     * [2]  : ENLEND  </span><br><span class="hljs-comment">     * [1]  : BSWP  </span><br><span class="hljs-comment">     * [0]  : HWSWP  </span><br><span class="hljs-comment">     */</span><br><br>        pixelplace = plcdparams-&gt;bpp == <span class="hljs-number">24</span> ? (<span class="hljs-number">0</span>) : |<span class="hljs-string">\</span><br>                     plcdparams-&gt;bpp == <span class="hljs-number">16</span> ? (<span class="hljs-number">1</span>) : |<span class="hljs-string">\</span><br>                     (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>);  <span class="hljs-comment">/* 8bpp */</span><br>        LCDCON5 = (plcdparams-&gt;pins_pol.vclk&lt;&lt;<span class="hljs-number">10</span>) |<span class="hljs-string">\</span><br>                  (plcdparams-&gt;pins_pol.rgb&lt;&lt;<span class="hljs-number">7</span>)   |<span class="hljs-string">\</span><br>                  (plcdparams-&gt;pins_pol.hsync&lt;&lt;<span class="hljs-number">9</span>) |<span class="hljs-string">\</span><br>                  (plcdparams-&gt;pins_pol.vsync&lt;&lt;<span class="hljs-number">8</span>) |<span class="hljs-string">\</span><br>                          (plcdparams-&gt;pins_pol.de&lt;&lt;<span class="hljs-number">6</span>)    |<span class="hljs-string">\</span><br>                          (plcdparams-&gt;pins_pol.pwren&lt;&lt;<span class="hljs-number">5</span>) |<span class="hljs-string">\</span><br>                          (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">11</span>) | pixelplace;<br><br>        <span class="hljs-comment">/* framebuffer地址 */</span><br>        <span class="hljs-comment">/*  </span><br><span class="hljs-comment">         * [29:21] : LCDBANK, A[30:22] of fb  </span><br><span class="hljs-comment">         * [20:0]  : LCDBASEU, A[21:1] of fb  </span><br><span class="hljs-comment">         */</span><br>        addr = plcdparams-&gt;fb_base &amp; ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">31</span>);<br>        LCDSADDR1 = (addr &gt;&gt; <span class="hljs-number">1</span>);<br><br>        <span class="hljs-comment">/*   </span><br><span class="hljs-comment">         * [20:0] : LCDBASEL, A[21:1] of end addr  </span><br><span class="hljs-comment">         */</span><br>        addr = plcdparams-&gt;fb_base + plcdparams-&gt;xres*plcdparams-&gt;yres*plcdparams-&gt;bpp/<span class="hljs-number">8</span>;<br>        addr &gt;&gt;=<span class="hljs-number">1</span>;<br>        addr &amp;= <span class="hljs-number">0x1fffff</span>;<br>        LCDSADDR2 = addr;<span class="hljs-regexp">//       &#125;</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">void s3c2440_lcd_controller_enalbe(void)</span><br><span class="hljs-regexp">&#123;</span><br><span class="hljs-regexp">        /* 背光引脚 : GPB0 */</span><br><span class="hljs-regexp">        GPBDAT |= (1&lt;&lt;0);</span><br><span class="hljs-regexp">        </span><br><span class="hljs-regexp">        /* pwren    : 给LCD提供AVDD  */</span><br><span class="hljs-regexp">        LCDCON5 |= (1&lt;&lt;3);</span><br><span class="hljs-regexp">        </span><br><span class="hljs-regexp">        /* LCDCON1&#x27;BIT 0 : 设置LCD控制器是否输出信号 */</span><br><span class="hljs-regexp">        LCDCON1 |= (1&lt;&lt;0);</span><br><span class="hljs-regexp">&#125;</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">void s3c2440_lcd_controller_disable(void)</span><br><span class="hljs-regexp">&#123;</span><br><span class="hljs-regexp">        /* 背光引脚 : GPB0 */</span><br><span class="hljs-regexp">        GPBDAT &amp;= ~(1&lt;&lt;0);</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">        /* pwren : 给LCD提供AVDD  */</span><br><span class="hljs-regexp">        LCDCON5 &amp;= ~(1&lt;&lt;3);</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">        /* LCDCON1&#x27;BIT 0 : 设置LCD控制器是否输出信号 */</span><br><span class="hljs-regexp">        LCDCON1 &amp;= ~(1&lt;&lt;0);</span><br><span class="hljs-regexp">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>这就完成了s3c2440_lcd_controller.c的编写，后面只需要向s3c2440_lcd_controller_init()传入构造好的参数即可。</p>
+<p><strong>第006节_编程_LCD设置</strong></p>
+<hr>
+<p>前面编写了s3c2440_lcd_controller.c，以后我们只需往里面传入参数即可控制LCD控制器，对于我们的4.3寸LCD，配合LCD手册时序的介绍，相关的设置如下:</p>
+<p><img src="/image/Chapter17_lesson6_001.png" srcset="/img/loading.gif" lazyload alt="Chapter17_lesson6_001.png"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment">#define LCD_FB_BASE 0x33c00000</span><br><br>lcd_params lcd_4_3_params = <br>&#123;<br>        .name = <span class="hljs-string">&quot;lcd_4.3&quot;</span><br>        .pins_polarity = &#123;<br>        .de    = NORMAL,  <span class="hljs-regexp">/* normal: 高电平时可以传输数据 */</span><br>        .pwren = NORMAL,    <span class="hljs-regexp">/* normal: 高电平有效 */</span><br>        .vclk  = NORMAL,  <span class="hljs-regexp">/* normal: 在下降沿获取数据 */</span><br>        .rgb   = NORMAL,  <span class="hljs-regexp">/* normal: 高电平表示1 */</span><br>        .hsync = INVERT,    <span class="hljs-regexp">/* normal: 高脉冲 */</span><br>        .vsync = INVERT,  <span class="hljs-regexp">/* normal: 高脉冲 */</span><br>        &#125;,<br>        .time_sequence = <br>        &#123;<br>             <span class="hljs-regexp">/* 垂直方向 */</span><br>            .tvp=   <span class="hljs-number">10</span>, <span class="hljs-regexp">/* vysnc脉冲宽度 */</span><br>            .tvb=   <span class="hljs-number">2</span>,  <span class="hljs-regexp">/* 上边黑框, Vertical Back porch */</span><br>            .tvf=   <span class="hljs-number">2</span>,  <span class="hljs-regexp">/* 下边黑框, Vertical Front porch */</span><br><br>             <span class="hljs-regexp">/* 水平方向 */</span><br>             .thp=   <span class="hljs-number">41</span>, <span class="hljs-regexp">/* hsync脉冲宽度 */</span><br>             .thb=   <span class="hljs-number">2</span>,  <span class="hljs-regexp">/* 左边黑框, Horizontal Back porch */</span><br>             .thf=   <span class="hljs-number">2</span>,  <span class="hljs-regexp">/* 右边黑框, Horizontal Front porch */</span><br><br>             .vclk=  <span class="hljs-number">9</span>,  <span class="hljs-regexp">/* MHz */</span><br>        &#125;,<br>        .xres = <span class="hljs-number">480</span>,<br>        .yres = <span class="hljs-number">272</span>,<br>        .bpp  = <span class="hljs-number">16</span>,<br>        .fb_base = LCD_FB_BASE,&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>完成了lcd控制器和参数的代码，现在还需要一个管理的中间层将两者连在一起。</p>
+<p>我们用lcd_controller.c管理s3c2440_lcd_controller.c，它向上接受传入的LCD参数，向下传给对应的LCD控制器。</p>
+<p>lcd_controller.c管理下级的控制器的思路如下：</p>
+<ol>
+<li>用数组保存下面各种lcd_controller；</li>
+<li>提供register_lcd_controller给下面的代码设置数组；</li>
+<li>提供select_lcd_controller(name)给上面的代码选择某个lcd_controller;</li>
+</ol>
+<p>lcd_controller.c代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> LCD_CONTROLLER_NUM 10</span><br><br><span class="hljs-type">static</span> p_lcd_controller p_array_lcd_controller[LCD_CONTROLLER_NUM];<br>    <span class="hljs-comment">//用来保存各种lcd_controller</span><br><span class="hljs-type">static</span> p_lcd_controller g_p_lcd_controller_selected;<br><br><span class="hljs-comment">/* 把lcd控制器程序往数组里面放 */</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">register_lcd_controller</span><span class="hljs-params">(p_lcd_controller plcdcon)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; LCD_CONTROLLER_NUM; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (!p_array_lcd_controller[i])<br>                &#123;<br>                        p_array_lcd_controller[i] = plcdcon;<br>                        <span class="hljs-keyword">return</span> i;<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;         <br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">select_lcd_controller</span><span class="hljs-params">(<span class="hljs-type">char</span> *name)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; LCD_CONTROLLER_NUM; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (p_array_lcd_controller[i] &amp;&amp;  !<span class="hljs-built_in">strcmp</span>(p_array_lcd_controller[i]-&gt;name, name))    <span class="hljs-comment">//传入的名字和循环到的那一项名字相同，即找到了对应函数</span><br>                &#123;<br>                        g_p_lcd_controller_selected = p_array_lcd_controller[i];<br>                        <span class="hljs-keyword">return</span> i;<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;         <br>&#125;<br><br><span class="hljs-comment">/* 向上: 接收不同LCD的参数 </span><br><span class="hljs-comment"> * 向下: 使用这些参数设置对应的LCD控制器 </span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lcd_controller_init</span><span class="hljs-params">(p_lcd_params plcdparams)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-comment">/* 调用所选择的LCD控制器的初始化函数 */</span><br>        <span class="hljs-keyword">if</span> (g_p_lcd_controller_selected)<br>        &#123;<br>                g_p_lcd_controller_selected-&gt;<span class="hljs-built_in">init</span>(plcdparams);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">lcd_contoller_add</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>&#123;<br>        <span class="hljs-built_in">s3c2440_lcd_contoller_add</span>();<br>&#125;<br><br>同时，在s3c2440_lcd_controller.c里注册控制器：<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">s3c2440_lcd_contoller_add</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-built_in">register_lcd_controller</span>(&amp;s3c2440_lcd_controller);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样，s3c2440_lcd_controller.c里的register_lcd_controller()将自己放在p_array_lcd_controller[]这个数组，然后上层的lcd_controller.c调用select_lcd_controller()传入要选择的LCD控制器，然后在数组里面找到名字名字匹配的LCD控制器进行相应的初始化。</p>
+<p>同理，也通过lcd.c去管理lcd_4.3.c,思路如下：</p>
+<ul>
+<li>有一个数组存放各类lcd的参数；</li>
+<li>有一个register_led给下面的lcd程序来设置数组；</li>
+<li>有一个select_lcd，供上层选择某款LCD；</li>
+</ul>
+<p>参考前面的lcd_controller.c编辑lcd_controller.c如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> LCD_NUM 10</span><br><br><span class="hljs-type">static</span> p_lcd_params p_array_lcd[LCD_NUM];<br><span class="hljs-type">static</span> p_lcd_params g_p_lcd_selected;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">register_lcd</span><span class="hljs-params">(p_lcd_params plcd)</span></span>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; LCD_NUM; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (!p_array_lcd[i])<br>                &#123;<br>                        p_array_lcd[i] = plcd;<br>                        <span class="hljs-keyword">return</span> i;<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;         <br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">select_lcd</span><span class="hljs-params">(<span class="hljs-type">char</span> *name)</span></span>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; LCD_NUM; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (p_array_lcd[i] &amp;&amp; !<span class="hljs-built_in">strcmp</span>(p_array_lcd[i]-&gt;name, name))<br>                &#123;<br>                        g_p_lcd_selected = p_array_lcd[i];<br>                        <span class="hljs-keyword">return</span> i;<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;         <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在lcd_4.3.c里面把lcd参数注册进去：</p>
+<p>void lcd_4_3_add(void) { register_lcd(&amp;lcd_4_3_params); }</p>
+<p>以后只需要在lcd.c里面选择某款lcd和某款lcd控制器即可，底层的只管添加种类即可。</p>
+<p>在lcd.c里面添加初始化函数如下：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs scss">int <span class="hljs-built_in">lcd_init</span>(void)<br>&#123;<br>        <span class="hljs-comment">/* 注册LCD */</span><br>        <span class="hljs-built_in">lcd_4_3_add</span>();<br><br>        <span class="hljs-comment">/* 注册LCD控制器 */</span><br>        <span class="hljs-built_in">s3c2440_lcd_contoller_add</span>();<br>        <br>        <span class="hljs-comment">/* 选择某款LCD */</span><br>        <span class="hljs-built_in">select_lcd</span>(&quot;lcd_4.<span class="hljs-number">3</span>&quot;);<br><br>        <span class="hljs-comment">/* 选择某款LCD控制器 */</span><br>        <span class="hljs-built_in">select_lcd_controller</span>(&quot;s3c2440&quot;);<br><br>        <span class="hljs-comment">/* 使用LCD的参数, 初始化LCD控制器 */</span><br>        <span class="hljs-built_in">lcd_controller_init</span>(g_p_lcd_selected);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>第007节_编程_简单测试</strong></p>
+<hr>
+<p>首先向lcd_test.c里面添加一个测试函数lcd_test()，用于向framebuffer写数据，所需步骤如下：</p>
+<ol>
+<li>初始化LCD</li>
+<li>使能LCD</li>
+<li>获取LCD参数: fb_base, xres, yres, bpp</li>
+<li>往framebuffer中写数据</li>
+</ol>
+<p>1). 初始化LCD</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">lcd_intit</span>();<br></code></pre></td></tr></table></figure>
+
+<p>2). 使能LCD</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">lcd_enable</span>();<br></code></pre></td></tr></table></figure>
+
+<p>该函数实际调用的是lcd_controller_enable()</p>
+<p>3). 获取LCD参数: fb_base, xres, yres, bpp</p>
+<p>只有获取到LCD的参数信息，才能根据这些信息进行相应显示。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">get<span class="hljs-constructor">_lcd_params(&amp;<span class="hljs-params">fb_base</span>, &amp;<span class="hljs-params">xres</span>, &amp;<span class="hljs-params">yres</span>, &amp;<span class="hljs-params">bpp</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>该函数是在lcd.c里面实现：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void get<span class="hljs-constructor">_lcd_params(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-operator">*</span><span class="hljs-params">fb_base</span>, <span class="hljs-params">int</span> <span class="hljs-operator">*</span><span class="hljs-params">xres</span>, <span class="hljs-params">int</span> <span class="hljs-operator">*</span><span class="hljs-params">yres</span>, <span class="hljs-params">int</span> <span class="hljs-operator">*</span><span class="hljs-params">bpp</span>)</span><br>&#123;<br>        *fb_base = g_p_lcd_selected-&gt;fb_base;<br>        *xres = g_p_lcd_selected-&gt;xres;<br>        *yres = g_p_lcd_selected-&gt;yres;<br>        *bpp = g_p_lcd_selected-&gt;bpp;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>4). 往framebuffer中写数据</p>
+<p>假设现在BPP&#x3D;16，想让全屏显示红色，就需要从framebuffer基地址开始一直填充对应的颜色数据。 对于16BPP，RGB&#x3D;565，想显示红色，即[15:11]全为1表示红色，[10:5]全为0表示无绿色，[4:0]全为0表示无蓝色，0b1111100000000000&#x3D;0xF700。</p>
+<p>以基地址为起点，分别以xres和yres为边界，依次填充颜色。</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">              p = (unsigned short *)fb_base;</span><br><span class="hljs-comment">                for (x = 0; x</span> &lt; <span class="hljs-comment">xres; x</span><span class="hljs-literal">++</span><span class="hljs-comment">)</span><br><span class="hljs-comment">                        for (y = 0; y</span> &lt; <span class="hljs-comment">yres; y</span><span class="hljs-literal">++</span><span class="hljs-comment">)</span><br><span class="hljs-comment">                                *p</span><span class="hljs-literal">++</span> <span class="hljs-comment">= 0xf700;</span><br></code></pre></td></tr></table></figure>
+
+<p>编写好程序后，修改Makefile:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs makefile">objs = start.o led.o uart.o init.o nand_flash.o main.o exception.o interrupt.o timer.o nor_flash.o my_printf.o string_utils.o lib1funcs.o<br><br>objs += lcd/font.o<br>objs += lcd/framebuffer.o<br>objs += lcd/geometry.o<br>objs += lcd/lcd.oobjs += lcd/lcd_4.3.o<br>objs += lcd/lcd_controller.oobjs += lcd/lcd_test.o<br>objs += lcd/s3c2440_lcd_controller.o<br><span class="hljs-section">all: <span class="hljs-variable">$(objs)</span></span><br>        <span class="hljs-comment">#arm-linux-ld -Ttext 0 -Tdata 0x30000000  start.o led.o uart.o init.o main.o -o sdram.elf</span><br>        arm-linux-ld -T sdram.lds <span class="hljs-variable">$^</span> -o sdram.elf<br>        arm-linux-objcopy -O binary -S sdram.elf sdram.bin<br>        arm-linux-objdump -D sdram.elf &gt; sdram.dis<br><span class="hljs-section">clean:</span><br>        rm *.bin *.o *.elf *.dis<br>        <br>%.o : %.c<br>        arm-linux-gcc -march=armv4 -c -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$&lt;</span><br>%.o : %.S<br>        arm-linux-gcc -march=armv4 -c -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$&lt;</span><br></code></pre></td></tr></table></figure>
+
+<p>然后把工程文件放到虚拟机上交叉编译，根据编译提示结果进行对应修改。</p>
+<p>常见问题包括：头文件未添加、数据类型错误等。</p>
+<p>同理，假如现在是24BPP，即RGB:888，每个颜色占8位，一共占据24位。</p>
+<p>虽然颜色数据只占据24位，但实际中是占据的32位(1字节)方便存储计算，即[23:0]存放的是数据，[31：24]空闲无数据。</p>
+<p>对于32BPP，大多数情况下和24BPP差不多的，即RGB:888，每个颜色占8位，一共占据24位。因此想依次显示红绿蓝，代码如下：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs gcode">    <span class="hljs-comment">/* 0xRRGGBB */</span><br>    <span class="hljs-comment">/* red */</span><br>    p<span class="hljs-number">2</span> = <span class="hljs-comment">(unsigned int *)</span>fb_base;<br>    for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>            *p<span class="hljs-number">2</span>++ = <span class="hljs-number">0</span>xff<span class="hljs-number">0000</span>;<br><br>    <span class="hljs-comment">/* green */</span><br>    p<span class="hljs-number">2</span> = <span class="hljs-comment">(unsigned int *)</span>fb_base;<br>    for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>            *p<span class="hljs-number">2</span>++ = <span class="hljs-number">0</span>x<span class="hljs-number">00</span>ff<span class="hljs-number">00</span>;<br><br>    <span class="hljs-comment">/* blue */</span><br>    p<span class="hljs-number">2</span> = <span class="hljs-comment">(unsigned int *)</span>fb_base;<br>    for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>            *p<span class="hljs-number">2</span>++ = <span class="hljs-number">0</span>x<span class="hljs-number">0000</span>ff;<br></code></pre></td></tr></table></figure>
+
+<p>之前我们讲数据是8BPP的时候，可以通过调色板转成16BPP，在LCD上显示出相应颜色。</p>
+<p>那前面的24BPP、32BPP是怎样在 只能接收16BPP(硬件上只有16根数据线)的LCD上显示的呢？</p>
+<p>这是因为在使用24BPP时，发出的8条红色，8条绿色，8条蓝色数据，只用了高5条红色，高6条绿色，高5条蓝色与LCD相连。</p>
+<p><strong>第008节_编程_画点线圆</strong></p>
+<hr>
+<p>本节将在LCD上画点画圆，无论是何种图形，都是基于点来构成的，因此我们需要先实现画点。</p>
+<p>在前面**第003节_编程_框架与准备**所讲的框架里，计划的是在farmebuffer.c实现画点，在geomentry.c实现画线、画圆，font.c实现写字。</p>
+<p>我们先在farmebuffer.c实现画点，一个点(x，y)在FB中的位置如图：</p>
+<p><img src="/image/700px-Chapter17_lesson8_001.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson8_001.jpg"></p>
+<p>可以得出其计算公式：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">(x，y)像素起始地址=fb_base+(xres*bpp<span class="hljs-regexp">/8)*y + x*bpp/</span><span class="hljs-number">8</span><br></code></pre></td></tr></table></figure>
+
+<p>同时利用yres来分辨y方向的边界。</p>
+<p>因此，需要先从LCD中获取参数：fb_base、xres、yres、bpp;</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static unsigned <span class="hljs-built_in">int</span> fb_base;<br>static <span class="hljs-built_in">int</span> xres, yres, bpp;<br>void fb<span class="hljs-constructor">_get_lcd_params(<span class="hljs-params">void</span>)</span><br>&#123;<br>        get<span class="hljs-constructor">_lcd_params(&amp;<span class="hljs-params">fb_base</span>, &amp;<span class="hljs-params">xres</span>, &amp;<span class="hljs-params">yres</span>, &amp;<span class="hljs-params">bpp</span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再实现画点操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fb_put_pixel</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> color)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>  *pc;  <span class="hljs-comment">/* 8bpp */</span><br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> *pw;  <span class="hljs-comment">/* 16bpp */</span><br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>   *pdw; <span class="hljs-comment">/* 32bpp */</span><br><br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> pixel_base = fb_base + (xres * bpp / <span class="hljs-number">8</span>) * y + x * bpp / <span class="hljs-number">8</span>;<br><br>        <span class="hljs-keyword">switch</span> (bpp)<br>        &#123;<br>                <span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:<br>                        pc = (<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *) pixel_base;<br>                        *pc = color;<br>                        <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">case</span> <span class="hljs-number">16</span>:<br>                        pw = (<span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> *) pixel_base;<br>                        *pw = <span class="hljs-built_in">convert32bppto16bpp</span>(color);<br>                        <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">case</span> <span class="hljs-number">32</span>:<br>                        pdw = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *) pixel_base;<br>                        *pdw = color;<br>                        <span class="hljs-keyword">break</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于8PP，每个像素只占据8位(1字节)，因此采用unsigned char类型；</p>
+<p>对于16PP，每个像素只占据16位(2字节)，因此采用unsigned short类型；</p>
+<p>对于32PP，每个像素只占据32位(4字节)，因此采用unsigned int类型；</p>
+<p>再根据传入的x,y坐标，计算出对应的显存位置。</p>
+<p>根据BPP的不同，修改相应位的显存数据。</p>
+<p>传入的颜色数据一般都是32bit的，即格式为：0x00RRGGBB,</p>
+<p>对于8PP，通过的是调色板索引实现的，这个后续再讲解，直接*pc &#x3D; color即可。</p>
+<p>对于16PP，需要进行颜色转换。</p>
+<p>对于32PP，大小刚好对应，直接*pc &#x3D; color即可。</p>
+<p>使用convert32bppto16bpp()函数进行颜色数据转换：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-title">convert32bppto16bpp</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> rgb)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> r = (rgb &gt;&gt; <span class="hljs-number">16</span>)&amp; <span class="hljs-number">0xff</span>;<br>        <span class="hljs-type">int</span> g = (rgb &gt;&gt; <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;<br>        <span class="hljs-type">int</span> b = rgb &amp; <span class="hljs-number">0xff</span>;<br><br>        <span class="hljs-comment">/* rgb565 */</span><br>        r = r &gt;&gt; <span class="hljs-number">3</span>;<br>        g = g &gt;&gt; <span class="hljs-number">2</span>;<br>        b = b &gt;&gt; <span class="hljs-number">3</span>;<br><br>        <span class="hljs-keyword">return</span> ((r&lt;&lt;<span class="hljs-number">11</span>) | (g&lt;&lt;<span class="hljs-number">5</span>) | (b));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>先分别取出RGB，再相应的清除低位数据，实现将RGB888变为RGB565，最后再组成unsigned short类型数据返回。</p>
+<p>画圆画线的具体原理不是我们的主要内容，我们直接百度“C语言 LCD 画圆”可以得到相关的实现代码，比如这篇博客：<a target="_blank" rel="noopener" href="http://blog.csdn.net/p1126500468/article/details/50428613">http://blog.csdn.net/p1126500468/article/details/50428613</a></p>
+<p>新建一个geometry.c，复制博客中代码，替换里面的描点显示函数即可。</p>
+<p>最后在主函数测试程序里，加上画圆画线的测试代码：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">    <span class="hljs-comment">/* 画线 */</span><br>        draw<span class="hljs-constructor">_line(0, 0, <span class="hljs-params">xres</span> - 1, 0, 0xff0000)</span>;<br>        draw<span class="hljs-constructor">_line(<span class="hljs-params">xres</span> - 1, 0, <span class="hljs-params">xres</span> - 1, <span class="hljs-params">yres</span> - 1, 0xffff00)</span>;<br>        draw<span class="hljs-constructor">_line(0, <span class="hljs-params">yres</span> - 1, <span class="hljs-params">xres</span> - 1, <span class="hljs-params">yres</span> - 1, 0xff00aa)</span>;<br>        draw<span class="hljs-constructor">_line(0, 0, 0, <span class="hljs-params">yres</span> - 1, 0xff00ef)</span>;<br>        draw<span class="hljs-constructor">_line(0, 0, <span class="hljs-params">xres</span> - 1, <span class="hljs-params">yres</span> - 1, 0xff4500)</span>;<br>        draw<span class="hljs-constructor">_line(<span class="hljs-params">xres</span> - 1, 0, 0, <span class="hljs-params">yres</span> - 1, 0xff0780)</span>;<br><br>        delay(<span class="hljs-number">1000000</span>);<br><br>        <span class="hljs-comment">/* 画圆 */</span><br>        draw<span class="hljs-constructor">_circle(<span class="hljs-params">xres</span><span class="hljs-operator">/</span>2, <span class="hljs-params">yres</span><span class="hljs-operator">/</span>2, <span class="hljs-params">yres</span><span class="hljs-operator">/</span>4, 0xff00)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>希望在LCD上显示如下图形，由6条线和一个圆组成。</p>
+<p>将线的起始坐标作为参数传入画线函数。</p>
+<p>将圆心和半径作为参数传入画圆函数。</p>
+<p><img src="/image/700px-Chapter17_lesson8_002.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson8_002.jpg"></p>
+<p><strong>第009节_编程_显示文字</strong></p>
+<hr>
+<p>文字也是由点构成的，一个个点组成的点阵，宏观的来看，就是文字。</p>
+<p>可以参考Linux内核源码中的相关操作，在内核中搜索“font”，打开font_8x16.c，可以看到里面的A字符内容如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs awk">      <span class="hljs-regexp">/* 65 0x41 &#x27;A&#x27; */</span><br>        <span class="hljs-number">0</span>x00, <span class="hljs-regexp">/* 00000000 */</span><br>        <span class="hljs-number">0</span>x00, <span class="hljs-regexp">/* 00000000 */</span><br>        <span class="hljs-number">0</span>x10, <span class="hljs-regexp">/* 00010000 */</span><br>        <span class="hljs-number">0</span>x38, <span class="hljs-regexp">/* 00111000 */</span><br>        <span class="hljs-number">0</span>x6c, <span class="hljs-regexp">/* 01101100 */</span><br>        <span class="hljs-number">0</span>xc6, <span class="hljs-regexp">/* 11000110 */</span><br>        <span class="hljs-number">0</span>xc6, <span class="hljs-regexp">/* 11000110 */</span><br>        <span class="hljs-number">0</span>xfe, <span class="hljs-regexp">/* 11111110 */</span><br>        <span class="hljs-number">0</span>xc6, <span class="hljs-regexp">/* 11000110 */</span><br>        <span class="hljs-number">0</span>xc6, <span class="hljs-regexp">/* 11000110 */</span><br>        <span class="hljs-number">0</span>xc6, <span class="hljs-regexp">/* 11000110 */</span><br>        <span class="hljs-number">0</span>xc6, <span class="hljs-regexp">/* 11000110 */</span><br>        <span class="hljs-number">0</span>x00, <span class="hljs-regexp">/* 00000000 */</span><br>        <span class="hljs-number">0</span>x00, <span class="hljs-regexp">/* 00000000 */</span><br>        <span class="hljs-number">0</span>x00, <span class="hljs-regexp">/* 00000000 */</span><br>        <span class="hljs-number">0</span>x00, <span class="hljs-regexp">/* 00000000 */</span><br></code></pre></td></tr></table></figure>
+
+<p>根据这些数据，在一个8*16的区域里，将为1的点显示出来，为0的则不显示，最终将呈现一个字母“A”。</p>
+<p>新建一个font.c，根据字母的点阵在LCD上描画文字，需要的步骤如下：</p>
+<ol>
+<li>根据带显示的字符的ascii码在fontdata_8x16中得到点阵数据</li>
+<li>根据点阵来设置对应象素的颜色</li>
+<li>根据点阵的某位决定是否描颜色</li>
+</ol>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void fb<span class="hljs-constructor">_print_char(<span class="hljs-params">int</span> <span class="hljs-params">x</span>, <span class="hljs-params">int</span> <span class="hljs-params">y</span>, <span class="hljs-params">char</span> <span class="hljs-params">c</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">color</span>)</span><br>&#123;<br>        <span class="hljs-built_in">int</span> i, j;<br>        <br>        <span class="hljs-comment">/* 根据c的ascii码在fontdata_8x16中得到点阵数据 */</span><br>        unsigned <span class="hljs-built_in">char</span> *dots = &amp;fontdata_8x16<span class="hljs-literal">[<span class="hljs-identifier">c</span> <span class="hljs-operator">*</span> <span class="hljs-number">16</span>]</span>;<br><br>        unsigned <span class="hljs-built_in">char</span> data;<br>        <span class="hljs-built_in">int</span> bit;<br><br>        <span class="hljs-comment">/* 根据点阵来设置对应象素的颜色 */</span><br>        <span class="hljs-keyword">for</span> (j = y; j &lt; y+<span class="hljs-number">16</span>; j++)<br>        &#123;<br>                data = *dots++;<br>                bit = <span class="hljs-number">7</span>;<br>                <span class="hljs-keyword">for</span> (i = x; i &lt; x+<span class="hljs-number">8</span>; i++)<br>                &#123;<br>                        <span class="hljs-comment">/* 根据点阵的某位决定是否描颜色 */</span><br>                        <span class="hljs-keyword">if</span> (data &amp; (<span class="hljs-number">1</span>&lt;&lt;bit))<br>                                fb<span class="hljs-constructor">_put_pixel(<span class="hljs-params">i</span>, <span class="hljs-params">j</span>, <span class="hljs-params">color</span>)</span>;<br>                        bit--;<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在font_8x16.c里面，每个字符占据16位，因此想要根据ascii码找到对应的点阵数据，需要对应的乘16，再取地址，得到该字符的首地址。</p>
+<p>再根据每个点阵数据每位是否为1，来调用描点函数fb_put_pixel()。这样，依次显示16个点阵数据，获得字符图形。</p>
+<p>同样的，在显示之前，还需要获取LCD参数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">extern</span> <span class="hljs-type">const</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> fontdata_8x16[];<span class="hljs-comment">/* 获得LCD参数 */</span><br><span class="hljs-type">static</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> fb_base;<span class="hljs-type">static</span> <span class="hljs-type">int</span> xres, yres, bpp;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">font_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-built_in">get_lcd_params</span>(&amp;fb_base, &amp;xres, &amp;yres, &amp;bpp);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果想显示字符串，那就在每显示完一个字符后，x轴加8即可，同时考虑是否超出屏幕显示范围进行换行处理：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/* &quot;abc\n\r123&quot; */</span><br>void fb<span class="hljs-constructor">_print_string(<span class="hljs-params">int</span> <span class="hljs-params">x</span>, <span class="hljs-params">int</span> <span class="hljs-params">y</span>, <span class="hljs-params">char</span><span class="hljs-operator">*</span> <span class="hljs-params">str</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">color</span>)</span><br>&#123;<br>        <span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>, j;<br>        <br>        <span class="hljs-keyword">while</span> (str<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span>)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (str<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span><span class="hljs-operator"> == </span><span class="hljs-character">&#x27;\n&#x27;</span>)<br>                        y = y+<span class="hljs-number">16</span>;<br>                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (str<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span><span class="hljs-operator"> == </span><span class="hljs-character">&#x27;\r&#x27;</span>)<br>                        x = <span class="hljs-number">0</span>;<br><br>                <span class="hljs-keyword">else</span><br>                &#123;<br>                        fb<span class="hljs-constructor">_print_char(<span class="hljs-params">x</span>, <span class="hljs-params">y</span>, <span class="hljs-params">str</span>[<span class="hljs-params">i</span>], <span class="hljs-params">color</span>)</span>;<br>                        x = x+<span class="hljs-number">8</span>;<br>                        <span class="hljs-keyword">if</span> (x &gt;= xres) <span class="hljs-comment">/* 换行 */</span><br>                        &#123;<br>                                x = <span class="hljs-number">0</span>;<br>                                y = y+<span class="hljs-number">16</span>;<br>                        &#125;<br>                &#125;<br>                i++;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后在在主函数里，加上显示字符串的函数，传入希望显示的字符串。</p>
+<p><strong>第010节_编程_添加除法</strong></p>
+<hr>
+<p>在s3c2440_lcd_controller.c里，以前我们使用如下除法：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">int</span> clkval = (double)HCLK/plcdparams-&gt;time_seq.vclk/<span class="hljs-number">2</span>-<span class="hljs-number">1</span>+<span class="hljs-number">0</span>.<span class="hljs-number">5</span>;<br></code></pre></td></tr></table></figure>
+
+<p>编译的时候会提示出错：</p>
+<p><img src="/image/800px-Chapter17_lesson10_001.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter17_lesson10_001.png"></p>
+<p>我们的lib1funcs.S里面是有除法的，但除法的功能不够强，将前面除法计算代码中的double改成精度更小的float还是不行。</p>
+<p>对于未实现的函数：</p>
+<ul>
+<li>去uboot中查找</li>
+<li>去内核源码中查找</li>
+<li>去库函数中查找(一般来说编译器自带有很多库)</li>
+</ul>
+<p>在库函数中查找步骤：</p>
+<ol>
+<li>输入命令arm-linux-gcc -v，查看当前使用的交叉编译工具链；</li>
+<li>输入命令echo $PATH，在环境变量中找到当前使用的交叉编译工具链所在的路径；</li>
+<li>进入交叉编译工具链所在目录搜索相关函数，例如grep “__floatsisf” * -nR；</li>
+<li>提取出其中的静态库(.a后缀文件)，复制文件到代码文件；</li>
+<li>修改Makefile，依次尝试加入的每个静态库，直至编译成功；</li>
+</ol>
+<p>注意:如果你更换了编译器，需要自己去编译器目录里找出对应的libgcc.a;</p>
+<p>有可能有多个libgcc.a，逐个尝试；</p>
+<p><strong>第011节_编程_使用调色板</strong></p>
+<hr>
+<p>前面我们写的程序都是采用的16BPP或者24BPP(也就是32BPP)，假如我们要使用8PP，就得使用调色板。</p>
+<p>如图所示8PP工作原理示意图，在FB只存放8bit得每个像素索引，根据这个索引，在去去调色板找到对应的数据传给LCD控制器，再通过电子枪显示出来。</p>
+<p>调色板里面有2^8(256)个颜色数据，每个颜色数据为16bit，表示一种颜色。</p>
+<p><img src="/image/700px-Chapter17_lesson11_001.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson11_001.jpg"></p>
+<p>在硬件上，我们要初始化这个调色板，才能通过索引得到颜色。</p>
+<p>根据第三节的软件框架，调色板的初始化应该放在s3c2440_lcd_controller.c里面。</p>
+<p>在lcd_controller结构体里添加调色板初始化函数：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">struct lcd_controller s3c2440_lcd_controller = <br>&#123;<br>        <span class="hljs-string">.name</span>    = <span class="hljs-string">&quot;s3c2440&quot;</span>,<br>        <span class="hljs-string">.init</span>    = s3c2440_lcd_controller_init,<br>        <span class="hljs-string">.enable</span>  = s3c2440_lcd_controller_enalbe,<br>        <span class="hljs-string">.disable</span> = s3c2440_lcd_controller_disable,<br>        <span class="hljs-string">.init_palette</span> = s3c2440_lcd_controller_init_palette,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>调色板对应一块内存，我们需要找到他的位置和格式。</p>
+<p><img src="/image/700px-Chapter17_lesson11_002.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter17_lesson11_002.png"></p>
+<p>从芯片手册了解到，其起始地址为0x4D000400，且设置调色板前，需要关闭LCD控制器。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">s3c2440_lcd_controller_init_palette</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *palette_base =  (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *)<span class="hljs-number">0x4D000400</span>;<br>        <span class="hljs-type">int</span> i;<br><br>        <span class="hljs-type">int</span> bit = LCDCON1 &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>);<br><br>        <span class="hljs-comment">/* LCDCON1&#x27;BIT 0 : 设置LCD控制器是否输出信号 */</span><br>        <span class="hljs-keyword">if</span> (bit)<br>                LCDCON1 &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>);<br><br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; i++)<br>        &#123;<br>                <span class="hljs-comment">/* 低16位 : rgb565 */</span>       <br>                *palette_base++ = i;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (bit)<br>                LCDCON1 |= (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>设置调色板前，先判断LCD控制器是否打开，如果打开了就先关闭，且设置完成后再打开。(芯片手册要求)</p>
+<p>再网上搜索了一下，没有找到调色板数据数组，这里作为实验，就随便设置，让其为i。</p>
+<p>我们让调色板数据等于i，0-255，只占据8位，最后的颜色范围为B5G3R0，因此会比较偏蓝。</p>
+<p>修改lcd_4.3.c，将BPP改为8，</p>
+<p>再修改lcd_controller.c的初始化函数，加入调色板初始化函数。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs scss">int <span class="hljs-built_in">lcd_controller_init</span>(p_lcd_params plcdparams)<br>&#123;<br>        <span class="hljs-comment">/* 调用所选择的LCD控制器的初始化函数 */</span><br>        if (g_p_lcd_controller_selected)<br>        &#123;<br>                g_p_lcd_controller_selected-&gt;<span class="hljs-built_in">init</span>(plcdparams);<br>                g_p_lcd_controller_selected-&gt;<span class="hljs-built_in">init_palette</span>();<br>                return <span class="hljs-number">0</span>;<br>        &#125;<br>        return -<span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再修改lcd_test.c，加入bpp&#x3D;8的情况：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-keyword">if</span> <span class="hljs-comment">(bpp == 8)</span><br>        &#123;<br>                <span class="hljs-comment">/* 让LCD输出整屏的红色 */</span><br><br>                <span class="hljs-comment">/* bpp: palette[12] */</span><br><br>                p<span class="hljs-number">0</span> = <span class="hljs-comment">(unsigned char *)</span>fb_base;<br>                for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>                        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>                                *p<span class="hljs-number">0</span>++ = <span class="hljs-number">12</span>;<br><br>                <span class="hljs-comment">/* palette[47] */</span><br>                p<span class="hljs-number">0</span> = <span class="hljs-comment">(unsigned char *)</span>fb_base;<br>                for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>                        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>                                *p<span class="hljs-number">0</span>++ = <span class="hljs-number">47</span>;<br><br>                <span class="hljs-comment">/* palette[88] */</span><br>                p<span class="hljs-number">0</span> = <span class="hljs-comment">(unsigned char *)</span>fb_base;<br>                for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>                        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>                                *p<span class="hljs-number">0</span>++ = <span class="hljs-number">88</span>;<br><br>                <span class="hljs-comment">/* palette[0] */</span><br>                p<span class="hljs-number">0</span> = <span class="hljs-comment">(unsigned char *)</span>fb_base;<br>                for <span class="hljs-comment">(x = 0; x &lt; xres; x++)</span><br>                        for <span class="hljs-comment">(y = 0; y &lt; yres; y++)</span><br>                                *p<span class="hljs-number">0</span>++ = <span class="hljs-number">0</span>;<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>随便让其全屏显示某个颜色。</p>
+<p>最后在画线画圆，显示文字的函数里，修改下颜色：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">      <span class="hljs-comment">/* 画线 */</span><br>        draw<span class="hljs-constructor">_line(0, 0, <span class="hljs-params">xres</span> - 1, 0, 0x23ff77)</span>;<br>        draw<span class="hljs-constructor">_line(<span class="hljs-params">xres</span> - 1, 0, <span class="hljs-params">xres</span> - 1, <span class="hljs-params">yres</span> - 1, 0xffff)</span>;<br>        draw<span class="hljs-constructor">_line(0, <span class="hljs-params">yres</span> - 1, <span class="hljs-params">xres</span> - 1, <span class="hljs-params">yres</span> - 1, 0xff00aa)</span>;<br>        draw<span class="hljs-constructor">_line(0, 0, 0, <span class="hljs-params">yres</span> - 1, 0xff00ef)</span>;<br>        draw<span class="hljs-constructor">_line(0, 0, <span class="hljs-params">xres</span> - 1, <span class="hljs-params">yres</span> - 1, 0xff45)</span>;<br>        draw<span class="hljs-constructor">_line(<span class="hljs-params">xres</span> - 1, 0, 0, <span class="hljs-params">yres</span> - 1, 0xff0780)</span>;<br><br>        delay(<span class="hljs-number">1000000</span>);<br><br>        <span class="hljs-comment">/* 画圆 */</span><br>        draw<span class="hljs-constructor">_circle(<span class="hljs-params">xres</span><span class="hljs-operator">/</span>2, <span class="hljs-params">yres</span><span class="hljs-operator">/</span>2, <span class="hljs-params">yres</span><span class="hljs-operator">/</span>4, 0xff)</span>;<br><br>        <span class="hljs-comment">/* 输出文字 */</span><br>        fb<span class="hljs-constructor">_print_string(10, 10, <span class="hljs-string">&quot;www.100ask.net\n\r100ask.taobao.com&quot;</span>, 0xff)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>上面的颜色数据，其实只有低两位有效，因为前面的调色板映射范围是0-255。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第017课 LCD编程</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第017课_LCD编程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC018%E8%AF%BE_ADC%E5%92%8C%E8%A7%A6%E6%91%B8%E5%B1%8F/" title="第018课 ADC和触摸屏">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第018课 ADC和触摸屏</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC016%E8%AF%BE_Nand_Flash/" title="第016课 Nand Flash">
+                        <span class="hidden-mobile">第016课 Nand Flash</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

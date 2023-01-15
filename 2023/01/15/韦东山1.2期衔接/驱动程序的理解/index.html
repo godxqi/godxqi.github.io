@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="（一）Linux系统分层关系： 一个软件系统可以分为应用程序库，操作系统内核，驱动程序，开发人员可以专注于自己熟悉的部分，相比于相邻层只需要了解它的接口，必须关注它的实现性质，  （二）驱动程序的理解：驱动程序类似游戏mod 内核和驱动程序之间并没有界线，内核由一堆程序文件组成，而驱动程序就像给内核加入一些额外的带有设备操作信息的程序文件，通过insmod和rmmod决定是否加入到内核去，它加入内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="驱动程序的理解">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="（一）Linux系统分层关系： 一个软件系统可以分为应用程序库，操作系统内核，驱动程序，开发人员可以专注于自己熟悉的部分，相比于相邻层只需要了解它的接口，必须关注它的实现性质，  （二）驱动程序的理解：驱动程序类似游戏mod 内核和驱动程序之间并没有界线，内核由一堆程序文件组成，而驱动程序就像给内核加入一些额外的带有设备操作信息的程序文件，通过insmod和rmmod决定是否加入到内核去，它加入内">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/20191216143504225.png">
+<meta property="article:published_time" content="2023-01-15T12:55:06.495Z">
+<meta property="article:modified_time" content="2023-01-15T12:57:23.425Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/20191216143504225.png">
+  
+  
+  
+  <title>驱动程序的理解 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="驱动程序的理解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:55" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">驱动程序的理解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>（一）Linux系统分层关系：</p>
+<p>一个软件系统可以分为应用程序库，操作系统内核，驱动程序，开发人员可以专注于自己熟悉的部分，相比于相邻层只需要了解它的接口，必须关注它的实现性质，</p>
+<p><img src="/image/20191216143504225.png" srcset="/img/loading.gif" lazyload alt="20191216143504225.png"></p>
+<p>（二）驱动程序的理解：驱动程序类似游戏mod</p>
+<p>内核和驱动程序之间并没有界线，内核由一堆程序文件组成，而驱动程序就像给内核加入一些额外的带有设备操作信息的程序文件，通过insmod和rmmod决定是否加入到内核去，它加入内核时，会告诉内核自身在文件系统中的位置和自身的作用，然后等待被调用。由于它是直接编入内核，所以它的错误可能导致整个系统崩溃。</p>
+<p>（三）驱动程序编写的难点：</p>
+<p>Linux内核有大部分的驱动程序，我们去写一个驱动程序需要大量调用内核中代码，所以难点就在于弄清楚现在驱动程序的框架，合理的利用现有资源加入我们要写的驱动。同时还有其他需要注意的地方，比如驱动的并发等</p>
+<p>（四）Linux驱动程序分类</p>
+<p>计算机硬件系统有CPU、存储器以及外设组成，Linux驱动针对的对象是存储器和外设；Linux将驱动分为三大类：字符设备驱动、块设备驱动以及网络设备驱动。</p>
+<ol>
+<li>字符设备驱动：应用程序与驱动程序之间的数据交互是以字符(字节)为单位的，字符设备通常没有中间缓存。常见的字符设备有：led、key、camera、显卡、串口等</li>
+<li>块设备驱动：应用程序与驱动程序之间的数据交互是以块为单位的，主要针对的是存储设备，通常设有中间缓存，并且带有文件系统，可以任意位置访问。常见的块设备有：U盘、eMMC、SD卡等</li>
+<li>网络设备驱动：网络设备面向数据包的发送而设计，它并不对应于文件系统的节点。即不对应 &#x2F;dev 目录下的设备文件，应用程序最终通过套接字 socket 完成与网络设备的数据交互。常见的网络设备有网卡(无线网卡、有线网卡)。</li>
+</ol>
+<p>（五）编写驱动程序大致流程：</p>
+<ol>
+<li>查看原理图、数据手册，了解设备的操作方法。</li>
+<li>在内核中找到相近的驱动程序，以它为模板进行开发，有时候需要从零开始。</li>
+<li>开始编写驱动程序，实现驱动程序的初始化</li>
+<li>编写驱动程序中供系统调用调用的函数：open、close、 read、 write 等。</li>
+<li>实现中断服务(中断并不是每个设备驱动所必须的)。</li>
+<li>编译该驱动程序到内核中，或者用insmod命令加载。</li>
+<li>编写测试程序，测试驱动程序。</li>
+<li>例：点亮led的驱动程序</li>
+</ol>
+<p>（1）应用程序使用库提供的open函数打开代表LED的设备文件，</p>
+<p>（2）库根据open函数传入的参数执行swi指令,这条指令会引起CPU异常，进入内核。</p>
+<p>（3）内核的异常处理函数，根据这些参数找到相应的驱动程序，返回一个文件句柄给库，进而返回给应用程序</p>
+<p>（4）应用程序得到文件句柄后，使用库提供的write或ioclt函数发出控制命令</p>
+<p>（5）库根据write或ioclt函数传入的参数执行swi指令，这条指令会引起CPU异常进入内核，这些函数依据设备号等得到swi val中的val</p>
+<p>（6）内核的异常处理函数，根据这些参数调用驱动程序的相关函数，点亮LED。</p>
+<p>（六）驱动中常用命令</p>
+<ol>
+<li>加载驱动模块insmod</li>
+</ol>
+<p>     将生成的驱动模块.ko文件加载，</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">insmod </span>xxx.ko<br></code></pre></td></tr></table></figure>
+
+<p>     加载后就会执行xxxx_init函数</p>
+<ol>
+<li>卸载驱动模块rmmod</li>
+</ol>
+<p>     对应的卸载驱动的命令</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">rmmod xxxx 注意不用带<span class="hljs-string">.ko</span><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>查看内核中的模块信息</li>
+</ol>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">lsmod</span><br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>查看模块的描述信息</li>
+</ol>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">modinfo</span> xxxx.ko<br></code></pre></td></tr></table></figure>
+
+<p>     我们可以在驱动程序添加一些辅助信息，例如作者 ，驱动描述等。</p>
+<ol>
+<li>查看模块打印信息</li>
+</ol>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">dmesg</span><br></code></pre></td></tr></table></figure>
+
+<p>     printk是内核打印函数，默认模式下在中断下无法显示（当然，可以设置成打印到终端），用dmesg可以查看一下打印到内核的信息。</p>
+<p>（七）驱动相关的各个目录</p>
+<ol>
+<li>&#x2F;proc&#x2F;modules：模块加载列表,</li>
+</ol>
+<p>可使用lsmod命令显示有关模块的名称，大小，使用数目方面的信息</p>
+<p>insmod（加载模块）后在此添加一行</p>
+<ol>
+<li>&#x2F;sys&#x2F;module：系统中所有模块的信息</li>
+</ol>
+<p>insmod（加载模块）后在此添加一子目录</p>
+<ol>
+<li>&#x2F;proc&#x2F;devices  :注册设备列表</li>
+</ol>
+<p>注册设备（register_chrdev_region等）后在此添加一行，它产生一个major供mknod作为参数。一般在模块加载时注册设备。</p>
+<p>可使用cat &#x2F;proc&#x2F;devices查看已分配设备号和其对应的设备名</p>
+<p>（1）register_chrdev_region(dev_t first, unsigned int count, char *name); name是设备的名字; 它会出现在 &#x2F;proc&#x2F;devices 和 sysfs 中。</p>
+<p>（2）alloc_chrdev_region，因为动态分配，所以还需要读取&#x2F;proc&#x2F;devices文件以获得Linux内核分配给该设备的主设备号。</p>
+<ol>
+<li>&#x2F;dev&#x2F;*：包含了所有Linux系统中使用的外部设备，设备节点</li>
+</ol>
+<p>通过mknod手动创建（创建设备节点）或利用udev&#x2F;mdev自动创建后在此添加一子目录。</p>
+<ol>
+<li>额外说明</li>
+</ol>
+<p>（1）加载模块可能注册设备，也可能不注册设备；</p>
+<p>（2）注册的设备（即设备驱动程序）可以对应多个设备；</p>
+<p>（3）“加载模块的名字”可以和“注册的设备的名字”没有任何关联；只依赖于动态模块中注册设备时传入的参数name。</p>
+<p>（4）&#x2F;proc&#x2F;devices和&#x2F;dev下的名字也可以完全不同，只依赖于“主设备号”关联二者的关系；</p>
+<p>（5）&#x2F;dev下还有其他设备；</p>
+<p>（八）驱动程序基本框架</p>
+<ol>
+<li>入口函数：</li>
+</ol>
+<p>（1）缺省情况下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> __init <span class="hljs-title function_">init_module</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>  加载模块时的初始化函数，也就是驱动模块的入口函数<br><span class="hljs-keyword">void</span> __exit <span class="hljs-title function_">cleanup_module</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> 卸载模块时的函数，也就是卸载某个驱动时要执行的函数<br></code></pre></td></tr></table></figure>
+
+<p>（2）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-type">int</span> __init <span class="hljs-title function_">xxxx_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>  加载模块时的初始化函数，也就是驱动模块的入口函数<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> __exit <span class="hljs-title function_">xxxx_exit</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>  卸载模块时的函数，也就是卸载某个驱动时要执行的函数<br></code></pre></td></tr></table></figure>
+
+<p>上述两种情况相比，我们一般用第二种，因为第一种的名称是固定的，我们不能做更改，第二种我们可以改写xxxx为我们自己模块的名字。可以达到见文知义。</p>
+<p>在用第二种模式时，我们要首先用固定格式声明一下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">module</span><span class="hljs-constructor">_init(<span class="hljs-params">xxxx_init</span>)</span>;<br><span class="hljs-keyword">module</span><span class="hljs-constructor">_exit(<span class="hljs-params">xxxx_exit</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>用来表明加载初始化函数和卸载函数。</p>
+<ol>
+<li>c语言的标准函数库不能使用</li>
+</ol>
+<p>驱动属于内核的一部分，我们此时还无法使用类似像printf这样的c库，但是内核会提供自己的c库如(glibc)，在内核中我们用printk代替printf函数。</p>
+<ol>
+<li>添加LICENSE声明</li>
+</ol>
+<p>linux是开源的系统，那就要我们遵守一定的规范，我们一般用GPL规范，所以在驱动编写时都要声明一下</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">MODULE_LICENSE</span>(“GPL”);<br></code></pre></td></tr></table></figure>
+
+<p>（九）字符驱动程序框架</p>
+<p>概览：</p>
+<ol>
+<li>设备初始化</li>
+</ol>
+<p>（1）构建设备号</p>
+<p>MAJOR()、MINOR()、MKDEV()</p>
+<p>（2）注册设备号</p>
+<p>①静态注册：register_chrdev_region()或register_chrdev()</p>
+<p>②动态注册：alloc_chrdev_region()或register_chrdev()</p>
+<p>③注销设备号：unregist_chrdev_region() 或unregister_chrdev()</p>
+<p>（3）实现操作方法集</p>
+<p>（4）初始化设备对象</p>
+<p>①静态内存初始化：cdev_init()</p>
+<p>②动态内存初始化：cdev_alloc()</p>
+<ol>
+<li>向内存注册设备对象</li>
+</ol>
+<p>（1）注册：cdev_add()</p>
+<p>（2）卸载：cdev_del()</p>
+<ol>
+<li>创建设备文件</li>
+</ol>
+<p>（1）手动创建</p>
+<p>（2）自动创建</p>
+<ol>
+<li>设备初始化：（内核层面）</li>
+</ol>
+<p>（1）构建设备号</p>
+<p>一个字符设备或块设备都有一个主设备号major和一个次设备号minor。主设备号用来标识与设备文件相连的驱动程序，用来反映设备类型。次设备号被驱动程序用来辨别操作的是哪个设备，用来区分同类型的设备。</p>
+<p>linux内核中，设备号用dev_t来描述，Linux也提供了一些宏来构建设备号：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-constructor">MAJOR(<span class="hljs-params">dev_t</span> <span class="hljs-params">dev</span>)</span>;     <span class="hljs-comment">//从设备号dev中提取major主设备号，传入返回值中返回</span><br><span class="hljs-constructor">MINOR(<span class="hljs-params">dev_t</span> <span class="hljs-params">dev</span>)</span>;     <span class="hljs-comment">//从设备号dev中提取minor次设备号，传入返回值中返回</span><br><span class="hljs-constructor">MKDEV(<span class="hljs-params">int</span> <span class="hljs-params">major</span>,<span class="hljs-params">int</span> <span class="hljs-params">minor</span>)</span>;    <span class="hljs-comment">//通过major和minor构建设备号，传入返回值中返回，常用devno表示设备号</span><br></code></pre></td></tr></table></figure>
+
+<p>（2）注册设备号</p>
+<p>构建设备号之后，要将这个设备号注册到内核当中，要确保这个设备号没有注册过，可通过cat &#x2F;proc&#x2F;devices列出内核现在支持的设备，查看对应的主设备号和名字</p>
+<p>①静态注册（已有设备号）</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> register<span class="hljs-constructor">_chrdev_region(<span class="hljs-params">dev_t</span> <span class="hljs-params">from</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">count</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>)</span><br>参数：<br>    from  设备号<br>    count  次设备的数量<br>    *name  设备号对应驱动的名称<br>返回值：成功 <span class="hljs-number">0</span>， 出错负数的错误码<br>使用举例：<br>    ret = register<span class="hljs-constructor">_chrdev_region(<span class="hljs-params">devno</span>, 1, <span class="hljs-string">&quot;xxx&quot;</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>②动态注册（没有设备号，让系统自己构建并注册）</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> alloc<span class="hljs-constructor">_chrdev_region(<span class="hljs-params">dev_t</span> <span class="hljs-operator">*</span><span class="hljs-params">dev</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">baseminor</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">count</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>)</span>；<br>参数：<br>    *dev 输出型参数，获得分配到的设备号<br>    baseminor 次设备号的起始.从第几个次设备号开始分配，一般为<span class="hljs-number">0</span><br>    count 申请次设备号的个数。<br>    *name 设备号对应驱动的名称<br>返回值：小于<span class="hljs-number">0</span>，则错误，自动分配设备号错误。分配得到的设备号就被第一个参数带出来。<br>使用举例：<br>    alloc<span class="hljs-constructor">_chrdev_region(&amp;<span class="hljs-params">devno</span>, 0, 1, <span class="hljs-string">&quot;xxx&quot;</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>③注销设备号</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void unregister<span class="hljs-constructor">_chrdev_region(<span class="hljs-params">dev_t</span> <span class="hljs-params">from</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">count</span>)</span><br>参数：<br>    from  设备号<br>    count  次设备的数量<br>实例：<br>    unregister<span class="hljs-constructor">_chrdev_region(<span class="hljs-params">devno</span>, 1)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>（3）实现操作方法集</p>
+<p>ops中就是一堆的操作方法。对象中必须得有方法，设备对象的方法全部都在ops当中，可以看到在源码的ops中有很多操作方法，我们只实现需要使用的。 <a href="evernote:///view/18988257/s16/2d3eab24-6e17-480b-811d-eb794ab7b395/2d3eab24-6e17-480b-811d-eb794ab7b395/">.owner与HIS_MODULE</a></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file_operations</span> first_drv_fops = &#123;<br>    .owner  =   THIS_MODULE,  <br>    .open   =   first_drv_open,     <br>    .write  =   first_drv_write,       <br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>（4）初始化设备对象</p>
+<p>C语言中用结构体实现一个面向对象的过程，我们需要先向内核注册一个设备号，再对应着这个设备号向内核注册一个字符设备对象，内核中每个字符设备都对应一个 cdev结构，所以我们注册一个cedv结构体</p>
+<p>cdev结构体：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gauss">&lt;include/linux/cdev.h&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-type">cdev</span> &#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-type">kobject</span> kobj;                  <span class="hljs-comment">//内嵌的内核对象.</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-type">module</span> *owner;                 <span class="hljs-comment">//该字符设备所在的内核模块的对象指针.</span><br>    const <span class="hljs-keyword">struct</span> <span class="hljs-type">file_operations</span> *ops;    <span class="hljs-comment">//该结构描述了字符设备所能实现的方法，是极为关键的一个结构体.</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-type">list_head</span> list;                <span class="hljs-comment">//用来将已经向内核注册的所有字符设备形成链表.</span><br>    dev_t dev;                            <span class="hljs-comment">//字符设备的设备号，由主设备号和次设备号构成.</span><br>    unsigned int count;                   <span class="hljs-comment">//隶属于同一主设备号的次设备号的个数.</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>我们只关注以上编写定义的ops与dev，每一个设备号都只对应一个设备对象。</p>
+<p>将该实现的方法都实现后，我们通过cdev_init将实现的方法和对象绑定到一起，其实就是设备对象的方法集合初始化。</p>
+<p>一个 cdev一般它有两种定义初始化方式：静态的和动态的。使用cdev_init和cdev_alloc两个函数来初始化，两个函数完成的功能基本一致，不过使用的内存区不一样。</p>
+<p>①静态内存定义初始化：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">struct</span> cdev my_cdev;<br>cdev<span class="hljs-constructor">_init(&amp;<span class="hljs-params">my_cdev</span>, &amp;<span class="hljs-params">first_drv_fops</span>)</span>;<br>my_cdev.owner = THIS_MODULE;    <span class="hljs-comment">//在fops中做</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void cdev<span class="hljs-constructor">_init(<span class="hljs-params">struct</span> <span class="hljs-params">cdev</span> <span class="hljs-operator">*</span><span class="hljs-params">cdev</span>, <span class="hljs-params">const</span> <span class="hljs-params">struct</span> <span class="hljs-params">file_operations</span> <span class="hljs-operator">*</span><span class="hljs-params">fops</span>)</span><br>参数：<br>    cdev  字符设备对象<br>    *fops  文件操作集合<br>功能：对<span class="hljs-keyword">struct</span> cdev结构体做初始化<br></code></pre></td></tr></table></figure>
+
+<p>如果你定义的是一个结构体而非指针，那么只需要使用cdev_init函数就可以了。cdev_init针对于不需要空间申请的函数。</p>
+<p>cdev_init中使用memset，memset主要应用是初始化已经存在的某个内存空间。</p>
+<p>②动态内存定义初始化：</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xl">struct cdev *my_cdev = cdev_alloc();<br><span class="hljs-function"><span class="hljs-title">my_cdev</span>-&gt;</span>ops = &amp;first_drv_fops;<br><span class="hljs-function"><span class="hljs-title">my_cdev</span>-&gt;</span>owner = THIS_MODULE;    <span class="hljs-comment">//在fops中做</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">struct</span> cdev *cdev<span class="hljs-constructor">_alloc(<span class="hljs-params">void</span>)</span><br></code></pre></td></tr></table></figure>
+
+<p>如果你定义的是一个指针，那么只需要使用cdev_alloc函数并在其后做一个ops的赋值操作就可以了。kzalloc()申请一个内存空间，并把申请到的内存块初始化为0，这里相当于完成了memset的工作</p>
+<ol>
+<li>向内核注册设备对象（内核层面）</li>
+</ol>
+<p>（1）将初始化完的对象告诉内核</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> cdev<span class="hljs-constructor">_add(<span class="hljs-params">struct</span> <span class="hljs-params">cdev</span> <span class="hljs-operator">*</span><span class="hljs-params">p</span>, <span class="hljs-params">dev_t</span> <span class="hljs-params">dev</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">count</span>)</span><br>参数：<br>    p   字符设备对象<br>    dev 设备号<br>    count  次设备的数量<br>返回值：<span class="hljs-number">1</span>为失败，成功返回<span class="hljs-number">0</span><br>实例：<br>    cdev<span class="hljs-constructor">_add(<span class="hljs-params">cdev</span>, <span class="hljs-params">devno</span>, 1)</span>;<br>功能：<br>    向内核注册一个<span class="hljs-keyword">struct</span> cdev结构，将后两个参数直接复制给<span class="hljs-keyword">struct</span> cdev的dev成员和count成员<br></code></pre></td></tr></table></figure>
+
+<p>（2）卸载模块对象</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">void cdev<span class="hljs-constructor">_del(<span class="hljs-params">struct</span> <span class="hljs-params">cdev</span> <span class="hljs-operator">*</span><span class="hljs-params">p</span>)</span><br>参数：<br>    p   字符设备对象<br>实例：<br>    cdev<span class="hljs-constructor">_del(&amp;<span class="hljs-params">cdev</span>)</span>;<br>功能：<br>    向内核注销一个<span class="hljs-keyword">struct</span> cdev结构<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>创建设备文件，供用户调用</li>
+</ol>
+<p>linux中一切皆文件，驱动设备也一样。我们需要生成设备文件，供用户层调用。</p>
+<p>（1）手动创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mknod</span> name 设备类型 主设备号 次设备号<br></code></pre></td></tr></table></figure>
+
+<p>mknod做了什么事：  <a href="evernote:///view/18988257/s16/f9977171-4785-492b-93c4-7dbd8bcb37bf/f9977171-4785-492b-93c4-7dbd8bcb37bf/">mknod</a></p>
+<p>（2）自动创建</p>
+<p>利用udev（mdev）来实现设备文件的自动创建，首先应保证支持udev（mdev），由busybox配置。</p>
+<p>在驱动中加入对udev 的支持主要做的就是：在驱动初始化的代码里调用class_create()为该设备创建一个类，再为每个设备调用device_create()（2.6之前版本使用的是class_device_create()）创建对应的设备（创建节点）。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static <span class="hljs-keyword">struct</span> <span class="hljs-keyword">class</span> *firstdrv_class;<br>static <span class="hljs-keyword">struct</span> class_device    *firstdrv_class_dev;<br><br>firstdrv_class = <span class="hljs-keyword">class</span><span class="hljs-constructor">_create(THIS_MODULE, <span class="hljs-string">&quot;firstdrv&quot;</span>)</span>;    <span class="hljs-comment">//创建类/sys/class/firstdrv</span><br>firstdrv_class_dev = <span class="hljs-keyword">class</span><span class="hljs-constructor">_device_create(<span class="hljs-params">firstdrv_class</span>, NULL, MKDEV(<span class="hljs-params">major</span>, 0)</span>, NULL, <span class="hljs-string">&quot;xyz&quot;</span>);     <span class="hljs-comment">//创建设备节点/dev/xyz</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">#define <span class="hljs-keyword">class</span><span class="hljs-constructor">_create(<span class="hljs-params">owner</span>, <span class="hljs-params">name</span>)</span><br>参数：<br>    owner THIS_MODULE<br>    name 名字<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">class_device</span> *<span class="hljs-built_in">class_device_create</span>(<span class="hljs-keyword">struct</span> <span class="hljs-keyword">class</span>        *cls,<br>                                         <span class="hljs-keyword">struct</span> class_device *parent,<br>                                         <span class="hljs-type">dev_t</span>               devt,<br>                                         <span class="hljs-keyword">struct</span> device       *device,<br>                                         <span class="hljs-type">const</span> <span class="hljs-type">char</span>          *fmt, ...)<br>参数：<br>    *<span class="hljs-keyword">class</span> 类<br>    *parent <span class="hljs-literal">NULL</span><br>    devt 设备号<br>    *drvdata null<br>    *fmt 名字<br></code></pre></td></tr></table></figure>
+
+<p>（十）驱动相关函数</p>
+<ol>
+<li>应用程序中的函数：open、read、 write、ioctl、 mmap等接口函数被称为系统调用</li>
+</ol>
+<p>（1）来源：库(比如glibc)提供给应用程序</p>
+<p>glibc是 linux系统中最底层的 api，几乎其它任何运行库都会依赖于glibc。</p>
+<p>glibc还提供其他函数，比如字符串处理函数(strcpy、 strcmp 等)、输入&#x2F;输出函数(scanf、 printf 等)、数学库，还有应用程序的启动代码等。</p>
+<p>（2）作用：它们都是设置好相关寄存器后（将系统调用号、参数保存到固定的寄存器），执行swi指令引发异常进入内核。</p>
+<ol>
+<li>驱动程序中的函数</li>
+</ol>
+<p><a href="evernote:///view/18988257/s16/8b4dbb76-689b-4590-9409-da7b4127e0fb/8b4dbb76-689b-4590-9409-da7b4127e0fb/">2.6内核char_dev.c分析</a></p>
+<p>（十一）驱动相关结构体</p>
+<p><a href="evernote:///view/18988257/s16/dcbd93f1-c6fa-4e74-862a-efaf88660233/dcbd93f1-c6fa-4e74-862a-efaf88660233/">几个关键结构体</a></p>
+<p>（十二）open调用流程</p>
+<p><a href="evernote:///view/18988257/s16/30eb24c7-21ec-45dc-9261-2b9de1d4c4f0/30eb24c7-21ec-45dc-9261-2b9de1d4c4f0/">应用程序中的open()函数是怎么一步步调用到驱动程序中的open()、write()中去的</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>驱动程序的理解</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山1.2期衔接/驱动程序的理解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E9%80%9A%E8%BF%87fd%E6%89%BE%E5%88%B0fops/" title="通过fd找到fops">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">通过fd找到fops</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E7%BB%93%E6%9E%84%E4%BD%93/" title="几个关键结构体">
+                        <span class="hidden-mobile">几个关键结构体</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

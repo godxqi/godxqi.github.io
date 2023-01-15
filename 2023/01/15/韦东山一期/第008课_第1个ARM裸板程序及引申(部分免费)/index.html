@@ -1,0 +1,1014 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录   第001节_辅线1_硬件知识_LED原理图 第002节_辅线1_GPIO操作与简单流程 第003节_编写第1个程序点亮LED 第004节_汇编与机器码_P 第005节_编程知识_进制_P 第006节_编程知识_字节序_位操作_P 第007节_编写C程序控制LED_P 第008节_几条汇编指令_bl_add_sub_ldm_stm_P 第009节_解析C程序的内部机制_P 第010节_完善">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第008课_第1个ARM裸板程序及引申(部分免费)">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC008%E8%AF%BE_%E7%AC%AC1%E4%B8%AAARM%E8%A3%B8%E6%9D%BF%E7%A8%8B%E5%BA%8F%E5%8F%8A%E5%BC%95%E7%94%B3(%E9%83%A8%E5%88%86%E5%85%8D%E8%B4%B9)/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="目录   第001节_辅线1_硬件知识_LED原理图 第002节_辅线1_GPIO操作与简单流程 第003节_编写第1个程序点亮LED 第004节_汇编与机器码_P 第005节_编程知识_进制_P 第006节_编程知识_字节序_位操作_P 第007节_编写C程序控制LED_P 第008节_几条汇编指令_bl_add_sub_ldm_stm_P 第009节_解析C程序的内部机制_P 第010节_完善">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/afbb7e32c925c2cb8e2528ea19bb12de.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a55c31fba8ba316159aa1b784725ca15.png">
+<meta property="og:image" content="https://godxqi.github.io/image/e25564c070d4b0e81314058c63f88180.png">
+<meta property="og:image" content="https://godxqi.github.io/image/c8157723579ef7fd425ff3808f46188b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/4ed0f77e32d934be2856e6ed5fc10f5c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8654c9053310a38c61132cd50aaef940.png">
+<meta property="og:image" content="https://godxqi.github.io/image/adef0acd332ae66fd8934508895e2030.png">
+<meta property="og:image" content="https://godxqi.github.io/image/d1dd1d14f04a8c36f2704d258c556b3c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/982989c2ef5f3bfb731087384343d792.png">
+<meta property="og:image" content="https://godxqi.github.io/image/03b320988018e5da53095d5248f95a67.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a217007b15a867300d469d580fe9722d.png">
+<meta property="og:image" content="https://godxqi.github.io/image/bfed22c44aa7d93c2b50fa7fb16aabca.png">
+<meta property="og:image" content="https://godxqi.github.io/image/75ad70c6483ec404d7ab7f9116ee0c70.png">
+<meta property="og:image" content="https://godxqi.github.io/image/086eca011369e97830f7aff2a0baf846.png">
+<meta property="og:image" content="https://godxqi.github.io/image/0fe2e5f61e71be991bb0d27c69a1339e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Image.png">
+<meta property="og:image" content="https://godxqi.github.io/image/886e9e2879540e11dce65274cd0056df.png">
+<meta property="og:image" content="https://godxqi.github.io/image/db7de45848251b0c4eb6045b766d2d8d.png">
+<meta property="og:image" content="https://godxqi.github.io/image/f009c20e6f80161dfb43239ed359f92e.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.007Z">
+<meta property="article:modified_time" content="2023-01-15T13:00:34.840Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/afbb7e32c925c2cb8e2528ea19bb12de.png">
+  
+  
+  
+  <title>第008课_第1个ARM裸板程序及引申(部分免费) - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第008课_第1个ARM裸板程序及引申(部分免费)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          82 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第008课_第1个ARM裸板程序及引申(部分免费)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>目录</strong></p>
+<hr>
+<ol>
+<li>第001节_辅线1_硬件知识_LED原理图</li>
+<li>第002节_辅线1_GPIO操作与简单流程</li>
+<li>第003节_编写第1个程序点亮LED</li>
+<li>第004节_汇编与机器码_P</li>
+<li>第005节_编程知识_进制_P</li>
+<li>第006节_编程知识_字节序_位操作_P</li>
+<li>第007节_编写C程序控制LED_P</li>
+<li>第008节_几条汇编指令_bl_add_sub_ldm_stm_P</li>
+<li>第009节_解析C程序的内部机制_P</li>
+<li>第010节_完善LED程序_编写按键程序_P</li>
+</ol>
+<p><strong>第001节_辅线1_硬件知识_LED原理图</strong></p>
+<hr>
+<p>点亮LED：</p>
+<ol>
+<li>看原理图确定控制LED的引脚</li>
+<li>看主芯片手册确定如何设置&#x2F;控制引脚</li>
+<li>写程序</li>
+<li>将编辑好的程序上传到Linux编译得到bin文件</li>
+<li>将bin文件传回pc烧写进开发板</li>
+</ol>
+<p> </p>
+<p><strong>第002节_辅线1_硬件知识_S3C2440启动流程与GPIO操作</strong></p>
+<hr>
+<p>操作简述</p>
+<hr>
+<p>（一）进入原理图,找到LED模块</p>
+<p><img src="/image/afbb7e32c925c2cb8e2528ea19bb12de.png" srcset="/img/loading.gif" lazyload alt="afbb7e32c925c2cb8e2528ea19bb12de.png"></p>
+<p>由原理图得引脚nLED4输入低电平，LED点亮；输入高电平，LED熄灭</p>
+<p>找到nLED4在芯片上对应的引脚,即GPF6</p>
+<p><img src="/image/a55c31fba8ba316159aa1b784725ca15.png" srcset="/img/loading.gif" lazyload alt="a55c31fba8ba316159aa1b784725ca15.png"></p>
+<p>（二）进入S3C2440的芯片手册查看如何设置该引脚</p>
+<p><img src="/image/e25564c070d4b0e81314058c63f88180.png" srcset="/img/loading.gif" lazyload alt="e25564c070d4b0e81314058c63f88180.png"></p>
+<p>看出可以需要先通过GPFCON寄存器将GPF6设置成输出状态，再通过GPFDAT输出电平</p>
+<p><img src="/image/c8157723579ef7fd425ff3808f46188b.png" srcset="/img/loading.gif" lazyload alt="c8157723579ef7fd425ff3808f46188b.png"></p>
+<p>配置成输出端口：即设置[13:12]为[0:1]就能设置成输出状态</p>
+<p><img src="/image/4ed0f77e32d934be2856e6ed5fc10f5c.png" srcset="/img/loading.gif" lazyload alt="4ed0f77e32d934be2856e6ed5fc10f5c.png"></p>
+<p>输出低电平：由描述得将对应的位配置成1就是高电平，配置成0就是低电平</p>
+<p><img src="/image/8654c9053310a38c61132cd50aaef940.png" srcset="/img/loading.gif" lazyload alt="8654c9053310a38c61132cd50aaef940.png"></p>
+<p>通过寄存器配置工具得到：配置输出端口：将0x1000写入到地址0x56000050(GPFCON)</p>
+<p>                                         输出低电平：将0写入地址0x56000054</p>
+<p>（三）编写程序</p>
+<p>见003节</p>
+<p>（四）打开MobaXterm_Personal，输入虚拟机的ip和登陆用户及密码，需要在打开虚拟机的情况下进行,进行远程登录虚拟机</p>
+<p>打开FileZilla,把虚拟机和pc连接(需要ping通)，将led_on.S文件发送到虚拟机中编译连接（通过Makefile），然后将得到的bin文件发送回PC，再使用eop烧写bin文件(在NAND启动下烧写)，烧写完毕后拔掉排针，重新即可验证现象</p>
+<p>S3C2440启动流程</p>
+<hr>
+<p>启动过程：大多数ARM芯片从0地址启动</p>
+<ul>
+<li>NOR启动（程序烧到NOR Flash）：NOR Flash(可读不可写)基地址为0，即CPU看到的0地址在NOR Flash上</li>
+</ul>
+<p>                (设置NOR启动的时候，0地址对应NOR Flash，SRAM(片内RAM)为0x4000 0000)</p>
+<p>                代码烧入NOR Flash中，CPU读出NOR上第一个指令 (前四字节)执行</p>
+<p>                CPU继续读出其他指令执行</p>
+<ul>
+<li>Nand启动（程序烧到NAND Flash）：片内内存4kRAM基地址为0(可写)，即CPU看到的0地址在4KRAM上</li>
+</ul>
+<p>                (设置Nand启动的时候，0地址为SRAM，NOR Flash不可访问)</p>
+<p>                 硬件把Nand前4k内容复制到片内内存(SRAM)</p>
+<p>                 然后CPU从0地址取出第一条指令执行</p>
+<p>ldr sp, &#x3D;4096  &#x2F;* nand启动 *&#x2F;</p>
+<p>ldr sp, &#x3D;0x40000000+4096  &#x2F;* nor启动 *&#x2F;</p>
+<p>把栈设置在4K内存的顶部，所以nand为1024*4，nor为0x40000000+1024*4</p>
+<p><img src="/image/adef0acd332ae66fd8934508895e2030.png" srcset="/img/loading.gif" lazyload alt="adef0acd332ae66fd8934508895e2030.png"></p>
+<p><strong>第003节_编写第1个程序点亮LED</strong></p>
+<hr>
+<p>S3C2440中存在着CPU和GPIO控制器，它们之间都存在着寄存器。CPU中的寄存器可以直接访问，而GPIO控制器中的寄存器访问需要地址</p>
+<p>若想控制GPIO则需要配置对应的GPIO配置寄存器和GPIO数据寄存器，就需要向其中写值，利用寄存器工具确定写入何值，然后将数据写入对应的地址</p>
+<p>通过汇编代码达到功能：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment">/* start.S */</span><br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 点亮LED:gpf4</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-symbol">.text</span>    <span class="hljs-comment">//表明是代码段</span><br><span class="hljs-symbol">.global</span> _start<br><br><span class="hljs-symbol">_start:</span><br><br><span class="hljs-comment">/* 配置GPF4为输出引脚</span><br><span class="hljs-comment"> * 把0x100写到地址0X56000050</span><br><span class="hljs-comment"> */</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">r1</span>, <span class="hljs-number">=0x56000050</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">r0</span>, <span class="hljs-number">=0x100</span>    <span class="hljs-comment">/* mov r0,#0x100 */</span><br>    <span class="hljs-keyword">str</span> <span class="hljs-built_in">r0</span>, [<span class="hljs-built_in">r1</span>]<br><span class="hljs-comment">/* 设置GPF4输出高电平</span><br><span class="hljs-comment"> * 把0写到地址0X56000054</span><br><span class="hljs-comment"> */</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">r1</span>, <span class="hljs-number">=0x56000054</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">r0</span>, <span class="hljs-number">=0</span>    <span class="hljs-comment">/* mov r0,#0 */</span><br>    <span class="hljs-keyword">str</span> <span class="hljs-built_in">r0</span>, [<span class="hljs-built_in">r1</span>]<br><br><span class="hljs-comment">/* 死循环</span><br><span class="hljs-comment"> * 因为烧入的只有十几字节，但十几字节后的内容是不确定的</span><br><span class="hljs-comment"> */</span><br><span class="hljs-symbol">halt:</span><br>    <span class="hljs-keyword">b</span> halt<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-comment">/* Makefile */</span><br><span class="hljs-attribute">all</span>:<br>    arm-linux-gcc -c -o led_on<span class="hljs-selector-class">.o</span> led_on<span class="hljs-selector-class">.S</span>                    <span class="hljs-comment">//编译</span><br>    arm-linux-ld -Ttext <span class="hljs-number">0</span> led_on<span class="hljs-selector-class">.o</span> -o led_on<span class="hljs-selector-class">.elf</span>             <span class="hljs-comment">//连接</span><br>    arm-linux-objcopy -O binary -S led_on<span class="hljs-selector-class">.elf</span> led_on<span class="hljs-selector-class">.bin</span>     <span class="hljs-comment">//得到bin文件</span><br>    arm-linux-objdump -D led_on<span class="hljs-selector-class">.elf</span> &gt; led_on<span class="hljs-selector-class">.dis</span>             <span class="hljs-comment">//得到反汇编文件</span><br>clean:<br>    rm *<span class="hljs-selector-class">.bin</span> *<span class="hljs-selector-class">.o</span> *.elf<br></code></pre></td></tr></table></figure>
+
+<p><strong>第004节_汇编与机器码</strong></p>
+<hr>
+<p>（一）反汇编dis文件详解</p>
+<p><img src="/image/d1dd1d14f04a8c36f2704d258c556b3c.png" srcset="/img/loading.gif" lazyload alt="d1dd1d14f04a8c36f2704d258c556b3c.png"></p>
+<ol>
+<li>line001：读取内存地址为[pc+20]上的数据，写入r1中。[0+8+20]&#x3D;[28]即0x1c地址上读值</li>
+</ol>
+<p> </p>
+<p>-pc值&#x3D;当前指令+8。因为CPU是以流水线形式执行的，当前执行地址A的指令，已经在对地址A+4的指令进行译码，已经在读取A+8的指令</p>
+<ol>
+<li>line002：r0 &#x3D; 0x100</li>
+<li>line003：把r0即0x100写入r1对应的内存0x56000050（到此达到效果：将0x100写入0x56000050即GPFCON寄存器）</li>
+<li>line004：r1 &#x3D; [pc + 12] &#x3D; [0xc + 8 +12] &#x3D; [32] &#x3D; [0x20]，去0x20地址读取值0x56000054存放到r1里面</li>
+<li>line005：r0 &#x3D; 0x0</li>
+<li>line006：把r0即0x0写入r1对应的内存0x56000054（到此达到效果：将0x0写入0x56000054，即GPFDAT寄存器）</li>
+</ol>
+<p>故在cpu角度，这些寄存器就是内存</p>
+<p>通过反汇编文件可以看到编译器将我们所写汇编文件中的伪指令转换成真正的汇编码</p>
+<p>%!(EXTRA markdown.ResourceType&#x3D;, string&#x3D;, string&#x3D;)</p>
+<p><img src="/image/982989c2ef5f3bfb731087384343d792.png" srcset="/img/loading.gif" lazyload alt="982989c2ef5f3bfb731087384343d792.png"></p>
+<p><img src="/image/03b320988018e5da53095d5248f95a67.png" srcset="/img/loading.gif" lazyload alt="03b320988018e5da53095d5248f95a67.png"></p>
+<p>对于真正的汇编码保持不变</p>
+<p>%!(EXTRA markdown.ResourceType&#x3D;, string&#x3D;, string&#x3D;)</p>
+<p><img src="/image/a217007b15a867300d469d580fe9722d.png" srcset="/img/loading.gif" lazyload alt="a217007b15a867300d469d580fe9722d.png"></p>
+<p>（二）观察bin文件</p>
+<p>编译器把程序转换成汇编码后，再将汇编码转换成机器码存为bin文件，bin文件中包含所有反汇编文件中的</p>
+<p><img src="/image/bfed22c44aa7d93c2b50fa7fb16aabca.png" srcset="/img/loading.gif" lazyload alt="bfed22c44aa7d93c2b50fa7fb16aabca.png"></p>
+<p>可看出bin文件内容是和反汇编文件中机器码一一对应的</p>
+<p>（三）解析bin文件中ARM指令</p>
+<p>如果我们想通过直接修改机器码来改变结果，我们需要得到mov指令对应的机器码格式，可在ARM架构手册ARM Architecture Reference Manual.pdf中找到</p>
+<p><img src="/image/75ad70c6483ec404d7ab7f9116ee0c70.png" srcset="/img/loading.gif" lazyload alt="75ad70c6483ec404d7ab7f9116ee0c70.png"></p>
+<p>例：”e3a00c01     mov    r0, #256    ; “中：</p>
+<p>0x100对应e3a00c01中的c01，即为1100 0000 0001</p>
+<p>将immed_8循环右移24位后得到1 0000 0000，即为立即数0x100</p>
+<p><strong>第005节_编程知识_进制_P</strong></p>
+<hr>
+<p>（一） 如何快速转换二进制&#x2F;八进制&#x2F;十六进制</p>
+<p>-八进制：每一位八进制数对应3位二进制数，每一位八进制数据代表3个二进制数据，即3bit</p>
+<p>-十六进制：每一位十六进制数对应4位二进制数，每一位十六进制数据代表4个二进制数据，即4bit</p>
+<p>（二）数据如何在C语言中表示</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf">int a <span class="hljs-operator">=</span> <span class="hljs-number">96</span><span class="hljs-comment">;</span><br>int a <span class="hljs-operator">=</span> <span class="hljs-number">0140</span><span class="hljs-comment">;</span><br>int a <span class="hljs-operator">=</span> <span class="hljs-number">0</span>x60<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>（三）为何引入这些进制</p>
+<p>-二进制：与晶体管一一对应，晶体管只有两个状态0和1</p>
+<p>-八进制：用1位表示3bit，即3位二进制；1位取值范围：0-7</p>
+<p>-十六进制：用1位表示4bit，即4位二进制；1位取值范围：0-15</p>
+<p><strong>第006节_编程知识_字节序_位操作_P</strong></p>
+<hr>
+<p>（一）大小端模式（大字节序小字节序）</p>
+<p>地址的高地位：有一段连续的地址：0x00、0x01、0x02、0x03，很简单，值小的就低，大的就高，那就是0x00是低地址，往右递增。</p>
+<p>小端模式：数据的低字节存放到内存的低地址中，高字节存到高地址中。并且小端模式下优先将数据填充到内存的低地址中。（适合计算机理解）</p>
+<p>   地址：0x00 | 0x01 | 0x02 | 0x03       内存地址从左到右由低到高</p>
+<p>   数据：0x78 | 0x56 | 0x34 | 0x12       数据字节从左到右由低到高</p>
+<p>大端模式：数据的低字节存放到内存的高地址中，高字节存到低地址中，且数据优先填充到高地址上。（适合人类理解）</p>
+<p>   地址：0x00 | 0x01 | 0x02 | 0x03       内存地址从左到右由低到高</p>
+<p>   数据：0x12 | 0x34 | 0x56 | 0x78       数据字节从左到右由高到低</p>
+<p>一个地址存放一个字节</p>
+<p><img src="/image/086eca011369e97830f7aff2a0baf846.png" srcset="/img/loading.gif" lazyload alt="086eca011369e97830f7aff2a0baf846.png"></p>
+<p>（二）置位操作，清位操作</p>
+<ol>
+<li>置位：int a &#x3D; 0x123，把bit7,8置位(7,8位置1)</li>
+</ol>
+<p>int b &#x3D; a | ( 1 &lt;&lt; 7 ) | ( 1 &lt;&lt; 8 ) &#x3D; 0x1a3</p>
+<ol>
+<li>清位：int a&#x3D;0x123，把bit7,8清除(7,8位置0)</li>
+</ol>
+<p>int b&#x3D;(a &amp; <del>(1 &lt;&lt; 7)) &amp; (</del>(1 &lt;&lt; 8))&#x3D;0x23</p>
+<p><strong>第007节_编写C程序控制LED_P</strong></p>
+<hr>
+<p>（一）如何在C语言中定义寄存器地址</p>
+<p>ARM芯片寄存器大多是32位小端，即4个字节。同时一个地址对应一个字节，也可直接看出地址相差4字节</p>
+<p><img src="/image/0fe2e5f61e71be991bb0d27c69a1339e.png" srcset="/img/loading.gif" lazyload alt="0fe2e5f61e71be991bb0d27c69a1339e.png"></p>
+<p>-此为32位地址应该用int来表示</p>
+<p>-对于int 变量，它的最高位是用来表示符号位，但对于寄存器，它的最高位依然是用来控制硬件的（无论实际上用不用得到），所以用unsigned int</p>
+<p>-c语言中不能直接使用地址，必须转换为指针，所以为unsigned int *</p>
+<p>故若想定义一个地址例如GPFCON进行操作，即为unsigned int *pGPFCON &#x3D; (unsigned int *)0x56000050</p>
+<p>（二）编写C程序</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* main.c */</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *pGPFCON = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *)<span class="hljs-number">0x56000050</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *pGPFDAT = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *)<span class="hljs-number">0x56000054</span>;<br>    <span class="hljs-comment">/* 配置GPF4为输出引脚 */</span><br>    *pGPFCON = <span class="hljs-number">0x100</span>;<br>    <br>    <span class="hljs-comment">/* 设置GPF4输出0 */</span><br>    *pGPFDAT = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再写出汇编程序调用C程序</p>
+<p>（三）编写汇编程序</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/* start.S */</span><br><br>.text<br>.global _start<br><br>_start:<br><br>    <span class="hljs-regexp">/* 设置内存: sp 栈 */</span><br>    ldr sp, =<span class="hljs-number">4096</span>  <span class="hljs-regexp">/* nand启动 */</span><br><span class="hljs-regexp">//</span>    ldr sp, =<span class="hljs-number">0</span>x40000000+<span class="hljs-number">4096</span>  <span class="hljs-regexp">/* nor启动 */</span><br><br>    <span class="hljs-regexp">/* 调用main */</span><br>    bl main    <span class="hljs-regexp">//</span>跳转执行main函数，并且保存返回地址到lr里<br><br>halt:<br>    b halt<br></code></pre></td></tr></table></figure>
+
+<p>局部变量保存在栈中，栈是一块内存，需要自己设置(不设置指针就找不到地方指向，出现错误Segmentation fault (core dumped))，设置ldr sp, &#x3D;4096，将栈设置到NAND或NOR内存中</p>
+<p>问题：为什么写简单程序的时候不需要设置栈？</p>
+<p>答：这个地方设置栈是因为需要找到这个两个地址，通过设置nand,nor作为0地址可以定位到真实存在的寄存器地址来修改[ ] </p>
+<p>修改Makefile</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-attribute">all</span>:<br>    arm-linux-gcc -c -o led<span class="hljs-selector-class">.o</span> led<span class="hljs-selector-class">.c</span><br>    arm-linux-gcc -c -o start<span class="hljs-selector-class">.o</span> start<span class="hljs-selector-class">.S</span>        <span class="hljs-comment">//分别编译</span><br>    arm-linux-ld -Ttext <span class="hljs-number">0</span> start<span class="hljs-selector-class">.o</span> led<span class="hljs-selector-class">.o</span> -o led<span class="hljs-selector-class">.elf</span><br>    arm-linux-objcopy -O binary -S led<span class="hljs-selector-class">.elf</span> led<span class="hljs-selector-class">.bin</span><br>    arm-linux-objdump -D led<span class="hljs-selector-class">.elf</span> &gt; led<span class="hljs-selector-class">.dis</span><br>clean:<br>    rm *<span class="hljs-selector-class">.bin</span> *<span class="hljs-selector-class">.o</span> *<span class="hljs-selector-class">.elf</span> *.dis<br></code></pre></td></tr></table></figure>
+
+<p>**第008节_**<strong>简单的汇编指令</strong></p>
+<hr>
+<p><a href="evernote:///view/18988257/s16/5400fbfa-6f31-4e6c-91c9-4eac4b8860e9/5400fbfa-6f31-4e6c-91c9-4eac4b8860e9/">简单的汇编指令</a></p>
+<p><strong>第009节_解析C程序的内部机制_P</strong></p>
+<hr>
+<p>（一）程序都做了什么</p>
+<p>start.S做了什么：设置栈，调用main，并把返回地址保存到lr中</p>
+<p>main.c做了什么：定义两个局部变量，设置变量，return0</p>
+<p>（二）为什么要设置栈？</p>
+<p>汇编语言是底层语言，它没有栈，它也不需要编写很复杂很庞大的程序，即使没有内存（SDRAM），它也能在cpu的片内内存运行以完成一些裸机硬件程序；但是C语言是高级语言，它能够编写复杂庞大的程序，所以它需要函数间的多层调用，它需要用到指针的灵活赋值等等，但是这些都有依赖于栈<a target="_blank" rel="noopener" href="https://blog.csdn.net/daleiwang/article/details/50579776">https://blog.csdn.net/daleiwang/article/details/50579776</a></p>
+<p>（三）如何设置栈？</p>
+<p>ldr sp, &#x3D;4096 ，实际就是让SP指针指向这样的地址，但是这个地址是内存中的地址，而不是cpu片内地址，内存资源相对cpu资源来说充裕多了，所以SP可以有很大的增长空间，这也是C语言可以写复杂程序的前提。而且要保证这块内存可读可写， 并且跟程序不冲突，在此程序中栈从上往下增长，不会破坏到程序所运行的内存。</p>
+<p>理论知识</p>
+<hr>
+<p>ATPCS：</p>
+<p><img src="/image/Image.png" srcset="/img/loading.gif" lazyload alt="Image.png"></p>
+<p>CPU里有各种寄存器：</p>
+<ol>
+<li>R15程序计数器（Program Counter，PC）用来指出下一条指令在主存储器中的地址。</li>
+</ol>
+<p>-在程序执行之前，首先必须将程序的首地址，即程序第一条指令所在主存单元的地址(存储地址)送入PC，因此PC的内容即是从主存提取的第一条指令的地址。</p>
+<p>-当执行指令时，CPU能自动递增PC的内容，使其始终保存将要执行的下一条指令的主存地址，为取下一条指令做好准备。</p>
+<p>（在ARM里，CPU里程序的执行方式是以流水线的方式执行的：当前执行地址A的指令已经在对地址A+4的指令进行译码，已经在读取地址A+8的指令，A+8即PC的值)</p>
+<p>-当遇到转移指令时，下一条指令的地址将由转移指令的地址码字段来指定，即当把一个地址写入PC时，程序会跳到那个地址。</p>
+<ol>
+<li><p>R14(LInk Register)：用来保存返回地址，执行函数调用时，执行函数后需要跳回原来的位置，这个地址就保存在这里</p>
+</li>
+<li><p>R13(sp数据栈指针)：栈：就是那些由编译器在需要的时候分配，在不需要的时候自动清除的变量的存储区。里面的变量通常是局部变量，函数参数等</p>
+</li>
+</ol>
+<p>解析反汇编文件</p>
+<hr>
+<p><img src="/image/886e9e2879540e11dce65274cd0056df.png" srcset="/img/loading.gif" lazyload alt="886e9e2879540e11dce65274cd0056df.png"></p>
+<ol>
+<li>line6：一上电，从零地址开始执行</li>
+<li>line7：sp指向4096即0x1000</li>
+<li>line8：跳转到line13从0x0c开始执行，同时让lr等于它的返回地址（line11）即lr&#x3D;8</li>
+<li>line14：ip &#x3D; sp &#x3D; 4096</li>
+<li>line15：把fp,ip,lr,pc四个寄存器保存在sp对应的内存里（入栈）；pc&#x3D;当前指令地址+8<img src="/image/db7de45848251b0c4eb6045b766d2d8d.png" srcset="/img/loading.gif" lazyload alt="db7de45848251b0c4eb6045b766d2d8d.png"></li>
+<li>line16：fp &#x3D; ip - 4 &#x3D; 4092</li>
+<li>line17：sp &#x3D; sp - 8 &#x3D; 4080 - 8 &#x3D; 4072</li>
+<li>line18：r3 &#x3D; 0x56000000</li>
+<li>line19：r3 &#x3D; r3 + 0x50 &#x3D; 0x56000050</li>
+<li>line20：r3存入[fp - 16] &#x3D; [4092 - 16] &#x3D; [4076]，保存的就是局部变量pGPFCON</li>
+<li>line21：r3 &#x3D; 0x56000000</li>
+<li>line22：r3 &#x3D; r3 + 0x54 &#x3D; 0x56000054</li>
+<li>line23：r3存入[fp - 20] &#x3D; [4092 - 20] &#x3D; [4072]，保存的就是局部变量pGPFCON</li>
+<li>line24：r2 &#x3D; [fp - 16] &#x3D; [4076] &#x3D; 0x56000050 &#x3D; GPFCON</li>
+<li>line25：r3(0x100)存入[0x56000050]，对应C语言：*pGPFCON &#x3D; 0x100;</li>
+<li>line26：r2 &#x3D; [fp - 20] &#x3D; [4072] &#x3D; 0x56000054 &#x3D; GPFDAT</li>
+<li>line27：r3(0x0)存入[0x56000054]，对应C语言:*pGPFDAT &#x3D; 0;</li>
+<li>line28&#x2F;line29：r3 &#x3D; 0；r0 &#x3D; r3</li>
+</ol>
+<p>-调用者和被调用者通过r0~r3来传递参数，所以C语言中return的0应该保存到r0里</p>
+<ol>
+<li>line30：sp &#x3D; [fp - 12] &#x3D; [4092 - 12] &#x3D; 4080</li>
+<li>line31：从栈4080的位置中恢复寄存器；</li>
+</ol>
+<p>-fp &#x3D; [4080] &#x3D; 原来保存的fp</p>
+<p>-sp &#x3D; [4084] &#x3D; 4096</p>
+<p>-pc &#x3D; [4088] &#x3D; 8；跳回0x8的地址，即main返回</p>
+<p>验证汇编程序与C程序如何传参</p>
+<hr>
+<p>C语言与汇编语言调用规则：</p>
+<p>调用者如何传参数给被调用者(子函数)：通过r0-r3寄存器传递一个值（由ATPCS指定）</p>
+<p>.S：mov r0, #4</p>
+<p>      bl led_on</p>
+<p>.c：int led_on(int which)</p>
+<p>被调用者如何传参数给调用者：通过r0-r3寄存器传递一个值(return的0保存在了r0中)</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment">/* start.S */</span><br><br><span class="hljs-symbol">.text</span><br><span class="hljs-symbol">.global</span> _start<br><br><span class="hljs-symbol">_start:</span><br><br>    <span class="hljs-comment">/* 设置内存: sp 栈 */</span><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">=4096</span>  <span class="hljs-comment">/* nand启动 */</span><br><span class="hljs-comment">//    ldr sp, =0x40000000+4096  /* nor启动 */</span><br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">r0</span>, <span class="hljs-number">#4</span><br>    <span class="hljs-keyword">bl</span> led_on<br><br>    <span class="hljs-keyword">ldr</span> <span class="hljs-built_in">r0</span>, <span class="hljs-number">=100000</span><br>    <span class="hljs-keyword">bl</span> delay<br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">r0</span>, <span class="hljs-number">#5</span><br>    <span class="hljs-keyword">bl</span> led_on<br><br><span class="hljs-symbol">halt:</span><br>    <span class="hljs-keyword">b</span> halt<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* led.c */</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">delay</span><span class="hljs-params">(<span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> d)</span>        <span class="hljs-comment">//volatitle：void delay(volatile int d)，避免编译器优化，确保有效</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">while</span> (d--);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">led_on</span><span class="hljs-params">(<span class="hljs-type">int</span> which)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *pGPFCON = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *)<span class="hljs-number">0x56000050</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *pGPFDAT = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> *)<span class="hljs-number">0x56000054</span>;<br><br>    <span class="hljs-keyword">if</span> (which == <span class="hljs-number">4</span>)<br>    &#123;<br>        <span class="hljs-comment">/* 配置GPF4为输出引脚 */</span><br>        *pGPFCON = <span class="hljs-number">0x100</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (which == <span class="hljs-number">5</span>)<br>    &#123;<br>        <span class="hljs-comment">/* 配置GPF5为输出引脚 */</span><br>        *pGPFCON = <span class="hljs-number">0x400</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>反汇编：</p>
+<p><img src="/image/f009c20e6f80161dfb43239ed359f92e.png" srcset="/img/loading.gif" lazyload alt="f009c20e6f80161dfb43239ed359f92e.png"></p>
+<ol>
+<li>line8：r0 &#x3D; 4</li>
+<li>line9：跳到&lt;led_on&gt;执行</li>
+<li>line10：r0 &#x3D; [pc + 12] &#x3D; 0x000186a0 &#x3D; 100000</li>
+<li>line11：跳到&lt;delay&gt;执行</li>
+<li>line12：r0 &#x3D; 5</li>
+<li>line13：跳到&lt;led_on执行&gt;</li>
+</ol>
+<p><strong>第010节_完善LED程序_编写按键程序_P</strong></p>
+<hr>
+<p>从原理图可以看到平时EINT0为拉高状态，按键按下后被拉低，即按下输入0，抬起输入1</p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>.text</p>
+<p>.global _start</p>
+<p>_start:</p>
+<p>    &#x2F;* 关闭看门狗 </p>
+<p>     * 它是系统里保证系统正常运行的一个机制，时间到达后会重启整个系统，避免系统卡死</p>
+<p>     *&#x2F;</p>
+<p>    ldr r0, &#x3D;0x53000000</p>
+<p>    ldr r1, &#x3D;0</p>
+<p>    str r1, [r0]</p>
+<p>    &#x2F;* 设置内存: sp 栈 *&#x2F;</p>
+<p>    &#x2F;* 自动分辨是nor&#x2F;nand启动</p>
+<p>     * 写0到0地址, 再读出来</p>
+<p>     * 如果得到0, 表示0地址上的内容被修改了, 它对应ram, 这就是nand启动</p>
+<p>     * 否则就是nor启动</p>
+<p>     *&#x2F;</p>
+<p>    mov r1, #0</p>
+<p>    ldr r0, [r1] &#x2F;* 读出原来的值备份 *&#x2F;</p>
+<p>    str r1, [r1] &#x2F;* 0-&gt;[0] *&#x2F;</p>
+<p>    ldr r2, [r1] &#x2F;* r2&#x3D;[0] *&#x2F;</p>
+<p>    cmp r1, r2   &#x2F;* r1&#x3D;&#x3D;r2? 如果相等表示是NAND启动 *&#x2F;</p>
+<p>    ldr sp, &#x3D;0x40000000+4096 &#x2F;* 先假设是nor启动 *&#x2F;</p>
+<p>    moveq sp, #4096  &#x2F;* nand启动 *&#x2F;</p>
+<p>    streq r0, [r1]   &#x2F;* 恢复原来的值 *&#x2F;</p>
+<p>    </p>
+<p>    bl main</p>
+<p>halt:</p>
+<p>    b halt</p>
+<p>&#x2F;* main.c *&#x2F;</p>
+<p>#include “s3c2440_soc.h”</p>
+<p>void delay( volatile int d )</p>
+<p>{</p>
+<p>    while ( d-- );</p>
+<p>}</p>
+<p>int main( void )</p>
+<p>{</p>
+<p>    int val1, val2;</p>
+<p>    </p>
+<p>    &#x2F;* 设置GPFCON让GPF4&#x2F;5&#x2F;6配置为输出引脚 *&#x2F;</p>
+<p>    GPFCON &amp;&#x3D; ~ ( ( 3&lt;&lt;8 ) | ( 3&lt;&lt;10 ) | ( 3&lt;&lt;12 ) );    &#x2F;&#x2F;清零</p>
+<p>    GPFCON |&#x3D;   ( ( 1&lt;&lt;8 ) | ( 1&lt;&lt;10 ) | ( 1&lt;&lt;12 ) );</p>
+<p>    &#x2F;* 配置3个按键引脚为输入引脚:</p>
+<p>     * GPF0(S2),GPF2(S3),GPG3(S4)</p>
+<p>     *&#x2F;</p>
+<p>    GPFCON &amp;&#x3D; ~ ( ( 3 &lt;&lt; 0 ) | ( 3 &lt;&lt; 4 ) );  &#x2F;* gpf0,2 *&#x2F;</p>
+<p>    GPGCON &amp;&#x3D; ~ ( ( 3 &lt;&lt; 6 ) );  &#x2F;* gpg3 *&#x2F;</p>
+<p>    &#x2F;* 循环点亮 *&#x2F;</p>
+<p>    while (1){</p>
+<p>        val1 &#x3D; GPFDAT;</p>
+<p>        val2 &#x3D; GPGDAT;</p>
+<p>        if ( val1 &amp; ( 1 &lt;&lt; 0 ) ) {    &#x2F;* s2 --&gt; gpf6 *&#x2F;</p>
+<p>            &#x2F;* 松开 *&#x2F;</p>
+<p>            GPFDAT |&#x3D; ( 1 &lt;&lt; 6 );</p>
+<p>        }</p>
+<p>        else {</p>
+<p>            &#x2F;* 按下 *&#x2F;</p>
+<p>            GPFDAT &amp;&#x3D; ~ ( 1 &lt;&lt; 6 );</p>
+<p>        }</p>
+<p>        if ( val1 &amp; ( 1 &lt;&lt; 2 ) ) {    &#x2F;* s3 --&gt; gpf5 *&#x2F;</p>
+<p>            &#x2F;* 松开 *&#x2F;</p>
+<p>            GPFDAT |&#x3D; ( 1 &lt;&lt; 5 );</p>
+<p>        }</p>
+<p>        else {</p>
+<p>            &#x2F;* 按下 *&#x2F;</p>
+<p>            GPFDAT &amp;&#x3D; ~ ( 1 &lt;&lt; 5 );</p>
+<p>        }</p>
+<p>        if (val2 &amp; ( 1 &lt;&lt; 3 ) ) {    &#x2F;* s4 --&gt; gpf4 *&#x2F;</p>
+<p>            &#x2F;* 松开 *&#x2F;</p>
+<p>            GPFDAT |&#x3D; ( 1 &lt;&lt; 4 );</p>
+<p>        }</p>
+<p>        else {</p>
+<p>            &#x2F;* 按下 *&#x2F;</p>
+<p>            GPFDAT &amp;&#x3D; ~(1&lt;&lt;4);</p>
+<p>        }</p>
+<p>    }</p>
+<p>    return 0;</p>
+<p>}</p>
+<p><strong>&#x2F;* s3c2440_soc.h *&#x2F; (用define编写的头文件)</strong></p>
+<p>#ifndef  __S3C2440_SOC_H</p>
+<p>#define  __S3C2440_SOC_H</p>
+<p>#define     __REG(x)                    (*(volatile unsigned int *)(x))</p>
+<p>#define     GPECON                   __REG(0x56000040)  &#x2F;&#x2F;Port E control                                   </p>
+<p>#define     GPEDAT                   __REG(0x56000044)  &#x2F;&#x2F;Port E data</p>
+<p>val1 &amp; (1&lt;&lt;2)意思是，val1对应地址的第2位(GPFDAT的第二位)与1相与</p>
+<p>（1&lt;&lt;2）指1当前在bit0上，左移2位后在bit2上</p>
+<p>C语言对寄存器写值：(赋值&#x3D;先把赋值的哪几位清零，然后再把需要赋值的数左移到那几位)</p>
+<ol>
+<li>若给定一个整型数a，设置a的bit3为1，保证其他位不变</li>
+</ol>
+<p>a |&#x3D; (1&lt;&lt;3);</p>
+<ol>
+<li>给定一个整型数a，清除a的bit15~bit23，保证其他位不变</li>
+</ol>
+<p>a &amp;&#x3D; ~(0x1ff&lt;&lt;15);</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第008课_第1个ARM裸板程序及引申(部分免费)</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第008课_第1个ARM裸板程序及引申(部分免费)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC009%E8%AF%BE_gcc%E5%92%8Carm-linux-gcc%E5%92%8CMakefile/" title="第009课_gcc和arm-linux-gcc和Makefile">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第009课_gcc和arm-linux-gcc和Makefile</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/vi%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8/" title="vi编辑器的使用">
+                        <span class="hidden-mobile">vi编辑器的使用</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

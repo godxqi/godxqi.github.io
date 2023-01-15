@@ -1,0 +1,1088 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="概念引入  &#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第013课 代码重定位">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC013%E8%AF%BE_%E4%BB%A3%E7%A0%81%E9%87%8D%E5%AE%9A%E4%BD%8D/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="概念引入  &#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;#">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/663815b0a100a777e18cb5fd64a712a4.png">
+<meta property="og:image" content="https://godxqi.github.io/image/dc9d7a288f3299c7880f1a492ded178e.png">
+<meta property="og:image" content="https://godxqi.github.io/image/55bcd74fb3dd5b76d3677c71801e8f29.png">
+<meta property="og:image" content="https://godxqi.github.io/image/80454717bcb90ac8e1b96f2d89d47c40.png">
+<meta property="og:image" content="https://godxqi.github.io/image/5427f5b31be59b1f6d0a6eb2e09b08fd.png">
+<meta property="og:image" content="https://godxqi.github.io/image/c2dfad83930208aad8a4d1e11be029f1.png">
+<meta property="og:image" content="https://godxqi.github.io/image/b0dfb11a54e2262fc80bc32d920d2092.png">
+<meta property="og:image" content="https://godxqi.github.io/image/9dd2c3fcf53d1ee445971f76f00073e9.png">
+<meta property="og:image" content="https://godxqi.github.io/image/6ada227de5b43829698292fc406db1bb.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.011Z">
+<meta property="article:modified_time" content="2023-01-15T13:01:03.430Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/663815b0a100a777e18cb5fd64a712a4.png">
+  
+  
+  
+  <title>第013课 代码重定位 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第013课 代码重定位"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          120 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第013课 代码重定位</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>概念引入</strong></p>
+<p><img src="/image/663815b0a100a777e18cb5fd64a712a4.png" srcset="/img/loading.gif" lazyload alt="663815b0a100a777e18cb5fd64a712a4.png"></p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>001</p>
+<p>002：修改Makefile中的链接命令来使g_char位于0x30000000，使烧写于Nor的bin中的全局变量也可被修改</p>
+<p>003：002的修改导致bin文件过大，使用链接脚本将位于0x30000000的data段与位于</p>
+<p>0的代码段拼接到一起(这些复杂的功能使用链接命令时已经无法实现，所以要使用链接脚本)</p>
+<p>004：003中的链接脚本不通用，我们写一个通用的链接脚本</p>
+<p>005：在004的基础上打印一个初值为0的全局变量g_A</p>
+<p>006：005输出的变量g_A数值错误，应该清除值为0的全局变量所在的bss段</p>
+<p>007：改进start.S和修改链接脚本，让bss向四对齐</p>
+<p>008：将整个程序重定位到SDRAM中，引入绝对地址位置无关码</p>
+<p>009：将几个函数使用C语言实现</p>
+<p>010：将参数也用C语言获得</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>Nand与重定位</strong></p>
+<p>把程序烧到SDRAM、Nor上可直接运行，但CPU无法直接从Nand中取代码执行，那为什么还能使用Nand启动？</p>
+<p>        1.一上电，片内内存SRAM会把Nand上的前4K复制过去</p>
+<p>        2.CPU从0运行(0对应的是SRAM的地址)</p>
+<p>                如果程序大于4K，前4K的代码需要把整个程序读出来放到SDRAM，重新确认程序的地址，即重定位</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>Nor与重定位</strong></p>
+<p>Nor可以像内存一样的读，但不能像内存一样的写</p>
+<p>            比如执行</p>
+<p>mov r0,#0     </p>
+<p>LDR R1,[R0]            &#x2F;* 有效：读 *&#x2F;</p>
+<p>STR R1,[R0]            &#x2F;* 无效：写 *&#x2F;</p>
+<p>因为NorFlash相当于硬盘，其中包含着重要的数据，想写数据需要执行一些特殊的操作</p>
+<p>在Nor上设置一个想改动的全局&#x2F;静态变量，发现无法更改     </p>
+<p>                                          &#x2F;* 局部变量包含在栈中，栈指向SRAM，可读可写 *&#x2F;</p>
+<p>                                           &#x2F;* 全局&#x2F;静态变量包含在bin中，烧在NorFlash上 ，无法直接修改 *&#x2F;</p>
+<p>这时就需要重定位放到SDRAM中</p>
+<p><img src="/image/dc9d7a288f3299c7880f1a492ded178e.png" srcset="/img/loading.gif" lazyload alt="dc9d7a288f3299c7880f1a492ded178e.png"></p>
+<p>引入段和重定位的概念</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>002</strong></p>
+<p>Nor启动</p>
+<p>设置全局变量：char g_char</p>
+<p>全局变量不可写，尝试将变量放在可读可写的SDRAM中，即让数据段从0x30000000(SDRAM初始地址)开始</p>
+<p>&#x2F;* 指定数据段地址为0x30000000 *&#x2F;</p>
+<p>arm-linux-ld -Ttext 0 -Tdata 0x30000000 start.o led.o init.o mian.o</p>
+<p>烧写后发现bin文件大小为30000001(30000000+1)</p>
+<p><img src="/image/55bcd74fb3dd5b76d3677c71801e8f29.png" srcset="/img/loading.gif" lazyload alt="55bcd74fb3dd5b76d3677c71801e8f29.png"></p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>003</strong></p>
+<p>解决这个巨大的间隔</p>
+<p><img src="/image/80454717bcb90ac8e1b96f2d89d47c40.png" srcset="/img/loading.gif" lazyload alt="80454717bcb90ac8e1b96f2d89d47c40.png"></p>
+<p>使用链接脚本把本来该位于0x30000000的数据段和代码段拼在一起(这些复杂的功能使用链接命令时已经无法实现，所以要使用链接脚本)</p>
+<p>&#x2F;* Makefile *&#x2F;</p>
+<p>arm-linux-ld -T sdram.lds start.o led.o init.o mian.o</p>
+<p>&#x2F;* 链接脚本sdram.lds *&#x2F; </p>
+<p>&#x2F;* 将0x30000000地址与0x800地址链(连)接 *&#x2F;</p>
+<p>SECTIONS {</p>
+<p>   .text   0  : { *(.text) }</p>
+<p>   .rodata  : { *(.rodata) }</p>
+<p>   .data 0x30000000 : AT(0x800) { *(.data) }        &#x2F;&#x2F;0x800即data段的原开始处</p>
+<p>   .bss  : { *(.bss) *(.COMMON) }                   &#x2F;&#x2F;括号里的</p>
+<p>}</p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>&#x2F;* 使用链接脚本后，main是去0x30000000取值，所以我们应该 </p>
+<p> * 重定位data段,把0x800里的值(g_char)写入(复制)0x30000000 </p>
+<p> *&#x2F;</p>
+<p>    mov r1, #0x800</p>
+<p>    ldr r0, [r1]</p>
+<p>    mov r1, #0x30000000</p>
+<p>    str r0, [r1]</p>
+<p>这个方法并不通用，需要写更加通用的代码</p>
+<p>重定位后原0x800是否还有数据？要没有数据那怎么复制到0x30000000？[x] </p>
+<p>答：有</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>004</strong></p>
+<p>&#x2F;* sdram.lds *&#x2F;</p>
+<p>&#x2F;* 将0x30000000地址与0x800地址链接 *&#x2F;</p>
+<p>SECTIONS {</p>
+<p>   .text   0  : { *(.text) }</p>
+<p>   .rodata  : { *(.rodata) }</p>
+<p>   .data 0x30000000 : AT(0x800) </p>
+<p>    {</p>
+<p>        data_load_addr &#x3D; LOADADDR (.data);    &#x2F;* 返回()内段的绝对加载地址，在此处为0x800 *&#x2F;</p>
+<p>        data_start &#x3D; . ;        &#x2F;* data_start &#x3D; 0x30000000 *&#x2F;</p>
+<p>        *(.data)</p>
+<p>        data_end &#x3D; . ;          &#x2F;* data_end - data_start &#x3D; data段长度 *&#x2F; </p>
+<p>    }  </p>
+<p>   .bss  : { *(.bss) *(.COMMON) }</p>
+<p>}</p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>&#x2F;* 重定位data段,把0x800里的值写入(复制)0x30000000 *&#x2F;</p>
+<p>    ldr r1, &#x3D;data_load_addr    &#x2F;* data段在bin文件中的地址,加载地址 *&#x2F;</p>
+<p>    ldr r2, &#x3D;data_start        &#x2F;* data段在重定位地址,运行地址 *&#x2F;</p>
+<p>    ldr r3, &#x3D;data_end          &#x2F;* data段结束地址 *&#x2F;</p>
+<p>cpy:</p>
+<p>    ldrb r4, [r1]</p>
+<p>    strb r4, [r2]</p>
+<p>    add r1, r1, #1</p>
+<p>    add r2, r2, #1</p>
+<p>    cmp r2, r3</p>
+<p>        bne cpy                                        &#x2F;* r2与r3不等,继续拷贝 *&#x2F;</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>003节</p>
+<p><strong>链接脚本的解析：</strong></p>
+<p><img src="/image/5427f5b31be59b1f6d0a6eb2e09b08fd.png" srcset="/img/loading.gif" lazyload alt="5427f5b31be59b1f6d0a6eb2e09b08fd.png"></p>
+<p>这些地址的意思：</p>
+<p>&#x2F;* Makefile *&#x2F;</p>
+<p>arm-linux-ld -T sdram.lds start.o led.o init.o mian.o</p>
+<p>在Makefile中使用链接脚本链接了.o文件，生成一个elf文件，这个elf文件中就有地址信息</p>
+<p>1.链接得elf文件，含有地址信息(加载地址Load Addr)</p>
+<p>        某个段使用AT命令的时候就直接指定了加载地址，若不使用则加载地址等于运行地址start</p>
+<p>2.地址如何使用：使用加载器(对于裸板，是JTAG调试工具；对于APP，加载器也是APP)</p>
+<p>   把elf读入到内存(读到加载地址Load Addr)</p>
+<p>3.运行</p>
+<p>4.若Load Addr !&#x3D; Runtime Addr，程序本身要重定位</p>
+<p>核心：程序运行时，应位于runtime Addr&#x2F;reload Addr&#x2F;链接地址</p>
+<p>bin文件：</p>
+<p>1.elf文件生成bin文件</p>
+<p>2.硬件机制启动</p>
+<p>3.若bin所在位置 !&#x3D; Runtime Addr，程序本身要重定位</p>
+<p><img src="/image/c2dfad83930208aad8a4d1e11be029f1.png" srcset="/img/loading.gif" lazyload alt="c2dfad83930208aad8a4d1e11be029f1.png"></p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>005</strong></p>
+<p>&#x2F;* uart.c *&#x2F;</p>
+<p>&#x2F;* 取出每一位的值,再转成字符打印出来 *&#x2F;</p>
+<p>void printHex(unsigned int val)</p>
+<p>{</p>
+<p>    int i;</p>
+<p>    unsigned char arr[8];</p>
+<p>    &#x2F;* 先取出每一位的值 *&#x2F;</p>
+<p>    for (i &#x3D; 0; i &lt; 8; i++)</p>
+<p>    {</p>
+<p>        arr[i] &#x3D; val &amp; 0xf;</p>
+<p>        val &gt;&gt;&#x3D; 4;   &#x2F;* arr[0] &#x3D; 2, arr[1] &#x3D; 1, arr[2] &#x3D; 0xF *&#x2F;</p>
+<p>    }</p>
+<p>    &#x2F;* 打印 *&#x2F;</p>
+<p>    puts(“0x”);</p>
+<p>    for (i &#x3D; 7; i &gt;&#x3D;0; i--)</p>
+<p>    {</p>
+<p>        if (arr[i] &gt;&#x3D; 0 &amp;&amp; arr[i] &lt;&#x3D; 9)</p>
+<p>            putchar(arr[i] + ‘0’);</p>
+<p>        else if(arr[i] &gt;&#x3D; 0xA &amp;&amp; arr[i] &lt;&#x3D; 0xF)</p>
+<p>            putchar(arr[i] - 0xA + ‘A’);</p>
+<p>    }</p>
+<p>}</p>
+<p>&#x2F;* main.c *&#x2F;</p>
+<p>#include “s3c2440_soc.h”</p>
+<p>#include “uart.h”</p>
+<p>#include “init.h”</p>
+<p>char g_Char &#x3D; ‘A’;</p>
+<p>char g_Char3 &#x3D; ‘a’;</p>
+<p>const char g_Char2 &#x3D; ‘B’;</p>
+<p>int g_A &#x3D; 0;        &#x2F;&#x2F;简单打印这个初始值为0的数，并不清除bss段</p>
+<p>int g_B;</p>
+<p>&#x2F;* 简单打印初始值为0的g_char,并不清除bss段 *&#x2F;</p>
+<p>int main(void)</p>
+<p>{</p>
+<p>    uart0_init();</p>
+<p>    puts(“\n\rg_A &#x3D; “);</p>
+<p>    printHex(g_A);</p>
+<p>    puts(“\n\r”);</p>
+<p>    while (1)</p>
+<p>    {</p>
+<p>        putchar(g_Char);</p>
+<p>        g_Char++;</p>
+<p>        putchar(g_Char3);</p>
+<p>        g_Char3++;</p>
+<p>        delay(1000000);</p>
+<p>    }</p>
+<p>    return 0;</p>
+<p>}</p>
+<p>发现打印的g_char值是不确定的，因为初值为0和无初始值的全局变量放在BSS段上，BSS段上的变量都是无初始值的，都需要在BSS段清0时获取初始值</p>
+<p>之所以有bss段，是因为存储这么多0到目标文件是没有必要的，为了节省空间，在生成目标文件的时候，就把没有初始值（实际就是0）的数据段里的变量都放到BSS段里，这样目标文件就不需要这么大的体积。当目标文件被载入时，加载器负责把BSS段清零</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>006</strong></p>
+<p>&#x2F;* sdram.lds *&#x2F;</p>
+<p>&#x2F;* 将0x30000000地址与0x800地址链接 *&#x2F;</p>
+<p>SECTIONS {</p>
+<p>   .text   0  : { *(.text) }</p>
+<p>   .rodata  : { *(.rodata) }</p>
+<p>   .data 0x30000000 : AT(0x800)</p>
+<p>    {</p>
+<p>        data_load_addr &#x3D; LOADADDR (.data);    &#x2F;*返回()内段的绝对加载地址 *&#x2F;</p>
+<p>        data_start &#x3D; . ;        &#x2F;* data_star &#x3D; 0x30000000 *&#x2F;</p>
+<p>        *(.data)</p>
+<p>        data_end &#x3D; . ;          &#x2F;* data_end - data_start &#x3D; data段长度 *&#x2F;</p>
+<p>    }  </p>
+<p>   bss_start &#x3D; .;            &#x2F;&#x2F;在里在外没关系，“.”当前地址</p>
+<p>   .bss  : { *(.bss) *(.COMMON) }</p>
+<p>   bss_end &#x3D; .;</p>
+<p>}</p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>    &#x2F;* 重定位data段,把0x800里的值写入(复制)0x30000000 *&#x2F;</p>
+<p>    ldr r1, &#x3D;data_load_addr    &#x2F;* data段在bin文件中的地址,加载地址 *&#x2F;</p>
+<p>    ldr r2, &#x3D;data_start        &#x2F;* data段在重定位地址,运行地址 *&#x2F;</p>
+<p>    ldr r3, &#x3D;data_end          &#x2F;* data段结束地址 *&#x2F;</p>
+<p>cpy:</p>
+<p>    ldrb r4, [r1]</p>
+<p>    strb r4, [r2]</p>
+<p>    add r1, r1, #1</p>
+<p>    add r2, r2, #1</p>
+<p>    cmp r2, r3</p>
+<p>        bne cpy                                        &#x2F;* r2与r3不等,继续拷贝 *&#x2F;</p>
+<p>    &#x2F;* 清除BSS段 *&#x2F;</p>
+<p>    ldr r1, &#x3D;bss_start</p>
+<p>    ldr r2, &#x3D;bss_end</p>
+<p>    mov r3, #0</p>
+<p>clean:</p>
+<p>    strb r3, [r1]</p>
+<p>    add r1, r1, #1</p>
+<p>    cmp r1, r2</p>
+<p>    ble clean</p>
+<p>从这里可以看出即使程序里有一百万个全局变量，这些全局变量的初始值为0，我也不需要在bin，elf文件中保存这些0，只要在运行程序的时候把这段空间清0就可以</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>004节</p>
+<p><strong>链接脚本的改进</strong></p>
+<p>ldrb执行过程：CPU把ldrb这条命令发给内存控制器，内存控制器到SDRAM中读到四个字节的数据，然后跳出一个返回给CPU(SDRAM 32bit    Nor 16bit)</p>
+<p>strb执行过程：CPU把地址和数据发给内存控制器，内存控制器把32位的数据发给SDRAM，同时发出数据屏蔽信号DQM，比如CPU只写一个字节，CPU就会发出三个屏蔽信号，屏蔽掉三个不需要写的字节(SDRAM 32bit    Nor 16bit)</p>
+<p>ldrb    strb，以字节为单位访问Nor和SDRAM，访问Nor16次，访问SDRAM16次</p>
+<p>ldr       str ,   以四个字节为单位访问Nor和SDRAM，访问Nor8次，访问SDRAM4次(因为Nor位宽为16位，读一次访问两次)</p>
+<p><strong>007</strong></p>
+<p>cpy:</p>
+<p>    ldr r4, [r1]</p>
+<p>    str r4, [r2]</p>
+<p>    add r1, r1, #4</p>
+<p>    add r2, r2, #4</p>
+<p>    cmp r2, r3</p>
+<p>    ble cpy</p>
+<p>    &#x2F;* 清除BSS段 *&#x2F;</p>
+<p>    ldr r1, &#x3D;bss_start</p>
+<p>    ldr r2, &#x3D;bss_end</p>
+<p>    mov r3, #0</p>
+<p>clean:</p>
+<p>    str r3, [r1]</p>
+<p>    add r1, r1, #4</p>
+<p>    cmp r1, r2</p>
+<p>    ble clean</p>
+<p>发现BSS段意外将数据段中的全局变量也清零了，进入反汇编看到</p>
+<p><img src="/image/b0dfb11a54e2262fc80bc32d920d2092.png" srcset="/img/loading.gif" lazyload alt="b0dfb11a54e2262fc80bc32d920d2092.png"></p>
+<p>30000002不是4的整数倍，所以并不是4字节对齐的</p>
+<p>str：无论存入地址为多少都是以4个字节为单位存入，也就是说无论存入地址是0x30000000或0x30000001或0x300000002或0x30000003，存入都是以0x30000000开始，在这个地方就将0x30000000也存入了0，而这个地址就是全局变量的地址。所以输出为0的原因是bss的开始地址是0x30000002，并不是向4取整的，而str是以4字节的方式存入r3的值，所以在清零bss段时将全局变量一起清0了。</p>
+<p>ldr：读取以4个字节为单位循环读取。假设存入0xfe，当从0x30000001开始读取时，从低地址-&gt;高地址（00-00-00-fe）(0x30000001-0x30000002-0x30000003-0x30000000)，所以r2就成了0xfe000000；当从0x30000002读取时从低地址-&gt;高地址（00-00-fe-00）(0x30000002-0x30000003-0x30000000-0x30000001)，所以r2就成了0x00fe0000</p>
+<p>那么只要修改链接脚本，让bss段向4取整就解决了这个问题</p>
+<p>&#x2F;* sdram.lds *&#x2F;</p>
+<p>&#x2F;* 将0x30000000地址与0x800地址链接 *&#x2F;</p>
+<p>SECTIONS {</p>
+<p>   .text   0  : { *(.text) }</p>
+<p>   .rodata  : { *(.rodata) }</p>
+<p>   .data 0x30000000 : AT(0x800)</p>
+<p>    {</p>
+<p>        data_load_addr &#x3D; LOADADDR (.data);    &#x2F;*返回()内段的绝对加载地址 *&#x2F;</p>
+<p>   . &#x3D; ALIGN(4);                  &#x2F;* 以防意外 *&#x2F;</p>
+<p>        data_start &#x3D; . ;        &#x2F;* data_star &#x3D; 0x30000000 *&#x2F;</p>
+<p>        *(.data)</p>
+<p>        data_end &#x3D; . ;          &#x2F;* data_end - data_start &#x3D; data段长度 *&#x2F;</p>
+<p>    }  </p>
+<p>    . &#x3D; ALIGN(4);                &#x2F;* 让当前地址等于向四对齐 *&#x2F;</p>
+<p>    bss_start &#x3D; .;</p>
+<p>    .bss  : { *(.bss) *(.COMMON) }</p>
+<p>    bss_end &#x3D; .;</p>
+<p>}</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>005节</p>
+<p>重定位：把可执行程序从一个位置复制到另一个位置的过程</p>
+<p>将整个程序重定位到SDRAM所需要的技术细节：（在Nor启动时，将所有程序复制到SDRAM中）</p>
+<p>1.要从FLASH中把程序复制到它的运行地址-----&gt;在链接脚本中指定Runtime Addr为SDRAM地址</p>
+<p>2.重定位之前的代码，与地址无关-----&gt;用位置无关码写程序(有部分程序将整个程序复制到SDRAM中，为什么它可以运行，因为位置无关)</p>
+<p><strong>008</strong></p>
+<p>&#x2F;* sdram.lds *&#x2F;</p>
+<p>&#x2F;* 由uboot.lds所借鉴 *&#x2F;</p>
+<p>SECTIONS</p>
+<p>{</p>
+<p>    . &#x3D; 0x30000000;                  &#x2F;* 表示整个程序应该摆在这个位置 *&#x2F;</p>
+<p>    . &#x3D; ALIGN(4);                    &#x2F;* 对齐所有文件的data段 *&#x2F;</p>
+<p>    .text      :</p>
+<p>    {</p>
+<p>      *(.text)</p>
+<p>    }</p>
+<p>    . &#x3D; ALIGN(4);                    &#x2F;* 对齐所有文件的rodata段 *&#x2F;</p>
+<p>    .rodata : { *(.rodata) }</p>
+<p>    . &#x3D; ALIGN(4);                    &#x2F;* 对齐所有文件的data段 *&#x2F;</p>
+<p>    .data : { *(.data) }</p>
+<p>    . &#x3D; ALIGN(4);                    &#x2F;* 对齐所有文件的bss段，COMMON段 *&#x2F;</p>
+<p>    __bss_start &#x3D; .;</p>
+<p>    .bss : { *(.bss) *(.COMMON) }    &#x2F;* COMMON：无初值的段 *&#x2F;</p>
+<p>    _end &#x3D; .;</p>
+<p>}</p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>&#x2F;* 重定位text,rodata,data段整个程序,假设程序小于4K *&#x2F;</p>
+<p>    mov r1, #0                &#x2F;* data段在bin文件中的地址,加载地址 *&#x2F;</p>
+<p>    ldr r2, &#x3D;_start            &#x2F;* 第一条指令运行时得地址 *&#x2F;</p>
+<p>    ldr r3, &#x3D;__bss_start          &#x2F;* data段的结束地址，即bss段的起始地址 *&#x2F;</p>
+<p>cpy:</p>
+<p>    ldrb r4, [r1]</p>
+<p>    strb r4, [r2]</p>
+<p>    add r1, r1, #1</p>
+<p>    add r2, r2, #1</p>
+<p>    cmp r2, r3</p>
+<p>        bne cpy                                        &#x2F;* r2与r3不等,继续拷贝 *&#x2F;</p>
+<p>    &#x2F;* 清除BSS段 *&#x2F;</p>
+<p>    ldr r1, &#x3D;__bss_start</p>
+<p>    ldr r2, &#x3D;_end</p>
+<p>    mov r3, #0</p>
+<p>clean:</p>
+<p>    str r3, [r1]</p>
+<p>    add r1, r1, #4</p>
+<p>    cmp r1, r2</p>
+<p>    ble clean</p>
+<p>    &#x2F;&#x2F;bl main              &#x2F;* 使用BL命令相对跳转，程序仍在Nor&#x2F;Sdram执行 *&#x2F;</p>
+<p>    ldr pc, &#x3D;main          &#x2F;* 绝对跳转，跳到SDRAM *&#x2F;</p>
+<p>008程序启动分析：</p>
+<p>bl sdram_init()</p>
+<p><img src="/image/9dd2c3fcf53d1ee445971f76f00073e9.png" srcset="/img/loading.gif" lazyload alt="9dd2c3fcf53d1ee445971f76f00073e9.png"></p>
+<p>bl命令并不是跳到0x30000478这个地址，而是跳到当前pc+offset(offset：链接器计算的偏移地址)的位置，在反汇编中写出了这个值只是为了方便你分析代码，所以虽然程序指定了运行时地址，但即使放到0地址也可以运行，因为它跳转的时候是用的偏移地址，与运行时地址无关</p>
+<p>重点：反汇编文件里，B&#x2F;BL   0x3xxxxxx，这个值只是方便查看，不是跳到这个地址</p>
+<p>bl main</p>
+<p>重定位完毕，程序继续执行下一条指令bl main，而此时0x5c4和0x300005c4都有main函数，但这个地方使用的是bl命令，所用的pc依旧是当前的pc值，所以它仍然继续在Nor中运行</p>
+<p>为什么要写位置无关码的程序？</p>
+<p>因为为了让我们的程序在SDRAM里运行，我们使用了重定位，但这就要求我们必须做到在重定位之前的代码必须是位置无关码，这样才能正常运行。（连接脚本指定我们程序的运行地址为0x30000000，为什么我们的在nor flash上的代码从0地址开始运行也能工作？这就说明我们这部分代码必须是建立在位置无关码的基础上的，</p>
+<p>            对于位置有关码来说：最终执行时的运行地址和编译链接时给定的链接地址必须相同，               否则一定会出错。</p>
+<p>0地址处运行和0x30000000处运行达到同样效果，需要我们保证，在重定位之前，也就是复制操作没有完成之前的代码，必须是位置无关的）。</p>
+<p>怎么写位置无关码的程序?(程序在任何地址都能运行，不需要把它放到运行时地址)</p>
+<p>使用位置无关码！不能使用绝对地址！通过看反汇编来判断是否使用绝对地址</p>
+<p>a.使用相对跳转命令B&#x2F;BL</p>
+<p>b.重定位之前不可使用绝对地址：不可访问全局变量&#x2F;静态变量(因为重定位之前只有一个地址)</p>
+<p>                           不可访问有初始值的数组，不是位置无关码(因为这些初始值放在rodata里,使用绝对地址来访问)</p>
+<p>c.重定位后可以使用绝对地址，使用ldr pc, &#x3D;xxx来跳转到Runtime Addr</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><strong>006节</strong></p>
+<p><strong>009使用C语言实现重定位</strong></p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>    &#x2F;* 重定位text, rodata, data段整个程序 *&#x2F;</p>
+<p>    mov r0, #0</p>
+<p>    ldr r1, &#x3D;_start         &#x2F;* 源：第1条指令运行时的地址 *&#x2F;</p>
+<p>    ldr r2, &#x3D;__bss_start    &#x2F;* 目的：bss段的起始地址 *&#x2F;</p>
+<p>    sub r2, r2, r1          &#x2F;* 长度 *&#x2F;</p>
+<p>    bl copy2sdram  &#x2F;* src, dest, len    源， 目的， 长度 *&#x2F;</p>
+<p>    &#x2F;* 清除BSS段 *&#x2F;</p>
+<p>    ldr r0, &#x3D;__bss_start</p>
+<p>    ldr r1, &#x3D;_end</p>
+<p>    bl clean_bss  &#x2F;* startADDR, endADDR *&#x2F;</p>
+<p>    &#x2F;&#x2F;bl main  &#x2F;* 使用BL命令相对跳转, 程序仍然在NOR&#x2F;sram执行 *&#x2F;</p>
+<p>    ldr pc, &#x3D;main  &#x2F;* 绝对跳转, 跳到SDRAM *&#x2F;</p>
+<p>&#x2F;* Init.c *&#x2F;</p>
+<p>void copy2sdram(volatile unsigned int *src, volatile unsigned int *dest, unsigned int len)  &#x2F;* src, dest, len *&#x2F;</p>
+<p>{</p>
+<p>    unsigned int i &#x3D; 0;</p>
+<p>    while (i &lt; len)</p>
+<p>    {</p>
+<p>        *dest++ &#x3D; *src++;            &#x2F;* 从源地址取数据存到目的地址*&#x2F;</p>
+<p>        i +&#x3D; 4;</p>
+<p>    }</p>
+<p>}</p>
+<p>                                   &#x2F;* start, end *&#x2F;</p>
+<p>void clean_bss(volatile unsigned int *start, volatile unsigned int *end)  </p>
+<p>{</p>
+<p>    while (start &lt;&#x3D; end)</p>
+<p>    {</p>
+<p>        *start++ &#x3D; 0;</p>
+<p>    }</p>
+<p>}</p>
+<p>&#x2F;&#x2F;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p>直接在C中获取参数</p>
+<p>&#x2F;* start.S *&#x2F;</p>
+<p>    bl sdram_init</p>
+<p>    &#x2F;* 重定位text, rodata, data段整个程序</p>
+<p>     * 不传参数</p>
+<p>     *&#x2F;</p>
+<p>    bl copy2sdram</p>
+<p>    &#x2F;* 清除BSS段 </p>
+<p>     * 不传参数</p>
+<p>     *&#x2F;</p>
+<p>    bl clean_bss</p>
+<p>    &#x2F;&#x2F;bl main  &#x2F;* 使用BL命令相对跳转, 程序仍然在NOR&#x2F;sram执行 *&#x2F;</p>
+<p>    ldr pc, &#x3D;main  &#x2F;* 绝对跳转, 跳到SDRAM *&#x2F;</p>
+<p>&#x2F;* sdram.lds *&#x2F;</p>
+<p>SECTIONS</p>
+<p>{</p>
+<p>    . &#x3D; 0x30000000;</p>
+<p>    __code_start &#x3D; .;    &#x2F;&#x2F;动态获得当前地址</p>
+<p>    . &#x3D; ALIGN(4);</p>
+<p>    .text      :</p>
+<p>    {</p>
+<p>      *(.text)</p>
+<p>    }</p>
+<p>    . &#x3D; ALIGN(4);</p>
+<p>    .rodata : { *(.rodata) }</p>
+<p>    . &#x3D; ALIGN(4);</p>
+<p>    .data : { *(.data) }</p>
+<p>    . &#x3D; ALIGN(4);</p>
+<p>    __bss_start &#x3D; .;</p>
+<p>    .bss : { *(.bss) *(.COMMON) }</p>
+<p>    _end &#x3D; .;</p>
+<p>}</p>
+<p>&#x2F;* Init.c *&#x2F;</p>
+<p>void copy2sdram(void)</p>
+<p>{</p>
+<p>    &#x2F;* 要从lds文件中获得 __code_start, __bss_start</p>
+<p>     * 然后从0地址把数据复制到__cod e_start</p>
+<p>     *&#x2F;</p>
+<p>    extern int __code_start, __bss_start;        &#x2F;* 声明为外部变量 *&#x2F;</p>
+<p>    volatile unsigned int *dest &#x3D; (volatile unsigned int *)&amp;__code_start;</p>
+<p>    volatile unsigned int *end &#x3D; (volatile unsigned int *)&amp;__bss_start;</p>
+<p>    volatile unsigned int *src &#x3D; (volatile unsigned int *)0;</p>
+<p>    while (dest &lt; end)</p>
+<p>    {</p>
+<p>        *dest++ &#x3D; *src++;</p>
+<p>    }</p>
+<p>}</p>
+<p>void clean_bss(void)</p>
+<p>{</p>
+<p>    &#x2F;* 要从lds文件中获得 __bss_start, _end</p>
+<p>     *&#x2F;</p>
+<p>    extern int _end, __bss_start;</p>
+<p>    volatile unsigned int *start &#x3D; (volatile unsigned int *)&amp;__bss_start;</p>
+<p>    volatile unsigned int *end &#x3D; (volatile unsigned int *)&amp;_end;</p>
+<p>    while (start &lt;&#x3D; end)</p>
+<p>    {</p>
+<p>        *start++ &#x3D; 0;</p>
+<p>    }</p>
+<p>}</p>
+<p>C函数怎么使用lds文件中的变量abc（上方的__bss_start, _end等）?</p>
+<p>a. 在C函数中声明改变量为extern类型, 类型并不重要，比如:</p>
+<p>    extern int abc;</p>
+<p>    </p>
+<p>b. 使用时, 要取址, 比如:            但在汇编程序中可以直接使用</p>
+<p>     int *p &#x3D; &amp;abc;  &#x2F;&#x2F; p的值即为lds文件中abc的值</p>
+<p>原因：编译程序时，有一个symbol table(符号表)</p>
+<p>    <img src="/image/6ada227de5b43829698292fc406db1bb.png" srcset="/img/loading.gif" lazyload alt="6ada227de5b43829698292fc406db1bb.png"></p>
+<p>结论：1.C程序不保存lds文件中的变量</p>
+<p>          2.借助Symbol table保存lds的变量，使用时加上”&amp;”得到它的值</p>
+<p>                对于g_i，使用&amp;g_i得到Addr</p>
+<p>                为了保持代码一致，对于lds的a1，使用&amp;a1得到值</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第013课 代码重定位</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第013课_代码重定位/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC015%E8%AF%BE_NOR_Flash/" title="第015课 NOR Flash">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第015课 NOR Flash</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC010%E8%AF%BE_ARM%E8%8A%AF%E7%89%87%E6%97%B6%E9%92%9F%E4%BD%93%E7%B3%BB/" title="第010课 ARM芯片时钟体系">
+                        <span class="hidden-mobile">第010课 ARM芯片时钟体系</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

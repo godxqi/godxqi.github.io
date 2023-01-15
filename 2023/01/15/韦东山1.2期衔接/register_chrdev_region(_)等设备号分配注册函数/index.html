@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lizuobin2&#x2F;article&#x2F;details&#x2F;52695533 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;androidstudio&#x2F;p&#x2F;5296530.html https:&#x2F;&#x2F;blog.csdn.net&#x2F;ecbtnrt&#x2F;article&#x2F;details&#x2F;6686138?utm_medium&#x3D;distribute.pc_releva">
+<meta property="og:type" content="article">
+<meta property="og:title" content="register_chrdev_region( )等设备号分配注册函数">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/register_chrdev_region(_)%E7%AD%89%E8%AE%BE%E5%A4%87%E5%8F%B7%E5%88%86%E9%85%8D%E6%B3%A8%E5%86%8C%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lizuobin2&#x2F;article&#x2F;details&#x2F;52695533 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;androidstudio&#x2F;p&#x2F;5296530.html https:&#x2F;&#x2F;blog.csdn.net&#x2F;ecbtnrt&#x2F;article&#x2F;details&#x2F;6686138?utm_medium&#x3D;distribute.pc_releva">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:55:06.484Z">
+<meta property="article:modified_time" content="2023-01-15T12:58:51.223Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>register_chrdev_region( )等设备号分配注册函数 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="register_chrdev_region( )等设备号分配注册函数"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:55" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">register_chrdev_region( )等设备号分配注册函数</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lizuobin2/article/details/52695533">https://blog.csdn.net/lizuobin2/article/details/52695533</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/androidstudio/p/5296530.html">https://www.cnblogs.com/androidstudio/p/5296530.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ecbtnrt/article/details/6686138?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param">https://blog.csdn.net/ecbtnrt/article/details/6686138?utm_medium&#x3D;distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&amp;depth_1-utm_source&#x3D;distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param</a></p>
+<p>（一）简述</p>
+<p>内核提供了三个函数来注册一组字符设备编号，这三个函数分别是 register_chrdev()、register_chrdev_region()和alloc_chrdev_region() 。</p>
+<ol>
+<li>在 2.4 的内核使用 register_chrdev() 来进行字符设备设备节点的分配。这种方式每一个主设备号只能存放一种设备，它们使用相同的 file_operation 结构体，也就是说内核最多支持 255 个字符设备驱动程序。</li>
+</ol>
+<p>register_chrdev()可以实现静态和动态注册两种方法，主要是通过给定的主设备号是否为0来进行区别，为0的时候为动态注册。register_chrdev_region以及alloc_chrdev_region就是将上述函数的静态和动态注册设备号进行了拆分的强化。</p>
+<ol>
+<li>在 2.6 的内核之后，新增了一个 register_chrdev_region 函数，它支持将同一个主设备号下的次设备号进行分段，每一段供给一个字符设备驱动程序使用，使得资源利用率大大提升，同时也保留了原有的 register_chrdev 方法。且在 2.6 的内核中这两种方法都会调用到 __register_chrdev_region 函数。</li>
+</ol>
+<p>register_chrdev_region( ) 分配指定的设备号范围，alloc_chrdev_region( ) 动态分配设备范围，他们都主要是通过调用函数 __register_chrdev_region() 来实现的；这两个函数仅仅是注册设备号!如果要和cdev关联起来,还要调用cdev_add()。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> register<span class="hljs-constructor">_chrdev_region(<span class="hljs-params">dev_t</span> <span class="hljs-params">from</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">count</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>)</span><br>&#123;<br>    <span class="hljs-keyword">struct</span> char_device_struct *cd;<span class="hljs-operator"></span><br><span class="hljs-operator">    ...</span><br><span class="hljs-operator">    </span>cd = <span class="hljs-constructor">__register_chrdev_region(MAJOR(<span class="hljs-params">n</span>)</span>, <span class="hljs-constructor">MINOR(<span class="hljs-params">n</span>)</span>, next - n, name);<span class="hljs-operator"></span><br><span class="hljs-operator">    ...</span><br><span class="hljs-operator"></span>&#125;<br><span class="hljs-comment">//register_chrdev_region最终调用的其实是__register_chrdev_region()函数</span><br></code></pre></td></tr></table></figure>
+
+<p>3.Linux内核中所有已分配的字符设备编号都记录在一个名为 chrdevs 散列表里。该散列表中的每一个元素都是一个 char_device_struct 结构。</p>
+<p>如果分配了一个设备号,就会创建一个 struct char_device_struct 的对象,并将其添加到 chrdevs中。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">char_device_struct</span> &#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">char_device_struct</span> *next;  <span class="hljs-comment">// 指向散列冲突链表中的下一个元素的指针     </span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> major; 　　　　　　　 <span class="hljs-comment">// 主设备号</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> baseminor;  　　　　　<span class="hljs-comment">// 起始次设备号</span><br>    <span class="hljs-type">int</span> minorct; 　　　　　　　　　　　 <span class="hljs-comment">// 设备编号的范围大小</span><br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span> *name; 　　　　　　　　 <span class="hljs-comment">// 处理该设备编号范围内的设备驱动的名称     </span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file_operations</span> *fops; 　　<span class="hljs-comment">// 没有使用</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">cdev</span> *cdev;        　　　　<span class="hljs-comment">/* will die指向字符设备驱动程序描述符的指针 */</span><br>&#125; *chrdevs[MAX_PROBE_HASH];<br></code></pre></td></tr></table></figure>
+
+<p>（二）功能</p>
+<ol>
+<li>register_chrdev( )：用来申请指定的设备号,并且将其注册到字符设备驱动模型中,它所做的事情为:</li>
+</ol>
+<p>（1）注册设备号, 通过调用 __register_chrdev_region() 来实现</p>
+<p>（2）分配一个cdev, 通过调用 cdev_alloc() 来实现</p>
+<p>（3）将cdev添加到驱动模型中, 这一步将设备号和驱动关联了起来. 通过调用 cdev_add() 来实现</p>
+<p>（4）将第一步中创建的 struct char_device_struct 对象的 cdev 指向第二步中分配的cdev. 由于register_chrdev()是老的接口,这一步在新的接口中并不需要。</p>
+<ol>
+<li>函数 __register_chrdev_region() 主要执行以下步骤：</li>
+</ol>
+<p>（1）分配一个新的 char_device_struct 结构，并用 0 填充。</p>
+<p>（2）如果申请的设备编号范围的主设备号为 0，那么表示设备驱动程序请求动态分配一个主设备号。动态分配主设备号的原则是从散列表的最后一个桶向前寻找，那个桶是空的，主设备号就是相应散列桶的序号。所以动态分配的主设备号总是小于 256，如果每个桶都有字符设备编号了，那动态分配就会失败。</p>
+<p>（3）根据参数设置 char_device_struct 结构中的初始设备号，范围大小及设备驱动名称。</p>
+<p>（4）计算出主设备号所对应的散列桶，为新的 char_device_struct 结构寻找正确的位置。同时，如果设备编号范围有重复的话，则出错返回。</p>
+<p>（5）将新的 char_device_struct 结构插入散列表中，并返回 char_device_struct 结构的地址</p>
+<ol>
+<li>不同点：</li>
+</ol>
+<p>register_chrdev函数在注册字符设备驱动的时候是一步完成的，而register_chrdev_region函数在注册字符设备驱动的时候是分两步完成的：</p>
+<p>第一步：注册&#x2F;分配主次设备号</p>
+<p>第二步：注册字符设备驱动（调用cdev_init()，cdev_add()）</p>
+<p>（三）程序例子</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">//使用alloc_chrdev_region</span><br>init<span class="hljs-literal">()</span><br>&#123;<br>    alloc<span class="hljs-constructor">_chrdev_region(&amp;<span class="hljs-params">dev</span>, 0, 1, <span class="hljs-string">&quot;hello_drv&quot;</span>)</span>;<br>    major = <span class="hljs-constructor">MAJOR(<span class="hljs-params">dev</span>)</span>;<br><br>    cdev<span class="hljs-constructor">_init(&amp;<span class="hljs-params">hello_drv_cdev</span>, &amp;<span class="hljs-params">helo_fops</span>)</span>;<br>    cdev<span class="hljs-constructor">_add(&amp;<span class="hljs-params">hello_drv_cdev</span>, <span class="hljs-params">dev</span>, 1)</span>;<br>&#125;<br><br>exit<span class="hljs-literal">()</span><br>&#123;<br>    cdev<span class="hljs-constructor">_del(&amp;<span class="hljs-params">hello_drv_cdev</span>)</span>;<br>    unregister<span class="hljs-constructor">_chrdev_region(MKDEV(<span class="hljs-params">major</span>, 0)</span>, <span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>使用register_chrdev<br>init()<br>&#123;<br>    major = register_chrdev(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;first_drv&quot;</span>, &amp;first_drv_fops); <span class="hljs-regexp">//</span> 注册, 告诉内核<br>&#125;<br><span class="hljs-keyword">exit</span>()<br>&#123;<br>    unregister_chrdev(major, <span class="hljs-string">&quot;first_drv&quot;</span>); <span class="hljs-regexp">//</span> 卸载<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>register_chrdev_region( )等设备号分配注册函数</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山1.2期衔接/register_chrdev_region(_)等设备号分配注册函数/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E4%BB%8Esys_open()%E5%88%B0open()/" title="从sys_open()到open()">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从sys_open()到open()</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/open()%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%89%A7%E8%A1%8C/" title="open()第一次执行">
+                        <span class="hidden-mobile">open()第一次执行</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

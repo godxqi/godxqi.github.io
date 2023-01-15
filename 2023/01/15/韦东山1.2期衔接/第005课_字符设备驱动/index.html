@@ -1,0 +1,1020 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="001  应用程序：open，read，write 驱动程序：led_open，led_read，led_write （最终依赖驱动程序框架来从应用程序对应到驱动程序） 内核定义了一个struct file_operations 结构体，这个结构的每一个成员的名字都对应着一个系统调用。 用户进程利用系统调用在对设备文件进行诸如读写操作时，系统调用通过设备文件的主设备号找到对应的设备驱动程序，然后读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第005课_字符设备驱动">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC005%E8%AF%BE_%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="001  应用程序：open，read，write 驱动程序：led_open，led_read，led_write （最终依赖驱动程序框架来从应用程序对应到驱动程序） 内核定义了一个struct file_operations 结构体，这个结构的每一个成员的名字都对应着一个系统调用。 用户进程利用系统调用在对设备文件进行诸如读写操作时，系统调用通过设备文件的主设备号找到对应的设备驱动程序，然后读">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/20190929152913278.png">
+<meta property="og:image" content="https://godxqi.github.io/image/20190929152913423.png">
+<meta property="og:image" content="https://godxqi.github.io/image/e48346372c526da28e68d06566212cb8.png">
+<meta property="og:image" content="https://godxqi.github.io/image/o4YBAFp5ZVaAXaeqAABldKP6PmM816.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/dae3734d2897b620dcb829ba051f34a3.png">
+<meta property="og:image" content="https://godxqi.github.io/image/8304a2d2204b4c4815c7febd0f67e6f4.png">
+<meta property="og:image" content="https://godxqi.github.io/image/841c6a0d7b3992368f5b0ffe22cca6ba.png">
+<meta property="og:image" content="https://godxqi.github.io/image/0b247590ba5e5a80455dd688743b1e70.png">
+<meta property="og:image" content="https://godxqi.github.io/image/9414e5a9d9866366620447e0e489a9f8.png">
+<meta property="og:image" content="https://godxqi.github.io/image/c28a718df000bb4e154b44b1c7854717.png">
+<meta property="og:image" content="https://godxqi.github.io/image/faab9d3176425267f78abbfe8539b2dc.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a8f6cca1bd108a69d0b22e7d10b547b3.png">
+<meta property="og:image" content="https://godxqi.github.io/image/26e8b38dedb1b805c314b085b5ba2080.png">
+<meta property="article:published_time" content="2023-01-15T12:55:06.491Z">
+<meta property="article:modified_time" content="2023-01-15T12:56:51.640Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/20190929152913278.png">
+  
+  
+  
+  <title>第005课_字符设备驱动 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第005课_字符设备驱动"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:55" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          16k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          134 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第005课_字符设备驱动</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>001</p>
+<hr>
+<p>应用程序：open，read，write</p>
+<p>驱动程序：led_open，led_read，led_write</p>
+<p>（最终依赖驱动程序框架来从应用程序对应到驱动程序）</p>
+<p>内核定义了一个struct file_operations 结构体，这个结构的每一个成员的名字都对应着一个系统调用。</p>
+<p>用户进程利用系统调用在对设备文件进行诸如读写操作时，系统调用通过设备文件的主设备号找到对应的设备驱动程序，然后读取这个数据结构对应的函数指针，接着将控制权交给该函数</p>
+<p><img src="/image/20190929152913278.png" srcset="/img/loading.gif" lazyload alt="20190929152913278.png"></p>
+<p><img src="/image/20190929152913423.png" srcset="/img/loading.gif" lazyload alt="20190929152913423.png"></p>
+<p><img src="/image/e48346372c526da28e68d06566212cb8.png" srcset="/img/loading.gif" lazyload alt="e48346372c526da28e68d06566212cb8.png"></p>
+<p><img src="/image/o4YBAFp5ZVaAXaeqAABldKP6PmM816.jpg" srcset="/img/loading.gif" lazyload alt="o4YBAFp5ZVaAXaeqAABldKP6PmM816.jpg"></p>
+<p>002</p>
+<hr>
+<p>驱动程序框架：</p>
+<ol>
+<li>写出led_open,led_read,led_write等函数</li>
+</ol>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static <span class="hljs-built_in">int</span> first<span class="hljs-constructor">_drv_open(<span class="hljs-params">struct</span> <span class="hljs-params">inode</span> <span class="hljs-operator">*</span><span class="hljs-params">inode</span>, <span class="hljs-params">struct</span> <span class="hljs-params">file</span> <span class="hljs-operator">*</span><span class="hljs-params">file</span>)</span>&#123;&#125;<br>static ssize_t first<span class="hljs-constructor">_drv_write(<span class="hljs-params">struct</span> <span class="hljs-params">file</span> <span class="hljs-operator">*</span><span class="hljs-params">file</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-params">__user</span> <span class="hljs-operator">*</span><span class="hljs-params">buf</span>, <span class="hljs-params">size_t</span> <span class="hljs-params">count</span>, <span class="hljs-params">loff_t</span> <span class="hljs-operator">*</span> <span class="hljs-params">ppos</span>)</span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>怎么告诉内核以上程序存在</li>
+</ol>
+<p>（1）定义file_operation结构</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf">static struct file_oprations first_drv_fops <span class="hljs-operator">=</span> &#123;<br>    .owner <span class="hljs-operator">=</span> THIS_MODULE<span class="hljs-comment">;</span><br>    .open <span class="hljs-operator">=</span> first_drv_open<span class="hljs-comment">;    //open函数的功能是根据打开的设备文件初始化相应的io口</span><br>    .write <span class="hljs-operator">=</span> first_drv_write<span class="hljs-comment">;    //write函数的功能是根据设备文件以及向设备写入的值来操作相应的IO口做相应的动作</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>应用程序有什么接口，file_operation就有对应的成员</p>
+<p>（2）把这个结构告诉内核</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">&#123;<br>    register<span class="hljs-constructor">_chrdev(<span class="hljs-params">major</span>, <span class="hljs-string">&quot;first_drv&quot;</span>, &amp;<span class="hljs-params">first_drv_fops</span>)</span>;    <span class="hljs-comment">//注册驱动程序</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>（3）驱动入口函数来调用注册驱动程序</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> first<span class="hljs-constructor">_drv_init(<span class="hljs-params">void</span>)</span><br>&#123;<br>    register<span class="hljs-constructor">_chrdev(<span class="hljs-params">major</span>, <span class="hljs-string">&quot;first_drv&quot;</span>, &amp;<span class="hljs-params">first_drv_fops</span>)</span>;    <span class="hljs-comment">//注册驱动程序</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>（4）内核如何知道一个驱动对应着哪个入口函数</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">module</span><span class="hljs-constructor">_init(<span class="hljs-params">first_drv_init</span>)</span>;<br><span class="hljs-comment">//module_init指定了模块初始化函数，即入口函数</span><br></code></pre></td></tr></table></figure>
+
+<p>当我们加载一个驱动时，内核会自动找到Module结构体，调用其中的函数指针(这里是first_dev_init)，指向了入口函数，而入口函数中就注册驱动程序，同时把mojor主设备号和file_operation这个结构告诉内核</p>
+<p>module_init与module_exit表示在insmod与rmmod的时候内核会调用first_drv_init与first_drv_exit</p>
+<p>应用：open(“&#x2F;dev&#x2F;xxx”)</p>
+<p>xxx的属性：c _ _ _ _,_ _ _,major,mior</p>
+<p>根据属性中的设备类型和主设备号来找到调用哪个file_operation</p>
+<p>reregister_chrdev最简单的实现是在一个内核数组里面根据主设备号来将file_operationtion填充进去</p>
+<p>完善：既然有入口函数，当然要有出口函数</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> first<span class="hljs-constructor">_drv_exit(<span class="hljs-params">void</span>)</span><br>&#123;<br>    unregister<span class="hljs-constructor">_chrdev(<span class="hljs-params">major</span>, &amp;<span class="hljs-params">first_drv_fops</span>)</span>;    <span class="hljs-comment">//注销驱动程序</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对应的也要有module_exit();</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-comment">/* Makefile */</span><br>KERN_DIR = <span class="hljs-regexp">/work/</span>system/linux<span class="hljs-number">-2.6</span><span class="hljs-number">.22</span><span class="hljs-number">.6</span>    <span class="hljs-comment">//内核</span><br><br><span class="hljs-built_in">all</span>:<br>    make -C $(KERN_DIR) M=<span class="hljs-string">`pwd`</span> modules    <br><br>clean:<br>    make -C $(KERN_DIR) M=<span class="hljs-string">`pwd`</span> modules clean<br>    rm -rf modules.order<br><br>obj-m    += first_drv.o<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">-C表示 指定进入指定的目录即KERN_DIR，是内核源代码目录，调用该目录顶层下的Makefile,目标为modules。<br>  <br>M=$(<span class="hljs-keyword">shell</span><span class="language-bash"> <span class="hljs-built_in">pwd</span>) | `<span class="hljs-built_in">pwd</span>`选项让该Makefile在构造modules目标之前返回到模块源代码目录并在当前目录生成obj-m指定的xxx.o目标模块。</span><br><br>clean这个目标表示将模块清理掉。<br><br>obj-m += xxx.o即指定当前目录要生成的目标模块，然后modules目标指向obj-m变量中设定的模块。<br></code></pre></td></tr></table></figure>
+
+<p>003</p>
+<hr>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/proc/</span>devices    <span class="hljs-regexp">//</span>可列出内核现在支持的设备：主设备号 名字<br>insmod first_drv.ko    <span class="hljs-regexp">//</span>加载驱动<br>lsmod    <span class="hljs-regexp">//</span>显示当前内核模块装载的模块<br>rmmod [模块名]    <span class="hljs-regexp">//</span>删除不需要的模块<br></code></pre></td></tr></table></figure>
+
+<p>此时这个设备并不能正常打开，因为不存在这个文件”&#x2F;dev&#x2F;xxx”</p>
+<p>创建文件结点（注意主设备号）：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mknod</span> /dev/xxx c <span class="hljs-number">111</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>正常打开</p>
+<p>major主设备号可以通过cat &#x2F;proc&#x2F;devices查看哪里有空缺，然后在register_chrdev()自己指定一个主设备号，或者写major &#x3D; register_chrdev(0, “”, &amp;);来让系统自动分配主设备号</p>
+<ol>
+<li>驱动分配设备号：</li>
+</ol>
+<p>（1）手动</p>
+<p>（2）自动</p>
+<ol>
+<li>应用打开一个设备文件：open(“&#x2F;dev&#x2F;xxx”)，这个设备文件怎么来的</li>
+</ol>
+<p>（1）手工建立：mknod</p>
+<p>（2）自动创建：udev机制，此处是mdev（根据系统信息创建设备节点）</p>
+<p>提供系统信息</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs d"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-keyword">class</span> *firstdrv_class;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> class_device    *firstdrv_class_dev;<br></code></pre></td></tr></table></figure>
+
+<p>在注册函数注册进入后，在其中创建一个类，类下再创建一个设备</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static <span class="hljs-built_in">int</span> first<span class="hljs-constructor">_drv_init(<span class="hljs-params">void</span>)</span><br>&#123;<br>    major = register<span class="hljs-constructor">_chrdev(0, <span class="hljs-string">&quot;first_drv&quot;</span>, &amp;<span class="hljs-params">first_drv_fops</span>)</span>; <span class="hljs-comment">// 注册, 告诉内核</span><br><br>    firstdrv_class = <span class="hljs-keyword">class</span><span class="hljs-constructor">_create(THIS_MODULE, <span class="hljs-string">&quot;firstdrv&quot;</span>)</span>;<br><br>    firstdrv_class_dev = <span class="hljs-keyword">class</span><span class="hljs-constructor">_device_create(<span class="hljs-params">firstdrv_class</span>, NULL, MKDEV(<span class="hljs-params">major</span>, 0)</span>, NULL, <span class="hljs-string">&quot;xyz&quot;</span>); <span class="hljs-comment">/* mdev就会自动创建/dev/xyz */</span><br><br>    return <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>同时在出口函数删去</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static void first<span class="hljs-constructor">_drv_exit(<span class="hljs-params">void</span>)</span><br>&#123;<br>    unregister<span class="hljs-constructor">_chrdev(<span class="hljs-params">major</span>, <span class="hljs-string">&quot;first_drv&quot;</span>)</span>; <span class="hljs-comment">// 卸载</span><br><br>    <span class="hljs-keyword">class</span><span class="hljs-constructor">_device_unregister(<span class="hljs-params">firstdrv_class_dev</span>)</span>;<br>    <span class="hljs-keyword">class</span><span class="hljs-constructor">_destroy(<span class="hljs-params">firstdrv_class</span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>同时在文件末尾加上MODULE_LICENSE(“GPL”);</p>
+<p>从2.4.10版本内核开始，模块必须通过MODULE_LICENSE宏声明此模块的许可证，否则在加载此模块时，会收到内核被污染 “kernel tainted” 的警告。</p>
+<p><img src="/image/dae3734d2897b620dcb829ba051f34a3.png" srcset="/img/loading.gif" lazyload alt="dae3734d2897b620dcb829ba051f34a3.png"></p>
+<p>编译运行</p>
+<ol>
+<li><p>在当前目录下make后编译出first_drv.ko文件</p>
+</li>
+<li><p>arm-linux-gcc -o first_test first_test.c编译出first_test测试程序</p>
+</li>
+<li><p>cp first_drv.ko first_test &#x2F;work&#x2F;nfs_root将编译出来的文件拷贝到开发板挂接的网络文件系统上</p>
+</li>
+<li><p>执行insmod first_drv.ko加载驱动。</p>
+</li>
+<li><p>.&#x2F;first_test &#x2F;dev&#x2F;leds on测试程序。</p>
+</li>
+</ol>
+<p>004</p>
+<hr>
+<p>一个LED驱动：</p>
+<ol>
+<li>框架</li>
+<li>完善硬件的操作</li>
+</ol>
+<p>（1）看原理图</p>
+<p>（2）看芯片手册</p>
+<p>（3）写代码</p>
+<p>①单片机：物理地址</p>
+<p>②驱动：虚拟地址（使用ioremap映射）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *gpfcon = <span class="hljs-literal">NULL</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *gpfdat = <span class="hljs-literal">NULL</span>;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">first_drv_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    major = <span class="hljs-built_in">register_chrdev</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;first_drv&quot;</span>, &amp;first_drv_fops); <span class="hljs-comment">// 注册, 告诉内核</span><br><br>    firstdrv_class = <span class="hljs-built_in">class_create</span>(THIS_MODULE, <span class="hljs-string">&quot;firstdrv&quot;</span>);<br><br>    firstdrv_class_dev = <span class="hljs-built_in">class_device_create</span>(firstdrv_class, <span class="hljs-literal">NULL</span>, <span class="hljs-built_in">MKDEV</span>(major, <span class="hljs-number">0</span>), <span class="hljs-literal">NULL</span>, <span class="hljs-string">&quot;xyz&quot;</span>); <span class="hljs-comment">/* /dev/xyz */</span><br><br>    gpfcon = (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)<span class="hljs-built_in">ioremap</span>(<span class="hljs-number">0x56000050</span>, <span class="hljs-number">16</span>);    <span class="hljs-comment">//地址映射</span><br>    gpfdat = gpfcon + <span class="hljs-number">1</span>;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">first_drv_exit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">unregister_chrdev</span>(major, <span class="hljs-string">&quot;first_drv&quot;</span>); <span class="hljs-comment">// 卸载</span><br><br>    <span class="hljs-built_in">class_device_unregister</span>(firstdrv_class_dev);<br>    <span class="hljs-built_in">class_destroy</span>(firstdrv_class);<br>    <span class="hljs-built_in">iounmap</span>(gpfcon);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>ioremap函数重映射函数，将物理地址转换成虚拟地址：</p>
+<p>使用物理地址的缺点：</p>
+<ol>
+<li>安全风险：用户操作不当直接操作了某个未知的物理地址，导致数据被改写，有可能导致那部分内存的程序或设备损坏</li>
+<li>地址不确定：运行时，需要将程序搬到内存上执行，拷贝的实际内存地址每一次运行都是不确定的</li>
+<li>效率低下</li>
+</ol>
+<p>且内核没有办法直接访问物理内存地址，必须先通过ioremap获得对应的虚拟地址</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static ssize_t first<span class="hljs-constructor">_drv_write(<span class="hljs-params">struct</span> <span class="hljs-params">file</span> <span class="hljs-operator">*</span><span class="hljs-params">file</span>, <span class="hljs-params">const</span> <span class="hljs-params">char</span> <span class="hljs-params">__user</span> <span class="hljs-operator">*</span><span class="hljs-params">buf</span>, <span class="hljs-params">size_t</span> <span class="hljs-params">count</span>, <span class="hljs-params">loff_t</span> <span class="hljs-operator">*</span> <span class="hljs-params">ppos</span>)</span><br>&#123;<br>    <span class="hljs-built_in">int</span> <span class="hljs-keyword">val</span>;<br><br>    <span class="hljs-comment">//printk(&quot;first_drv_write\n&quot;);</span><br><br>    copy<span class="hljs-constructor">_from_user(&amp;<span class="hljs-params">val</span>, <span class="hljs-params">buf</span>, <span class="hljs-params">count</span>)</span>;    <br><span class="hljs-comment">//用户空间向内核空间传递数据 copy_from_user(void *to,const void _user *from, unsigned long n) </span><br><span class="hljs-comment">//在这里做到了将测试函数中write()的参数val传递给first_drv_write()的val  </span><br><span class="hljs-comment">//copy_to_user();  内核空间向用户空间传递数据</span><br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">val</span><span class="hljs-operator"> == </span><span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-comment">// 点灯</span><br>        *gpfdat &amp;= ~((<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>) <span class="hljs-pattern-match">| (1&lt;&lt;5) | (1&lt;&lt;6));</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">    <span class="hljs-keyword">else</span></span><br><span class="hljs-pattern-match">    &#123;</span><br><span class="hljs-pattern-match">        <span class="hljs-operator">/</span><span class="hljs-operator">/</span> 灭灯</span><br><span class="hljs-pattern-match">        <span class="hljs-operator">*</span>gpfdat |= (1&lt;&lt;4) | (1&lt;&lt;5) | (1&lt;&lt;6);</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">    return 0;</span><br><span class="hljs-pattern-match">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* firstdrvtest on</span><br><span class="hljs-comment"> * firstdrvtest off</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> fd;<br>    <span class="hljs-type">int</span> val = <span class="hljs-number">1</span>;<br>    fd = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;/dev/xyz&quot;</span>, O_RDWR);<br>    <span class="hljs-keyword">if</span> (fd &lt; <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;can&#x27;t open!\n&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (argc != <span class="hljs-number">2</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Usage :\n&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s &lt;on|off&gt;\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(argv[<span class="hljs-number">1</span>], <span class="hljs-string">&quot;on&quot;</span>) == <span class="hljs-number">0</span>)<br>    &#123;<br>        val  = <span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        val = <span class="hljs-number">0</span>;<br>    &#125;<br>    <br>    <span class="hljs-built_in">write</span>(fd, &amp;val, <span class="hljs-number">4</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>次设备号的利用：用一个次设备号对应一盏灯</p>
+<p>005</p>
+<hr>
+<p>驱动框架：</p>
+<p>1.file_operation</p>
+<p>2.实现驱动的函数</p>
+<p>3.入口函数，出口函数</p>
+<p>4.创建设备节点</p>
+<p>硬件操作：</p>
+<p>1.看原理图</p>
+<p>2.看芯片手册</p>
+<p>3.编程</p>
+<p>（1）物理地址与虚拟地址</p>
+<p>006-007 （内核相关暂时没有深究）</p>
+<hr>
+<p>中断方式驱动键值</p>
+<p>1.按键按下</p>
+<p>2.CPU发生中断，跳到异常向量入口执行</p>
+<p>3.b 函数</p>
+<p>（1）保存被中断的现场</p>
+<p>（2）执行中断处理函数</p>
+<p>（3）恢复</p>
+<p>异常向量如何调用到异常处理函数asm_do_IRQ的？P400图20.1</p>
+<p>（一）ARM架构Linux内核的异常处理体系结构</p>
+<p>内核中使用trap_init()设置异常的处理函数，构造异常向量。当发生异常时CPU会自动执行这些固定位置上的指令，从而调用对应的C处理函数</p>
+<p>ARM架构CPU的异常向量基址可以是0x00000000，也可以是0xffff0000，Linux内核使用后者。</p>
+<p>trap_init()函数将异常向量复制到0xffff0000处：</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sqf">void <span class="hljs-variable">__init</span> trap_init(void)<br>&#123;<br>    ...<br>    memcpy((void *)vectors, <span class="hljs-variable">__vectors_start</span>, <span class="hljs-variable">__vectors_end</span> - <span class="hljs-variable">__vectors_start</span>);<br>    ...   <br>&#125;<br>vectors等于<span class="hljs-number">0</span>xffff0000。<br><span class="hljs-variable">__vectors_start</span>~<span class="hljs-variable">__vectors_end</span>之间的代码就是异常向量<br></code></pre></td></tr></table></figure>
+
+<p>异常向量的代码其实就是一些跳转指令，比如在__vectors_start向量里</p>
+<p><img src="/image/8304a2d2204b4c4815c7febd0f67e6f4.png" srcset="/img/loading.gif" lazyload alt="8304a2d2204b4c4815c7febd0f67e6f4.png"></p>
+<p>例如vector_irq向量，它通过vector_stub宏来定义，这个宏的功能是：</p>
+<p>1.计算返回地址；</p>
+<p>2.保存现场进入管理模式；</p>
+<p>3.根据中断的工作模式跳转比如：__irq_usr&#x2F;__irq_svc等，它们表示在何种模式下发生的异常</p>
+<p>（1）保存现场</p>
+<p>（2）调用irq_handler（宏）</p>
+<p>①保存现场</p>
+<p>②调用asm_do_IRQ</p>
+<p><span style="background-color: #ffaaaa"><img src="/image/841c6a0d7b3992368f5b0ffe22cca6ba.png" srcset="/img/loading.gif" lazyload alt="841c6a0d7b3992368f5b0ffe22cca6ba.png"></p>
+</span>
+
+<p>（二）Linux中断处理体系结构</p>
+<p>asm_do_IRQ()：中断处理函数的总入口函数，它调用其他文件注册的中断处理函数</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">asm<span class="hljs-constructor">_do_IRQ(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">irq</span>, <span class="hljs-params">struct</span> <span class="hljs-params">pt_regs</span> <span class="hljs-operator">*</span> <span class="hljs-params">regs</span>)</span><br></code></pre></td></tr></table></figure>
+
+<p>Linux内核将所有的中断统一编号，使用一个irq_desc结构数组来描述这些中断。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">irq_desc</span> &#123;<br>    <span class="hljs-type">irq_flow_handler_t</span>    handle_irq;    <span class="hljs-comment">/* 当前中断的处理函数入口 */</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">irq_chip</span>        *chip;    <span class="hljs-comment">/* 底层的硬件访问 */</span><br>    ...<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">irqaction</span>    *action;    <span class="hljs-comment">/* 用户提供的中断处理函数链表IRQ action list */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>        status;        <span class="hljs-comment">/* IRQ 状态 */</span><br>    ...<br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span>        *name;    <span class="hljs-comment">/* 中断名称 */</span><br>&#125; ____cacheline_internodealigned_in_smp;<br></code></pre></td></tr></table></figure>
+
+<p>handle_irq是这个或这组中断的处理函数入口，发生中断时，总入口函数asm_do_IRQ将根据中断号调用相应irq_desc数组项中的handle_irq。handle_irq使用chip结构中的函数来清除、屏蔽或重新使能中断，还一一调用用户在action链表中注册的中断处理函数。</p>
+<p>irq_chip里的成员大多用于操作底层硬件，比如设置寄存器以屏蔽中断、使能中断、清除中断等。</p>
+<p>irqaction结构类型表示用户注册的中断处理函数，一个中断可以有多个处理函数，它们的irqaction结构链成一个链表</p>
+<p><img src="/image/0b247590ba5e5a80455dd688743b1e70.png" srcset="/img/loading.gif" lazyload alt="0b247590ba5e5a80455dd688743b1e70.png"></p>
+<p>代码分析：</p>
+<p>进入desc_handle_irq(irq, desc)</p>
+<p>{</p>
+<p>    desc-&gt;handle_irq(irq, desc);</p>
+<p>}</p>
+<p>其中此处的desc为上面取得的全局数组irq_desc[irq]，即调用irq_desc[irq]的handle_irq成员</p>
+<p>handle_irq在__set_irq_handler()中被调用，__set_irq_handler()又在s3c24xx_init_irq()中被调用</p>
+<p>这个函数中决定了struct irq_desc[irq]中的</p>
+<p>{</p>
+<p>chip &#x3D; s3c_irq_eint0t4; </p>
+<p>handle_irq &#x3D; handle_edge_irq; </p>
+<p>flag &#x3D; IRQF_VALID;</p>
+<p>}</p>
+<p>得出handle_irq &#x3D; handle_edge_irq;</p>
+<p>显然中断处理asm_do_IRQ最终会调用到事先在s3c24xx_init_irq()初始化过的handle处理函数，比如handle_edge_irq</p>
+<p>handle_edge_irq（）做了这两项：</p>
+<p>1.desc-&gt;chip-&gt;ack(irq)：清中断</p>
+<p>2.handle_IRQ_event：处理中断，取出action链表中的成员，执行action-&gt;handle</p>
+<p>中断的处理流程如下：</p>
+<ol>
+<li>发生中断时，CPU执行异常向量vertor_irq的代码</li>
+<li>在vector_irq里面，最终会调用中断处理的总入口函数asm_do_IRQ</li>
+<li>在asm_do_IRQ根据中断号调用irq_desc数组项中的handle_irq。</li>
+<li>handle_irq会使用chip成员中的函数来设置硬件，比如清除中断、禁止中断、重新使能中断等</li>
+<li>handle_irq逐个调用用户在action链表中注册的处理函数</li>
+</ol>
+<p>到action-&gt;handle为止都是中断的框架，我们需要执行自己的代码，这些代码就放到action-&gt;handle中，我们需要通过request_irq告诉内核我们的处理函数是什么</p>
+<p>（三）用户注册中断处理函数：</p>
+<p>用户（即驱动程序）通过request_irq函数向内核注册中断处理函数，request_irq函数根据中断号找到irq_desc数组项，然后在它的action链表里添加一个表项</p>
+<p>request_irq(irq中断号, handle处理函数, irqflags触发方式, name, dev_id)：注册中断处理程序</p>
+<p>{</p>
+<ol>
+<li><p>用四个参数构造irqaction结构</p>
+</li>
+<li><p>调用setup_irq(irq, action)），将上面构造的action放到irq_desc[irq]下的action链表里</p>
+</li>
+</ol>
+<p>}</p>
+<p>setup_irq()</p>
+<p>{</p>
+<p>找到irq_desc[irq]-&gt;在action链表里加入传入的action：放到链表里</p>
+<p>desc-&gt;chip-&gt;settype()：设置引脚功能为外部中断，设置中断的触发方式</p>
+<p>desc-&gt;chip-&gt;startup&#x2F;enable：使能中断</p>
+<p>}</p>
+<p>free_irq(irq, dev_id)：卸载中断处理程序</p>
+<p>{</p>
+<p>出链</p>
+<p>禁止中断</p>
+<p>}</p>
+<p>008</p>
+<hr>
+<p>third_drv_open()</p>
+<p>配置引脚模式：request_irq</p>
+<p>third_drv_close()</p>
+<p>free_irq</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">//引脚的描述</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">pin_desc</span>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> pin;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> key_val;<br>&#125;;<br><br><span class="hljs-comment">//定义了四个引脚</span><br><span class="hljs-comment">/* 它们的键值: 按下时, 0x01, 0x02, 0x03, 0x04 */</span><br><span class="hljs-comment">/* 它们的键值: 松开时, 0x81, 0x82, 0x83, 0x84 */</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">pin_desc</span> pins_desc[<span class="hljs-number">4</span>] = &#123;<br>    &#123;S3C2410_GPF0, <span class="hljs-number">0x01</span>&#125;,<br>    &#123;S3C2410_GPF2, <span class="hljs-number">0x02</span>&#125;,<br>    &#123;S3C2410_GPG3, <span class="hljs-number">0x03</span>&#125;,<br>    &#123;S3C2410_GPG11, <span class="hljs-number">0x04</span>&#125;,<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">irqreturn_t</span> <span class="hljs-title">buttons_irq</span><span class="hljs-params">(<span class="hljs-type">int</span> irq, <span class="hljs-type">void</span> *dev_id)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">pin_desc</span> * pindesc = (<span class="hljs-keyword">struct</span> pin_desc *)dev_id;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> pinval;<br>    <br>    pinval = <span class="hljs-built_in">s3c2410_gpio_getpin</span>(pindesc-&gt;pin);    <span class="hljs-comment">//读出引脚的值</span><br><br>    <span class="hljs-keyword">if</span> (pinval)<br>    &#123;<br>        <span class="hljs-comment">/* 1：松开 */</span><br>        key_val = <span class="hljs-number">0x80</span> | pindesc-&gt;key_val;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        <span class="hljs-comment">/* 0：按下 */</span><br>        key_val = pindesc-&gt;key_val;<br>    &#125;<br><br>    ev_press = <span class="hljs-number">1</span>;                  <span class="hljs-comment">/* 表示中断发生了 */</span><br>    <span class="hljs-built_in">wake_up_interruptible</span>(&amp;button_waitq);   <span class="hljs-comment">/* 唤醒休眠的进程 */</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">IRQ_RETVAL</span>(IRQ_HANDLED);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static <span class="hljs-constructor">DECLARE_WAIT_QUEUE_HEAD(<span class="hljs-params">button_waitq</span>)</span>;<br><br><span class="hljs-comment">/* 中断事件标志, 中断服务程序将它置1，third_drv_read将它清0 */</span><br>static volatile <span class="hljs-built_in">int</span> ev_press = <span class="hljs-number">0</span>;<br><br>ssize_t third<span class="hljs-constructor">_drv_read(<span class="hljs-params">struct</span> <span class="hljs-params">file</span> <span class="hljs-operator">*</span><span class="hljs-params">file</span>, <span class="hljs-params">char</span> <span class="hljs-params">__user</span> <span class="hljs-operator">*</span><span class="hljs-params">buf</span>, <span class="hljs-params">size_t</span> <span class="hljs-params">size</span>, <span class="hljs-params">loff_t</span> <span class="hljs-operator">*</span><span class="hljs-params">ppos</span>)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (size != <span class="hljs-number">1</span>)<br>        return -EINVAL;<br><br>    <span class="hljs-comment">/* 如果没有按键动作, ev_press为0就休眠 */</span><br>    wait<span class="hljs-constructor">_event_interruptible(<span class="hljs-params">button_waitq</span>, <span class="hljs-params">ev_press</span>)</span>;    <span class="hljs-comment">//</span><br><br>    <span class="hljs-comment">/* 如果有按键动作, 返回键值 */</span><br>    copy<span class="hljs-constructor">_to_user(<span class="hljs-params">buf</span>, &amp;<span class="hljs-params">key_val</span>, 1)</span>;<br>    ev_press = <span class="hljs-number">0</span>;<br>    <br>    return <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>009</p>
+<hr>
+<p>引入poll查询机制，分析内核的poll机制</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">kernel:sys_poll<br>    <span class="hljs-keyword">do</span><span class="hljs-constructor">_sys_poll(<span class="hljs-operator">...</span>.,<span class="hljs-params">timeout_jiffies</span>)</span><br>        poll<span class="hljs-constructor">_initwait(&amp;<span class="hljs-params">table</span>)</span>;    <span class="hljs-comment">//注册回调函数__pollwait</span><br>            init<span class="hljs-constructor">_poll_funcptr(&amp;<span class="hljs-params">pwq</span>-&gt;<span class="hljs-params">pt</span>, <span class="hljs-params">__pollwait</span>)</span>; &gt; table-&gt;qproc = __pollwait<br>        <span class="hljs-keyword">do</span><span class="hljs-constructor">_poll(<span class="hljs-params">nfds</span>, <span class="hljs-params">head</span>, &amp;<span class="hljs-params">table</span>, <span class="hljs-params">timeout</span>)</span><br>            <span class="hljs-keyword">for</span>(;;)    <span class="hljs-comment">//死循环</span><br>            &#123;<br>            <span class="hljs-keyword">for</span>(; pfd != pfd_end; pfd++) &#123;   <span class="hljs-comment">//查询多个驱动</span><br>                <span class="hljs-keyword">if</span>(<span class="hljs-keyword">do</span><span class="hljs-constructor">_pollfd(<span class="hljs-params">pfd</span>, <span class="hljs-params">pt</span>)</span>)&#123;  &gt;mask = file-&gt;f_op-&gt;poll(file, pwait); return mask;<br>                                        <span class="hljs-comment">//do_pollfd调用到驱动的poll函数，驱动的poll函数调用poll_wait函数,就调用到__pollwait(filp, &amp;button_waitq, p), 把当前进程挂到button_waitq队列里去，挂入后，中断处理函数就可以唤醒队列(wake_up_....)：依据ev_press改变mask的值，触发这个进程</span><br>                    count++;    <span class="hljs-comment">//如果驱动的poll返回非0值，那么count++</span><br>                    pt = NULL;<br>                &#125;<br>            &#125;<br>                <span class="hljs-comment">//count非0，超时，有信号在等待处理</span><br>                <span class="hljs-keyword">if</span>(count<span class="hljs-operator"> || </span>!*timeout<span class="hljs-operator"> || </span>signal<span class="hljs-constructor">_pending(<span class="hljs-params">current</span>)</span>)   <br>                    break;<br><br>                <span class="hljs-comment">//设置休眠时间__timeout，唤醒条件：__timeout减为0；被驱动程序/中断处理函数唤醒</span><br>                __timeout = schedule<span class="hljs-constructor">_timeout(<span class="hljs-params">__timeout</span>)</span>;<br>            &#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file_operations</span> sencod_drv_fops = &#123;<br>    .owner   =  THIS_MODULE,    <span class="hljs-comment">/* 这是一个宏，推向编译模块时自动创建的__this_module变量 */</span><br>    .open    =  forth_drv_open,     <br>    .read     =    forth_drv_read,       <br>    .release =  forth_drv_close,<br>    .poll    =  forth_drv_poll,<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">unsigned</span> <span class="hljs-title">forth_drv_poll</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> file *file, poll_table *wait)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> mask = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">poll_wait</span>(file, &amp;button_waitq, wait); <br><span class="hljs-comment">//通过poll_wait来调用上面说到的__pollwait函数,只是让进程挂到button_waitq队列里，不会立即休眠</span><br><br>    <span class="hljs-keyword">if</span> (ev_press)<br>        mask |= POLLIN | POLLRDNORM;    <span class="hljs-comment">//当前有数据返回给应用程序就返回mask</span><br><br>    <span class="hljs-keyword">return</span> mask;    <span class="hljs-comment">//没有就返回0，就会进入休眠</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在来总结一下poll机制：</p>
+<ol>
+<li><p>poll &gt; sys_poll &gt; do_sys_poll &gt; poll_initwait，poll_initwait函数注册一下回调函数__pollwait，它就是我们的驱动程序执行poll_wait时，真正被调用的函数。</p>
+</li>
+<li><p>接下来执行我们驱动程序里自己实现的poll函数。</p>
+</li>
+</ol>
+<p>   它会调用poll_wait把自己挂入某个队列，这个队列也是我们的驱动自己定义的；</p>
+<p>   它还判断一下设备是否就绪。</p>
+<ol start="3">
+<li><p>如果设备未就绪(无中断产生)，do_poll里会让进程休眠一定时间</p>
+</li>
+<li><p>进程被唤醒的条件有二：一是上面说的“一定时间”到了，二是被驱动程序唤醒。驱动程序发现条件就绪时，就把“某个队列”上挂着的进程唤醒，这个队列，就是前面通过poll_wait把本进程挂过去的队列。</p>
+</li>
+<li><p>如果驱动程序没有去唤醒进程(发生中断)，那么chedule_timeout(__timeou)超时后，会重复2、3动作，直到应用程序的poll调用传入的时间到达。</p>
+</li>
+</ol>
+<p>应用层利用C库函数调用poll函数的时候，会通过swi软件中断进入到内核层，然后调用sys_poll系统调用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* Forthdrvtest.c */</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>    <span class="hljs-comment">//原</span></span><br><span class="hljs-function"></span>&#123;<br>    ...<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-built_in">read</span>(fd, &amp;key_val, <span class="hljs-number">1</span>);    <span class="hljs-comment">//按键不按下，它永远不会返回</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;key_val = 0x%x\n&quot;</span>, key_val);<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span>    <span class="hljs-comment">//现</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> fd;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> key_val;<br>    <span class="hljs-type">int</span> ret;<br><br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">pollfd</span> fds[<span class="hljs-number">1</span>];    <span class="hljs-comment">//只查询一个驱动</span><br>    <br>    fd = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;/dev/buttons&quot;</span>, O_RDWR);<br>    <span class="hljs-keyword">if</span> (fd &lt; <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;can&#x27;t open!\n&quot;</span>);<br>    &#125;<br><br>    fds[<span class="hljs-number">0</span>].fd     = fd;<br>    fds[<span class="hljs-number">0</span>].events = POLLIN;    <span class="hljs-comment">//需要产生的事件：POLLIN有数据等待读取</span><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)                <span class="hljs-comment">//在一定时间内没有按键发生也返回，使用poll机制</span><br>    &#123;<br>        ret = <span class="hljs-built_in">poll</span>(fds, <span class="hljs-number">1</span>, <span class="hljs-number">5000</span>);    <span class="hljs-comment">//一个文件，5000ms;返回0表示有超时</span><br><span class="hljs-comment">//调用sys_poll系统调用，如果5S内没有产生POLLIN事件，那么返回，如果有POLLIN事件，直接返回</span><br>        <span class="hljs-keyword">if</span> (ret == <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;time out\n&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            <span class="hljs-built_in">read</span>(fd, &amp;key_val, <span class="hljs-number">1</span>);<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;key_val = 0x%x\n&quot;</span>, key_val);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>服务器上输入man poll，可查看用法</p>
+<p><img src="/image/9414e5a9d9866366620447e0e489a9f8.png" srcset="/img/loading.gif" lazyload alt="9414e5a9d9866366620447e0e489a9f8.png"></p>
+<p>010</p>
+<hr>
+<p>（一）引入</p>
+<p>查询方式：不断查询，耗资源</p>
+<p>中断方式：等待发生，read()函数一直不返回，一直等待</p>
+<p>poll方式：指定超时时间</p>
+<p>共同特点：应用程序主动去read</p>
+<p>有没有驱动提醒触发应用程序，应用程序再去读键值--&gt;异步通知</p>
+<p>进程之间发信号举例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* signal.c */</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span>  <span class="hljs-string">&lt;signal.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">my_signal_fun</span><span class="hljs-params">(<span class="hljs-type">int</span> signum)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;signal = %d, %d times\n&quot;</span>, signum, ++cnt)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">signal</span>(SIGUSR1, my_signal_fun);<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-built_in">sleep</span>(<span class="hljs-number">1000</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>主函数是一个死循环，当发送信号给应用程序时就可以实现打印</p>
+<p><img src="/image/c28a718df000bb4e154b44b1c7854717.png" srcset="/img/loading.gif" lazyload alt="c28a718df000bb4e154b44b1c7854717.png"></p>
+<p>可看到进程正在休眠，且进程pid为833，使用kill -USR1 833</p>
+<p><img src="/image/faab9d3176425267f78abbfe8539b2dc.png" srcset="/img/loading.gif" lazyload alt="faab9d3176425267f78abbfe8539b2dc.png"></p>
+<p>可看到应用程序收到信号后立刻就调用信号处理函数执行打印</p>
+<p>由以上得要点：</p>
+<ol>
+<li>注册信号处理函数</li>
+<li>谁发</li>
+<li>发给谁</li>
+<li>怎么发</li>
+</ol>
+<p>（二）思路</p>
+<p>目标：按下按键时，驱动通知应用程序</p>
+<p>1.应用程序：注册信号处理函数    &#x2F;&#x2F;signal(SIGIO, my_signal_fun)</p>
+<p>2.谁发：驱动程序    &#x2F;&#x2F;驱动程序实现</p>
+<p>3.发给谁：app-&gt;app需要告诉驱动PID    &#x2F;&#x2F;fcntl(fd, F_SETOWN, getpid());</p>
+<p>4.怎么发：kill_fasync</p>
+<p>为了使设备支持异步通知机制，驱动程序中涉及以下3项工作：</p>
+<ol>
+<li>支持F_SETOWN命令，能在这个控制命令处理中设置filp-&gt;f_owner为对应进程ID。不过此项工作已由内核完成，设备驱动无须处理直接调用即可。</li>
+</ol>
+<p>应用程序会调用“fcntl(fd, F_SETOWN, pid)”这个函数，把进程的PID号告诉给驱动程序。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">fcntl</span>(fd, F_SETOWN, getpid());  <span class="hljs-comment">// 告诉内核，发给谁</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>支持F_SETFL命令的处理，每当FASYNC标志改变时，驱动程序中的fasync()函数将得以执行。驱动中应该实现fasync()函数。</li>
+</ol>
+<p>应用程序通过“F_GETFL”读出“flags”；再在flags上置上“FASYNC”位，从而改变fasync标记，设置为异步通知的flag。当改变oflag时，驱动程序的faync函数就会被调用，然后再调用fasync_helper函数初始化结构体fasync_struct：button_async</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs perl">Oflags = <span class="hljs-keyword">fcntl</span>(fd, F_GETFL);           <span class="hljs-regexp">//</span>取得当前状态<br><span class="hljs-keyword">fcntl</span>(fd, F_SETFL, Oflags | FASYNC);   <br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在设备资源可获得时，调用kill_fasync()函数激发相应的信号</li>
+</ol>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">kill_fasync (<span class="hljs-meta">&amp;button_async, SIGIO, POLL_IN);</span><br></code></pre></td></tr></table></figure>
+
+<p>应用程序需要做的：</p>
+<p>1.设置信号处理函数：收到信号了做什么</p>
+<p>2.把pid发给驱动程序，你把信号发给谁</p>
+<p>3.设置异步flag</p>
+<p>驱动程序要做的：</p>
+<p>1.发信号给应用程序</p>
+<p>2.通过系统调用将button_async初始化，发信号要用</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">fasync_struct</span> *button_async;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">irqreturn_t</span> <span class="hljs-title">buttons_irq</span><span class="hljs-params">(<span class="hljs-type">int</span> irq, <span class="hljs-type">void</span> *dev_id)</span></span><br><span class="hljs-function"></span>&#123;<br>    ...<br>    <span class="hljs-built_in">kill_fasync</span> (&amp;button_async, SIGIO, POLL_IN);    <span class="hljs-comment">//通过这个函数给应用程序发出一个信号</span><br>    ...<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">fifth_drv_fasync</span> <span class="hljs-params">(<span class="hljs-type">int</span> fd, <span class="hljs-keyword">struct</span> file *filp, <span class="hljs-type">int</span> on)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printk</span>(<span class="hljs-string">&quot;driver: fifth_drv_fasync\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">fasync_helper</span> (fd, filp, on, &amp;button_async);    <span class="hljs-comment">//③实际上是初始化button_async结构体，用于发信号</span><br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file_operations</span> sencod_drv_fops = &#123;<br>    .owner   =  THIS_MODULE,    <span class="hljs-comment">/* 这是一个宏，推向编译模块时自动创建的__this_module变量 */</span><br>    .open    =  fifth_drv_open,     <br>    .read     =    fifth_drv_read,       <br>    .release =  fifth_drv_close,<br>    .poll    =  fifth_drv_poll,<br>    .fasync     =  fifth_drv_fasync,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* test */</span><br><span class="hljs-type">int</span> fd;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">my_signal_fun</span><span class="hljs-params">(<span class="hljs-type">int</span> signum)</span>    <span class="hljs-comment">//由驱动程序发生的信号触发应用程序，再去调用它的信号处理函数</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> key_val;<br>    <span class="hljs-built_in">read</span>(fd, &amp;key_val, <span class="hljs-number">1</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;key_val: 0x%x\n&quot;</span>, key_val);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> key_val;<br>    <span class="hljs-type">int</span> ret;<br>    <span class="hljs-type">int</span> Oflags;<br><br>    <span class="hljs-built_in">signal</span>(SIGIO, my_signal_fun);    <span class="hljs-comment">//SISGIO说明是IO信号量，因为按键驱动属于IO型的；信号处理函数指向my_signal_fun </span><br>    <br>    fd = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;/dev/buttons&quot;</span>, O_RDWR);<br>    <span class="hljs-keyword">if</span> (fd &lt; <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;can&#x27;t open!\n&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-built_in">fcntl</span>(fd, F_SETOWN, <span class="hljs-built_in">getpid</span>());<br>    <br>    Oflags = <span class="hljs-built_in">fcntl</span>(fd, F_GETFL);<br>    <br>    <span class="hljs-built_in">fcntl</span>(fd, F_SETFL, Oflags | FASYNC);<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-built_in">sleep</span>(<span class="hljs-number">1000</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>011</p>
+<hr>
+<p>目的：同一时刻，只能有一个app打开驱动程序</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript">驱动程序：<br><span class="hljs-keyword">static</span> int canopen = <span class="hljs-number">1</span><br><span class="hljs-title function_">open</span>(<span class="hljs-params"></span>)<br>&#123;<br>    <span class="hljs-keyword">if</span>(--canopen != <span class="hljs-number">0</span>)<br>    &#123;<br>        canopen++;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-variable constant_">EBUSY</span>；<br>    &#125;<br>    ...<br>&#125;<br><span class="hljs-title function_">close</span>(<span class="hljs-params"></span>)<br>&#123;<br>    canopen++;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>感觉这个方法正确，但里面实质上有漏洞，如上右图。</p>
+<p>LINUX是多任务系统，A程序执行过程中，有可能被切换出去换成B程序执行这种情况。</p>
+<p>“--canopen”在汇编里看，是被分成了3步：“读出－－修改－－写回”。这个过程不是“原子操作”。中间有被切换出去的可能。</p>
+<p>（一）原子操作</p>
+<p>修改代码将“canopen”定义成“原子变量”。初始值“1”。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static atomic_t canopen = <span class="hljs-constructor">ATOMIC_INIT(1)</span>;    <span class="hljs-comment">//定义原子变量</span><br><br><span class="hljs-keyword">open</span><span class="hljs-literal">()</span><br>&#123;<br>    <span class="hljs-keyword">if</span>(!atomic<span class="hljs-constructor">_dec_and_test(&amp;<span class="hljs-params">canopen</span> )</span>)    <span class="hljs-comment">//函数：自减操作后测试是否为0，为0则返回true，否则返回false</span><br>&#125;<br><br>close<span class="hljs-literal">()</span><br>&#123;<br>    atomic<span class="hljs-constructor">_inc(&amp;<span class="hljs-params">canopen</span>)</span>;    <span class="hljs-comment">//原子变量加一</span><span class="hljs-operator"></span><br><span class="hljs-operator">    ...</span><br><span class="hljs-operator"></span>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>（二）信号量</p>
+<p>用信号量实现：</p>
+<p>信号量（semaphore）是用于保护临界区的一种常用方法，只有得到信号量的进程才能执行临界区代码。</p>
+<p>当获取不到信号量时，进程进入休眠等待状态。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs scss">static <span class="hljs-built_in">DECLARE_MUTEX</span>(button_lock);     <span class="hljs-comment">//定义互斥锁</span><br><br><span class="hljs-built_in">open</span>()<br>&#123;<br>    <span class="hljs-comment">/* 获取信号量 */</span><br>    <span class="hljs-built_in">down</span>(&amp;button_lock);    <span class="hljs-comment">//第一次执行open可以获得信号量，若另一个程序再次调用open则无法获得进入休眠状态</span><br>&#125;<br><br><span class="hljs-built_in">close</span>()<br>&#123;<br>    ...<br>    <span class="hljs-built_in">up</span>(&amp;button_lock);    <span class="hljs-comment">//第一次调用完了需要释放掉</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/image/a8f6cca1bd108a69d0b22e7d10b547b3.png" srcset="/img/loading.gif" lazyload alt="a8f6cca1bd108a69d0b22e7d10b547b3.png"></p>
+<p>发现第二次启动程序和第一次启动程序都在运行，且第二次启动的程序处于不可中断的睡眠态，这里就是因为down()，这个休眠只会在第一个程序释放掉信号量up()后被唤醒</p>
+<p><img src="/image/26e8b38dedb1b805c314b085b5ba2080.png" srcset="/img/loading.gif" lazyload alt="26e8b38dedb1b805c314b085b5ba2080.png"></p>
+<p>（三）阻塞</p>
+<p>阻塞操作    </p>
+<p>是指在执行设备操作时若不能获得资源则挂起进程，直到满足可操作的条件后再进行操作。</p>
+<p>被挂起的进程进入休眠状态，被从调度器的运行队列移走，直到等待的条件被满足。</p>
+<p>非阻塞操作  </p>
+<p>进程在不能进行设备操作时并不挂起，它或者放弃(返回错误)，或者不停地查询，直至可以进行操作为止。</p>
+<p>判断阻塞和非阻塞：</p>
+<p>fd &#x3D; open(“…”, O_RDWR | O_NONBLOCK)    &#x2F;&#x2F;传入O_NONBLOCK标记为非阻塞，不传入默认为阻塞</p>
+<p>而这个标记位可以在传入参数file-&gt;f_flags中获取</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">open</span>(struct inode *inode, struct file *file)<br>&#123;<br>    <span class="hljs-built_in">if</span>(file-&gt;f_flags &amp; O_NONBLOCK)<br>    &#123;<span class="hljs-comment">//非阻塞</span><br>        <span class="hljs-built_in">if</span>(down_teylock(&amp;button_lock))<br>            return -E_BUSY<br>    &#125;<br>    else<br>    &#123;<span class="hljs-comment">//阻塞</span><br>        <span class="hljs-comment">/* 获取信号量 */</span><br>        <span class="hljs-built_in">down</span>(&amp;button_lock);<br>    &#125;<br>    ...<br>&#125;<br><br><span class="hljs-built_in">read</span>()<br>&#123;<br>    ...<br>    if (file-&gt;f_flags &amp; O_NONBLOCK)<br>    &#123;<span class="hljs-comment">//非阻塞</span><br>        if (!ev_press)        <span class="hljs-comment">//有无按键发生</span><br>            return -EAGAIN    <span class="hljs-comment">//没有按键发生再次执行</span><br>    &#125;<br>    else<br>    &#123;<span class="hljs-comment">//阻塞</span><br>        <span class="hljs-comment">/* 如果没有按键动作，休眠 */</span><br>        <span class="hljs-built_in">wait_event_interruptible</span>(button_waitq, ev_press);<br>    &#125;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>问题一：</p>
+<p>测试程序中的open,read,write等函数通过swi软件中断进入到内核层，然后调用sys_xxxx系统调用，最终内核会定位到驱动层的open与write函数。</p>
+<p>应用程序如何调用驱动程序，执行疑惑</p>
+<p>问题二：</p>
+<p>次设备号的使用：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/andyfly/p/9467702.html">https://www.cnblogs.com/andyfly/p/9467702.html</a></p>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第005课_字符设备驱动</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山1.2期衔接/第005课_字符设备驱动/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC004%E8%AF%BE_%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" title="第004课_根文件系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第004课_根文件系统</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B11.2%E6%9C%9F%E8%A1%94%E6%8E%A5/%E7%AC%AC003%E8%AF%BE_%E5%86%85%E6%A0%B8%E9%85%8D%E7%BD%AE%E8%A3%81%E5%89%AA%E5%8F%8A%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" title="第003课_内核配置裁剪及启动流程">
+                        <span class="hidden-mobile">第003课_内核配置裁剪及启动流程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

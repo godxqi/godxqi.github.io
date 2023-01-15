@@ -1,0 +1,1002 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录   第001节_I2C协议与EEPROM 第002节_S3C2440的I2C控制器 第003节_程序框架 第004节_I2C控制器编程_框架 第005节_I2C控制器编程_中断 第006节_EEPROM编程和测试代码 第007节_测试  第001节_I2C协议与EEPROM  I2C协议  I2C在硬件上的接法如下(图19-1)所示，主控芯片引出两条线SCL,SDA线，在一条I2C总线上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第019课 I2C">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC019%E8%AF%BE_I2C/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="目录   第001节_I2C协议与EEPROM 第002节_S3C2440的I2C控制器 第003节_程序框架 第004节_I2C控制器编程_框架 第005节_I2C控制器编程_中断 第006节_EEPROM编程和测试代码 第007节_测试  第001节_I2C协议与EEPROM  I2C协议  I2C在硬件上的接法如下(图19-1)所示，主控芯片引出两条线SCL,SDA线，在一条I2C总线上">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_003.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_004.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_005.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_006.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter19_lesson1_007.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_003.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_004.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_005.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_006.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_007.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson2_008.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter19_lesson3_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter19_lesson3_002.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter19_lesson3_003.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter19_lesson3_004.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter19_lesson3_005.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/1180px-Chapter19_lesson7_001.jpg">
+<meta property="article:published_time" content="2023-01-15T12:59:58.018Z">
+<meta property="article:modified_time" content="2023-01-15T13:01:54.196Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/700px-Chapter19_lesson1_001.jpg">
+  
+  
+  
+  <title>第019课 I2C - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第019课 I2C"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          138 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第019课 I2C</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p> </p>
+<p><strong>目录</strong></p>
+<hr>
+<ol>
+<li>第001节_I2C协议与EEPROM</li>
+<li>第002节_S3C2440的I2C控制器</li>
+<li>第003节_程序框架</li>
+<li>第004节_I2C控制器编程_框架</li>
+<li>第005节_I2C控制器编程_中断</li>
+<li>第006节_EEPROM编程和测试代码</li>
+<li>第007节_测试</li>
+</ol>
+<p><strong>第001节_I2C协议与EEPROM</strong></p>
+<hr>
+<p>I2C协议</p>
+<hr>
+<p>I2C在硬件上的接法如下(图19-1)所示，主控芯片引出两条线SCL,SDA线，在一条I2C总线上可以接很多I2C设备，我们还会放一个上拉电阻（放一个上拉电阻的原因以后我们再说）。</p>
+<p><img src="/image/700px-Chapter19_lesson1_001.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson1_001.jpg"></p>
+<p>我们怎么传输数据，我们需要发数据从主设备发送到从设备上去，也需要把数据从从设备传送到主设备上去，数据涉及到双向传输。</p>
+<p>举个例子：</p>
+<p><img src="/image/700px-Chapter19_lesson1_002.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson1_002.jpg"></p>
+<p>体育老师：可以把球发给学生，也可以把球从学生中接过来。</p>
+<ol>
+<li>发球：</li>
+</ol>
+<p>a.老师说：注意了(start) </p>
+<p>b.老师对A学生说我要球发给你(地址)。</p>
+<p>c.老师就把球发出去了（传输）。</p>
+<p>d.A收到球之后，应该告诉老师一声（回应）。</p>
+<p>e.老师说下课（停止）</p>
+<ol>
+<li>接球：</li>
+</ol>
+<p>a.老师说注意了(start)，</p>
+<p>b.老师说：B把球发给我(地址)</p>
+<p>c.B就把球发给老师（传输）</p>
+<p>d.老师收到球之后，给B说一声，表示收到球了（回应）。</p>
+<p>e.老师说下课（停止）</p>
+<p>我们就使用这个简单的例子，来解释一下IIC的传输协议。</p>
+<ul>
+<li>老师说注意了，表示开始信号(start)</li>
+<li>老师告诉某个学生，表示发送地址(address)</li>
+<li>老师发球&#x2F;接球，表示数据的传输</li>
+<li>老师&#x2F;学生收到球，回应表示：回应信号(ACK)</li>
+<li>老师说下课，表示IIC传输接受(P)</li>
+</ul>
+<p>IIC传输数据的格式</p>
+<hr>
+<p><strong>1.写操作：</strong></p>
+<p>刚开始主芯片要发出一个start信号，然后发出一个设备地址(用来确定是往哪一个芯片写数据)，方向(读&#x2F;写，0表示写，1表示读)。</p>
+<p>回应(用来确定这个设备是否存在)，然后就可以传输数据，传输数据之后，要有一个回应信号（确定数据是否接受完成)，然后再传输下一个数据。</p>
+<p>每传输一个数据，接受方都会有一个回应信号，数据发送完之后，主芯片就会发送一个停止信号。</p>
+<p>白色背景：主→从</p>
+<p>灰色背景：从→主</p>
+<p><img src="/image/700px-Chapter19_lesson1_003.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson1_003.jpg"></p>
+<p><strong>2.读操作：</strong></p>
+<p>刚开始主芯片要发出一个start信号，然后发出一个设备地址(用来确定是从哪一个芯片读取数据)，方向(读&#x2F;写，0表示写，1表示读)。</p>
+<p>回应(用来确定这个设备是否存在)，然后就可以传输数据，传输数据之后，要有一个回应信号（确定数据是否接受完成)，然后在传输下一个数据。</p>
+<p>每传输一个数据，接受方都会有一个回应信号，数据发送完之后，主芯片就会发送一个停止信号。</p>
+<p>白色背景：主→从</p>
+<p>灰色背景：从→主</p>
+<p><img src="/image/700px-Chapter19_lesson1_004.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson1_004.jpg"></p>
+<p>传输是以8位为单元数据传输的，先传输最高位(MSB)，主芯片发出start信号之后，然后发出9个时钟传输数据。</p>
+<p>1). 开始信号（S）：SCL为高电平时，SDA由高电平向低电平跳变，开始传送数据。</p>
+<p>2). 结束信号（P）：SCL为高电平时，SDA由低电平向高电平跳变，结束传送数据。</p>
+<p>3). 响应信号(ACK)：接收器在接收到8位数据后，在第9个时钟周期，拉低SDA</p>
+<p>SDA上传输的数据必须在SCL为高电平期间保持稳定，SDA上的数据只能在SCL为低电平期间变化。如图</p>
+<p><img src="/image/700px-Chapter19_lesson1_005.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson1_005.jpg"></p>
+<p><strong>问题1：如何在SDA上实现双向传输？</strong></p>
+<p>答：主芯片通过一根SDA线既可以把数据发给从设备，也可以从SDA上读取数据，连接SDA线的引脚里面必然有两个引脚（发送引脚&#x2F;接受引脚）。</p>
+<p><strong>问题2：主设备(从设备)发送数据时，从设备(主设备)的发送引脚，不影响数据的发送，怎么做到呢？</strong></p>
+<p>答：里面放一个三极管，使用开极(极电集开发出去作为输出)电路，如下图</p>
+<p><img src="/image/700px-Chapter19_lesson1_006.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson1_006.jpg"></p>
+<p><img src="/image/Chapter19_lesson1_007.jpg" srcset="/img/loading.gif" lazyload alt="Chapter19_lesson1_007.jpg"></p>
+<ul>
+<li>从真值表和电路图我们可以知道，当某一个芯片不行影响SDA线时，那就不驱动这个三极管。</li>
+<li>想输出高电平时；都不驱动(高电平就由上拉电阻决定)。</li>
+<li>想输出低电平，就驱动三极管。</li>
+</ul>
+<p>从下面的例子可以看看数据是怎么传的（实现双向传输），比如：主设备发送（8bit）给从设备 1.前8个clk</p>
+<ul>
+<li>从设备不要影响，从设备不驱动三极管；</li>
+<li>主设备决定数据；</li>
+</ul>
+<p>2.第9个clk，由从设备决定数据</p>
+<ul>
+<li>主设备不驱动三极管；</li>
+<li>从设备决定数据；</li>
+</ul>
+<p>从上面的例子，就可以知道，怎样在一条线上实现，双向传输的办法。这就是为什么在SDA,SCL上放上拉电阻的原因。</p>
+<p>在第9个时钟之后，如果有某一方处于繁忙状态，它可以一直把SCL拉低当SCL为低电平时候，大家都不应该使用IIC总线，只有当SCL从低电平变为高电平的时候，IIC总线才能被使用。</p>
+<p>从前图我们也可以知道ACK信号应该是低电平。主设备不驱动三极管，如果从设备不驱动三极端的化SDA应该是高电平，当从设备接收数据之后，发出回应信号的时候，就会驱动三极管，让SDA变为低电平。所以说：ACK信号是低电平。</p>
+<p>对于IIC协议它只能规定怎么传输数据，数据什么含义它完全不能够控制，数据的含义有从设备决定。</p>
+<p><strong>第002节_S3C2440的I2C控制器</strong></p>
+<hr>
+<p>在嵌入式系统里面的主控芯片一般都会有I2C控制器，要是没有可以根据I2C协议用GPIO管脚模拟，但是非常麻烦，我们要发送数据时，可以把数据放到某个寄存器，它就会自动的发出时钟，并且把数据发送给从设备，同时会等待从设备会返回回应信号。</p>
+<p>当我们想发送一个数据的时候，要设置某个寄存器启动传输，它也一样会产生时钟，然后从设备就会把数据通过SDA传到I2C控制器里面，组装进某个寄存器里面，最终寄存器会把接收到的8位数据返回给我们的程序，从这里可以看到I2C控制器简化了I2C的操作。简短电路连接图，如图:</p>
+<p><img src="/image/700px-Chapter19_lesson2_001.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_001.jpg"></p>
+<p><img src="/image/700px-Chapter19_lesson2_002.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_002.jpg"></p>
+<p>根据上图，我们首先设置IICCON(来设置时钟)，时钟源是PCLK(是50MHZ)太快了我们需要设置这个分频系数，把时钟降低，降低到我们想要的SCL,然后我们要发出start信号，我们需要设置寄存器发出start信号，之后我们需要发出数据啊，我们的程序可以把数据写入到IICDS寄存器，一写入就会自动的发出时钟，并且把这8位数据从SDA发送给从设备，数据发送之后，在第九个时钟会收到回应信号，可以查询IICSTAT是否有ACK(有ACK表示数据发送成功了)，可以继续发送数据，等发完数据之后，再来设置IICSTAT让它发出P信号。</p>
+<p>在第九个CLK，就会产生一个中断,在中断处理过程中SCL被拉为低电平，谁都不能再使用IIC总线，等待中断处理完成.</p>
+<p><strong>怎样处理中断？</strong></p>
+<ul>
+<li>写操作：<ul>
+<li>若无ACK,出错，然后发出P信号结束，</li>
+<li>若有ACK信号表示上一个字节成功发送出去</li>
+<li>若仍有数据，写入IICDS寄存器，然后清中断，一清中断就会释放SCL信号，继续发出时钟，把数据再次发送出去。</li>
+<li>若没有数据了，发出P信号结束。</li>
+</ul>
+</li>
+<li>读操作：<ul>
+<li>读到8位数时，应该回应一个ACK信号。</li>
+</ul>
+</li>
+</ul>
+<p>还想读数据，清中断，启动传输。等它再次发生中断时，再来读取IICDS寄存器,得到数据。不想读取数据，发出P信号结束。</p>
+<p><strong>重点</strong>： 发生中断时，我们的IIC控制器会把SCL拉低，阻止任何设备再使用IIC总线，清中断之后才能继续使用，这种机制就给我们中断服务程序的执行提供了时间。</p>
+<p><strong>读-写操作</strong></p>
+<ul>
+<li>在发送模式：</li>
+</ul>
+<p>1). 往寄存器IICDS寄存器放入一个val值。</p>
+<p>2). 发完，产生中断，并且会把 SCL拉低。</p>
+<p>3). 在中断程序里，判断状态，然后往IICDS里面写入下一个数据，一旦写入下一个数据IIC继续操作，若再次发完，就会再次产生中断。</p>
+<ul>
+<li>在接受模式：</li>
+</ul>
+<p>1). 我的程序发起传输，接受数据。</p>
+<p>2). 接收到数据之后，产生中断，SCL被拉低。</p>
+<p>3). 中断程序里，判断数据是否要继续接受等，如果还有继续接受的话，再次设置，设置好之后读IICDS寄存器，一但读出来IIC。</p>
+<p>继续接受下一个数据，收到新数据之后，又会产生一个中断（就是这样循环操作）。</p>
+<p><strong>（1）IICCON寄存器（Multi-msterIIC-buscontrol)</strong></p>
+<p>IICCON寄存器用于控制是否发出ACK信号、设置发送器的时钟、开启，i2c中断，并标识中断是否发生。它的各位含义如表:</p>
+<p><img src="/image/700px-Chapter19_lesson2_003.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_003.jpg"></p>
+<p>使用IICCON寄存器时，有如下注意事项。</p>
+<p>1). 发送模式的时钟频率由位[6]、位[3:0]联合决定,另外，llCCON[6]&#x3D;0,IICCON[3:0] 不能取0或10</p>
+<p>2). 12c中断在以下3种情况下发生：当发出地址信息或接收到一个从机地址并且吻合时,当总线仲裁失败时，当发送&#x2F;接收完一个字节的数据（包括响应位）时。</p>
+<p>3). 基于SDA、SCL线上时间特性的考虑，要发送数据时，先将数据写入IICDS寄存器，然后再清除中断。</p>
+<p>4). 如果IICCON[5]&#x3D;0，IICCON14]将不能正常工作。所以，即使不使用12c中断，也要将IICCON[5]设为1。</p>
+<p><strong>（2）IICSTAT寄存器(Multi-masterIIC-buscontrol&#x2F;status)</strong></p>
+<p>IICSTAT寄存器用于选择12c接口的工作模式，发出S信号、P信号，使能接收／发送功能，并标识各种状态，比如总线仲裁是否成功、作为从机时是否被寻址、是否接收到0地址、是否接收到ACK信号等。IICSTAT寄存器的各位如表:</p>
+<p><img src="/image/700px-Chapter19_lesson2_004.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_004.jpg"></p>
+<p><strong>（3）IICADD寄存器(Multi-masterIlC-busaddress)</strong></p>
+<p>用到IICADD寄存器的位[7:11]，表示从机地址。IICADD寄存器在串行输出使能位 IICSTAT[4]为0时，才可以写入：在任何时间都可以读出。IICADD寄存器的各位如表:</p>
+<p><img src="/image/700px-Chapter19_lesson2_005.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_005.jpg"></p>
+<p><strong>（4）IICDS寄存器(Multi-masterIIC-busTx&#x2F;Rxdatashift)</strong></p>
+<p>用到IICDS寄存器的位丨7：0]，其中保存的是要发送或己经接收的数据。IICDS寄存器在串行输出使能位IICSTAT()1为1时，叼可以写入；在任何时间都可以读出。IICDS寄存器的各位如表:</p>
+<p><img src="/image/700px-Chapter19_lesson2_006.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_006.jpg"></p>
+<p><strong>读写操作流程图</strong></p>
+<p>主机发送器模式操作:</p>
+<p><img src="/image/700px-Chapter19_lesson2_007.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_007.jpg"></p>
+<p>主机接收器模式操作:</p>
+<p><img src="/image/700px-Chapter19_lesson2_008.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter19_lesson2_008.jpg"></p>
+<p><strong>第003节_程序框架</strong></p>
+<hr>
+<p>写程序之前 考虑好程序的框架，我们想写出一个结构比较好，比较容易扩展的程序</p>
+<p>我们先要考虑清楚框架的设计。</p>
+<p>IIC控制器的功能</p>
+<hr>
+<p>IIC会做什么事情呢？</p>
+<p>对于IIC控制器，它负责传输数据，不知道数据的含义，但是它要实现写&#x2F;读操作</p>
+<p><strong>读操作</strong></p>
+<p><img src="/image/800px-Chapter19_lesson3_001.jpg" srcset="/img/loading.gif" lazyload alt="800px-Chapter19_lesson3_001.jpg"></p>
+<p><strong>写操作</strong></p>
+<p><img src="/image/800px-Chapter19_lesson3_002.jpg" srcset="/img/loading.gif" lazyload alt="800px-Chapter19_lesson3_002.jpg"></p>
+<p>IIC设备的功能</p>
+<hr>
+<p>很显然，IIC控制器提供了传输数据的能力，至于数据有什么含义，IIC控制器并不知道，数据的含义有外接的IIC芯片决定，我们需要阅读芯片手册，才知道IIC控制器应该发出怎样的数据，</p>
+<p>AT24cxx的操作方法</p>
+<p><img src="/image/800px-Chapter19_lesson3_003.jpg" srcset="/img/loading.gif" lazyload alt="800px-Chapter19_lesson3_003.jpg"></p>
+<p><img src="/image/800px-Chapter19_lesson3_004.jpg" srcset="/img/loading.gif" lazyload alt="800px-Chapter19_lesson3_004.jpg"></p>
+<p>显然我们的程序应该分为两层（IIC设备层，IIC控制器层），框架如下图所示：</p>
+<p><img src="/image/800px-Chapter19_lesson3_005.jpg" srcset="/img/loading.gif" lazyload alt="800px-Chapter19_lesson3_005.jpg"></p>
+<p>我们提供一个统一的接口i2c_transfer，不关使用哪个芯片，他最终都会调用i2c_transfer，来选择某一款I2C控制器，把数据发送出去，或者从I2c设备读到数据，对于每一次传输的数据都可以用一个i2c_msg结构体来表示。但是，读某个地址的数据时，就要用两个i2c_msg结构体来描述它，因为一个i2c_msg结构体只能描述一个传输方向(读&#x2F;写)，我们读取ac24ccxx某个地址上的数据时，要先写出要读取的地址，然后来读取设备地址上的数据。</p>
+<p>我们想设计出以一个结构体比较容易扩展的框架，对于I2C控制器我们要抽象出一个结构体i2c_controller，我们构造这个结构体之后，把这个这个结构体，告诉上层(I2C控制器那一层)，上层有个管理者i2c_contreller.c文件。</p>
+<p>我们在s3c2440_i2c_controller.c这个文件中我们构造出一个i2c_controller结构体，把它放入上层文件中的数组里，以后就根据结构体的名字，把这个结构体取出来使用。</p>
+<p>假设我们有一个TI的开发板，在ti_i2c_controller.c文件中，也要构造出一个i2c_controller结构体，同样们也会把这个结构体放入上层的结构体数组(i2c_contreller.c文件中)中，以后根据名字先出来使用。</p>
+<p>对于设备层中的at24cxx芯片我们写出at24cxx.c文件在这个文件实现读写函数：</p>
+<p>1). at24cxx_write函数</p>
+<p>2). at24cxx_read。</p>
+<p>函数读写函数都会调用i2c_transfer发起IIC传输，所以我们写程序的时候主要的暂时会涉及到三个文件：</p>
+<p>at24cxx.c， s3c2440_i2c_controller.c，i2c_contreller.c。在最上层会写出一个i2c_test.c文件，它会提供菜单供我们选择来测试。</p>
+<p>下面我们写一个程序框架，涉及到的文件有：i2c_test.c、at24cxx.c、i2c_controller.c、s3c2440_i2c_controller.c。</p>
+<p><strong>i2c_test.c文件</strong></p>
+<p>该文件的内容如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">i2c_test</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-comment">/* 初始化: 选择I2C控制器 */</span><br>        <span class="hljs-comment">/* 提供菜单供测试 */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个菜单最终会调用到at24cxx.c里面的函数。</p>
+<p><strong>at24cxx.c文件</strong></p>
+<p>在里面会使用标准的接口i2c_transfer来启动I2C传输。该文件的内容如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> at24cxx<span class="hljs-constructor">_write(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">addr</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">data</span>, <span class="hljs-params">int</span> <span class="hljs-params">len</span>)</span><br>&#123;<br>        <span class="hljs-comment">/* 构造i2c_msg */</span><br>        <span class="hljs-comment">/* 调用i2c_transfer */</span><br>&#125;<br><br><span class="hljs-built_in">int</span> at24cxx<span class="hljs-constructor">_read(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">addr</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">data</span>, <span class="hljs-params">int</span> <span class="hljs-params">len</span>)</span><br>&#123;<br>        <span class="hljs-comment">/* 构造i2c_msg */</span><br>        <span class="hljs-comment">/* 调用i2c_transfer */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>i2c_controller.c文件</strong></p>
+<p>该文件的内容如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/* 有一个i2c_controller数组用来存放各种不同芯片的操作结构体 */</span><br>void register<span class="hljs-constructor">_i2c_controller()</span><br>&#123;<br>&#125;<br><br><span class="hljs-comment">/* 根据名字来选择某款I2C控制器 */</span><br>void select<span class="hljs-constructor">_i2c_controller(<span class="hljs-params">char</span> <span class="hljs-operator">*</span><span class="hljs-params">name</span>)</span><br>&#123;<br>&#125;<br><br><span class="hljs-comment">/* 实现 i2c_transfer 接口函数 */</span><br><span class="hljs-built_in">int</span> i2c<span class="hljs-constructor">_transfer(<span class="hljs-params">i2c_msg</span> <span class="hljs-params">msgs</span>, <span class="hljs-params">int</span> <span class="hljs-params">num</span>)</span><br>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>select_i2c_controller函数根据名字来选择某款I2C控制器后，以后就会使用被选择的I2C控制器来启动传输。</p>
+<p>有数组一定有注册函数register_i2c_controller会把下面实现的I2C控制器结构体i2c_controller放到i2c_controller数组里面。</p>
+<p><strong>s3c2440_i2c_controller.c文件</strong></p>
+<p>对于具体的芯片，要实现自己的i2c_controller。该文件的内容如下：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">/* 实现i2c_controller          <br>        <span class="hljs-string">.init</span>          <br>        <span class="hljs-string">.master_xfer</span>          <br>        <span class="hljs-string">.name</span> <br>*/<br></code></pre></td></tr></table></figure>
+
+<p><strong>第004节_I2C控制器编程_框架</strong></p>
+<hr>
+<p>我们现在来讲I2C控制器怎么写，它是I2C程序中最核心的地方，我们要先构造几个结构体，这几个结构体放在i2c_controller.h里面。</p>
+<p>我们要发出I2c传输时，要构造出i2c_msg，把构造出的i2c_msg扔给下面的i2c_controller.c，i2c_controller.c会选择某一个i2c控制器，使用里面的master_xfer来传输数据， 所以我们需要构造出一个i2c_controller结构体。</p>
+<p><strong>i2c_controller.h文件</strong></p>
+<p>文件的内容如下所示：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _I2C_CONTROLLER_H</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> i2c_msg &#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;  <span class="hljs-comment">/* 7bits */</span><br>        <span class="hljs-type">int</span> flags;  <span class="hljs-comment">/* 0 - write, 1 - read */</span><br>        <span class="hljs-type">int</span> len;<br>        <span class="hljs-type">int</span> cnt_transferred;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *buf;<br>&#125;i2c_msg, *p_i2c_msg;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> i2c_controller &#123;<br>        <span class="hljs-type">int</span> (*<span class="hljs-type">int</span>)(<span class="hljs-type">void</span>);<br>        <span class="hljs-type">int</span> (*master_xfer)(i2c_msg msgs, <span class="hljs-type">int</span> num);<br>        <span class="hljs-type">char</span> *name;&#125;i2c_controller, *p_i2c_controller;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* _I2C_CONTROLLER_H */</span></span><br></code></pre></td></tr></table></figure>
+
+<p>解析：我们构造这两个结构体，我们要把它放在i2c_controller.c把它用起来</p>
+<p><strong>i2c_controller.c文件</strong></p>
+<p>文件的内容如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> I2C_CONTROLLER_NUM 10</span><br><span class="hljs-comment">/* 有一个i2c_controller数组用来存放各种不同芯片的操作结构体 */</span><br><span class="hljs-type">static</span> p_i2c_controller p_i2c_controllers[I2C_CONTROLLER_NUM];<span class="hljs-type">static</span> p_i2c_controller p_i2c_con_selected;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">register_i2c_controller</span><span class="hljs-params">(p_i2c_controller *p)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; I2C_CONTROLLER_NUM; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (!p_i2c_controllers[i])<br>                &#123;<br>                        p_i2c_controllers[i] = p;<br>                        <span class="hljs-keyword">return</span>;<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：register_i2c_controller函数用于把参数中的结构体指针，注册到p_i2c_controllers指针数组中</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-type">int</span> select_i2c_controller(<span class="hljs-type">char</span> *<span class="hljs-type">name</span>)<br>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; I2C_CONTROLLER_NUM; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (p_i2c_controllers[i] &amp;&amp; !strcmp(<span class="hljs-type">name</span>, p_i2c_controllers[i]-&gt;<span class="hljs-type">name</span>))<br>                &#123;<br>                        p_i2c_con_selected = p_i2c_controllers[i];<br>                        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：select_i2c_controller函数根据参数中的名字(name) 从p_i2c_controllers指针数组中取出对应的结构体指针复制给p_i2c_con_selected结构体指针(静态全局变量)。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/* 实现 i2c_transfer 接口函数 */</span><br><span class="hljs-built_in">int</span> i2c<span class="hljs-constructor">_transfer(<span class="hljs-params">i2c_msg</span> <span class="hljs-params">msgs</span>, <span class="hljs-params">int</span> <span class="hljs-params">num</span>)</span><br>&#123;<br>        return p_i2c_con_selected-&gt;master<span class="hljs-constructor">_xfer(<span class="hljs-params">msgs</span>, <span class="hljs-params">num</span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：i2c_transfer接口函数，调用选择的p_i2c_con_selected成员中master_xfer函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">i2c_init</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-comment">/* 注册下面的I2C控制器 */</span><br>        <span class="hljs-title function_">s3c2440_i2c_con_add</span>();<br>        <span class="hljs-comment">/* 选择某款I2C控制器 */</span><br>        <span class="hljs-comment">/* 调用它的init函数 */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：s3c2440_i2c_con_add()函数，把定义的s3c2440_i2c_con结构体注册给p_i2c_controllers数组中。</p>
+<p><strong>s3c2440_i2c_controller.c文件</strong></p>
+<p>中断服务函数，当发成中断是，就会调用中断服务函数，代码如下</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">i2c_interrupt_func</span><span class="hljs-params">(<span class="hljs-type">int</span> irq)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-comment">/* 每传输完一个数据将产生一个中断 */</span><br>        <span class="hljs-comment">/* 对于每次传输, 第1个中断是&quot;已经发出了设备地址&quot; */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>s3c2440_i2c_con_init函数，用来初始化I2C,控制器代码如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs awk">void s3c2440_i2c_con_init(void)<br>&#123;<br>        <span class="hljs-regexp">/* 设置时钟 */</span><br>        /* [<span class="hljs-number">7</span>] : IIC-bus acknowledge enable bit, <span class="hljs-number">1</span>-enable <span class="hljs-keyword">in</span> rx mode  <br>         * [<span class="hljs-number">6</span>] : 时钟源, <span class="hljs-number">0</span>: IICCLK = fPCLK <span class="hljs-regexp">/16; 1: IICCLK = fPCLK /</span><span class="hljs-number">512</span>  <br>         * [<span class="hljs-number">5</span>] : <span class="hljs-number">1</span>-enable interrupt  <br>         * [<span class="hljs-number">4</span>] : 读出为<span class="hljs-number">1</span>时表示中断发生了, 写入<span class="hljs-number">0</span>来清除并恢复I2C操作  <br>         * [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] : Tx clock = IICCLK/(IICCON[<span class="hljs-number">3</span>:<span class="hljs-number">0</span>]+<span class="hljs-number">1</span>).  <br>         * Tx Clock = <span class="hljs-number">100</span>khz = <span class="hljs-number">50</span>Mhz<span class="hljs-regexp">/16/</span>(IICCON[<span class="hljs-number">3</span>:<span class="hljs-number">0</span>]+<span class="hljs-number">1</span>)  <br>         */<br>        IICCON = (<span class="hljs-number">0</span>&lt;&lt;<span class="hljs-number">6</span>) | (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>) | (<span class="hljs-number">30</span>&lt;&lt;<span class="hljs-number">0</span>);<br>        <span class="hljs-regexp">/* 注册中断处理函数 */</span><br>        register_irq(<span class="hljs-number">27</span>, i2c_interrupt_func);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：</p>
+<p>1). IICCON &#x3D; (0&lt;&lt;6) | (1&lt;&lt;5) | (30&lt;&lt;0); 设置IICCON控制寄存器。选择发送时钟，使能中断。</p>
+<p>2). register_irq(27, i2c_interrupt_func)：注册中断处理函数，当发生I2C中断的时候就会调用i2c_interrupt_func中断处理函数。</p>
+<p>初始化完成后，就可以调用do_master_tx写I2C从机了，这个函数仅仅启动I2C传输，然后等待，直到数据在中断服务程序中传输完毕后再返回。函数代码如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs awk">void do_master_tx(p_i2c_msg msg)<br>&#123;<br>        msg-&gt;cnt_transferred = <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-regexp">/* 设置寄存器启动传输 */</span><br>        <span class="hljs-regexp">/* 1. 配置为 master tx mode */</span><br>                <br>        <span class="hljs-regexp">/* 2. 把从设备地址写入IICDS */</span><br>        IICDS = msg-&gt;addr&lt;&lt;<span class="hljs-number">1</span>;<br>        <br>        <span class="hljs-regexp">/* 3. IICSTAT = 0xf0 , 数据即被发送出去, 将导致中断产生 */</span><br>        IICSTAT = <span class="hljs-number">0</span>xf0;<br>        <br>        <span class="hljs-regexp">/* 后续的传输由中断驱动 */</span><br>        <span class="hljs-regexp">/* 循环等待中断处理完毕 */</span><br>        <span class="hljs-keyword">while</span> (msg-&gt;cnt_transferred != msg-&gt;len);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析：</p>
+<p>1). IICDS &#x3D; msg-&gt;addr&lt;&lt;1: 把从机地址（高7位，所以需要向右移一位）写入到IICDS寄存器中。</p>
+<p>2). IICSTAT &#x3D; 0xf0:设置IICSTAT寄存器，将s3c2440设为主机发送器，并发出S信号后，紧接着就发出从机地址。后续的传输工作将在中断服务程序中完成。</p>
+<p>do_master_rx函数的实现和do_master_tx函数类似，代码如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs awk">void do_master_rx(p_i2c_msg msg)<br>&#123;<br>        msg-&gt;cnt_transferred = <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-regexp">/* 设置寄存器启动传输 */</span><br>        <span class="hljs-regexp">/* 1. 配置为 Master Rx mode */</span><br>                <br>        <span class="hljs-regexp">/* 2. 把从设备地址写入IICDS */</span><br>        IICDS = (msg-&gt;addr&lt;&lt;<span class="hljs-number">1</span>)|(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>);<br>        <br>        <span class="hljs-regexp">/* 3. IICSTAT = 0xb0 , 从设备地址即被发送出去, 将导致中断产生 */</span><br>        IICSTAT = <span class="hljs-number">0</span>xb0;<br>        <br>        <span class="hljs-regexp">/* 后续的传输由中断驱动 */</span><br>        <span class="hljs-regexp">/* 循环等待中断处理完毕 */</span><br>        <span class="hljs-keyword">while</span> (msg-&gt;cnt_transferred != msg-&gt;len);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析： 1).IICDS &#x3D; (msg-&gt;addr&lt;&lt;1)|(1&lt;&lt;0)：把从设备地址写入IICDS，前7位是从机地址，第8位表示传输方向(0表示写操作，1表示读操作)。</p>
+<p>s3c2440传输函数，根据标志位flags，来指明是读&#x2F;写(1：读 0：写)。代码如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> s3c2440<span class="hljs-constructor">_master_xfer(<span class="hljs-params">p_i2c_msg</span> <span class="hljs-params">msgs</span>, <span class="hljs-params">int</span> <span class="hljs-params">num</span>)</span><br>&#123;<br>        <span class="hljs-built_in">int</span> i;<br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; num; i++)  <br>        &#123;<br>                <span class="hljs-keyword">if</span> (msgs<span class="hljs-literal">[<span class="hljs-identifier">i</span>]</span>-&gt;flags<span class="hljs-operator"> == </span><span class="hljs-number">0</span>)<span class="hljs-comment">/* write */</span><br>                        <span class="hljs-keyword">do</span><span class="hljs-constructor">_master_tx(<span class="hljs-params">msgs</span>[<span class="hljs-params">i</span>])</span>;<br>                <span class="hljs-keyword">else</span><br>                        <span class="hljs-keyword">do</span><span class="hljs-constructor">_master_rx(<span class="hljs-params">msgs</span>[<span class="hljs-params">i</span>])</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们定义一个i2c_controller结构体s3c2440_i2c_con。下面的代码对他进行初始化。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">static i2c_controller s3c2440_i2c_con = &#123;<br>        <span class="hljs-string">.name</span> = <span class="hljs-string">&quot;s3c2440&quot;</span>,<br>        <span class="hljs-string">.init</span> = s3c2440_i2c_con_init,<br>        <span class="hljs-string">.master_xfer</span> = s3c2440_master_xfer,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>s3c2440_i2c_con_add函数把上面定义的s3c2440_i2c_con结构体注册到上层的i2c_controller数组中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">void</span> <span class="hljs-title function_">s3c2440_i2c_con_add</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-title function_">register_i2c_controller</span>(&amp;s3c2440_i2c_con);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>第005节_I2C控制器编程_中断</strong></p>
+<hr>
+<p>中断控制器是IIC程序中的核心中的核心。</p>
+<p>Start信号之后，发出设备地址，在第9个时钟就会产生一个中断，我们根据i2c的流程图来编写中断程序。</p>
+<p>每传输完一个数据将产生一个中断，I2C操作的主体在中断服务程序，它可以分为两部分：写操作，读操作。</p>
+<p>先分析写操作，代码如下：</p>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs zephir">void i2c_interrupt_func(<span class="hljs-keyword">int</span> irq)<br>&#123;<br>        <span class="hljs-keyword">int</span> index;<br>        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> iicstat = IICSTAT;<br><br>        p_cur_msg-&gt;cnt_transferred++;<br>        <br>        <span class="hljs-comment">/* 每传输完一个数据将产生一个中断 */</span><br><br>        <span class="hljs-comment">/* 对于每次传输, 第1个中断是&quot;已经发出了设备地址&quot; */</span><br><br>        <span class="hljs-keyword">if</span> (p_cur_msg-&gt;flags == <span class="hljs-number">0</span>)       <span class="hljs-comment">/* write */</span><br>        &#123;<br>                <span class="hljs-comment">/* 对于第1个中断, 它是发送出设备地址后产生的         </span><br><span class="hljs-comment">                 * 需要判断是否有ACK          </span><br><span class="hljs-comment">                 * 有ACK : 设备存在          </span><br><span class="hljs-comment">                 * 无ACK : 无设备, 出错, 直接结束传输          </span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-keyword">if</span> (p_cur_msg-&gt;cnt_transferred == <span class="hljs-number">0</span>)  <span class="hljs-comment">/* 第1次中断 */</span><br>                &#123;<br>                        <span class="hljs-keyword">if</span> (iicstat &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>))<br>                        &#123; <span class="hljs-comment">/* no ack */</span><br>                                <span class="hljs-comment">/* 停止传输 */</span><br>                                IICSTAT = <span class="hljs-number">0xd0</span>;<br>                                IICCON &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>);<br>                                p_cur_msg-&gt;err = <span class="hljs-number">-1</span>;<br>                                delay(<span class="hljs-number">1000</span>);<br>                                <span class="hljs-keyword">return</span>;<br>                        &#125;<br>                &#125;<br></code></pre></td></tr></table></figure>
+
+<p>1). p_cur_msg-&gt;cnt_transferred初始值为-1(我们后面设置)。</p>
+<p>2). p_cur_msg-&gt;cnt_transferred &#x3D;&#x3D; 0表示是第一次传输数据产生的中断，即发送从设备地址产生的中断。</p>
+<p>3). iicstat &amp; (1&lt;&lt;0)表示主机没有接受到ACK信号(即发出的设备地址不存在)，需要停止传输。</p>
+<p>4). IICSTAT &#x3D; 0xd0置IICSTAT寄存器的[5]写为0，以便发出P信号，但是由于这时IICCON[4]仍为1，P信号没有实际发出，当执行IICCON &amp;&#x3D; ~(1&lt;&lt;4);清除IICCON[4]后，P信号才真正发出。</p>
+<p>5). 等待一段时间，确保P信号已经发送完毕。</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xl">              <span class="hljs-function"><span class="hljs-title">if</span> (p_cur_msg-&gt;</span><span class="hljs-function"><span class="hljs-title">cnt_transferred</span> &lt; p_cur_msg-&gt;</span>len)<br>                &#123;<br>                        <span class="hljs-comment">/* 对于其他中断, 要继续发送下一个数据                  */</span><br>                        IICDS = <span class="hljs-function"><span class="hljs-title">p_cur_msg</span>-&gt;</span><span class="hljs-function"><span class="hljs-title">buf</span>[p_cur_msg-&gt;</span>cnt_transferred];<br>                        IICCON &amp;= ~(<span class="hljs-number">1</span><span class="hljs-string">&lt;&lt;4);</span><br><span class="hljs-string">                &#125;</span><br><span class="hljs-string">                else</span><br><span class="hljs-string">                &#123;</span><br><span class="hljs-string">                        /* 停止传输 */</span><br><span class="hljs-string">                        IICSTAT = 0xd0;</span><br><span class="hljs-string">                        IICCON &amp;= ~(1&lt;&lt;4);</span><br><span class="hljs-string">                        p_cur_msg-&gt;err = -1;</span><br><span class="hljs-string">                        delay(1000);</span><br><span class="hljs-string">                &#125;</span><br><span class="hljs-string">        &#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>1). 假如if (p_cur_msg-&gt;cnt_transferred &lt; p_cur_msg-&gt;len)条件成立，表示数据还没有发送完毕，需要继续发送数据。</p>
+<p>2). 执行IICDS &#x3D; p_cur_msg-&gt;buf[p_cur_msg-&gt;cnt_transferred把要发送的数据写入到IICDS寄存器中，经过执行IICCON &amp;&#x3D; ~(1&lt;&lt;4);清除中断标志后后，紧接着就自动把数据发送出去了，这将触发下一个中断。</p>
+<p>3). 如果条件不成立表示数据传输完毕，发出P信号，停止数据的传输。</p>
+<p>写操作：I2C读操作的处理与写操作类似，我们就不进行分析了，代码如下：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-keyword">else</span> <span class="hljs-comment">/* read */</span><br>        &#123;<br>                <span class="hljs-comment">/* 对于第1个中断, 它是发送出设备地址后产生的          </span><br><span class="hljs-comment">                 * 需要判断是否有ACK          </span><br><span class="hljs-comment">                 * 有ACK : 设备存在, 恢复I2C传输, 这样在下一个中断才可以得到第1个数据          </span><br><span class="hljs-comment">                 * 无ACK : 无设备, 出错, 直接结束传输          </span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-keyword">if</span> (p_cur_msg-&gt;cnt_transferred == <span class="hljs-number">0</span>)  <span class="hljs-comment">/* 第1次中断 */</span><br>                &#123;<br>                        <span class="hljs-keyword">if</span> (iicstat &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">0</span>))<br>                        &#123; <span class="hljs-comment">/* no ack */</span><br>                                <span class="hljs-comment">/* 停止传输 */</span><br>                                IICSTAT = <span class="hljs-number">0x90</span>;<br>                                IICCON &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>);<br>                                p_cur_msg-&gt;err = -<span class="hljs-number">1</span>;<br>                                delay(<span class="hljs-number">1000</span>);<br>                                <span class="hljs-keyword">return</span>;<br>                        &#125;<br>                        <span class="hljs-keyword">else</span>  <span class="hljs-comment">/* ack */</span><br>                        &#123;<br>                                <span class="hljs-comment">/* 恢复I2C传输 */</span><br>                                IICCON &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>);<br>                                <span class="hljs-keyword">return</span>;<br>                        &#125;<br>                &#125;<br>                <span class="hljs-comment">/* 非第1个中断, 表示得到了一个新数据          </span><br><span class="hljs-comment">                 * 从IICDS读出、保存          </span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-keyword">if</span> (p_cur_msg-&gt;cnt_transferred &lt; p_cur_msg-&gt;len)<br>                &#123;<br>                        index = p_cur_msg-&gt;cnt_transferred - <span class="hljs-number">1</span>;<br>                        p_cur_msg-&gt;buf[index] = IICDS;<br>                        <span class="hljs-comment">/* 恢复I2C传输 */</span><br>                        IICCON &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>);<br>                &#125;<br>                <span class="hljs-keyword">else</span><br>                &#123;<br>                        <span class="hljs-comment">/* 发出停止信号 */</span><br>                        IICSTAT = <span class="hljs-number">0x90</span>;<br>                        IICCON &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>);<br>                        delay(<span class="hljs-number">1000</span>);<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们还要在s3c2440_i2c_con_init函数中设置IICCON寄存器，设置ACK应答使能。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">IICCON</span> = (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">7</span>) | (<span class="hljs-number">0</span>&lt;&lt;<span class="hljs-number">6</span>) | (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>) | (<span class="hljs-number">30</span>&lt;&lt;<span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>第006节_EEPROM编程和测试代码</strong></p>
+<hr>
+<p>从设备程序，只涉及到两个函数分别是：从设备的写函数，从设备的读函数。下面下分析从设备的写函数，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> AT24CXX_ADDR 0x50</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">at24cxx_write</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr, <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *data, <span class="hljs-type">int</span> len)</span></span><br><span class="hljs-function"></span>&#123;<br>        i2c_msg msg;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-type">int</span> err;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> buf[<span class="hljs-number">2</span>];<br>        <br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; len; i++)<br>        &#123;<br>                buf[<span class="hljs-number">0</span>] = addr++;<br>                buf[<span class="hljs-number">1</span>] = data[i];<br>                <br>                <span class="hljs-comment">/* 构造i2c_msg */</span><br>                msg.addr  = AT24CXX_ADDR;<br>                msg.lags = <span class="hljs-number">0</span>; <span class="hljs-comment">/* write */</span><br>                msg.len   = <span class="hljs-number">2</span>;<br>                msg.buf   = buf;<br>                msg.err   = <span class="hljs-number">0</span>;<br>                msg.cnt_transferred = <span class="hljs-number">-1</span>;<br>                <span class="hljs-comment">/* 调用i2c_transfer */</span><br>                err = <span class="hljs-built_in">i2c_transfer</span>(&amp;msg, <span class="hljs-number">1</span>);<br>                <span class="hljs-keyword">if</span> (err)<br>                        <span class="hljs-keyword">return</span> err;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>1). #define AT24CXX_ADDR 0x50宏定义设备地址。</p>
+<p>2). 我们每次只写一个字节，所以我们需要构造出len个msg。</p>
+<p>3). 调用i2c接口函数，传输构造i2C_msg结构体，我们传输指针只需要传输四个字节，我们需要把以前的参数都改成传输指针的格式。</p>
+<p>从设备读函数和写函数类似，读函数需要构造两个i2c_msg(每个i2c_msg只能表示一个传输方向) ，因为在读操作之前，需要把要读的地址告诉从设备。</p>
+<p>代码如下：</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs prolog">int at24cxx_read(unsigned int addr, unsigned char *data, int len)<br>&#123;<br>        i2c_msg msg[<span class="hljs-number">2</span>];<br>        int err;<br>        <br>        <span class="hljs-comment">/* 构造i2c_msg */</span><br>        msg[<span class="hljs-number">0</span>].addr  = <span class="hljs-symbol">AT24CXX_ADDR</span>;<br>        msg[<span class="hljs-number">0</span>].lags  = <span class="hljs-number">0</span>; <span class="hljs-comment">/* write */</span><br>        msg[<span class="hljs-number">0</span>].len   = <span class="hljs-number">1</span>;<br>        msg[<span class="hljs-number">0</span>].buf   = &amp;addr;<br>        msg[<span class="hljs-number">0</span>].err   = <span class="hljs-number">0</span>;<br>        msg[<span class="hljs-number">0</span>].cnt_transferred = <span class="hljs-number">-1</span>;<br>        msg[<span class="hljs-number">1</span>].addr  = <span class="hljs-symbol">AT24CXX_ADDR</span>;<br>        msg[<span class="hljs-number">1</span>].lags  = <span class="hljs-number">1</span>; <span class="hljs-comment">/* read */</span><br>        msg[<span class="hljs-number">1</span>].len   = len;<br>        msg[<span class="hljs-number">1</span>].buf   = data;<br>        msg[<span class="hljs-number">1</span>].err   = <span class="hljs-number">0</span>;<br>        msg[<span class="hljs-number">1</span>].cnt_transferred = <span class="hljs-number">-1</span>;<br>        <span class="hljs-comment">/* 调用i2c_transfer */</span><br>        err = i2c_transfer(&amp;msg, <span class="hljs-number">2</span>);<br>        if (err)<br>                return err;<br>        return <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>I2c_test测试程序如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">i2c_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">char</span> c;<br>        <span class="hljs-comment">/* 初始化 */</span><br>        <span class="hljs-built_in">i2c_init</span>();<br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                <span class="hljs-comment">/* 打印菜单, 供我们选择测试内容 */</span><br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[w] Write at24cxx\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[r] Read at24cxx\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[q] quit\n\r&quot;</span>);<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter selection: &quot;</span>);<br>                c = <span class="hljs-built_in">getchar</span>();<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%c\n\r&quot;</span>, c);<br>                <span class="hljs-comment">/* 测试内容:          </span><br><span class="hljs-comment">                 * 3. 编写某个地址          </span><br><span class="hljs-comment">                 * 4. 读某个地址          </span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-keyword">switch</span> (c)                 <br>                &#123;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;q&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Q&#x27;</span>:<br>                                <span class="hljs-keyword">return</span>;<br>                                <span class="hljs-keyword">break</span>;<br>                                <br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;w&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;W&#x27;</span>:<br>                                <span class="hljs-built_in">do_write_at24cxx</span>();<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;r&#x27;</span>:<br>                        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;R&#x27;</span>:<br>                                <span class="hljs-built_in">do_read_at24cxx</span>();<br>                                <span class="hljs-keyword">break</span>;<br>                        <span class="hljs-keyword">default</span>:<br>                                <span class="hljs-keyword">break</span>;<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>1). 调用i2c_controller.c里面的 i2c_init()初始化函数，在这个函数中需要添加一些功能，i2c_init()代码如下所示：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs scss">void <span class="hljs-built_in">i2c_init</span>(void)<br>&#123;<br>        <span class="hljs-comment">/* 注册下面的I2C控制器 */</span><br>        <span class="hljs-built_in">s3c2440_i2c_con_add</span>();<br>        <span class="hljs-comment">/* 选择某款I2C控制器 */</span><br>        <span class="hljs-built_in">select_i2c_controller</span>(&quot;s3c2440&quot;);<br>        <span class="hljs-comment">/* 调用它的init函数 */</span><br>        p_i2c_con_selected-&gt;<span class="hljs-built_in">init</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>select_i2c_controller(“s3c2440”)用于选择s3c2440的i2c控制器。</li>
+<li>p_i2c_con_selected-&gt;init()调用s3c2440的i2c控制器结构体中init初始化函数，初始化s3c2440的i2c控制器。</li>
+</ul>
+<p>2). 执行do_write_at24cxx()函数用于往at24cxx设备中写入数据，do_write_at24cxx()函数的代码如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp">&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> str[<span class="hljs-number">100</span>];<br>        <span class="hljs-type">int</span> err;<br>        <br>        <span class="hljs-comment">/* 获得地址 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the address of sector to write: &quot;</span>);<br>        addr = <span class="hljs-built_in">get_uint</span>();<br>        <span class="hljs-keyword">if</span> (addr &gt; <span class="hljs-number">256</span>)<br>        &#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;address &gt; 256, error!\n\r&quot;</span>);<br>                <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the string to write: &quot;</span>);<br>        <span class="hljs-built_in">gets</span>(str);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;writing ...\n\r&quot;</span>);<br>        err = <span class="hljs-built_in">at24cxx_write</span>(addr, str, <span class="hljs-built_in">strlen</span>(str)+<span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;at24cxx_write ret = %d\n\r&quot;</span>, err);&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>addr &#x3D; get_uint()用于把输入的地址赋值给addr。</li>
+<li>gets(str)用于把输入的字符串存在str字符数组中。</li>
+<li>at24cxx_write(addr, str, strlen(str)+1)调用at24cxx_write函数把输入的数据str,，放在输入的地址addr中。</li>
+</ul>
+<p>3). 执行do_read_at24cxx()函数从at24cxx中读取数据，do_read_at24cxx()函数的代码如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_read_at24cxx</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;<br>        <span class="hljs-type">int</span> i, j;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> c;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> data[<span class="hljs-number">100</span>];<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> str[<span class="hljs-number">16</span>];<br>        <span class="hljs-type">int</span> len;<br>        <span class="hljs-type">int</span> err;<br>        <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-comment">/* 获得地址 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the address to read: &quot;</span>);<br>        addr = <span class="hljs-built_in">get_uint</span>();<br>        <span class="hljs-keyword">if</span> (addr &gt; <span class="hljs-number">256</span>)<br>        &#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;address &gt; 256, error!\n\r&quot;</span>);<br>                <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">/* 获得长度 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the length to read: &quot;</span>);<br>        len = <span class="hljs-built_in">get_int</span>();<br>        err = <span class="hljs-built_in">at24cxx_read</span>(addr, data, len);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;at24cxx_read ret = %d\n\r&quot;</span>, err);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Data : \n\r&quot;</span>);<br>        <span class="hljs-comment">/* 长度固定为64 */</span><br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++)<br>        &#123;<br>                <span class="hljs-comment">/* 每行打印16个数据 */</span><br>                <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; j++)<br>                &#123;<br>                        <span class="hljs-comment">/* 先打印数值 */</span><br>                        c = data[cnt++];<br>                        str[j] = c;<br>                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%02x &quot;</span>, c);<br>                &#125;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;   ; &quot;</span>);<br>                <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; j++)<br>                &#123;<br>                        <span class="hljs-comment">/* 后打印字符 */</span><br>                        <span class="hljs-keyword">if</span> (str[j] &lt; <span class="hljs-number">0x20</span> || str[j] &gt; <span class="hljs-number">0x7e</span>)  <span class="hljs-comment">/* 不可视字符 */</span><br>                                <span class="hljs-built_in">putchar</span>(<span class="hljs-string">&#x27;.&#x27;</span>);<br>                        <span class="hljs-keyword">else</span><br>                                <span class="hljs-built_in">putchar</span>(str[j]);<br>                &#125;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n\r&quot;</span>);<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>调用at24cxx_read(addr, data, len)函数，从addr地址中读取len长度的字节数据，放在data字符数组中，后面的代码就是把读取得到的数据，打印出来。</li>
+</ul>
+<p><strong>第007节_测试</strong></p>
+<hr>
+<p>在测试中，出现问题和解决办法：</p>
+<ul>
+<li>中断没产生 : 未配置GPIO用于IIC功能</li>
+</ul>
+<p>解决方法: 配置引脚用于I2C</p>
+<ul>
+<li>只产生了一次中断, 并且出错 : tx err, no ack</li>
+</ul>
+<p>解决方法: 启动传输之前 IICSTAT&#x3D;(1&lt;&lt;4)</p>
+<ul>
+<li>第1次读OK，再次写卡死，复位再写仍卡死，重新上电再写OK:</li>
+</ul>
+<p>解决方法: 读最后一个数据时，不要回应ACK给AT24CXX</p>
+<p>程序框架如下图所示：</p>
+<p><img src="/image/1180px-Chapter19_lesson7_001.jpg" srcset="/img/loading.gif" lazyload alt="1180px-Chapter19_lesson7_001.jpg"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第019课 I2C</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第019课_I2C/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC020%E8%AF%BE_SPI%E8%A3%B8%E6%9D%BF/" title="第020课 SPI裸板">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第020课 SPI裸板</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC018%E8%AF%BE_ADC%E5%92%8C%E8%A7%A6%E6%91%B8%E5%B1%8F-1/" title="第018课 ADC和触摸屏">
+                        <span class="hidden-mobile">第018课 ADC和触摸屏</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

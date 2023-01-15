@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录   第001节_Nor Flash原理及硬件操作  Flash介绍 Nor Flash的操作 Nor Flash的两种规范 Nor Flash写数据   第002节_Nor Flash编程_识别  第003节_Nor Flash编程_擦写读   第001节_Nor Flash原理及硬件操作  Nor Flash的连接线有地址线，数据线，片选信号读写信号等，Nor Flash的接口属于内存类接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第015课 NOR Flash">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC015%E8%AF%BE_NOR_Flash/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="目录   第001节_Nor Flash原理及硬件操作  Flash介绍 Nor Flash的操作 Nor Flash的两种规范 Nor Flash写数据   第002节_Nor Flash编程_识别  第003节_Nor Flash编程_擦写读   第001节_Nor Flash原理及硬件操作  Nor Flash的连接线有地址线，数据线，片选信号读写信号等，Nor Flash的接口属于内存类接">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter15_lesson1_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/2708b2aa132e2a74066e2aa8efd08907.png">
+<meta property="og:image" content="https://godxqi.github.io/image/fbf4560f71d5c5379f6e350ff8441167.png">
+<meta property="og:image" content="https://godxqi.github.io/image/20da9acc7f43e2d9651848996745b12a.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter15_lesson1_003.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/8917b93067e2129d11f26ae419701fdf.png">
+<meta property="og:image" content="https://godxqi.github.io/image/a3e6fe8bd91b3329b365ecab7497d33b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/cadb135ff3ad644288eae215e2a58987.png">
+<meta property="og:image" content="https://godxqi.github.io/image/2168704400a6fa73598ba6bc82fed76c.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.013Z">
+<meta property="article:modified_time" content="2023-01-15T13:01:16.436Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/Chapter15_lesson1_001.png">
+  
+  
+  
+  <title>第015课 NOR Flash - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第015课 NOR Flash"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          113 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第015课 NOR Flash</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>目录</strong></p>
+<hr>
+<ol>
+<li><p>第001节_Nor Flash原理及硬件操作</p>
+<ul>
+<li>Flash介绍</li>
+<li>Nor Flash的操作</li>
+<li>Nor Flash的两种规范</li>
+<li>Nor Flash写数据</li>
+</ul>
+</li>
+<li><p>第002节_Nor Flash编程_识别</p>
+</li>
+<li><p>第003节_Nor Flash编程_擦写读</p>
+</li>
+</ol>
+<p><strong>第001节_Nor Flash原理及硬件操作</strong></p>
+<hr>
+<p>Nor Flash的连接线有地址线，数据线，片选信号读写信号等，Nor Flash的接口属于内存类接口，Nor Flash可以向内存一样读，但是不能像内存一样写，需要做一些特殊的操作才能进行写操作，读只需像内存一样读很简单。</p>
+<p>Nor Flash原理图如图：</p>
+<p><img src="/image/Chapter15_lesson1_001.png" srcset="/img/loading.gif" lazyload alt="Chapter15_lesson1_001.png"></p>
+<p>Flash介绍</p>
+<hr>
+<p>常用的Flash类型有Nor Flash和NAND Flash两种。</p>
+<p>Nor Flash由Intel公司在1988年发明，以替代当时在市场上占据主要地位的EPROM和E2PROM</p>
+<p>NAND Flash由Toshiba公司在1989年发明。两者的主要差别如下表：</p>
+<p><img src="/image/2708b2aa132e2a74066e2aa8efd08907.png" srcset="/img/loading.gif" lazyload alt="2708b2aa132e2a74066e2aa8efd08907.png"></p>
+<p>Nor Flash支持XIP，即代码可以直接在Nor Flash上执行，无需复制到内存中。这是由于NorF lash的接口与RAM完全相同，可以随机访问任意地址的数据。Nor Flash进行读操作的效率非常高，但是擦除和写操作的效率很低，另外，Nor Flash的容量一般比较小。NAND Flash进行擦除和写操作的效率更高，并且容量更大。一般而言，Nor Flash用于存储程序，NAND Flash用于存储数据。基于NAND Flash的设备通常也要搭配Nor Flash以存储程字。</p>
+<p>Flash存储器件由擦除单元（也称为块）组成，当要写某个块时，需要确保这个块己经 被擦除。Nor Flash的块大小范围为64kB、128kB：NAND Flash的块大小范围为8kB，64kB，擦&#x2F;写一个Nor Flash块需4s，而擦／写一个NAND Flash块仅需2ms。Nor Flash的块太大，不仅增加了擦写时间，对于给定的写操作，Nor Flash也需要更多的擦除操作——特别是小文件，比如一个文件只有IkB，但是为了保存它却需要擦除人小为64kB—128kB的Nor Flash块。</p>
+<p>Nor Flash的接口与RAM完全相同，可以随意访问任意地址的数据。而NAND Flash的 接口仅仅包含几个I&#x2F;O引脚，需要串行地访问。NAND Flash一般以512字节为单位进行读写。这使得Nor Flash适合于运行程序，而NAND Flash更适合于存储数据。</p>
+<p>容量相同的情况下，NAND Flash的体积更小，对于空间有严格要求的系统，NAND Flash可以节省更多空间。市场上Nor Flash的容量通常为IMB<del>4MB(也有32MB的Nor Flash)，NAND Flash的容量为8MB</del>512MB。容量的差别也使得Nor Flash多用于存储程序，NAND Flash多用于存储数据。</p>
+<p>对于Flash存储器件的可靠性需要考虑3点：位反转、坏块和可擦除次数。所有Flash器件都遭遇位反转的问题：由于Flash固有的电器特性，在读写数据过程中，偶然会产生一位或几位数据错误（这种概率很低），而NAND Flash出现的概率远大于Nor Flash，当位反转发生在关键的代码、数据上时，有可能导致系统崩溃。当仅仅是报告位反转，重新读取即可：如果确实发生了位反转，则必须有相应的错误检测&#x2F;恢复措施。在NAND Flash上发生位反转的概率史高，推荐使用EDC&#x2F;ECC进行错误检测和恢复。NAND Flash上面会有坏块随机分布在使用前需要将坏块扫描出来，确保不再使用它们，否则会使产品含有严重的故障。NAND Flash每块的可擦除次数通常在100000次左右，是Nor Flash的10倍。另外，因为NAND Flash的块大小通常是NorF lash的1&#x2F;8，所以NAND Flash的寿命远远超过Nor Flash。</p>
+<p>嵌入式Linux对Nor、NAND Flash的软件支持都很成熟。在Nor Flash上常用jffs2文 件系统，而在NAND Flash常用yaffs文件系统。在更底层，有MTD驱动程序实现对它们的读、写、擦除操仵，它也实现了EDC&#x2F;ECC校验。</p>
+<p>Nor Flash的操作</p>
+<hr>
+<p>下面我们使用u-boot来体验Nor Flash的操作(开发板设置Nor启动，进入u-boot)。</p>
+<p>使用OpenJTAG烧写UBOOT到Nor Flash</p>
+<p>那么我们怎么用u-boot来操作呢？</p>
+<p>Nor Flash手册里会有一个命令的表格，如图：</p>
+<p><img src="/image/fbf4560f71d5c5379f6e350ff8441167.png" srcset="/img/loading.gif" lazyload alt="fbf4560f71d5c5379f6e350ff8441167.png"></p>
+<p>Word是指使用的nor位宽为16，Byte指使用的nor位宽为8，可以从原理图上看出，我们的是16位的(数据位)，所以我们用的写操作是word那一行</p>
+<p>下面简单的举一些例子：</p>
+<p>复位(reset)：往任何一个地址写入F0。</p>
+<p>读ID(ReadSiliconID)：很多的Nor Flash可以配置成位宽16bit(Word)，位宽8bit(Byte)。对于我们使用的jz2440开发板使用是位宽16bit，怎样读ID呢？</p>
+<p>根据前面得图可知，往Nor Flash的555地址写AA，再往2AA的地址写入55，再往555的地址写入90，然后就可以读ADI地址，就可以读到DDI数据了。</p>
+<p><strong>实例1�</strong>�</p>
+<p>读数据：</p>
+<p>当我们现在u-boot之后，我们退出菜单模式，按q进入命令行。</p>
+<p>在u-boot上执行：md.b0</p>
+<p>结果(和我们烧进去的数据完全一样)：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">00000000</span>:<span class="hljs-number">170000</span>ea14f09fe514f09fe514f09fe5................<br><span class="hljs-attribute">00000010</span>:<span class="hljs-number">14</span>f09fe514f09fe514f09fe514f09fe5................<br><span class="hljs-attribute">00000020</span>:<span class="hljs-number">6001</span>f833c001f8332002f8337002f833`..<span class="hljs-number">3</span>...<span class="hljs-number">3</span>..<span class="hljs-number">3</span>...<span class="hljs-number">3</span><br><span class="hljs-attribute">00000030</span>:e002f8330004f8332004f833efbeadde...<span class="hljs-number">3</span>...<span class="hljs-number">3</span>..<span class="hljs-number">3</span>....<br></code></pre></td></tr></table></figure>
+
+<p>可以得出结论：u-boot可以像读内存一样来读nor flash</p>
+<p><strong>实例2</strong></p>
+<p>读ID(参考Nor手册MX29LV800BBTC)<img src="/image/20da9acc7f43e2d9651848996745b12a.png" srcset="/img/loading.gif" lazyload alt="20da9acc7f43e2d9651848996745b12a.png"></p>
+<ul>
+<li>往地址555H写入AAH(解锁)</li>
+</ul>
+<p> </p>
+<p>          &#x2F;&#x2F;这里的555H是在nor基地址为0的情况下，若不为0需要写入的地址是基地址加上555H </p>
+<ul>
+<li>往地址2AAH写入55H(解锁)</li>
+<li>往地址555H写入90H（命令）</li>
+<li>读0地址得到厂家ID(得到C2H)</li>
+<li>读1地址得到设备ID(22DAH或225BH)</li>
+<li>退出读ID状态：给任意地址写F0H就可以了。</li>
+</ul>
+<p>下图为2440和Nor Flash的简易连接图：</p>
+<p><img src="/image/700px-Chapter15_lesson1_003.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter15_lesson1_003.jpg"></p>
+<p>2440的A1接到Nor的A0所以2440发出的地址是，Nor Flash收到的地址左移一位。比如：2440发出(555H&lt;&lt;1)地址，Nor Flash才能收到555H这个地址。</p>
+<p>下面对在Nor Flash的操作，2440的操作，U-BOOT上的操作进行比较，如下表：</p>
+<p><img src="/image/8917b93067e2129d11f26ae419701fdf.png" srcset="/img/loading.gif" lazyload alt="8917b93067e2129d11f26ae419701fdf.png"></p>
+<p>1). 当执行过</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">0</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果(输出厂家ID)：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">00000000</span>:<span class="hljs-number">00</span>c2..(<span class="hljs-number">00</span>c2就是厂家ID)<br></code></pre></td></tr></table></figure>
+
+<p>2). 当执行过</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">2</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果(输出设备ID)：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-number">00000002</span>:<span class="hljs-number">2249</span>I<span class="hljs-string">&quot;(2249就是设备ID)</span><br></code></pre></td></tr></table></figure>
+
+<p>3).当执行</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mw</span>.w  <span class="hljs-number">0</span>  f0<br></code></pre></td></tr></table></figure>
+
+<p>就退出读ID的状态，</p>
+<p>执行：</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos"><span class="hljs-built_in">md</span>.b0<br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">00000000</span>:<span class="hljs-number">17</span>.（读到的就是Nor Flash地址·<span class="hljs-number">0</span>的数据）<br></code></pre></td></tr></table></figure>
+
+<p>Nor Flash的两种规范</p>
+<hr>
+<p>通常内核里面要识别一个 Nor Flash 有两种方法：</p>
+<p>一种是 jedec 探测，就是在内核里面事先定义一个数组，该数组里面放有不同厂家各个芯片的一些参数，探测的时候将 flash 的 ID 和数组里面的 ID 一一比较，如果发现相同的，就使用该数组的参数。 jedec 探测的优点就是简单，缺点是如果内核要支持的 flash 种类很多，这个数组就会很庞大。内核里面用 jedec 探测一个芯片时，是先通过发命令来获取 flash 的 ID，然后和数组比较，但是 flash.c 中连 ID 都是自己通过宏配置的。</p>
+<p>一种是 CFI(common flash interface)探测，就是直接发各种命令来读取芯片的信息，比如 ID、容量等，芯片本身就包含了电压有多大，容量有有多少等信息。</p>
+<p>下面对在Nor Flash上操作，2440上操作，U-BOOT上操作cfi 探测（读取芯片信息）进行比较参考芯片手册。</p>
+<p>进入CFI模式：往55H地址写入98H</p>
+<p><img src="/image/a3e6fe8bd91b3329b365ecab7497d33b.png" srcset="/img/loading.gif" lazyload alt="a3e6fe8bd91b3329b365ecab7497d33b.png"></p>
+<p>Nor Flash写数据</p>
+<hr>
+<p>我们在Nor Flash的10000的地址读数据，</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clojure"><span class="hljs-number">00100000</span><span class="hljs-symbol">:ffff..</span><br></code></pre></td></tr></table></figure>
+
+<p>在Nor flash的10000的地址写数据下0x1234，</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mw</span>.w <span class="hljs-number">100000</span>   <span class="hljs-number">1234</span><br></code></pre></td></tr></table></figure>
+
+<p>然后在这个地址读数据，</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-number">00100000</span>:<span class="hljs-built_in">ffff</span>(这个地址上的数据没有被修改，写操作无效)。<br></code></pre></td></tr></table></figure>
+
+<p>怎样把数据写进Nor Flash进去呢？</p>
+<p>写数据之前必须保证，要写的地址是擦除的，即全为f。</p>
+<p>下面是Nor Flash的写操作，如下表：</p>
+<p><img src="/image/cadb135ff3ad644288eae215e2a58987.png" srcset="/img/loading.gif" lazyload alt="cadb135ff3ad644288eae215e2a58987.png"></p>
+<p>1). U-BOOT执行完上述指令后，0x1234，就被写到0x100000地址处，</p>
+<p>执行：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w <span class="hljs-number">100000</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果(1234被写进去)：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">00100000</span>:<span class="hljs-number">1234</span>   <span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+
+<p>从这里可以看出来U-BOOT的操作不是很复杂。</p>
+<p>2). 我们再次往0x100000地址处，写入0x5678,执行如下命令：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mw</span>.w  aaa  aa<br><span class="hljs-attribute">mw</span>.w  <span class="hljs-number">554</span>  <span class="hljs-number">55</span><br><span class="hljs-attribute">mw</span>.w  aaa  a0<br><span class="hljs-attribute">mw</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">5678</span><br></code></pre></td></tr></table></figure>
+
+<p>查看0x100000地址处的数据</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">00100000</span>:<span class="hljs-number">12300</span>.<br></code></pre></td></tr></table></figure>
+
+<p>0x100000地址处的数据不是0x5678，写操作失败，失败的原因是，原来的数据已经是0x1234不是全0xffff，再次写操作失败，(Nor Flash只有先擦出，才能烧写)。</p>
+<p>先擦除(参考Nor Flash芯片手册)</p>
+<p><img src="/image/2168704400a6fa73598ba6bc82fed76c.png" srcset="/img/loading.gif" lazyload alt="2168704400a6fa73598ba6bc82fed76c.png"></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">Nor Flash操作      u-boot操作<br><span class="hljs-number">555H</span> <span class="hljs-number">AAH</span>      mw<span class="hljs-number">.</span>w   <span class="hljs-keyword">aaa</span>    aa<br><span class="hljs-number">2AAH</span> <span class="hljs-number">55H</span>      mw<span class="hljs-number">.</span>w   <span class="hljs-number">554</span>    <span class="hljs-number">55</span><br><span class="hljs-number">555H</span> <span class="hljs-number">80H</span>      mw<span class="hljs-number">.</span>w   <span class="hljs-keyword">aaa</span>   <span class="hljs-number">80</span><br><span class="hljs-number">555H</span> <span class="hljs-number">AAH</span>      mw<span class="hljs-number">.</span>w   <span class="hljs-keyword">aaa</span>    aa<br><span class="hljs-number">2AAH</span> <span class="hljs-number">55H</span>      mw<span class="hljs-number">.</span>w   <span class="hljs-number">554</span>    <span class="hljs-number">55</span><br>SA  <span class="hljs-number">30H</span> //往扇区地址写入<span class="hljs-number">30</span>   mw<span class="hljs-number">.</span>w  <span class="hljs-number">100000</span>  <span class="hljs-number">30</span><br></code></pre></td></tr></table></figure>
+
+<p>执行完上述指令后测试</p>
+<p>执行：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clojure"><span class="hljs-number">00100000</span><span class="hljs-symbol">:ffff..</span><br></code></pre></td></tr></table></figure>
+
+<p>已被擦除，这个时候再次烧写就不会有问题了。</p>
+<p>再烧写</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mw</span>.w  aaa   aa<br><span class="hljs-attribute">mw</span>.w  <span class="hljs-number">554</span>   <span class="hljs-number">55</span><br><span class="hljs-attribute">mw</span>.w  aaa   a0<br><span class="hljs-attribute">mw</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">5678</span><br></code></pre></td></tr></table></figure>
+
+<p>测试烧写结果 执行：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">md</span>.w  <span class="hljs-number">100000</span>  <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">00100000</span>:<span class="hljs-number">5678</span>  xV<br></code></pre></td></tr></table></figure>
+
+<p>数据被烧写进去，烧写成功。</p>
+<p>总结：我们烧写时，如果上面的数据，不是0ffff,没有被擦除过，我们就要先擦出，擦除完后，才可以烧写，擦除烧写的命令可以从芯片手册里面获得。</p>
+<p><strong>第002节_Nor Flash编程_识别</strong></p>
+<hr>
+<p><strong>本节实例的目的：识别nor flash�</strong>�</p>
+<p><strong>Nor Flash的测试</strong></p>
+<p>nor_flash_test函数通过switch语句，分别处理识别NOR Flash，擦除NOR Flash某个扇区，编写某个地址，读某个地址。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* Nor_flash.c */</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">nor_flash_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">char</span> c;<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-comment">/* 打印菜单, 供我们选择测试内容 */</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[s] Scan nor flash\n\r&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[e] Erase nor flash\n\r&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[w] Write nor flash\n\r&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[r] Read nor flash\n\r&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[q] quit\n\r&quot;</span>);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter selection: &quot;</span>);<br><br>        c = <span class="hljs-built_in">getchar</span>();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%c\n\r&quot;</span>, c);<br><br>        <span class="hljs-comment">/* 测试内容:</span><br><span class="hljs-comment">         * 1. 识别nor flash</span><br><span class="hljs-comment">         * 2. 擦除nor flash某个扇区</span><br><span class="hljs-comment">         * 3. 编写某个地址</span><br><span class="hljs-comment">         * 4. 读某个地址</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-keyword">switch</span> (c)         <br>        &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;q&#x27;</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Q&#x27;</span>:<br>                <span class="hljs-keyword">return</span>;<br>                <span class="hljs-keyword">break</span>;<br>                <br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;S&#x27;</span>:<br>                <span class="hljs-built_in">do_scan_nor_flash</span>();<br>                <span class="hljs-keyword">break</span>;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;e&#x27;</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;E&#x27;</span>:<br>                <span class="hljs-built_in">do_erase_nor_flash</span>();<br>                <span class="hljs-keyword">break</span>;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;w&#x27;</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;W&#x27;</span>:<br>                <span class="hljs-built_in">do_write_nor_flash</span>();<br>                <span class="hljs-keyword">break</span>;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;r&#x27;</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;R&#x27;</span>:<br>                <span class="hljs-built_in">do_read_nor_flash</span>();<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">default</span>:<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>写入函数</strong></p>
+<p>nor_write_word函数实现往NOR Flash某个地址发送指令，</p>
+<p>offset是基于NOR的角度看到，在jz2440中,NOR基地址为0</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* 比如:   55H 98</span><br><span class="hljs-comment"> * 本意是: 往(0基地址base + (0x55偏移量offset)&lt;&lt;1)写入0x98数据val</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">nor_write_word</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> base, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> offset, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> val)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> *p = (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> *)(base + (offset &lt;&lt; <span class="hljs-number">1</span>));<br>    *p = val;    <span class="hljs-comment">//val是int,而p是short,所以只用到val的最低两个字节</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>不想老重复入固定的base，进行封装一下</p>
+<p>发送命令函数 nor_cmd函数代码如下</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/* offset是基于NOR的角度看到 */</span><br>void nor<span class="hljs-constructor">_cmd(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">offset</span>, <span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">cmd</span>)</span><br>&#123;<br>    nor<span class="hljs-constructor">_write_word(NOR_FLASH_BASE, <span class="hljs-params">offset</span>, <span class="hljs-params">cmd</span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>读取函数</strong></p>
+<p>nor_read_word函数是从NOR Flash 读取两个字节（本开发板位宽16bit），读取数据的地址，是基于2440，所以读取NOR Flash某个地址上的数据时，需要把NOR Flash对应的地址左移一位(地址乘以2)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">nor_read_word</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> base, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> offset)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> *p = (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> *)(base + (offset &lt;&lt; <span class="hljs-number">1</span>));<br>    <span class="hljs-keyword">return</span> *p;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>不想老重复入固定的base，进行封装一下</p>
+<p>向nor_dat函数中写入NOR Flash某个地址，返回该NOR Flash地址上的数据。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">unsigned <span class="hljs-built_in">int</span> nor<span class="hljs-constructor">_dat(<span class="hljs-params">unsigned</span> <span class="hljs-params">int</span> <span class="hljs-params">offset</span>)</span><br>&#123;<br>    return nor<span class="hljs-constructor">_read_word(NOR_FLASH_BASE, <span class="hljs-params">offset</span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>进入NOR FLASH的CFI模式，读取各类信息</strong></p>
+<p>do_scan_nor_flash函数代码如下，该函数的功能：进入CFI模式读取NOR Flash中的厂家ID，设备ID,容量等信息。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-number">50</span><span class="hljs-comment">/* 进入NOR FLASH的CFI模式</span><br><span class="hljs-comment">51 * 读取各类信息</span><br><span class="hljs-comment">52 */</span><br><span class="hljs-number">53</span>   <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_scan_nor_flash</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function">54   </span>&#123;<br><span class="hljs-number">55</span>           <span class="hljs-type">char</span> str[<span class="hljs-number">4</span>];<br><span class="hljs-number">56</span>           <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> size;<br><span class="hljs-number">57</span>           <span class="hljs-type">int</span> regions, i;<br><span class="hljs-number">58</span>           <span class="hljs-type">int</span> region_info_base;<br><span class="hljs-number">59</span>           <span class="hljs-type">int</span> block_addr, blocks, block_size, j;<br><span class="hljs-number">60</span>           <span class="hljs-type">int</span> cnt;<br><span class="hljs-number">61</span><br><span class="hljs-number">62</span>           <span class="hljs-type">int</span> vendor, device;<br><span class="hljs-number">63</span>   <br><span class="hljs-number">64</span>           <span class="hljs-comment">/* 打印厂家ID、设备ID */</span><br><span class="hljs-number">65</span>           <span class="hljs-built_in">nor_cmd</span>(<span class="hljs-number">0x555</span>, <span class="hljs-number">0xaa</span>);     <span class="hljs-comment">/* 解锁 */</span><br><span class="hljs-number">66</span>           <span class="hljs-built_in">nor_cmd</span>(<span class="hljs-number">0x2aa</span>, <span class="hljs-number">0x55</span>);<br><span class="hljs-number">67</span>           <span class="hljs-built_in">nor_cmd</span>(<span class="hljs-number">0x555</span>, <span class="hljs-number">0x90</span>);     <span class="hljs-comment">/* read id */</span><br><span class="hljs-number">68</span>           vendor = <span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">0</span>);<br><span class="hljs-number">69</span>           device = <span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">1</span>);<br><span class="hljs-number">70</span>           <span class="hljs-built_in">nor_cmd</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0xf0</span>);         <span class="hljs-comment">/* reset */</span><br><span class="hljs-number">71</span>   <br><span class="hljs-number">72</span>           <span class="hljs-built_in">nor_cmd</span>(<span class="hljs-number">0x55</span>, <span class="hljs-number">0x98</span>);      <span class="hljs-comment">/* 进入cfi模式 */</span>    <br><span class="hljs-number">73</span><br><span class="hljs-number">74</span>           str[<span class="hljs-number">0</span>] = <span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">0x10</span>);<br><span class="hljs-number">75</span>           str[<span class="hljs-number">1</span>] = <span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">0x11</span>);<br><span class="hljs-number">76</span>           str[<span class="hljs-number">2</span>] = <span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">0x12</span>);<br><span class="hljs-number">77</span>           str[<span class="hljs-number">3</span>] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br><span class="hljs-number">78</span>           <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;str = %s&quot;</span>, str);<br><span class="hljs-number">79</span><br><span class="hljs-number">80</span>           <span class="hljs-comment">/* 打印容量 */</span><br><span class="hljs-number">81</span>           size = <span class="hljs-number">1</span>&lt;&lt;(<span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">0x27</span>));<br><span class="hljs-number">82</span>           <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;v=0x%x,d=0x%x,s=0x%x,%dM&quot;</span>,vendor,device,size,size/(<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>));<br><span class="hljs-number">83</span><br><span class="hljs-number">84</span>           <span class="hljs-comment">/* 打印各个扇区的起始地址 */</span><br><span class="hljs-number">85</span>           <span class="hljs-comment">/* 名词解释:</span><br><span class="hljs-comment">86                * Erase block region : 里面含有1个或多个block, 它们的大小一样87                * 一个nor flash含有1个或多个region</span><br><span class="hljs-comment">88                * 一个region含有1个或多个block(扇区)</span><br><span class="hljs-comment">89</span><br><span class="hljs-comment">90                * Erase block region information:</span><br><span class="hljs-comment">91                *    前2字节+1    : 表示该region有多少个block </span><br><span class="hljs-comment">92                *   后2字节*256   : 表示block的大小93               */</span><br><span class="hljs-number">94</span><br><span class="hljs-number">95</span>           regions = <span class="hljs-built_in">nor_dat</span>(<span class="hljs-number">0x2c</span>);        <span class="hljs-comment">//确认有多少regions</span><br><span class="hljs-number">96</span>           region_info_base = <span class="hljs-number">0x2d</span>;<br><span class="hljs-number">97</span>           block_addr = <span class="hljs-number">0</span>;<br><span class="hljs-number">98</span>           <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Block/Sector start Address:&quot;</span>);<br><span class="hljs-number">99</span>           cnt = <span class="hljs-number">0</span>;<br><span class="hljs-number">100</span>          <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; regions; i++)<br><span class="hljs-number">101</span>          &#123;<br><span class="hljs-number">102</span>             blocks = <span class="hljs-number">1</span> + <span class="hljs-built_in">nor_dat</span>(region_info_base)+(<span class="hljs-built_in">nor_dat</span>(region_info_base+<span class="hljs-number">1</span>)&lt;&lt;<span class="hljs-number">8</span>);<br><span class="hljs-number">103</span>             block_size = <span class="hljs-number">256</span>*(<span class="hljs-built_in">nor_dat</span>(region_info_base+<span class="hljs-number">2</span>)+(<span class="hljs-built_in">nor_dat</span>(region_info_base+<span class="hljs-number">3</span>)&lt;&lt;<span class="hljs-number">8</span>));<br><span class="hljs-number">104</span>             region_info_base += <span class="hljs-number">4</span>;<br><span class="hljs-number">105</span><br><span class="hljs-number">106</span>             <span class="hljs-comment">//printf(&quot;…………&quot;);</span><br><span class="hljs-number">107</span><br><span class="hljs-number">108</span>                  <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; blocks; j++)<br><span class="hljs-number">109</span>                  &#123;<br><span class="hljs-number">110</span>                          <span class="hljs-comment">/* 打印每个block的起始地址 */</span><br><span class="hljs-number">111</span>                           <br><span class="hljs-number">112</span>                          <span class="hljs-built_in">printHex</span>(block_addr);<br><span class="hljs-number">113</span>                          <span class="hljs-built_in">putchar</span>(<span class="hljs-string">&#x27; &#x27;</span>);<br><span class="hljs-number">114</span>                          cnt++;    <br><span class="hljs-number">115</span>                          block_addr += block_size;    <br>                                        <span class="hljs-comment">//打印完一个后,block_addr指向下一个block</span><br><span class="hljs-number">116</span>                          <span class="hljs-keyword">if</span> (cnt % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>)    <span class="hljs-comment">//打印五个后就换行</span><br><span class="hljs-number">117</span>                          <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n\r&quot;</span>);<br><span class="hljs-number">118</span>          &#125;<br><span class="hljs-number">119</span>          &#125;<br><span class="hljs-number">120</span>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n\r&quot;</span>);<br><br><span class="hljs-number">121</span>      <span class="hljs-comment">/* 退出CFI模式 */</span><br><span class="hljs-number">122</span>      <span class="hljs-built_in">nor_cmd</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0xf0</span>);<br><span class="hljs-number">123</span>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>第65，66行 这两步是解锁，解锁之后就进入读ID状态，就可以读取厂家和设备ID了。</p>
+<p>第68行 是把读取到的厂家ID的值，复制给vendor变量。</p>
+<p>第69行 是把读取到的设备ID的值，复制给device变量。</p>
+<p>第70行 退出读ID状态: 给任意地址写F0H。</p>
+<p>第72行,往地址0x55地址写入数据0x98,是进入cfi模式。</p>
+<p>第74，75，76行是读取NOR Flash地址0x10,0x11,x012中的字符，赋值给字符串str。</p>
+<p>第81行，根据芯片手册可知道，读取NOR Flash地址0x27处的数据，得到的是NOR Flash容量大小2的幂数，所以把1左移读取到的数据，就可得到NOR Flash的容量。</p>
+<p>第95行读取NOR Flash地址0x2c地址中的数据，可以得到NOR Flash中有多少region。</p>
+<p>第102行根据Erase block region information:的信息可以知道读取[2E,2D]这两个字节的地址+1，可以得到一个region有多少block(参考芯片手册)。代码中的region_info_base变量的值是0x2d,0x2d是前两个字节中的低字节，0x2e是前两个字节中的高字节，所以需要左移8位，然后加上1就得到了一个region有多少block.。</p>
+<p>第103行参考芯片手册，读取[30,2F]这两个字节地址，然后乘上256就可以得到一个块的大小。</p>
+<p>第104行，地址加4，读取下一个region有多少block和每个block的大小。</p>
+<p>第112,115行，由于NOR Flash的基地址是0，所以第一个block的首地址是0，下一个block的首地址，就是上一个block的首地址加上block的大小。</p>
+<p>第112行往0地址写入0xf0,退出CFI模式。</p>
+<p><strong>Nor Flash的测试</strong></p>
+<p>nor_flash_test函数通过switch语句，分别处理识别NOR Flash，擦除NOR Flash某个扇区，编写某个地址，读某个地址。代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-number">232</span>        <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">nor_flash_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function">233  </span>&#123;<br><span class="hljs-number">234</span>          <span class="hljs-type">char</span> c;<br><span class="hljs-number">235</span><br><span class="hljs-number">236</span>          <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br><span class="hljs-number">237</span>          &#123;<br><span class="hljs-number">238</span>                  <span class="hljs-comment">/* 打印菜单, 供我们选择测试内容 */</span><br><span class="hljs-number">239</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[s] Scan nor flash\n\r&quot;</span>);<br><span class="hljs-number">240</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[e] Erase nor flash\n\r&quot;</span>);<br><span class="hljs-number">241</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[w] Write nor flash\n\r&quot;</span>);<br><span class="hljs-number">242</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[r] Read nor flash\n\r&quot;</span>);<br><span class="hljs-number">243</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[q] quit\n\r&quot;</span>);<br><span class="hljs-number">244</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter selection: &quot;</span>);<br><span class="hljs-number">245</span><br><span class="hljs-number">246</span>                  c = <span class="hljs-built_in">getchar</span>();<br><span class="hljs-number">247</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%c&quot;</span>, c);<br><span class="hljs-number">248</span><br><span class="hljs-number">249</span>                  <span class="hljs-comment">/* 测试内容:</span><br><span class="hljs-comment">250                       * 1. 识别nor flash</span><br><span class="hljs-comment">251                       * 2. 擦除nor flash某个扇区</span><br><span class="hljs-comment">252                       * 3. 编写某个地址</span><br><span class="hljs-comment">253                       * 4. 读某个地址</span><br><span class="hljs-comment">254                       */</span><br><span class="hljs-number">255</span>                  <span class="hljs-keyword">switch</span> (c)                 <br><span class="hljs-number">256</span>                  &#123;<br><span class="hljs-number">257</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;q&#x27;</span>:<br><span class="hljs-number">258</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;Q&#x27;</span>:<br><span class="hljs-number">259</span>                                  <span class="hljs-keyword">return</span>;<br><span class="hljs-number">260</span>                                  <span class="hljs-keyword">break</span>;<br><span class="hljs-number">261</span>                          <br><span class="hljs-number">262</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>:<br><span class="hljs-number">263</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;S&#x27;</span>:<br><span class="hljs-number">264</span>                                  <span class="hljs-built_in">do_scan_nor_flash</span>();<br><span class="hljs-number">265</span>                                  <span class="hljs-keyword">break</span>;<br><span class="hljs-number">266</span><br><span class="hljs-number">267</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;e&#x27;</span>:<br><span class="hljs-number">268</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;E&#x27;</span>:<br><span class="hljs-number">269</span>                                  <span class="hljs-built_in">do_erase_nor_flash</span>();<br><span class="hljs-number">270</span>                                  <span class="hljs-keyword">break</span>;<br><span class="hljs-number">271</span><br><span class="hljs-number">272</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;w&#x27;</span>:<br><span class="hljs-number">273</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;W&#x27;</span>:<br><span class="hljs-number">274</span>                                  <span class="hljs-built_in">do_write_nor_flash</span>();<br><span class="hljs-number">275</span>                                  <span class="hljs-keyword">break</span>;<br><span class="hljs-number">276</span><br><span class="hljs-number">277</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;r&#x27;</span>:<br><span class="hljs-number">278</span>                          <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;R&#x27;</span>:<br><span class="hljs-number">279</span>                                  <span class="hljs-built_in">do_read_nor_flash</span>();<br><span class="hljs-number">280</span>                                  <span class="hljs-keyword">break</span>;<br><span class="hljs-number">281</span>                          <span class="hljs-keyword">default</span>:<br><span class="hljs-number">282</span>                                  <span class="hljs-keyword">break</span>;<br><span class="hljs-number">283</span>                  &#125;<br><span class="hljs-number">284</span>          &#125;<br><span class="hljs-number">285</span>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>主函数</strong></p>
+<p>main函数代码如下所示。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-number">12</span> int <span class="hljs-selector-tag">main</span>(void)<br><span class="hljs-number">13</span>   &#123;<br><span class="hljs-number">14</span>           <span class="hljs-built_in">led_init</span>();<br><span class="hljs-number">15</span>           <span class="hljs-comment">//interrupt_init();  /* 初始化中断控制器 */</span><br><span class="hljs-number">16</span>           <span class="hljs-built_in">key_eint_init</span>();   <span class="hljs-comment">/* 初始化按键, 设为中断源 */</span><br><span class="hljs-number">17</span>           <span class="hljs-comment">//timer_init();</span><br><span class="hljs-number">18</span>   <br><span class="hljs-number">19</span>           <span class="hljs-built_in">puts</span>(&quot;\n\rg_A = &quot;);<br><span class="hljs-number">20</span>           <span class="hljs-built_in">printHex</span>(g_A);<br><span class="hljs-number">21</span>           <span class="hljs-built_in">puts</span>(&quot;\n\r&quot;);<br><span class="hljs-number">22</span><br><span class="hljs-number">23</span>           <span class="hljs-built_in">nor_flash_test</span>();<br><span class="hljs-number">24</span>   <br><span class="hljs-number">25</span>           return <span class="hljs-number">0</span>;<br><span class="hljs-number">26</span>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p>出现两个错误</p>
+<p>一：多次操作后会崩溃，把timer中断去掉，否则: 测试NOR Flash时进入CFI等模式时, 如果发生了中断，cpu必定读NOR Flash，那么读不到正确的指令，导致程序崩溃。</p>
+<p>二：打印厂家ID,设备ID出错</p>
+<p>查询汇编文件，发现在nor_write_word中，我们本意一次性把val的最低两字节写入p,</p>
+<p>而实际上它是一个一个字节操作的</p>
+<p>必应搜索后得到建议“设置你的 -march ”</p>
+<p>查询uboot得到应在编译链接时加上 -march&#x3D;armv4 ,表示使用armv4的指令集</p>
+<p>即：编译程序时加上:-march&#x3D;armv4，否则</p>
+<p>volatile unsigned short *p &#x3D; xxx</p>
+<p>*p &#x3D; val; 会被拆分为2个strb操作</p>
+<p><strong>第003节_Nor Flash编程_擦写读</strong></p>
+<hr>
+<p>本实例的目的：擦除nor flash某个扇区，编写某个地址，读某个地址。</p>
+<p><strong>等待烧写</strong></p>
+<p>等待烧写完成 : 读数据, Q6无变化时表示结束 (参考芯片手册)，</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">35 </span>void wait_ready(unsigned <span class="hljs-keyword">int</span> addr)<br><span class="hljs-number">36</span>   &#123;<br><span class="hljs-number">37</span>           unsigned <span class="hljs-keyword">int</span> <span class="hljs-keyword">val</span>;<br><span class="hljs-number">38</span>           unsigned <span class="hljs-keyword">int</span> pre;<br><span class="hljs-number">39</span><br><span class="hljs-number">40</span>           pre = nor_dat(addr&gt;&gt;<span class="hljs-number">1</span>);<br><span class="hljs-number">41</span>           <span class="hljs-keyword">val</span> = nor_dat(addr&gt;&gt;<span class="hljs-number">1</span>);<br><span class="hljs-number">42</span>           <span class="hljs-keyword">while</span> ((<span class="hljs-keyword">val</span> &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">6</span>)) != (pre &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">6</span>)))<br><span class="hljs-number">43</span>           &#123;<br><span class="hljs-number">44</span>                   pre = <span class="hljs-keyword">val</span>;<br><span class="hljs-number">45</span>                   <span class="hljs-keyword">val</span> = nor_dat(addr&gt;&gt;<span class="hljs-number">1</span>);         <br><span class="hljs-number">46</span>           &#125;<br><span class="hljs-number">47</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>擦除NOR Flash 某个扇区</strong></p>
+<p>do_erase_nor_flash函数的代码如下。参考芯片手册，就可以知道擦除某个扇区，还是相对比较简单的。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-number">125</span>        void <span class="hljs-keyword">do</span><span class="hljs-constructor">_erase_nor_flash(<span class="hljs-params">void</span>)</span><br><span class="hljs-number">126</span>  &#123;<br><span class="hljs-number">127</span>          unsigned <span class="hljs-built_in">int</span> addr;<br><span class="hljs-number">128</span>  <br><span class="hljs-number">129</span>                  <span class="hljs-comment">/* 获得地址 */</span><br><span class="hljs-number">130</span>          printf(<span class="hljs-string">&quot;Enter the address of sector to erase: &quot;</span>);<br><span class="hljs-number">131</span>          addr = get<span class="hljs-constructor">_uint()</span>;<br><span class="hljs-number">132</span><br><span class="hljs-number">133</span>          printf(<span class="hljs-string">&quot;erasing ...&quot;</span>);<br><span class="hljs-number">134</span>          nor<span class="hljs-constructor">_cmd(0x555, 0xaa)</span>;      <span class="hljs-comment">/* 解锁 */</span><br><span class="hljs-number">135</span>          nor<span class="hljs-constructor">_cmd(0x2aa, 0x55)</span>;<br><span class="hljs-number">136</span>          nor<span class="hljs-constructor">_cmd(0x555, 0x80)</span>;      <span class="hljs-comment">/* erase sector */</span><br><span class="hljs-number">137</span>  <br><span class="hljs-number">138</span>          nor<span class="hljs-constructor">_cmd(0x555, 0xaa)</span>;      <span class="hljs-comment">/* 解锁 */</span><br><span class="hljs-number">139</span>          nor<span class="hljs-constructor">_cmd(0x2aa, 0x55)</span>;<br><span class="hljs-number">140</span>          nor<span class="hljs-constructor">_cmd(<span class="hljs-params">addr</span>&gt;&gt;1, 0x30)</span>;    <span class="hljs-comment">/* 发出扇区地址 */</span><br><span class="hljs-number">141</span>          wait<span class="hljs-constructor">_ready(<span class="hljs-params">addr</span>)</span>;<br><span class="hljs-number">142</span>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>第131行，get_uint函数用于获取输入的地址。</p>
+<p>第134,135这两行是解锁。</p>
+<p>第136行是erase sector。</p>
+<p>第138,139行是再次解锁。</p>
+<p>第140行是对发出的扇区地址。</p>
+<p>第 141行等待擦除完成。</p>
+<p><strong>写NOR Flash</strong></p>
+<p>do_write_nor_flash的代码如下所示，开发板上的NOR Flash的位宽是16bit,所以可以把要写的数据构造出16bit然后在写进NOR Flash中。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-number">144</span>        void do_write_nor_flash(void)<br><span class="hljs-number">145</span>  &#123;<br><span class="hljs-number">146</span>          unsigned int <span class="hljs-keyword">addr;</span><br><span class="hljs-keyword"></span><span class="hljs-number">147</span>          unsigned char str[<span class="hljs-number">100</span>];<br><span class="hljs-number">148</span>          int i, <span class="hljs-keyword">j;</span><br><span class="hljs-keyword"></span><span class="hljs-number">149</span>                  unsigned int val;<br><span class="hljs-number">150</span>  <br><span class="hljs-number">151</span>          <span class="hljs-comment">/* 获得地址 */</span><br><span class="hljs-number">152</span>          printf(<span class="hljs-string">&quot;Enter the address of sector to write: &quot;</span>);<br><span class="hljs-number">153</span>          <span class="hljs-keyword">addr </span>= get_uint();<br><span class="hljs-number">154</span><br><span class="hljs-number">155</span>          printf(<span class="hljs-string">&quot;Enter the string to write: &quot;</span>);<br><span class="hljs-number">156</span>          gets(str);<br><span class="hljs-number">157</span><br><span class="hljs-number">158</span>          printf(<span class="hljs-string">&quot;writing ...\n\r&quot;</span>);<br><span class="hljs-number">159</span><br><span class="hljs-number">160</span>          <span class="hljs-comment">/* str[0],str[1]==&gt;16bit </span><br><span class="hljs-comment">161           * str[2],str[3]==&gt;16bit </span><br><span class="hljs-comment">162           */</span><br><span class="hljs-number">163</span>          i = <span class="hljs-number">0</span>;<br><span class="hljs-number">164</span>          <span class="hljs-keyword">j </span>= <span class="hljs-number">1</span>;<br><span class="hljs-number">165</span>          while (str[i] &amp;&amp; str[<span class="hljs-keyword">j])</span><br><span class="hljs-keyword"></span><span class="hljs-number">166</span>          &#123;<br><span class="hljs-number">167</span>                  val = str[i] + (str[<span class="hljs-keyword">j]&lt;&lt;8);</span><br><span class="hljs-keyword"></span><span class="hljs-number">168</span>          <br><span class="hljs-number">169</span>                  <span class="hljs-comment">/* 烧写 */</span><br><span class="hljs-number">170</span>                  <span class="hljs-keyword">nor_cmd(0x555, </span><span class="hljs-number">0xaa</span>)<span class="hljs-comment">;  /* 解锁 */</span><br><span class="hljs-number">171</span>                  <span class="hljs-keyword">nor_cmd(0x2aa, </span><span class="hljs-number">0x55</span>);<br><span class="hljs-number">172</span>                  <span class="hljs-keyword">nor_cmd(0x555, </span><span class="hljs-number">0xa0</span>)<span class="hljs-comment">;  /* program */</span><br><span class="hljs-number">173</span>                  <span class="hljs-keyword">nor_cmd(addr&gt;&gt;1, </span>val);<br><span class="hljs-number">174</span>                  <span class="hljs-comment">/* 等待烧写完成 : 读数据, Q6无变化时表示结束 */</span><br><span class="hljs-number">175</span>                  <span class="hljs-keyword">wait_ready(addr);</span><br><span class="hljs-keyword"></span><span class="hljs-number">176</span><br><span class="hljs-number">177</span>                  i += <span class="hljs-number">2</span>;<br><span class="hljs-number">178</span>                  <span class="hljs-keyword">j </span>+= <span class="hljs-number">2</span>;<br><span class="hljs-number">179</span>                  <span class="hljs-keyword">addr </span>+= <span class="hljs-number">2</span>;<br><span class="hljs-number">180</span>          &#125;<br><span class="hljs-number">181</span><br><span class="hljs-number">182</span>          val = str[i];<br><span class="hljs-number">183</span>          <span class="hljs-comment">/* 烧写 */</span><br><span class="hljs-number">184</span>          <span class="hljs-keyword">nor_cmd(0x555, </span><span class="hljs-number">0xaa</span>)<span class="hljs-comment">;  /* 解锁 */</span><br><span class="hljs-number">185</span>          <span class="hljs-keyword">nor_cmd(0x2aa, </span><span class="hljs-number">0x55</span>);<br><span class="hljs-number">186</span>          <span class="hljs-keyword">nor_cmd(0x555, </span><span class="hljs-number">0xa0</span>)<span class="hljs-comment">;  /* program */</span><br><span class="hljs-number">187</span>          <span class="hljs-keyword">nor_cmd(addr&gt;&gt;1, </span>val);<br><span class="hljs-number">188</span>          <span class="hljs-comment">/* 等待烧写完成 : 读数据, Q6无变化时表示结束 */</span><br><span class="hljs-number">189</span>          <span class="hljs-keyword">wait_ready(addr);</span><br><span class="hljs-keyword"></span><span class="hljs-number">190</span>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>第153行把通过get_uint获得的地址赋值给addr变量，</p>
+<p>第156行通过gets函数获得输入的字符串。</p>
+<p>第168行两个8位的数据，组合成一个16位的数据赋值给变量val。</p>
+<p><strong>读NOR Flash</strong></p>
+<p>do_read_nor_flash函数代码如下，由于NOR Flash是内存类接口，可以像内存一样读取。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-number">191</span>        <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_read_nor_flash</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function">192  </span>&#123;<br><span class="hljs-number">193</span>          <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> addr;<br><span class="hljs-number">194</span>          <span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *p;<br><span class="hljs-number">195</span>          <span class="hljs-type">int</span> i, j;<br><span class="hljs-number">196</span>          <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> c;<br><span class="hljs-number">197</span>          <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> str[<span class="hljs-number">16</span>];<br><span class="hljs-number">198</span>  <br><span class="hljs-number">199</span>          <span class="hljs-comment">/* 获得地址 */</span><br><span class="hljs-number">200</span>          <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the address to read: &quot;</span>);<br><span class="hljs-number">201</span>          addr = <span class="hljs-built_in">get_uint</span>();    <span class="hljs-comment">//得到一个unsignt的地址</span><br><span class="hljs-number">202</span><br><span class="hljs-number">203</span>          p = (<span class="hljs-keyword">volatile</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *)addr;<br><span class="hljs-number">204</span><br><span class="hljs-number">205</span>          <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Data :  \n\r&quot;</span>);<br><span class="hljs-number">206</span>          <span class="hljs-comment">/* 长度固定为64 */</span><br><span class="hljs-number">207</span>          <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++)<br><span class="hljs-number">208</span>          &#123;<br><span class="hljs-number">209</span>                  <span class="hljs-comment">/* 每行打印16个数据 */</span><br><span class="hljs-number">210</span>                  <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; j++)<br><span class="hljs-number">211</span>                  &#123;<br><span class="hljs-number">212</span>                          <span class="hljs-comment">/* 先打印数值 */</span><br><span class="hljs-number">213</span>                          c = *p++;<br><span class="hljs-number">214</span>                          str[j] = c;<br><span class="hljs-number">215</span>                          <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%02x &quot;</span>, c);<br><span class="hljs-number">216</span>                  &#125;<br><span class="hljs-number">217</span><br><span class="hljs-number">218</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;   ; &quot;</span>);<br><span class="hljs-number">219</span><br><span class="hljs-number">220</span>                  <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">16</span>; j++)<br><span class="hljs-number">221</span>                  &#123;<br><span class="hljs-number">222</span>                          <span class="hljs-comment">/* 后打印字符 */</span><br><span class="hljs-number">223</span>                          <span class="hljs-keyword">if</span> (str[j] &lt; <span class="hljs-number">0x20</span> || str[j] &gt; <span class="hljs-number">0x7e</span>) <span class="hljs-comment">/* 不可视字符 */</span><br><span class="hljs-number">224</span>                                  <span class="hljs-built_in">putchar</span>(<span class="hljs-string">&#x27;.&#x27;</span>);<br><span class="hljs-number">225</span>                          <span class="hljs-keyword">else</span><br><span class="hljs-number">226</span>                                  <span class="hljs-built_in">putchar</span>(str[j]);<br><span class="hljs-number">227</span>                  &#125;<br><span class="hljs-number">228</span>                  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n\r&quot;</span>);<br><span class="hljs-number">229</span>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>第201行中的get_uint函数，从串口中获得输入的地址。</p>
+<p>第203行，强制类型转化。</p>
+<p>第207行~216行是对NOR Flash内容的读取，输出的内容为16进制的数据，由于NOR Flash是内存类接口，可以像内存一样读取。</p>
+<p>第220行~227输出NOR Flash的内容为字符型数据，其中的第223行用来判断，输出的字符是否为不可视字符，要是为不可视字符输出点’.’,要是可视字符输出字符。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第015课 NOR Flash</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第015课_NOR_Flash/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC014%E8%AF%BE_%E5%BC%82%E5%B8%B8%E4%B8%8E%E4%B8%AD%E6%96%AD/" title="第014课 异常与中断">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第014课 异常与中断</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC013%E8%AF%BE_%E4%BB%A3%E7%A0%81%E9%87%8D%E5%AE%9A%E4%BD%8D/" title="第013课 代码重定位">
+                        <span class="hidden-mobile">第013课 代码重定位</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

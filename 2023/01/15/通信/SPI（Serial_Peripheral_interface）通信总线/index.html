@@ -1,0 +1,726 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、简介 SPI，串行外围设备接口,是一种高速、全双工、同步的通信总线。主要应用在EEPROM，FLASH，实时时钟，AD转换，还有数字信号处理器和数字信号解码器之间。 二、特点 2.1 控制方式 （1）SPI规定两个SPI设备之间通信必须由主设备来控制次设备 （2）一个Master可以通过提供Clock和对Slave进行片选控制多个Slave （3）Slave的Clock必须由Master通过S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPI（Serial Peripheral interface）通信总线">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%80%9A%E4%BF%A1/SPI%EF%BC%88Serial_Peripheral_interface%EF%BC%89%E9%80%9A%E4%BF%A1%E6%80%BB%E7%BA%BF/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="一、简介 SPI，串行外围设备接口,是一种高速、全双工、同步的通信总线。主要应用在EEPROM，FLASH，实时时钟，AD转换，还有数字信号处理器和数字信号解码器之间。 二、特点 2.1 控制方式 （1）SPI规定两个SPI设备之间通信必须由主设备来控制次设备 （2）一个Master可以通过提供Clock和对Slave进行片选控制多个Slave （3）Slave的Clock必须由Master通过S">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/03523fda32d30b8c468c8e595feaab58.jfif">
+<meta property="og:image" content="https://godxqi.github.io/image/371a89bd63671adf39c93e572a2b5c55.png">
+<meta property="og:image" content="https://godxqi.github.io/image/579c9b550fe122161d8d197ec2e6e04b.png">
+<meta property="og:image" content="https://godxqi.github.io/image/988790-20200311120250511-621966252.png">
+<meta property="og:image" content="https://godxqi.github.io/image/988790-20200311121435779-1051725621.png">
+<meta property="og:image" content="https://godxqi.github.io/image/988790-20200311121424628-840109130.png">
+<meta property="article:published_time" content="2023-01-15T12:50:12.080Z">
+<meta property="article:modified_time" content="2023-01-15T12:51:12.849Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="通信协议">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/03523fda32d30b8c468c8e595feaab58.jfif">
+  
+  
+  
+  <title>SPI（Serial Peripheral interface）通信总线 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="SPI（Serial Peripheral interface）通信总线"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:50" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SPI（Serial Peripheral interface）通信总线</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>一、简介</p>
+<p>SPI，串行外围设备接口,是一种高速、全双工、同步的通信总线。主要应用在EEPROM，FLASH，实时时钟，AD转换，还有数字信号处理器和数字信号解码器之间。</p>
+<p>二、特点</p>
+<p>2.1 控制方式</p>
+<p>（1）SPI规定两个SPI设备之间通信必须由主设备来控制次设备</p>
+<p>（2）一个Master可以通过提供Clock和对Slave进行片选控制多个Slave</p>
+<p>（3）Slave的Clock必须由Master通过SCK提供给Slave，Slave本身不能产生或控制Clock，没有Clock则Slave设备不能正常工作</p>
+<p>2.2 传输方式</p>
+<p>同步方式传输。</p>
+<p>Master 设备会根据将要交换的数据来产生相应的时钟脉冲(Clock Pulse),时钟脉冲组成了时钟信号(Clock Signal) ,时钟信号通过时钟极性(CPOL)和时钟相位(CPHA)控制着两个SPI设备间何时数据交换以及何时对接收到的数据进行采样,来保证数据在两个设备之间是同步传输的。</p>
+<p>2.3 数据交换</p>
+<p><img src="/image/03523fda32d30b8c468c8e595feaab58.jfif" srcset="/img/loading.gif" lazyload alt="03523fda32d30b8c468c8e595feaab58.jfif"></p>
+<p>2.3.1 接口</p>
+<p>（1）SCLK：串行时钟，用来同步数据传输，由主机输出；</p>
+<p>（2）MOSI（SDO）：主机输出从机输入数据线；</p>
+<p>（3）MISO（SDI）：主机输入从机输出数据线；</p>
+<p>（4）SS：片选线，低电平有效，由主机输出</p>
+<p>2.3.2 寄存器</p>
+<p><img src="/image/371a89bd63671adf39c93e572a2b5c55.png" srcset="/img/loading.gif" lazyload alt="371a89bd63671adf39c93e572a2b5c55.png"></p>
+<p>在SPI设备中都具有</p>
+<ul>
+<li>SSPBUF：SPI设备里的内部缓冲区，保存传输中的临时数据，物理上以FIFO的形式</li>
+<li>SSPSR：SPI设备里的移位寄存器。</li>
+<li>Controller：SPI 设备里面的控制寄存器, 可以通过配置它们来设置 SPI 总线的传输模式</li>
+</ul>
+<p>2.3.3 交换方式</p>
+<p>（1）SPI规定一个SPI设备不能在数据通信中只发送或只接收，每个Clock周期内，SPI设备都会发送并接收1bit的数据（串行），所以称为“数据交换”而不是“数据传输”</p>
+<p>（2）在一个SPI时钟周期内，会完成如下操作：</p>
+<p>①主机通过MOSI线发送1位数据，从机通过该线读取这1位数据；</p>
+<p>②从机通过MISO线发送1位数据，主机通过该线读取这1位数据。</p>
+<p>主从机的移位寄存器连成一个环，随着时钟脉冲，数据按照从高位到低位的方式一次移出主机寄存器和从机寄存器，然后依次移入从机寄存器和主机寄存器。</p>
+<p>三、工作机制</p>
+<p>3.1 时钟极性和时钟相位</p>
+<p>3.1.1 时钟极性：CPOL（Clock Polarity）</p>
+<p>时钟空闲时即时钟在发送8个bit数据之前和之后的状态。时钟极性设置时钟空闲时的电平。</p>
+<p>数据传输往往从跳变沿开始，即开始传输数据时必是下降沿或上升沿。</p>
+<ul>
+<li>CPOL &#x3D; 1：无数据传输时为高电平，空闲状态后第一个跳变沿为下降沿</li>
+<li>CPOL &#x3D; 0：无数据传输时为低电平，空闲状态后第一个跳变沿为上升沿</li>
+</ul>
+<p>3.1.2 时钟相位：CPHA（Clock Phase）</p>
+<p>一个时钟周期有两个跳变沿，CPHA决定数据采样在哪个边沿。</p>
+<ul>
+<li>CPHA &#x3D; 0：表示从第一个跳变沿（上升沿）开始采样</li>
+<li>CPHA &#x3D; 1：表示从第二个跳变沿（下降沿）开始采样</li>
+</ul>
+<p>3.1.3 4种模式</p>
+<p>（1）模式0：CPOL&#x3D;0; CPHA&#x3D;0</p>
+<p>CPOL &#x3D; 0：空闲时是低电平，第1个跳变沿是上升沿，第2个跳变沿是下降沿 CPHA &#x3D; 0：数据在第1个跳变沿（上升沿）采样</p>
+<p><img src="/image/579c9b550fe122161d8d197ec2e6e04b.png" srcset="/img/loading.gif" lazyload alt="579c9b550fe122161d8d197ec2e6e04b.png"></p>
+<p>（2）模式1：CPOL&#x3D;0; CPHA&#x3D;1</p>
+<p>CPOL &#x3D; 0：空闲时是低电平，第1个跳变沿是上升沿，第2个跳变沿是下降沿</p>
+<p>CPHA &#x3D; 1：数据在第2个跳变沿（下降沿）采样</p>
+<p><img src="/image/988790-20200311120250511-621966252.png" srcset="/img/loading.gif" lazyload alt="988790-20200311120250511-621966252.png"></p>
+<p>（3）模式2：CPOL&#x3D;1; CPHA&#x3D;0</p>
+<p>CPOL &#x3D; 1：空闲时是高电平，第1个跳变沿是下降沿，第2个跳变沿是上升沿</p>
+<p>CPHA &#x3D; 0：数据在第1个跳变沿（下降沿）采样</p>
+<p><img src="/image/988790-20200311121435779-1051725621.png" srcset="/img/loading.gif" lazyload alt="988790-20200311121435779-1051725621.png"></p>
+<p>（4）模式3：CPOL&#x3D;1; CPHA&#x3D;1</p>
+<p>CPOL &#x3D; 1：空闲时是高电平，第1个跳变沿是下降沿，第2个跳变沿是上升沿</p>
+<p>CPHA &#x3D; 1：数据在第2个跳变沿（上升沿）采样</p>
+<p><img src="/image/988790-20200311121424628-840109130.png" srcset="/img/loading.gif" lazyload alt="988790-20200311121424628-840109130.png"></p>
+<p>四、优缺点</p>
+<p>4.1 优点</p>
+<p>全双工、操作简单、数据传输速率高</p>
+<p>普通的串行通讯一次连续传送至少8位数据，SPI允许数据一位一位的传送，甚至允许暂停（根据时钟信号）</p>
+<p>4.2 缺点</p>
+<p>需要占用主机较多口线（一个从机一条片选线）</p>
+<p>只支持单个主机</p>
+<p>没有指定的流控制，没有应答机制确认是否收到数据</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%80%9A%E4%BF%A1/" class="category-chain-item">通信</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">#通信协议</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>SPI（Serial Peripheral interface）通信总线</div>
+      <div>https://godxqi.github.io/2023/01/15/通信/SPI（Serial_Peripheral_interface）通信总线/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%80%9A%E4%BF%A1/UART%EF%BC%88Universal_Asynchronous_Receiver-Transmitter%EF%BC%89/" title="UART（Universal Asynchronous Receiver/Transmitter）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">UART（Universal Asynchronous Receiver/Transmitter）</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%80%9A%E4%BF%A1/RS232%E3%80%81RS485%E9%80%9A%E4%BF%A1%E7%BD%91%E7%BB%9C-%E5%8D%8F%E8%AE%AE/" title="RS232、RS485通信网络/协议">
+                        <span class="hidden-mobile">RS232、RS485通信网络/协议</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

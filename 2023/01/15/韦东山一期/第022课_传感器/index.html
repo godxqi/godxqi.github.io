@@ -1,0 +1,1157 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="目录   第001节_光敏电阻的使用 第002节_高精度延时函数 第003节_DHT11温湿度传感器的使用 第004节_DS18B20温度传感器介绍 第005节_DS18B20温度传感器编程 第006节_红外线遥控协议简介及编程思路 第007节_前期编程_系统时间与环型缓冲区 第008节_HS0038红外线接收器的编程_打印原始脉冲 第009节_HS0038红外线接收器的编程_解析数据  第001">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第022课_传感器">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC022%E8%AF%BE_%E4%BC%A0%E6%84%9F%E5%99%A8/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="目录   第001节_光敏电阻的使用 第002节_高精度延时函数 第003节_DHT11温湿度传感器的使用 第004节_DS18B20温度传感器介绍 第005节_DS18B20温度传感器编程 第006节_红外线遥控协议简介及编程思路 第007节_前期编程_系统时间与环型缓冲区 第008节_HS0038红外线接收器的编程_打印原始脉冲 第009节_HS0038红外线接收器的编程_解析数据  第001">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter22_lesson1_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter22_lesson1_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/800px-Chapter22_lesson1_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson2_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson3_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson3_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson3_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson3_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson3_005.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson4_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson4_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/00dad52bd88f2d5682c5812bcd27073c.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_005.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_006.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_007.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_008.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_009.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson4_010.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson4_011.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_005.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_006.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson6_007.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson7_001.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson8_001.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson8_002.png">
+<meta property="og:image" content="https://godxqi.github.io/image/700px-Chapter22_lesson8_003.png">
+<meta property="og:image" content="https://godxqi.github.io/image/Chapter22_lesson8_004.png">
+<meta property="og:image" content="https://godxqi.github.io/image/7871f3581421a7aee9f6f7c13488006f.png">
+<meta property="og:image" content="https://godxqi.github.io/image/da1f5da3fc9b9b3c197d63bc3a5b8e65.png">
+<meta property="og:image" content="https://godxqi.github.io/image/04daa15cd569b9bfc6522e00aa199e98.png">
+<meta property="og:image" content="https://godxqi.github.io/image/3d86f212ea209185073a878b66223ce2.png">
+<meta property="article:published_time" content="2023-01-15T12:59:58.022Z">
+<meta property="article:modified_time" content="2023-01-15T13:02:14.546Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/800px-Chapter22_lesson1_001.png">
+  
+  
+  
+  <title>第022课_传感器 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="第022课_传感器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          20k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          170 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">第022课_传感器</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>目录</strong></p>
+<hr>
+<ol>
+<li>第001节_光敏电阻的使用</li>
+<li>第002节_高精度延时函数</li>
+<li>第003节_DHT11温湿度传感器的使用</li>
+<li>第004节_DS18B20温度传感器介绍</li>
+<li>第005节_DS18B20温度传感器编程</li>
+<li>第006节_红外线遥控协议简介及编程思路</li>
+<li>第007节_前期编程_系统时间与环型缓冲区</li>
+<li>第008节_HS0038红外线接收器的编程_打印原始脉冲</li>
+<li>第009节_HS0038红外线接收器的编程_解析数据</li>
+</ol>
+<p><strong>第001节_光敏电阻的使用</strong></p>
+<hr>
+<p>这节课我们开始讲的传感器，有光敏电阻、DH11温湿度传感器、DS18B20温度传感器、HS0038红外接收器。</p>
+<p>首先介绍光敏电阻传感器。</p>
+<p>光敏电阻有一个特点，就是它的阻值随光照强度变化而变化，</p>
+<p>看一下它的原理图，R5是一个普通电阻，LAS1是光敏电阻，它们串联组成一个分压电路，</p>
+<p>LAS1阻值变化，将会导致中间RES_AO测得的电压发生变化。</p>
+<p><img src="/image/800px-Chapter22_lesson1_001.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter22_lesson1_001.png"></p>
+<p>这个电路图有点绕，画一个示意图如下：</p>
+<p><img src="/image/800px-Chapter22_lesson1_002.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter22_lesson1_002.png"></p>
+<p>使用ADC测量A点的电压，可以得知LAS1的变化情况，这里的测量是一个模拟信号。</p>
+<p>现在假如需要这个光敏系统在光照大于&#x2F;小于某个值时，发出中断，怎么办呢？</p>
+<p>这里就需要再加一个比较的电路，B处的电压是可调电阻得到的电压，可以通过调节电阻进行变化。A、B两个电压最后接在一个比较器的“正负端”，当A&gt;B时，输出1，反之输出0。</p>
+<p>通过调节可调电阻，可以实现对比较阈值的控制。</p>
+<p>现在这个电路就即可得到模拟信号和数字信号。</p>
+<p>现在就可以开始写程序了，复制前面024的代码为025_sensors，这是这一章的第一个项目，再创建个001_photoresistor文件夹，将代码都放进去。</p>
+<p>再创建一个sensors文件夹用来放本课的所有传感器代码，然后再创建photoresistor文件夹放本节课代码，再在里面创建photoresistor.c。</p>
+<p>在代码里面，我们要做两件事：</p>
+<ol>
+<li>启动ADC，读出AIN1电压值；</li>
+<li>注册中断，当光线强度超过或小于某个阈值时，产生中断；</li>
+</ol>
+<p>打开工程里的adc代码，原来的adc_init，只初始化了adc0，现在我们要用AIN1，修改下代码，传入个参数就能初始化对应的AIN:</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ada">void adc_init(int channel)<br>&#123;<br>        /* [<span class="hljs-number">15</span>] : <span class="hljs-type">ECFLG</span>,  <span class="hljs-number">1</span> = <span class="hljs-keyword">End</span> <span class="hljs-keyword">of</span> A/D conversion  <br>         * [<span class="hljs-number">14</span>] : <span class="hljs-type">PRSCEN</span>, <span class="hljs-number">1</span> = A/D converter prescaler enable  <br>         * [<span class="hljs-number">13</span>:<span class="hljs-number">6</span>]: PRSCVL, adc clk = PCLK / (PRSCVL + <span class="hljs-number">1</span>)  <br>         * [<span class="hljs-number">5</span>:<span class="hljs-number">3</span>] : <span class="hljs-type">SEL_MUX</span>, <span class="hljs-number">000</span> = AIN <span class="hljs-number">0</span>  <br>         * [<span class="hljs-number">2</span>]   : <span class="hljs-type">STDBM</span>  <br>         * [<span class="hljs-number">0</span>]   : 1 = <span class="hljs-type">A</span>/D conversion starts <span class="hljs-keyword">and</span> this bit <span class="hljs-keyword">is</span> cleared after the startup.  <br>         */<br>        ADCCON = (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">14</span>) | (<span class="hljs-number">49</span>&lt;&lt;<span class="hljs-number">6</span>) | (channel&lt;&lt;<span class="hljs-number">3</span>);<br><br>        ADCDLY = <span class="hljs-number">0</span>xff;       <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>后面的adc_read_ain0只能读取AIN0的数据，现在修改一下，传入个通道参数，就能读取对应通道的ADC值：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> adc<span class="hljs-constructor">_read(<span class="hljs-params">int</span> <span class="hljs-params">channel</span>)</span><br>&#123;<br>        adc<span class="hljs-constructor">_init(<span class="hljs-params">channel</span>)</span>;<br>        <br>        <span class="hljs-comment">/* 启动ADC */</span><br>        ADCCON <span class="hljs-pattern-match">|= (1&lt;&lt;0);</span><br><span class="hljs-pattern-match"></span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">while</span> (!(<span class="hljs-constructor">ADCCON</span> &amp; (1&lt;&lt;15)));  <span class="hljs-operator">/</span><span class="hljs-operator">*</span> 等待<span class="hljs-constructor">ADC</span>结束 <span class="hljs-operator">*</span><span class="hljs-operator">/</span></span><br><span class="hljs-pattern-match"></span><br><span class="hljs-pattern-match">        return <span class="hljs-constructor">ADCDAT0</span> &amp; 0x3ff;</span><br><span class="hljs-pattern-match">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>修改了这两个函数，原来的adc_test函数里调用的adc读取函数也要对应进行修改。</p>
+<p>参考这个adc_test，编写photoresistor_test函数。</p>
+<p>需要修改的内容并不多，首先是修改adc_read参数，将通道0改为通道1。</p>
+<p>然后我们想同时再把AIN0上的滑动电阻对应的电压也读出来，因此再做一次ADC0读取的操作。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs awk">void photoresistor_test(void)<br>&#123;<br>        int val, val0;<br>        double vol, vol0;<br>        int m, m0; <span class="hljs-regexp">/* 整数部分 */</span><br>        int n, n0; <span class="hljs-regexp">/* 小数部分 */</span><br>        <br>        <span class="hljs-regexp">//</span>adc_init();<br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                val = adc_read(<span class="hljs-number">1</span>);<br>                vol = (double)val<span class="hljs-regexp">/1023*3.3;   /</span>* <span class="hljs-number">1023</span>----<span class="hljs-number">3.3</span>v */<br>                m = (int)vol;      <span class="hljs-regexp">/* 3.01, m = 3 */</span><br>                vol = vol - m;  <span class="hljs-regexp">/* 小数部分: 0.01 */</span><br>                n = vol * <span class="hljs-number">1000</span>;  <span class="hljs-regexp">/* 10 */</span><br><br>                val0 = adc_read(<span class="hljs-number">0</span>);<br>                vol0 = (double)val0<span class="hljs-regexp">/1023*3.3;   /</span>* <span class="hljs-number">1023</span>----<span class="hljs-number">3.3</span>v */<br>                m0 = (int)vol0;    <span class="hljs-regexp">/* 3.01, m = 3 */</span><br>                vol0 = vol0 - m0;       <span class="hljs-regexp">/* 小数部分: 0.01 */</span><br>                n0 = vol0 * <span class="hljs-number">1000</span>;  <span class="hljs-regexp">/* 10 */</span><br><br>                <span class="hljs-regexp">/* 在串口上打印 */</span><br>                printf(<span class="hljs-string">&quot;photoresistor vol: %d.%03dv, compare to threshold %d.%03dv\r&quot;</span>, m, n, m0, n0);  <span class="hljs-regexp">/* 3.010v */</span><br><br>                <span class="hljs-regexp">/* 在LCD上打印 */</span><br>                <span class="hljs-regexp">//</span>fb_print_string();<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上就完成了我们的第一个目标。</p>
+<p>现在开始做第二个目标，注册中断放在interrupt.c里实现。</p>
+<p>硬件上RES_DO是EINT15。我们可以仿照之前的按键中断来编写本次的中断。</p>
+<p>先分析一下中断，如图：</p>
+<p><img src="/image/800px-Chapter22_lesson1_003.png" srcset="/img/loading.gif" lazyload alt="800px-Chapter22_lesson1_003.png"></p>
+<p>GPG7作为中断引脚，它会先经过外部中断EINTMASK寄存器，才能进入到中断控制器。</p>
+<p>所以，需要做以下操作：</p>
+<ol>
+<li>首先初始化：</li>
+</ol>
+<p>a.GPG7配置为中断引脚；</p>
+<p>b.设置中端触发方式：双边沿触发；</p>
+<p>c.设置EINTMASK使能中断；</p>
+<ol>
+<li>中断处理：</li>
+</ol>
+<p>a.分辨：读EINTPEND;</p>
+<p>b.读GPG7；</p>
+<p>在原来的key_eint_init函数里配置GPG7为中断引脚:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">    /* 配置GPG7为中断引脚, 用于光敏电阻 */<br>    GPGCON &amp;= ~((3&lt;&lt;<span class="hljs-string">14));</span><br><span class="hljs-string">    GPGCON |= ((2&lt;&lt;14</span>));<br></code></pre></td></tr></table></figure>
+
+<p>然后设置中端触发方式：双边沿触发</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gcode">    <span class="hljs-comment">/* 设置中断触发方式: 双边沿触发 */</span><br>    EXTI<span class="hljs-symbol">NT0</span> |= <span class="hljs-comment">(7&lt;&lt;0)</span> | <span class="hljs-comment">(7&lt;&lt;8)</span>;     <span class="hljs-comment">/* S2,S3 */</span><br>    EXTI<span class="hljs-symbol">NT1</span> |= <span class="hljs-comment">(7&lt;&lt;12)</span>;             <span class="hljs-comment">/* S4 */</span><br>    EXTI<span class="hljs-symbol">NT2</span> |= <span class="hljs-comment">(7&lt;&lt;12)</span>;             <span class="hljs-comment">/* S5 */</span><br></code></pre></td></tr></table></figure>
+
+<p>最后再使能中断：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">    <span class="hljs-regexp">/* 使能中断GPG7/</span>EINT15, 用于光敏电阻 */<br>    EINTMASK &amp;= ~((<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">15</span>));<br></code></pre></td></tr></table></figure>
+
+<p>修改key_eint_irq中断处理函数，先判断是哪个中断产生，再读取电平，打印。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (val <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">15</span>)) <span class="hljs-comment">/* eint15, 用于光敏电阻 */</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (val2 <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">7</span>))<br>            &#123;<br>                printf(<span class="hljs-string">&quot;<span class="hljs-subst">\n</span><span class="hljs-subst">\r</span>photoresistor dark!<span class="hljs-subst">\n</span><span class="hljs-subst">\r</span>&quot;</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                printf(<span class="hljs-string">&quot;<span class="hljs-subst">\n</span><span class="hljs-subst">\r</span>photoresistor light!<span class="hljs-subst">\n</span><span class="hljs-subst">\r</span>&quot;</span>);<br>            &#125;<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>至此，代码就写完了，最后还要修改对应的Makefile和主函数。</p>
+<p><strong>第002节_高精度延时函数</strong></p>
+<hr>
+<p>在后续我们对讲解多个传感器，这几个传感器对时序的要求都比较高，比如温湿度传感器DH11，查看芯片手册时序，至少就需要微秒级的延时函数。</p>
+<p>延时函数的方式一般有两种:</p>
+<ol>
+<li>使用for循环，利用示波器等工具测得精确值；</li>
+<li>使用定时器，通过不断检测定时器的计数值获得精确时间；</li>
+</ol>
+<p>使用for循环的方式，可能会因为硬件的差异，导致延时函数不准，因此这里我们使用定时器的方式。</p>
+<p>打开之前的timers.c文件，修改timer_init函数的配置。</p>
+<p>PCLK仍然等于50000000，将prescaler value改为4，divider value设置为2，</p>
+<p>这样，每减1, 对应0.2us；每减5, 对应1us；从50000减到0，对应10ms。</p>
+<p>修改对应的寄存器：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">    TCFG0 = <span class="hljs-number">4</span>;  <span class="hljs-regexp">/* Prescaler 0 = 4, 用于timer0,1 */</span><br>    TCFG1 &amp;= ~<span class="hljs-number">0</span>xf; <span class="hljs-regexp">/* MUX0 : 1/</span><span class="hljs-number">2</span> */<br><br>    <span class="hljs-regexp">/* 设置TIMER0的初值 */</span><br>    TCNTB0 = <span class="hljs-number">50000</span>;  <span class="hljs-regexp">/* 10Ms中断一次 */</span><br></code></pre></td></tr></table></figure>
+
+<p>我们先写一个us延时的函数，然后ms延时就调用us即可。</p>
+<p>因此，us延时函数里，尽量少调用函数。</p>
+<p>假如现在要延时nus，我们先将n*5，得到nus对应的“计数时钟数”。</p>
+<p>然后如果传入“计数时钟周期”如果大于0，则一直计算过去了多少个“计数时钟数”，与传入的“计数时钟数”相减，直到为零，退出循环，也就实现了延时nus。</p>
+<p>怎样计算过去了多少个“计算周期”呢？</p>
+<p>自然是当前的值，减去一开始进入函数的值。</p>
+<p>但还有一种情况是定时器里的计数记到0时，会自动变成5000，计数计数，这时候，计算方式就变成了pre+(5000-cur)：</p>
+<p><img src="/image/700px-Chapter22_lesson2_001.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson2_001.png"></p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs excel">/* 尽量少调用函数 */<br>void udelay(<span class="hljs-built_in">int</span> <span class="hljs-built_in">n</span>)<br>&#123;<br>        <span class="hljs-built_in">int</span> cnt = <span class="hljs-built_in">n</span> * <span class="hljs-number">5</span>;  /* u us 对应<span class="hljs-built_in">n</span>*<span class="hljs-number">5</span>个计数值 */<br>        <span class="hljs-built_in">int</span> pre = TCNTO0;<br>        <span class="hljs-built_in">int</span> cur;<br>        <span class="hljs-built_in">int</span> <span class="hljs-built_in">delta</span>;<br><br>        while (cnt &gt; <span class="hljs-number">0</span>)<br>        &#123;<br>                cur = TCNTO0;<br>                <span class="hljs-built_in">if</span> (cur &lt;= pre)<br>                        <span class="hljs-built_in">delta</span> = pre - cur;<br>                else<br>                        <span class="hljs-built_in">delta</span> = pre + (<span class="hljs-number">50000</span> - cur);<br><br>                cnt = cnt - <span class="hljs-built_in">delta</span>;<br>                pre = cur;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后时ms延时函数：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs scss">void <span class="hljs-built_in">mdelay</span>(int m)<br>&#123;<br>        <span class="hljs-built_in">udelay</span>(m*<span class="hljs-number">1000</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们可以写一个测试函数，简单的测试下是否可用，测试函数隔1分钟进行打印一下。</p>
+<p>如果us不准的话，放大至s，会有比较大的偏差，这样可以进行粗略的检测，精确检测可以使用示波器等工具。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">hrtimer_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;delay one min: &quot;</span>);<br>                <span class="hljs-built_in">mdelay</span>(<span class="hljs-number">60000</span>); <span class="hljs-comment">/* 延时1分钟 */</span><br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n\r&quot;</span>, ++cnt);<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>前面延时里的计算还是比较耗费时间的，因此，我们尽量提高CPU的运行时钟，并且 将尽可能的启动icache、dcache和mmu。</p>
+<p>此外，如果延时过程中，发生了中断，如果中断比较耗时的话，就会导致延时可能出现不准确，所以，我们可以延时之前关中断, 延时之后开中断；</p>
+<p>课后作业:</p>
+<ul>
+<li>a. 禁止icache, 禁止mmu, 修改lds, 测试延时函数是否还准确；</li>
+<li>b. 测试延时之前关中断, 延时之后开中断；</li>
+</ul>
+<p><strong>第003节_DHT11温湿度传感器的使用</strong></p>
+<hr>
+<p>这节课开始讲解DH11温湿度传感器的使用，首先查看芯片手册，里面的典型应用电路如下：</p>
+<p><img src="/image/700px-Chapter22_lesson3_001.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson3_001.png"></p>
+<p>MCU通过一条数据线与DH11连接，MCU通过这条线发命令给DH11，DH11再通过这条线把数据发送给MCU。</p>
+<p>因此，温湿度模块的核心就是 MCU发给DH11的命令格式和DH11返回的数据格式。</p>
+<p>再来先简单看一下通讯的时序：</p>
+<p><img src="/image/700px-Chapter22_lesson3_002.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson3_002.png"></p>
+<p>灰色这条线是由MCU驱动控制的，浅色的部分是由DH11驱动控制的。</p>
+<p>首先MCU发送一个开始信号，这个开始信号是一个低脉冲，然后再拉高。</p>
+<p>然后，DH11拉低，做出一个响应信号，再拉高。</p>
+<p>接着就是DH11返回的数据。</p>
+<p>这些数据一共有40bit,高位先出。</p>
+<p>数据格式:8bit湿度整数数据+8bit湿度小数数据+8bi温度整数数据+8bit温度小数数据+8bit校验和</p>
+<p>且当前小数部分用于以后扩展,现读出为零.</p>
+<p>数据传送正确时校验和数据等于“8bit湿度整数数据+8bit湿度小数数据+8bi温度整数数据+8bit温度小数数据”所得结果的末8位。</p>
+<p>DH11的难点是前面所说的时序脉冲,需要满足一定的时长.比如开始信号:</p>
+<p><img src="/image/700px-Chapter22_lesson3_003.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson3_003.png"></p>
+<p>MCU必须先拉低至少18ms,然后再拉高20-40us,DH11再拉低80us以响应,最后再拉高80us.</p>
+<p>接下来就是传输数据,我们的目的就是读到温湿度的数据,这些数据由DH11提供,那它怎么传回这些数据,怎么表示0和1呢?</p>
+<p><img src="/image/Chapter22_lesson3_004.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson3_004.png"></p>
+<p><img src="/image/Chapter22_lesson3_005.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson3_005.png"></p>
+<p>可以看到，不管是0还是1，都开始是50us的低电平，</p>
+<p>对于0数据，之后是26~28us的高电平；</p>
+<p>对于1数据，之后是70us的高电平;</p>
+<p>有了上面的知识，加上之前的高精度延时，现在就可以开始写程序了。</p>
+<p>复制前面的第二个程序，文件名改为003_dht11_022_003，然后在sensors目录里新建dht11目录，再创建一个dht11.c文件。</p>
+<p>我们的目的是，控制GPIO读取DHT11的数据，流程如下：</p>
+<ol>
+<li>主机发出至少18MS的低脉冲: start信号</li>
+<li>start信号变为高, 20-40us之后, dht11会拉低总线维持80us，然后拉高80us: 回应信号</li>
+<li>之后就是数据, 逐位发送</li>
+</ol>
+<ul>
+<li>bit0 : 50us低脉冲, 26-28us高脉冲</li>
+<li>bit1 : 50us低脉冲, 70us高脉冲</li>
+</ul>
+<ol>
+<li>数据有40bit: 8bit湿度整数数据+8bit湿度小数数据+8bit温度整数数据+8bit温度小数数据+8bit校验和</li>
+</ol>
+<p>DH11的DATA引脚连接到了GPG5。</p>
+<p>先实现GPIO的基本操作，配置GPIO模式，实现输出、输入引脚的功能：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dht11_data_cfg_as_output</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-variable constant_">GPGCON</span> &amp;= ~(<span class="hljs-number">3</span>&lt;&lt;<span class="hljs-number">10</span>);<br>        <span class="hljs-variable constant_">GPGCON</span> |= (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">10</span>);<br>&#125;<br><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dht11_data_cfg_as_input</span>(<span class="hljs-params"><span class="hljs-keyword">void</span></span>)<br>&#123;<br>        <span class="hljs-variable constant_">GPGCON</span> &amp;= ~(<span class="hljs-number">3</span>&lt;&lt;<span class="hljs-number">10</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再设置输出电平或读取引脚数据：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">dht11_data_set</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">if</span> (val)<br>                GPGDAT |= (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>);<br>        <span class="hljs-keyword">else</span><br>                GPGDAT &amp;= ~(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">dht11_data_get</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">if</span> (GPGDAT &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>))<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">else</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再来实现DHT11的读操作。</p>
+<p>在芯片手册里介绍说，DH11传感器上电后，要等待1s，以越过不稳定状态，在此期间无需发送任何指令。</p>
+<p>因此首先写一个初始化函数，跳过这个不稳定状态：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scss">void <span class="hljs-built_in">dht11_init</span>(void)<br>&#123;<br>        <span class="hljs-built_in">dht11_data_cfg_as_output</span>();<br>        <span class="hljs-built_in">dht11_data_set</span>(<span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">mdelay</span>(<span class="hljs-number">2000</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>根据start时序要求，编写程序，维持一个大于18ms的低电平，然后释放引脚，及设置为输入引脚即可。</p>
+<p>因为该引脚接有上拉电阻，一旦MCU设置为输入，引脚电平将有上拉电阻决定。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scss">static void <span class="hljs-built_in">dht11_start</span>(void)<br>&#123;<br>        <span class="hljs-built_in">dht11_data_set</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-built_in">mdelay</span>(<span class="hljs-number">20</span>);<br>        <span class="hljs-built_in">dht11_data_cfg_as_input</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后等待40us以上，再去读取引脚电平，判断是否被拉低，以确定DH11给了响应。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs scss">static int <span class="hljs-built_in">dht11_wait_ack</span>(void)<br>&#123;<br>        <span class="hljs-built_in">udelay</span>(<span class="hljs-number">60</span>);<br>        return <span class="hljs-built_in">dht11_data_get</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再写个延时函数，用于时序中的，等待响应信号结束：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">static <span class="hljs-built_in">int</span> dht11<span class="hljs-constructor">_wait_for_val(<span class="hljs-params">int</span> <span class="hljs-params">val</span>, <span class="hljs-params">int</span> <span class="hljs-params">timeout_us</span>)</span><br>&#123;<br>        <span class="hljs-keyword">while</span> (timeout_us--)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (dht11<span class="hljs-constructor">_data_get()</span><span class="hljs-operator"> == </span><span class="hljs-keyword">val</span>)<br>                        return <span class="hljs-number">0</span>; <span class="hljs-comment">/* ok */</span><br>                udelay(<span class="hljs-number">1</span>);<br>        &#125;<br>        return -<span class="hljs-number">1</span>; <span class="hljs-comment">/* err */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>后面的数据会有五个字节组成，这里先写出读取一个字节，每个字节要读取8位。</p>
+<p>先等待直到高电平，过滤到共同的50us延时，然后延时28us以上，再读取引脚电平，</p>
+<p>如果引脚电平是1，则数据是1，反之是0。</p>
+<p>然后再直到低电平的到来，循环8次，完成一个字节数据的读取。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">dht11_recv_byte</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">int</span> i;<br>        <span class="hljs-type">int</span> data = <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">8</span>; i++)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">dht11_wait_for_val</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1000</span>))<br>                &#123;<br>                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;dht11 wait for high data err!\n\r&quot;</span>);<br>                        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>                &#125;<br>                <span class="hljs-built_in">udelay</span>(<span class="hljs-number">40</span>);<br>                data &lt;&lt;= <span class="hljs-number">1</span>;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">dht11_data_get</span>() == <span class="hljs-number">1</span>)<br>                        data |= <span class="hljs-number">1</span>;<br>                <br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">dht11_wait_for_val</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1000</span>))<br>                &#123;<br>                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;dht11 wait for low data err!\n\r&quot;</span>);<br>                        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> data;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>第004节_DS18B20温度传感器介绍</strong></p>
+<hr>
+<p>比DHT11温湿度传感器精度高很多</p>
+<p><img src="/image/Chapter22_lesson4_001.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson4_001.png"></p>
+<p>DS18B20只通过一条数据线传输数据，既要控制器发送数据给芯片，又要通过芯片发送数据给控制器，所以这个是双向传输数据的</p>
+<p>怎么在一个引脚上实现数据的双向传输 : 参考这视频的第19分钟之后的内容: 第19课_第001节_I2C协议与EEPROM</p>
+<p>检测温度，我们需要一个主控芯片</p>
+<p>如果有多个温度传感器，则需要一个主控制器去管理它们，通过发送命令传输数据，每个设备都会有固化在芯片内部的64bit ID的ROM来用于区分不同的设备</p>
+<p>如果主控制器想访问设备，必须发送命令，这个命令中带有ID返回值</p>
+<p>怎么访问指定的DS18B20</p>
+<ol>
+<li><p>发出低脉冲，提醒准备工作: initialization</p>
+</li>
+<li><p>发出ID命令:ROM Command</p>
+</li>
+<li><p>发出功能命令: Function Command</p>
+<ul>
+<li>a.转换温度</li>
+<li>b.读温度，读数据</li>
+</ul>
+</li>
+</ol>
+<p>每次操作，都要重重上述过程</p>
+<p>内部框图</p>
+<p><img src="/image/700px-Chapter22_lesson4_002.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_002.png"></p>
+<p>TEMPERATURE SENSOR温度ADC</p>
+<p>SCRATCHPAD实际上是一个9 byte的内存 9byte的说明如下图所示</p>
+<p><img src="/image/700px-Chapter22_lesson4_003.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_003.png"></p>
+<p>温度值会保存在9byte内存中的 BYTE0 和 BYTE1 也就是当我们发出一个温度值的命令之后，还需要发送一个读内存的命令才能把温度值读取出来</p>
+<p>最后一位是CRC校验码，通过前8位的数据和最后一位的校验码比较 64位数据中有8位是校验码，</p>
+<p><strong>问题1：怎么采样温度？</strong></p>
+<ol>
+<li>初始化</li>
+<li>ROM命令</li>
+<li>FunctionCommand 设置某些值，比如转换温度</li>
+<li>等待完成</li>
+<li>init</li>
+<li>R om cmd</li>
+<li>Function Command 读RAM中的值</li>
+</ol>
+<p><img src="/image/Chapter22_lesson4_004.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson4_004.png"></p>
+<p>关于EEPROM寄存器 前面两个字节可以用来设置用户自己的目的，也可以用来设置Th Tl 寄存器 Th Tl 寄存器就是用来设置警报，温度的上限或者下限，当温度超过某个值时它会发出警报 所谓警报只不过是在DS18B20中设置状态而已，并不能主动通知主芯片 主芯片可以发出某些命令来确定那些芯片发出了警报 配置寄存器，用于设置精度，精度越高转换时间越长</p>
+<p>EEPROM使用</p>
+<ol>
+<li><p>上电</p>
+<ul>
+<li>EEPROM自动放入RAM用于控制精度这些</li>
+</ul>
+</li>
+<li><p>写EEPROM</p>
+<ul>
+<li>发出命令先写RAM</li>
+<li>从RAM传到EEPROM</li>
+</ul>
+</li>
+<li><p>读出EEPROM的值</p>
+<ul>
+<li>EEPROM值保存到RAM</li>
+<li>发出命令读RAM</li>
+</ul>
+</li>
+</ol>
+<p>关于ROM命令和功能命令整理成一个表格</p>
+<p><img src="/image/00dad52bd88f2d5682c5812bcd27073c.png" srcset="/img/loading.gif" lazyload alt="00dad52bd88f2d5682c5812bcd27073c.png"></p>
+<p>信号传输</p>
+<ol>
+<li><p>怎么initialization(初始化)</p>
+</li>
+<li><p>怎么发数据，怎么发出1bit</p>
+<ul>
+<li>怎么发出bit0</li>
+<li>怎么发出bit1</li>
+</ul>
+</li>
+<li><p>怎么读数据&#x3D;&#x3D;&gt;怎么读1bit</p>
+<ul>
+<li>怎么判读读到0</li>
+<li>怎么判断读到1</li>
+</ul>
+</li>
+</ol>
+<p>初始化时序</p>
+<p><img src="/image/700px-Chapter22_lesson4_005.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_005.png"></p>
+<p>一开始是高电平，想要开始传输信号，必须要拉低至少480us释放总线 经过15<del>60us之后 DS18B20会把这条线拉低60</del>240us</p>
+<p><strong>问题2：怎么发数据，怎么发出1bit</strong></p>
+<ul>
+<li>怎么发出bit0</li>
+<li>怎么发出bit1</li>
+</ul>
+<p>写数据时序</p>
+<p><img src="/image/700px-Chapter22_lesson4_006.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_006.png"></p>
+<p>不论是写0还是写1时序都是大于60us 写0拉低总线维持60us以上 写1时，信号线拉低1us时间，提醒要写数据了，让后回高，写1位之间的时间间隔1us</p>
+<p><img src="/image/700px-Chapter22_lesson4_007.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_007.png"></p>
+<p>读数据时序 也是由主机发起 提醒脉冲大于1us,主机马上释放总线 在15us之内读信号，一个读周期至少是60us，每位的间隔也是1us</p>
+<p>DS18B20提供了编程图</p>
+<p><img src="/image/700px-Chapter22_lesson4_008.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_008.png"></p>
+<p>供电方式</p>
+<p><img src="/image/700px-Chapter22_lesson4_009.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_009.png"></p>
+<p>参考资料: DS18B20 驱动编写 </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>blog.csdn.net<span class="hljs-regexp">/zqixiao_09/</span>article<span class="hljs-regexp">/details/</span><span class="hljs-number">50973969</span><br></code></pre></td></tr></table></figure>
+
+<p>CRC8校验分析和DS18B20的CRC8编程实现方法 </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>www.<span class="hljs-number">360</span>doc.com<span class="hljs-regexp">/content/</span><span class="hljs-number">15</span><span class="hljs-regexp">/1230/</span><span class="hljs-number">17</span>/<span class="hljs-number">27708084</span>_524223594.shtml<br></code></pre></td></tr></table></figure>
+
+<p><strong>第005节_DS18B20温度传感器编程</strong></p>
+<hr>
+<p>​设置精度相关的位</p>
+<p><img src="/image/700px-Chapter22_lesson4_010.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson4_010.png"></p>
+<p>创建ds18b20目录 查看使用那个引脚</p>
+<p><img src="/image/Chapter22_lesson4_011.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson4_011.png"></p>
+<p>使用GPG6引脚</p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-comment">#include &quot;../../s3c2440_soc.h&quot;</span><br><br><span class="hljs-comment">/* 使用GPG6作用ds18b20的DATA引脚 */</span><br><br><span class="hljs-comment">/*定义命令和函数的宏*/</span><br><span class="hljs-comment">/* rom commands */</span><br><span class="hljs-comment">#define SEARCH_ROM    0xF0</span><br><span class="hljs-comment">#define READ_ROM      0x33</span><br><span class="hljs-comment">#define MATCH_ROM     0x55</span><br><span class="hljs-comment">#define SKIP_ROM      0xCC</span><br><span class="hljs-comment">#define ALARM_ROM     0xEC</span><br><br><span class="hljs-comment">/* functions commands */</span><br><span class="hljs-comment">#define CONVERT_TEAMPERATURE 0x44</span><br><span class="hljs-comment">#define WRITE_SCRATCHPAD     0x4E</span><br><span class="hljs-comment">#define READ_SCRATCHPAD      0xBE</span><br><span class="hljs-comment">#define COPY_SCRATCHPAD      0x48</span><br><span class="hljs-comment">#define RECALL_EEPROM        0xB8</span><br><span class="hljs-comment">#define READ_POWER_SUPPLY    0xB4</span><br><br><span class="hljs-comment">/* 先实现GPIO的基本操作 */</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_data_cfg_as_output</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-variable">GPGCON</span> <span class="hljs-operator">&amp;</span><span class="hljs-operator">=</span> <span class="hljs-operator">~</span>(<span class="hljs-number">3</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">12</span>);<br>        <span class="hljs-variable">GPGCON</span> <span class="hljs-operator">|</span><span class="hljs-operator">=</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">12</span>);<br>&#125;<br><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_data_cfg_as_input</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-variable">GPGCON</span> <span class="hljs-operator">&amp;</span><span class="hljs-operator">=</span> <span class="hljs-operator">~</span>(<span class="hljs-number">3</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">12</span>);<br>&#125;<br><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_data_set</span>(<span class="hljs-params">int</span> <span class="hljs-params">val</span>)<br>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">val</span>)<br>                <span class="hljs-variable">GPGDAT</span> <span class="hljs-operator">|</span><span class="hljs-operator">=</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">6</span>);<br>        <span class="hljs-keyword">else</span><br>                <span class="hljs-variable">GPGDAT</span> <span class="hljs-operator">&amp;</span><span class="hljs-operator">=</span> <span class="hljs-operator">~</span>(<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">6</span>);<br>&#125;<br><br><span class="hljs-keyword">static</span> int <span class="hljs-title function_">ds18b20_data_get</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">GPGDAT</span> <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">6</span>))<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">else</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">/*通过函数设置时间*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_data_set_val_for_time</span>(<span class="hljs-params">int</span> <span class="hljs-params">val</span>, <span class="hljs-params">int</span> <span class="hljs-params">us</span>)<br>&#123;<br>        <span class="hljs-title function_">ds18b20_data_cfg_as_output</span>();<br>        <span class="hljs-title function_">ds18b20_data_set</span>(<span class="hljs-variable">val</span>);<br>        <span class="hljs-title function_">udelay</span>(<span class="hljs-variable">us</span>);<br>&#125;<br><br><span class="hljs-comment">/*ds18b20释放总线*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_data_release</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-title function_">ds18b20_data_cfg_as_input</span>();<br>&#125;<br><br><span class="hljs-comment">/* ds18b20的代码</span><br><span class="hljs-comment"> *先实现ds18b20初始化操作</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">static</span> int <span class="hljs-title function_">ds18b20_initialization</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        int <span class="hljs-variable">val</span>;<br>        <br>        <span class="hljs-title function_">ds18b20_data_set_val_for_time</span>(<span class="hljs-number">0</span>, <span class="hljs-number">500</span>);<br>        <span class="hljs-title function_">ds18b20_data_release</span>();<br>        <span class="hljs-title function_">udelay</span>(<span class="hljs-number">80</span>);<br>        <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> <span class="hljs-title function_">ds18b20_data_get</span>();<br>        <span class="hljs-title function_">udelay</span>(<span class="hljs-number">250</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">val</span>;<br>&#125;<br><br><span class="hljs-comment">/*实现写入一位数据*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_write_bit</span>(<span class="hljs-params">int</span> <span class="hljs-params">val</span>)<br>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> <span class="hljs-operator">==</span> <span class="hljs-variable">val</span>)<br>        &#123;<br>                <span class="hljs-title function_">ds18b20_data_set_val_for_time</span>(<span class="hljs-number">0</span>, <span class="hljs-number">60</span>);         <br>                <span class="hljs-title function_">ds18b20_data_release</span>();<br>                <span class="hljs-title function_">udelay</span>(<span class="hljs-number">2</span>);<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>                <span class="hljs-title function_">ds18b20_data_set_val_for_time</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>);          <br>                <span class="hljs-title function_">ds18b20_data_release</span>();<br>                <span class="hljs-title function_">udelay</span>(<span class="hljs-number">60</span>);<br>        &#125;<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">实现一位数据的读操作</span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">static</span> int <span class="hljs-title function_">ds18b20_read_bit</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        int <span class="hljs-variable">val</span>;<br>        <br>        <span class="hljs-title function_">ds18b20_data_set_val_for_time</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>);          <br>        <span class="hljs-title function_">ds18b20_data_release</span>();<br>        <span class="hljs-title function_">udelay</span>(<span class="hljs-number">10</span>);<br>        <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> <span class="hljs-title function_">ds18b20_data_get</span>();<br>        <span class="hljs-title function_">udelay</span>(<span class="hljs-number">50</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">val</span>;<br>&#125;<br><br><span class="hljs-comment">/*实现写一字节数据函数*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_write_byte</span>(<span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-params">data</span>)<br>&#123;<br>        <span class="hljs-comment">/* 优先传输最低位 */</span><br>        int <span class="hljs-variable">i</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">8</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>        &#123;<br>                <span class="hljs-title function_">ds18b20_write_bit</span>(<span class="hljs-variable">data</span> <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-variable">i</span>));<br>        &#125;<br>&#125;<br><span class="hljs-comment">/*实现读一字节数据函数*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">unsigned</span> <span class="hljs-variable">char</span> <span class="hljs-title function_">ds18b20_read_byte</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        int <span class="hljs-variable">i</span>;<br>        <span class="hljs-variable">unsigned</span> <span class="hljs-variable">char</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">8</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-title function_">ds18b20_read_bit</span>() <span class="hljs-operator">==</span> <span class="hljs-number">1</span>)<br>                        <span class="hljs-variable">data</span> <span class="hljs-operator">|</span><span class="hljs-operator">=</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-variable">i</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">data</span>;<br>&#125;<br><br><span class="hljs-comment">/*写入一字节的命令数据*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_write_rom_cmd</span>(<span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-params">cmd</span>)<br>&#123;<br>        <span class="hljs-title function_">ds18b20_write_byte</span>(<span class="hljs-variable">cmd</span>);<br>&#125;<br><br><span class="hljs-comment">/*写入一字节的功能命令数据*/</span><br><span class="hljs-keyword">static</span> <span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_write_function_cmd</span>(<span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-params">cmd</span>)<br>&#123;<br>        <span class="hljs-title function_">ds18b20_write_byte</span>(<span class="hljs-variable">cmd</span>);<br>&#125;<br><br><span class="hljs-comment">/*实际操作函数 读rom*/</span><br>int <span class="hljs-title function_">ds18b20_read_rom</span>(<span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-params">rom</span>[])<br>&#123;<br>        int <span class="hljs-variable">i</span>;<br>        <br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">ds18b20_initialization</span>() <span class="hljs-operator">!=</span> <span class="hljs-number">0</span>)<br>        &#123;<br>                <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;ds18b20_initialization err!<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>        <span class="hljs-title function_">ds18b20_write_rom_cmd</span>(<span class="hljs-variable">READ_ROM</span>);<br>        <br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">8</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>        &#123;<br>                <span class="hljs-variable">rom</span>[<span class="hljs-variable">i</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">ds18b20_read_byte</span>();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br>int <span class="hljs-title function_">ds18b20_wait_when_processing</span>(<span class="hljs-params">int</span> <span class="hljs-params">timeout_us</span>)<br>&#123;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-variable">timeout_us</span><span class="hljs-operator">-</span><span class="hljs-operator">-</span>)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-title function_">ds18b20_read_bit</span>() <span class="hljs-operator">==</span> <span class="hljs-number">1</span>)<br>                        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">/* ok */</span><br>                <span class="hljs-title function_">udelay</span>(<span class="hljs-number">1</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br><br><span class="hljs-comment">/*启动温度传输*/</span><br>int <span class="hljs-title function_">ds18b20_start_convert</span>(<span class="hljs-params">void</span>)<br>&#123;        <span class="hljs-comment">/*         </span><br><span class="hljs-comment">            所有操作到要先发出初始化操作，再发出rom命令 </span><br><span class="hljs-comment">          */</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">ds18b20_initialization</span>() <span class="hljs-operator">!=</span> <span class="hljs-number">0</span>)<br>        &#123;<br>                <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;ds18b20_initialization err!<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>        <span class="hljs-title function_">ds18b20_write_rom_cmd</span>(<span class="hljs-variable">SKIP_ROM</span>);<br>        <span class="hljs-title function_">ds18b20_write_function_cmd</span>(<span class="hljs-variable">CONVERT_TEAMPERATURE</span>);<br><br>        <span class="hljs-comment">/* 等待/判断转换成功 */</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> <span class="hljs-operator">!=</span> <span class="hljs-title function_">ds18b20_wait_when_processing</span>(<span class="hljs-number">1000000</span>))<br>        &#123;<br>                <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;ds18b20_wait_when_processing err!<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;    <br>&#125;<br><br><span class="hljs-comment">/*读ram中的数据*/</span><br>int <span class="hljs-title function_">ds18b20_read_ram</span>(<span class="hljs-params">unsigned</span> <span class="hljs-params">char</span> <span class="hljs-params">ram</span>[])<br>&#123;<br>        int <span class="hljs-variable">i</span>;<br>        <br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">ds18b20_initialization</span>() <span class="hljs-operator">!=</span> <span class="hljs-number">0</span>)<br>        &#123;<br>                <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;ds18b20_initialization err!<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>        &#125;<br>        <span class="hljs-title function_">ds18b20_write_rom_cmd</span>(<span class="hljs-variable">SKIP_ROM</span>);<br>        <span class="hljs-title function_">ds18b20_write_function_cmd</span>(<span class="hljs-variable">READ_SCRATCHPAD</span>);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">9</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>        &#123;<br>                <span class="hljs-variable">ram</span>[<span class="hljs-variable">i</span>] <span class="hljs-operator">=</span> <span class="hljs-title function_">ds18b20_read_byte</span>();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">/*读温度*/</span><br>int <span class="hljs-title function_">ds18b20_read_temperature</span>(<span class="hljs-params">double</span> *<span class="hljs-params">temp</span>)<br>&#123;<br>        int <span class="hljs-variable">err</span>;<br>        <span class="hljs-variable">unsigned</span> <span class="hljs-variable">char</span> <span class="hljs-variable">ram</span>[<span class="hljs-number">9</span>];<br><br>        <span class="hljs-comment">/*每一位都是前面一位的两倍*/</span><br>        <span class="hljs-variable">double</span> <span class="hljs-variable">val</span>[] <span class="hljs-operator">=</span> &#123;<span class="hljs-number">0.0625</span>, <span class="hljs-number">0.125</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-number">16</span>, <span class="hljs-number">32</span>, <span class="hljs-number">64</span>&#125;;<br>        <span class="hljs-variable">double</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        int <span class="hljs-variable">i</span>;<br>        <br>        <span class="hljs-variable">err</span> <span class="hljs-operator">=</span> <span class="hljs-title function_">ds18b20_start_convert</span>();<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">err</span>)<br>                <span class="hljs-keyword">return</span> <span class="hljs-variable">err</span>;<br>        <span class="hljs-variable">err</span> <span class="hljs-operator">=</span> <span class="hljs-title function_">ds18b20_read_ram</span>(<span class="hljs-variable">ram</span>);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">err</span>)<br>                <span class="hljs-keyword">return</span> <span class="hljs-variable">err</span>;<br><br>        <span class="hljs-comment">/* 计算温度 */</span><br><br>        <span class="hljs-comment">/* 先判断精度  byte4 的4位和6位*/</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">ram</span>[<span class="hljs-number">4</span>] <span class="hljs-operator">&amp;</span> (<span class="hljs-number">3</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">5</span>) <span class="hljs-operator">==</span> <span class="hljs-number">0</span>) <span class="hljs-comment">/* 精度: 9bit */</span><br>                <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span>;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-variable">ram</span>[<span class="hljs-number">4</span>] <span class="hljs-operator">&amp;</span> (<span class="hljs-number">3</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">5</span>) <span class="hljs-operator">==</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">5</span>)) <span class="hljs-comment">/* 精度: 10bit */</span><br>                <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-variable">ram</span>[<span class="hljs-number">4</span>] <span class="hljs-operator">&amp;</span> (<span class="hljs-number">3</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">5</span>) <span class="hljs-operator">==</span> (<span class="hljs-number">2</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">5</span>)) <span class="hljs-comment">/* 精度: 11bit */</span><br>                <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">else</span><br>                <span class="hljs-comment">/* 精度是 12 bit */</span><br>                <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-keyword">for</span> (; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">8</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-variable">ram</span>[<span class="hljs-number">0</span>] <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-variable">i</span>))<br>                        <span class="hljs-variable">sum</span> <span class="hljs-operator">+</span><span class="hljs-operator">=</span> <span class="hljs-variable">val</span>[<span class="hljs-variable">i</span>];<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">3</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>        &#123;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-variable">ram</span>[<span class="hljs-number">1</span>] <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-variable">i</span>))<br>                        <span class="hljs-variable">sum</span> <span class="hljs-operator">+</span><span class="hljs-operator">=</span> <span class="hljs-variable">val</span>[<span class="hljs-number">8</span><span class="hljs-operator">+</span><span class="hljs-variable">i</span>];<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">ram</span>[<span class="hljs-number">1</span>] <span class="hljs-operator">&amp;</span> (<span class="hljs-number">1</span><span class="hljs-operator">&lt;&lt;</span><span class="hljs-number">3</span>))<br>                <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-operator">-</span> <span class="hljs-variable">sum</span>;<br><br>        <span class="hljs-operator">*</span><span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> <span class="hljs-variable">sum</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_init_state</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-title function_">ds18b20_data_release</span>();<br>&#125;<br><span class="hljs-variable">void</span> <span class="hljs-title function_">ds18b20_test</span>(<span class="hljs-params">void</span>)<br>&#123;<br>        <span class="hljs-variable">unsigned</span> <span class="hljs-variable">char</span> <span class="hljs-variable">rom</span>[<span class="hljs-number">8</span>];<br>        int <span class="hljs-variable">i</span>;<br>        <span class="hljs-variable">double</span> <span class="hljs-variable">temp</span>;<br>        int <span class="hljs-variable">m</span>,<span class="hljs-variable">n</span>;<br>        <span class="hljs-comment">/*一开始我们应该保证为高电平*/</span><br>        <span class="hljs-title function_">ds18b20_init_state</span>();<br>        <br>        <span class="hljs-comment">//while (1)</span><br>        &#123;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-title function_">ds18b20_read_rom</span>(<span class="hljs-variable">rom</span>) <span class="hljs-operator">==</span> <span class="hljs-number">0</span>)<br>                &#123;<br>                        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;ds18b20 rom: &quot;</span>);<br>                        <span class="hljs-keyword">for</span> (<span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-variable">i</span> <span class="hljs-operator">&lt;</span> <span class="hljs-number">8</span>; <span class="hljs-variable">i</span><span class="hljs-operator">+</span><span class="hljs-operator">+</span>)<br>                        &#123;<br>                                <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;%02x &quot;</span>, <span class="hljs-variable">rom</span>[<span class="hljs-variable">i</span>]);<br>                        &#125;<br>                        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>);<br>                &#125;<br>        &#125;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>        <span class="hljs-comment">/*循环打印温度*/</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> <span class="hljs-operator">==</span> <span class="hljs-title function_">ds18b20_read_temperature</span>(<span class="hljs-operator">&amp;</span><span class="hljs-variable">temp</span>))<br>                &#123;        <span class="hljs-comment">/*实现浮点数的打印*/</span><br>                        <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> (int)<span class="hljs-variable">temp</span>;     <span class="hljs-comment">/* 3.01, m = 3 */</span><br>                        <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">-</span> <span class="hljs-variable">m</span>;        <span class="hljs-comment">/* 小数部分: 0.01 */</span><br>                        <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">*</span> <span class="hljs-number">10000</span>;  <span class="hljs-comment">/* 10 */</span><br>                        <br>                        <span class="hljs-comment">/* 在串口上打印 */</span><br>                        <span class="hljs-title function_">printf</span>(<span class="hljs-string">&quot;ds18b20 temperature: %d.%04d<span class="hljs-char escape_">\n</span><span class="hljs-char escape_">\r</span>&quot;</span>, <span class="hljs-variable">m</span>, <span class="hljs-variable">n</span>);  <span class="hljs-comment">/* 3.010v */</span><br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>修改main.c 添加</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">ds18b20_test</span>();<br></code></pre></td></tr></table></figure>
+
+<p>修改Makefile 添加</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">objs += sensors<span class="hljs-regexp">/ds18b20/</span>ds18b20.o<br></code></pre></td></tr></table></figure>
+
+<p>由于使用数组涉及到了memcpy 所以编译出错，现在需要实现在string_utils.c实现memcpy函数</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-keyword">void</span> *memcpy(<span class="hljs-keyword">void</span> *dest, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *src, <span class="hljs-built_in">int</span> <span class="hljs-keyword">count</span>)<br>&#123;<br>        <span class="hljs-built_in">char</span> *tmp = dest;<br>        <span class="hljs-keyword">const</span> <span class="hljs-built_in">char</span> *s = src;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">count</span>--)<br>                *tmp++ = *s++;<br>        <span class="hljs-keyword">return</span> dest;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>烧写</p>
+<p>课后作业:</p>
+<ul>
+<li>a. 使用CRC较验 64bit rom数据</li>
+<li>b. 使用CRC较验 9byte的 ram数据</li>
+<li>c. 增加写ram, 写eeprom的功能, 设置转换精度</li>
+</ul>
+<p><strong>第006节_红外线遥控协议简介及编程思路</strong></p>
+<hr>
+<p>​本节开始讲解红外遥控器信号的接收和解码，视频分为三部分，每一部分都专注做一件事情，让每节视频更短一点。</p>
+<p>红外遥控器的操作比前面的温度、温湿度传感器都要简单。</p>
+<p>首先看一下原理图上的红外遥控接收器：</p>
+<p><img src="/image/Chapter22_lesson6_001.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_001.png"></p>
+<p>我们用遥控器对它按动的时候，它就可以接收到红外信号，然后把红外信号转换成电平信号，通过IRD这根线，传给SOC。</p>
+<p>整个传输，只涉及单向传输，由HS0038向主芯片传送。</p>
+<p>因此，我们只需要编写程序，从IRD上获取数据即可，在这之前，我们需要先了解下数据是怎么表示的，也就是传输的红外数据的格式。</p>
+<p>红外协议有：NEC、SONY、RC5、RC6等，常用的就是NEC格式，因此我们主要对NEC进行讲解。</p>
+<p>可以参考这个文章，直观的了解下NEC格式波形的样子： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/openusb/archive/2010/01/07/1641357.html">https://www.cnblogs.com/openusb/archive/2010/01/07/1641357.html</a></p>
+<p>在分析文章中的波形之前，我们先想象一下怎么在一条数据线上传输信号。</p>
+<p>开始传输数据之前，一般都会发出一个start起始信号，通知对方我开始传输数据了，后面就是每一位每一位的数据。</p>
+<p>NEC协议的开始是一段引导码：</p>
+<p><img src="/image/Chapter22_lesson6_002.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_002.png"></p>
+<p>这个引导码由一个9ms的低脉冲加上一个4.5ms的高脉冲组成，它用来通知接收方我要开始传输数据了。</p>
+<p><img src="/image/Chapter22_lesson6_003.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_003.png"></p>
+<p>然后接着的是数据，数据由4字节组成：地址、地址(取反)、数据、数据(取反)，这些取反是用来校验用的。</p>
+<p>地址是指遥控器的ID，每一类遥控器的ID都不一样，数据就是遥控器上的不同按键。</p>
+<p>从前面的图可以知道，NEC每次要发32位的数据，每一位用什么来表示0和1呢？</p>
+<p><img src="/image/Chapter22_lesson6_004.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_004.png"></p>
+<p>数据1和01，开始都是0.56ms的低脉冲，对于数据1，后面的高脉冲比较长，对于数据0，后面的高脉冲比较短。 可以看出，红外遥控器的数据表示方法是比较简单的。</p>
+<p>我们长按一个按键，第一次按的时候，他会发出引导码，地址，地址取反，数据，数据取反。</p>
+<p>接着由于长按，遥控器会发送一个不一样的引导码，这个引导码由9ms的低脉冲，2.25ms的高脉冲组成，表示现在按的还是上次一样的按键，然后再一直是引导码(重复)，直到松开。</p>
+<p><img src="/image/Chapter22_lesson6_005.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_005.png"></p>
+<p>在后面的调试中，发现以上并不是NEC协议的全部，打开bing国际版搜索“ir nec protocal”，得到一篇官方文章：<a target="_blank" rel="noopener" href="http://techdocs.altium.com/display/FPGA/NEC/+Infrared/+Transmission/+Protocol">http://techdocs.altium.com/display/FPGA/NEC\+Infrared\+Transmission\+Protocol</a></p>
+<p>里面的内容和前面文章基本一致，但这个更详细，发现每次数据传输完还有一个0.5625ms的低脉冲表示数据传输结束。</p>
+<p>对于引导码(重复)也一样，也有一个0.5625ms的低脉冲表示传输结束。</p>
+<p>大部分文章都漏掉了结束的低脉冲。</p>
+<p>NEC协议里有很多时间，这些时间有一个有趣的现象，把所有时间里面最小的0.53ms看作基本脉冲宽度，假设用t表示，那么其它所有时间都是t的倍数：</p>
+<p><img src="/image/Chapter22_lesson6_006.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_006.png"></p>
+<p>我们可以看到对于所有的时间，最小的单位都是0.56ms，这个时间对人来说是非常短的，但对嵌入式系统它是非常非常长的了，足够我们做很多事情了，那么我们可以使用中断来处理这些数据。</p>
+<p>并且对于红外遥控器来说，我们根本不知道用户什么时候按下遥控器，使用轮询的方式特别耗资源，因此直接使用中断来处理。</p>
+<p><img src="/image/Chapter22_lesson6_007.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson6_007.png"></p>
+<p>图中的脉冲方向正好相反，绿色表示低脉冲，白色表示高脉冲。</p>
+<p>涉及内容：</p>
+<ul>
+<li>中断引脚设置为双边缘触发，在每一个脉冲变化的地方都会产生中断；</li>
+<li>发生中断时，计算当前中断与上次中断之间的时间差，就得到脉冲宽度，放入buffer，同时还要记录引脚极性；</li>
+<li>主循环从buffer取出数据，并解析时序；</li>
+</ul>
+<p>我们可以估算下，每按下一次遥控器，会产生多少中断，2+32*2+1&#x3D;67次。</p>
+<p>中断发生时，将数据放入buffer，主函数从buffer取出数据，用什么数据结构来实现数据的存取？</p>
+<p>最好的方式就是环形缓冲区，所谓环形缓冲区就是一边存储数据一边读取数据，下节课再详细讲解。</p>
+<p>编程要点：</p>
+<ul>
+<li>中断</li>
+<li>系统时间</li>
+<li>环形缓冲区</li>
+<li>NEC解析</li>
+</ul>
+<p><strong>第007节_前期编程_系统时间与环型缓冲区</strong></p>
+<hr>
+<p>​这节课实现两个小功能：系统时间和环形缓冲区。</p>
+<p>在上一课的基础上添加代码，打开timer.c，前面的设置的定时器，每10ms产生一次中断，这里定义一个全局变量，来记录产生次数，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">static</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> g_system_time_10ms_cnt = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+
+<p>这里的类型选择使用unsigned int类型，2^32*10&#x2F;1000&#x2F;3600&#x2F;24&#x3D;497天，也就是说如果运行497天后，计数溢出，将会导致一些问题。</p>
+<p>改为unsigned long long类型的话，2^64*10&#x2F;1000&#x2F;3600&#x2F;24&#x2F;365&#x3D;5849424173年，这个时间就不怕溢出了，因此这里计数变量的类型为unsigned long long：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">static</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> g_system_time_10ms_cnt = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+
+<p>在定时器中断timer_irq()函数里面让这个计数值每次加1：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">g_system_time_10ms_cnt</span><span class="hljs-literal">++</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>以后我们就可以读取这个计数值，知道系统时间。</p>
+<p>现在开始编写获取系统时间的函数，精度要求是us级别的，读取TCNTO0的值，再加上g_system_time_10ms_cnt的计数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-title">get_system_time_us</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> us = (<span class="hljs-number">50000</span> - TCNTO0)/<span class="hljs-number">5</span>;<br>        <span class="hljs-keyword">return</span> g_system_time_10ms_cnt * <span class="hljs-number">10</span> * <span class="hljs-number">1000</span> + us;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过这个函数就知道上电到之后任何一个时刻，过去了多久。</p>
+<p>再写一个函数计算两段时间之间的差值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">delta_time_us</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> pre, <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> now)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">return</span> (now - pre);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>到此，系统时间相关函数就完成了。</p>
+<p>首先介绍一下环形缓冲区，假设有一个数组char Buf[6]，它的结构如下：</p>
+<p><img src="/image/700px-Chapter22_lesson7_001.jpg" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson7_001.jpg"></p>
+<p>定义一个读指针r&#x3D;0，一个写指针w&#x3D;0。</p>
+<ul>
+<li>写数据：</li>
+</ul>
+<p>buf[w] &#x3D; val;</p>
+<p>w &#x3D; (w+1)%LEN &#x3D; (w+1)%6;</p>
+<ul>
+<li>读数据：</li>
+</ul>
+<p>val &#x3D; buf(r);</p>
+<p>r &#x3D; (r+1)%LEN;</p>
+<p>如何判断buf是空： r &#x3D;&#x3D; w； &#x2F;&#x2F;为空</p>
+<p>如何判断buf是满： (w+1)%LEN &#x3D;&#x3D; r； &#x2F;&#x2F;为满</p>
+<p>读写指针，每到达最后面，就从0开始，就像一个圆环一样，因此得名环形缓冲区。</p>
+<p>对于我们红外数据，保存的数据并不是char，而是一个结构体，里面含有脉冲宽度，引脚极性等。</p>
+<p>在sensors文件下创建一个irda文件夹，里面创建irda_raw.h和circle_buffer.c，在irda_raw.h里定义一个数据结构体，包含极性和脉冲宽度：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> _IRDA_RAW_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _IRDA_RAW_H</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">irda_raw_event</span> &#123;<br>        <span class="hljs-type">int</span> pol; <span class="hljs-comment">/* 极性 */</span><br>        <span class="hljs-type">int</span> duration;  <span class="hljs-comment">/* 脉冲宽度, us */</span><br>&#125;irda_raw_event, *p_irda_raw_event;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* _IRDA_RAW_H */</span></span><br></code></pre></td></tr></table></figure>
+
+<p>然后在circle_buffer.c实现环形缓冲区。</p>
+<p>先定义个irda_raw_event类型的g_events[]数组，这里大小设置为1024，</p>
+<p>之前介绍过，每传一次irda，至少会传67次数据，因此这个buf要至少大于67行，再定义两个读写指针位置。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf">static irda_raw_event g_events[<span class="hljs-number">1024</span>]<span class="hljs-comment">;</span><br>static int g_r <span class="hljs-operator">=</span> <span class="hljs-number">0</span><span class="hljs-comment">;</span><br>static int g_w <span class="hljs-operator">=</span> <span class="hljs-number">0</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>判断buf是否是空的函数：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">is_ir_event_buf_empty</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">return</span> g_r = g_w;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>判断buf是否是满的函数：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">is_ir_event_buf_full</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">NEXT_PLACE</span>(g_w) == g_r;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中，(w+1)%LEN使用宏NEXT_PLACE(i)代替，宏的定义如下：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lisp">#define NEXT_PLACE(<span class="hljs-name">i</span>) ((<span class="hljs-name">i+1</span>)&amp;0x3FF)<br></code></pre></td></tr></table></figure>
+
+<p>%的操作使用位&amp;操作实现一样的效果。</p>
+<p>然后是把数据放入缓冲区：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> ir<span class="hljs-constructor">_event_put(<span class="hljs-params">p_irda_raw_event</span> <span class="hljs-params">pd</span>)</span><br>&#123;<br>        <span class="hljs-keyword">if</span> (is<span class="hljs-constructor">_ir_event_buf_full()</span>)<br>                return -<span class="hljs-number">1</span>;<br>        g_events<span class="hljs-literal">[<span class="hljs-identifier">g_w</span>]</span> = *pd;<br>        g_w = <span class="hljs-constructor">NEXT_PLACE(<span class="hljs-params">g_w</span>)</span>;<br>        return <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>先判断的缓冲区是否已满，没满的话就在写的位置放入数据，然后写位置再移动到下一个。</p>
+<p>最后是读数据：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-built_in">int</span> ir<span class="hljs-constructor">_event_get(<span class="hljs-params">p_irda_raw_event</span> <span class="hljs-params">pd</span>)</span><br>&#123;<br>        <span class="hljs-keyword">if</span> (is<span class="hljs-constructor">_ir_event_buf_empty()</span>)<br>                return -<span class="hljs-number">1</span>;<br>        *pd = g_events<span class="hljs-literal">[<span class="hljs-identifier">g_r</span>]</span>;<br>        g_r = <span class="hljs-constructor">NEXT_PLACE(<span class="hljs-params">g_r</span>)</span>;<br>        return <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>先判断的缓冲区是否是空，没空的话就在读的位置读出数据，然后读位置移到到下一个。</p>
+<p>修改Makefile，添加本次写的新文件。</p>
+<p><strong>第008节_HS0038红外线接收器的编程_打印原始脉冲</strong></p>
+<hr>
+<p>先打印出原始数据</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">ird<span class="hljs-built_in">a_raw</span>.c<br>ird<span class="hljs-built_in">a_raw</span>.h<br></code></pre></td></tr></table></figure>
+
+<p>获取电平极性方式，当前引脚极性电平取反</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;../../s3c2440_soc.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;irda_raw.h&quot;</span></span><br><br><span class="hljs-comment">/* IRDA引脚 : EINT1/GPF1 */</span><br><span class="hljs-type">static</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> g_last_time = <span class="hljs-number">0</span>;<br><br><span class="hljs-comment">/*  </span><br><span class="hljs-comment"> * 配置GPIO, 注册中断 </span><br><span class="hljs-comment"> * 在中断处理函数里:      </span><br><span class="hljs-comment">    记录中断发生的时间,      </span><br><span class="hljs-comment">    跟上次中断的时间比较, 计算出脉冲宽度      </span><br><span class="hljs-comment">    读取引脚极性      </span><br><span class="hljs-comment">    把数据放入环型缓冲区 </span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-comment">/* 先实现GPIO的基本操作 */</span><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">irda_data_cfg_as_eint</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-comment">/* 配置为中断引脚 */</span><br>        GPFCON &amp;= ~(<span class="hljs-number">3</span>&lt;&lt;<span class="hljs-number">2</span>);<br>        GPFCON |= (<span class="hljs-number">2</span>&lt;&lt;<span class="hljs-number">2</span>);<br><br>        <span class="hljs-comment">/* 设置中断触发方式: 双边沿触发 */</span><br>        EXTINT0 |= (<span class="hljs-number">7</span>&lt;&lt;<span class="hljs-number">4</span>);  <span class="hljs-comment">/* eint1 */</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">irda_data_get</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;        <span class="hljs-comment">/*如果bit1 等于1就表明高电平，返回1 */</span><br>        <span class="hljs-keyword">if</span> (GPFDAT &amp; (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>))<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">else</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><span class="hljs-comment">/*irda中断处理函数*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">irda_irq</span><span class="hljs-params">(<span class="hljs-type">int</span> irq)</span></span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-comment">/* 在中断处理函数里:          </span><br><span class="hljs-comment">            记录中断发生的时间,          </span><br><span class="hljs-comment">            跟上次中断的时间比较, 计算出脉冲宽度          </span><br><span class="hljs-comment">            读取引脚极性          </span><br><span class="hljs-comment">            把数据放入环型缓冲区 </span><br><span class="hljs-comment">         */</span><br>        irda_raw_event event;<br>        <span class="hljs-comment">/*获得当前时间并赋值给cur*/</span><br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> cur = <span class="hljs-built_in">get_system_time_us</span>();<br>        <span class="hljs-comment">/*上次时间和这次时间的差值，也就是周期*/</span><br>        event.duration = <span class="hljs-built_in">delta_time_us</span>(g_last_time, cur);<br>        <span class="hljs-comment">/*获取引脚极性*/</span><br>        event.pol      = !<span class="hljs-built_in">irda_data_get</span>();<br>        <span class="hljs-comment">/*我们需要环形缓冲区的函数放入环形缓冲区 */</span><br>        <span class="hljs-built_in">ir_event_put</span>(&amp;event);<br>        <span class="hljs-comment">/*更新时间*/</span><br>        g_last_time = cur;<br>&#125;<br><br><span class="hljs-comment">/* 注册中断 仿照之前的按键中断程序 */</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">irda_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;        <span class="hljs-comment">/*1. 配置为中断引脚 </span><br><span class="hljs-comment">          *2. 配置为双边沿触发  </span><br><span class="hljs-comment">          */</span><br>        <span class="hljs-built_in">irda_data_cfg_as_eint</span>();<br>        <span class="hljs-comment">/*注册中断*/</span><br>        <span class="hljs-built_in">register_irq</span>(<span class="hljs-number">1</span>, irda_irq);<br>&#125;<br><span class="hljs-comment">/*测试原始数据*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">irda_raw_test</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>        irda_raw_event event;<br>        <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> pre = <span class="hljs-number">0</span>, cur;<br>        <br>        <span class="hljs-built_in">irda_init</span>();<br><br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>        &#123;<br>                <span class="hljs-comment">/*如果从唤醒缓冲区读到数据，就把它打印出来*/</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> == <span class="hljs-built_in">ir_event_get</span>(&amp;event))<br>                &#123;<br>                        cur = <span class="hljs-built_in">get_system_time_us</span>();<br>                        <span class="hljs-comment">/*如果这次时间和上次时间相差远的话，就打印回车换行*/</span><br>                        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">delta_time_us</span>(pre, cur) &gt; <span class="hljs-number">1000000</span>)<br>                                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n\r&quot;</span>);<br>                        pre = cur;<br>                        <span class="hljs-comment">/*使用三目运算符来判断pol是高电平还是低电平*/</span><br>                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s %d us | &quot;</span>, event.pol? <span class="hljs-string">&quot;hight&quot;</span> : <span class="hljs-string">&quot;low&quot;</span>, event.duration);<br>                &#125;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>irda_raw.h定义极性和脉冲宽度结构体</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> _IRDA_RAW_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _IRDA_RAW_H</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">irda_raw_event</span> &#123;<br>        <span class="hljs-type">int</span> pol; <span class="hljs-comment">/* 极性 */</span><br>        <span class="hljs-type">int</span> duration;  <span class="hljs-comment">/* 脉冲宽度, us */</span><br>&#125;irda_raw_event, *p_irda_raw_event;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* _IRDA_RAW_H */</span></span><br></code></pre></td></tr></table></figure>
+
+<p>测试代码 修改main.c 在main主函数中增加</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-built_in">irda_rae_test</span>();<br></code></pre></td></tr></table></figure>
+
+<p>修改Makefile 增加</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">objs += sensors<span class="hljs-regexp">/irda/i</span>rda_raw.o<br></code></pre></td></tr></table></figure>
+
+<p>编译执行</p>
+<p><img src="/image/700px-Chapter22_lesson8_001.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson8_001.png"></p>
+<p>一开始时间很长是因为一上电的时候高电平，值打印的特别大，说明有问题</p>
+<p>irda中断函数中没有更新上一次的时间</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">/*更新时间*/<br>g_last_time <span class="hljs-operator">=</span> cur<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>再次更新</p>
+<p><img src="/image/700px-Chapter22_lesson8_002.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson8_002.png"></p>
+<p>时间和数据格式符合时序要求</p>
+<p><strong>第009节_HS0038红外线接收器的编程_解析数据</strong></p>
+<hr>
+<p>​解析NEC格式的数据</p>
+<p>创建irda_nec.c</p>
+<p><img src="/image/700px-Chapter22_lesson8_003.png" srcset="/img/loading.gif" lazyload alt="700px-Chapter22_lesson8_003.png"></p>
+<p><img src="/image/Chapter22_lesson8_004.png" srcset="/img/loading.gif" lazyload alt="Chapter22_lesson8_004.png"></p>
+<p>对于NEC格式的脉冲，基本脉冲宽度是0.56ms &#x3D; 562.5us &#x3D; t</p>
+<p>其它的脉冲都是这个的整数倍，需要控制脉冲在9ms范围,那么我们可以把这个作为其他脉冲的最大偏差值</p>
+<p>9ms – 2&#x2F;t &lt; DURATION &lt; 9ms + 2&#x2F;t 得到判断最大偏差值公式</p>
+<p><img src="/image/7871f3581421a7aee9f6f7c13488006f.png" srcset="/img/loading.gif" lazyload alt="7871f3581421a7aee9f6f7c13488006f.png"></p>
+<p><img src="/image/da1f5da3fc9b9b3c197d63bc3a5b8e65.png" srcset="/img/loading.gif" lazyload alt="da1f5da3fc9b9b3c197d63bc3a5b8e65.png"></p>
+<p><img src="/image/04daa15cd569b9bfc6522e00aa199e98.png" srcset="/img/loading.gif" lazyload alt="04daa15cd569b9bfc6522e00aa199e98.png"></p>
+<p><img src="/image/3d86f212ea209185073a878b66223ce2.png" srcset="/img/loading.gif" lazyload alt="3d86f212ea209185073a878b66223ce2.png"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>第022课_传感器</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/第022课_传感器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AE%80%E5%8D%95%E7%9A%84%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4/" title="简单的汇编指令">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">简单的汇编指令</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC021%E8%AF%BE_MMU%E5%92%8CCache/" title="第021课 MMU和Cache">
+                        <span class="hidden-mobile">第021课 MMU和Cache</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

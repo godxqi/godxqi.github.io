@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="find 目的：查找符合条件的文件 格式：  find    目录名    选项    查找条件 1234567891011举例：1）find &#x2F;work&#x2F;001_linux_basic&#x2F;dira&#x2F;  -name &quot;test1.txt&quot;说明:    a)&#x2F;work&#x2F;001_linux_basic&#x2F;dira&#x2F;指明了查找的路径    b)-name表明以名字来查找文件    c)&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux进阶命令">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/linux%E8%BF%9B%E9%98%B6%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="find 目的：查找符合条件的文件 格式：  find    目录名    选项    查找条件 1234567891011举例：1）find &#x2F;work&#x2F;001_linux_basic&#x2F;dira&#x2F;  -name &quot;test1.txt&quot;说明:    a)&#x2F;work&#x2F;001_linux_basic&#x2F;dira&#x2F;指明了查找的路径    b)-name表明以名字来查找文件    c)&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:59:57.999Z">
+<meta property="article:modified_time" content="2023-01-15T13:03:41.260Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="未重构">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>linux进阶命令 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="linux进阶命令"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:59" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">linux进阶命令</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><span style="background-color: #ffaaaa">find</span></p>
+<p>目的：查找符合条件的文件</p>
+<p>格式：  find    目录名    选项    查找条件</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gradle">举例：<br><span class="hljs-number">1</span>）<span class="hljs-keyword">find</span> <span class="hljs-regexp">/work/</span><span class="hljs-number">001</span>_linux_basic<span class="hljs-regexp">/dira/</span>  -name <span class="hljs-string">&quot;test1.txt&quot;</span><br>说明:<br>    a)<span class="hljs-regexp">/work/</span><span class="hljs-number">001</span>_linux_basic<span class="hljs-regexp">/dira/</span>指明了查找的路径<br>    b)-name表明以名字来查找文件<br>    c)<span class="hljs-string">&quot;test1.txt&quot;</span>，就指明查找名为test1.txt的文件<br>同理：<br>    <span class="hljs-keyword">find</span> <span class="hljs-regexp">/work/</span><span class="hljs-number">001</span>_linux_basic<span class="hljs-regexp">/dira/</span>  -name <span class="hljs-string">&quot;*.txt&quot;</span>    <br>    查找指定目录下面所以以.txt结尾的文件，其中*是通配符，代表所有的。<br>    <span class="hljs-keyword">find</span> <span class="hljs-regexp">/work/</span><span class="hljs-number">001</span>_linux_basic  -name <span class="hljs-string">&quot;dira&quot;</span>    <br>    查找指定目录下面是否存在dira这个目录，dira是目录名。<br></code></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p>1）如果没有指定查找目录，则为当前目录。</p>
+<p>    find .  -name “*.txt”   其中.代表当前路径</p>
+<p>    find    -name “*.txt”</p>
+<p>    都是一样的功能</p>
+<p>2）find还有一些高级的用法，如查找最近几天(几个小时)之内(之前)有变动的文件</p>
+<p>find &#x2F;home -mtime -2  查找&#x2F;home目录下两天内有变动的文件    </p>
+<p>    </p>
+<p><span style="background-color: #ffaaaa">grep</span></p>
+<p>目的：使用grep命令来查找文件中符合条件的字符串</p>
+<p>格式：grep  [选项]     [查找模式]  [文件名]</p>
+<p>grep -rn “字符串”  文件名</p>
+<p><span style="background-color: #ffaaaa">r</span>(recursive)：递归查找</p>
+<p><span style="background-color: #ffaaaa">n</span>(number)：显示目标位置的行号</p>
+<p>字符串:要查找的字符串</p>
+<p>文件名:要查找的目标文件，如果是*则表示查找当前目录下的所有文件和目录    </p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs vim">举例：<br>将dira目录的test1.txt和dirb目录的test1.txt都含有如下内容：<br>aaa<br>AAAAAA<br><span class="hljs-keyword">abc</span><br>abcabcabc<br>cbacbacba<br>match_pattern<br>nand-&gt;erase<br><br><span class="hljs-keyword">grep</span> -n <span class="hljs-string">&quot;abc&quot;</span> test1.txt   在test1.txt中查找字符串<span class="hljs-keyword">abc</span><br><span class="hljs-keyword">grep</span> -rn <span class="hljs-string">&quot;abc&quot;</span> *          在当前目录递归查找字符串<span class="hljs-keyword">abc</span><br></code></pre></td></tr></table></figure>
+
+<p>    </p>
+<p>注意：</p>
+<p>1）可以加入-w全字匹配。比如查找abc，遇到abcabc则不识别</p>
+<p><span style="background-color: #ffaaaa">file</span>(linux下一切皆文件)</p>
+<p>目的：识别文件类型</p>
+<p>格式： file   文件名</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gradle">举例：<br><span class="hljs-keyword">file</span> ~/.bashrc        为ASCII 编码的text类型<br><span class="hljs-keyword">file</span> ~/.vimrc         为UTF-<span class="hljs-number">8</span> Unicode 编码的text类型<br><span class="hljs-keyword">file</span> ~<span class="hljs-regexp">/Pictures/</span>*     如图形文件JPEG<span class="hljs-regexp">/PNG/</span>BMP格式<br><span class="hljs-keyword">file</span> ~<span class="hljs-regexp">/100ask/</span>        为directory表明这是一个目录<br><span class="hljs-keyword">file</span> <span class="hljs-regexp">/bin/</span>pwd         出现 ELF <span class="hljs-number">64</span>-bit LSB executable，即为ELF格式的可执行文件<br><span class="hljs-keyword">file</span> <span class="hljs-regexp">/dev/</span>*           出现character special(字符设备文件)、 block special(块设备文件)等<br></code></pre></td></tr></table></figure>
+
+<p><span style="background-color: #ffaaaa">which</span>和<span style="background-color: #ffaaaa">whereis</span></p>
+<p>目的：查找命令或应用程序的所在位置</p>
+<p>格式：which  命令名&#x2F;应用程序名</p>
+<p>在终端上执行pwd实际上是去执行了&#x2F;bin&#x2F;pwd</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">举例：<br>    which pwd 定位到<span class="hljs-regexp">/bin/</span>pwd<br>    which gcc 定位到<span class="hljs-regexp">/usr/</span>bin/gcc<br>    whereis  pwd查找到可执行程序的位置<span class="hljs-regexp">/bin/</span>pwd和手册页的位置<span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/man/m</span>an1/pwd.<span class="hljs-number">1</span>.gz<br></code></pre></td></tr></table></figure>
+
+<p>压缩</p>
+<p>1.压缩的概念</p>
+<p>1）压缩的目的：</p>
+<p>    在网络传递文件时，可以先将文件压缩，然后传递压缩后的文件，从而减少网络带宽。</p>
+<p>    接受者接受文件后，解压即可。</p>
+<p>2）压缩的类型:</p>
+<p>   有损压缩、无损压缩。</p>
+<p>   a)有损压缩：</p>
+<p>    如mp4视频文件，即使压缩过程中，减少了很多帧的数据，</p>
+<p>    对观看者而言，也没有影响。当然mp3音乐文件也是有损压缩。</p>
+<p>   b)无损压缩：</p>
+<p>    如普通文件的压缩，为了保证信息的正确传递，</p>
+<p>    不希望文件经过压缩或解压后，出现问题。</p>
+<p>2.linux下常用的压缩命令</p>
+<p>单个文件的压缩(解压)使用gzip 和bzip2</p>
+<p>多个文件和目录使用tar   </p>
+<p><span style="background-color: #ffaaaa">gzip</span>的常用选项</p>
+<p>-l(list)    列出压缩文件的内容</p>
+<p>-k(keep)    在压缩或解压时，保留输入文件。</p>
+<p>-d(decompress)    将压缩文件进行解压缩</p>
+<p>1）查看</p>
+<p>    gzip  -l 压缩文件名</p>
+<p>    比如：gzip -l pwd.1.gz</p>
+<p>2）解压</p>
+<p>    gzip -kd  压缩文件名</p>
+<p>    比如：gzip -kd pwd.1.gz</p>
+<p>    该压缩文件是以.gz结尾的单个文件</p>
+<p>3）压缩</p>
+<p>    gzip -k  源文件名</p>
+<p>    比如：gzip -k mypwd.1</p>
+<p>    得到了一个.gz结尾的压缩文件</p>
+<p>注意：</p>
+<p>1）如果gzip不加任何选项，此时为压缩，压缩完该文件会生成后缀为.gz的压缩文件，并删除原有的文件，所以说，推荐使用gzip -k  来压缩源文件。</p>
+<p>2）相同的文件内容，如果文件名不同，压缩后的大小也不同，因为文件名也占字节。</p>
+<p>3）gzip只能压缩单个文件，不能压缩目录。</p>
+<p>提示：</p>
+<p>man pwd会解压&#x2F;usr&#x2F;share&#x2F;man&#x2F;man1&#x2F;pwd.1.gz这个文件，</p>
+<p>然后读取该文件中固定的格式的一些信息，然后显示到终端中。</p>
+<p><span style="background-color: #ffaaaa">bzip2</span>来压缩单个文件</p>
+<p>bzip2的常用选项</p>
+<p>-k(keep)    在压缩或解压时，保留输入文件。</p>
+<p>-d(decompress)    将压缩文件进行解压缩</p>
+<p>1）压缩</p>
+<p>    bzip2  -k  源文件名</p>
+<p>    比如：bzip2 -k mypwd.1</p>
+<p>    得到一个.bz2后缀的压缩文件</p>
+<p>2）解压</p>
+<p>    bzip2  -kd  压缩文件名</p>
+<p>    bzip2 -kd mypwd.1.bz2    </p>
+<p>注意：</p>
+<p>1）如果bzip2不加任何选项，此时为压缩，压缩完该文件会生成后缀为.bz2的压缩文件，并删除原有的文件，所以说，推荐使用bzip2 -k  来压缩源文件。</p>
+<p>2）bzip2只能压缩单个文件，不能压缩目录。</p>
+<p>单个文件的压缩使用gzip或bzip2，</p>
+<p>压缩有两个参数：1）压缩时间  2）压缩比</p>
+<p>一般情况下，小文件使用gzip来压缩，大文件使用bzip2来压缩。</p>
+<p>mypwd.1源大小是1477字节，</p>
+<p>    gzip压缩后mypwd.1.gz是877字节，</p>
+<p>    bzip2压缩后mypwd.1.bz2是939字节。</p>
+<p>myls.1源文件大小7664字节，</p>
+<p>    gzip压缩后myls.1.gz是3144字节，</p>
+<p>    bzip2压缩后myls.1.bz2是3070字节。    </p>
+<p><span style="background-color: #ffaaaa">tar</span> 对多个目录、文件进行打包和压缩</p>
+<p>常用选项</p>
+<p>-c(create) ：表示创建用来生成文件包</p>
+<p>-x：表示提取，从文件包中提取文件</p>
+<p>-t：可以查看压缩的文件。</p>
+<p>-z：使用gzip方式进行处理，它与”c“结合就表示压缩，与”x“结合就表示解压缩。</p>
+<p>-j：使用bzip2方式进行处理，它与”c“结合就表示压缩，与”x“结合就表示解压缩。</p>
+<p>-v(verbose)：详细报告tar处理的信息</p>
+<p>-f(file)：表示文件，后面接着一个文件名。</p>
+<p>-C  &lt;指定目录&gt;    解压到指定目录</p>
+<p>1.tar打包、gzip压缩</p>
+<p>1）压缩</p>
+<p>    tar -czvf   压缩文件名   目录名</p>
+<p>    如：tar czvf dira.tar.gz  dira                                                        &#x2F;&#x2F;注意：tar  -czvf与tar  czvf是一样的效果，所以说，后面统一取消-。</p>
+<p>2）查看</p>
+<p>    tar tvf   压缩文件名</p>
+<p>    如：tar tvf dira.tar.gz</p>
+<p>3）解压</p>
+<p>    tar xzvf 压缩文件名</p>
+<p>    tar xzvf 压缩文件名  -C  指定目录</p>
+<p>    如：tar xzvf dira.tar.gz   解压到当前目录</p>
+<p>    如：tar xzvf dira.tar.gz   -C  &#x2F;home&#x2F;book   解压到&#x2F;home&#x2F;book</p>
+<p>    </p>
+<p>2.tar打包、bzip2压缩</p>
+<p>1）压缩</p>
+<p>    tar cjvf   压缩文件名   目录名</p>
+<p>    如：tar cjvf dira.tar.bz2  dira</p>
+<p>2）查看</p>
+<p>    tar tvf   压缩文件名</p>
+<p>    如：tar tvf dira.tar.bz2</p>
+<p>3）解压</p>
+<p>    tar xjvf 压缩文件名</p>
+<p>    tar xjvf 压缩文件名  -C  指定目录</p>
+<p>    如：tar xjvf dira.tar.bz2   解压到当前目录</p>
+<p>    如：tar xjvf dira.tar.bz2 -C  &#x2F;home&#x2F;book  解压到&#x2F;home&#x2F;book</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" class="category-chain-item">嵌入式</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+        <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">#嵌入式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>linux进阶命令</div>
+      <div>https://godxqi.github.io/2023/01/15/韦东山一期/linux进阶命令/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/linux%E5%85%A5%E9%97%A8%E5%91%BD%E4%BB%A4/" title="linux入门命令">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">linux入门命令</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E5%A4%8D%E4%B9%A0/" title="C语言指针复习">
+                        <span class="hidden-mobile">C语言指针复习</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
