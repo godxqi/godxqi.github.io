@@ -287,15 +287,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC012%E8%AF%BE_SDRAM%E7%9A%84%E8%AE%BE%E7%BD%AE/" target="_self">
-          第012课 SDRAM的设置
+        <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC010%E8%AF%BE_ARM%E8%8A%AF%E7%89%87%E6%97%B6%E9%92%9F%E4%BD%93%E7%B3%BB/" target="_self">
+          第010课 ARM芯片时钟体系
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC012%E8%AF%BE_SDRAM%E7%9A%84%E8%AE%BE%E7%BD%AE/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC010%E8%AF%BE_ARM%E8%8A%AF%E7%89%87%E6%97%B6%E9%92%9F%E4%BD%93%E7%B3%BB/" target="_self">
         <div>
-          2440接了24M的SDRAM，需要设置下内存控制器才能用起来 SDRAM的存储结构：  每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址 所有信号都由内存控制器发出  设置相关寄存器： 1.BWSCON &#x3D; 0x2200 0000 只接了片选6，所以DW7，WS7，ST7都不用管，但最终设
+          三个时钟：CPU---&gt;FCLK            AHB BUS---&gt;HCLK           APB BUS---&gt;PCLK  2440有两个PLL,MPLL生产时钟给CPU用，UPLL生产时钟给USB用  编程：通过控制MPLL、HDIVN、PDIVN来找到合适的FCLK、HCLK、PCLK  上电后FCLK已经起振，但CPU要等待复位引脚松开才运行 1.复位芯片
         </div>
       </a>
 
@@ -350,15 +350,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC010%E8%AF%BE_ARM%E8%8A%AF%E7%89%87%E6%97%B6%E9%92%9F%E4%BD%93%E7%B3%BB/" target="_self">
-          第010课 ARM芯片时钟体系
+        <a href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC012%E8%AF%BE_SDRAM%E7%9A%84%E8%AE%BE%E7%BD%AE/" target="_self">
+          第012课 SDRAM的设置
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC010%E8%AF%BE_ARM%E8%8A%AF%E7%89%87%E6%97%B6%E9%92%9F%E4%BD%93%E7%B3%BB/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/15/%E9%9F%A6%E4%B8%9C%E5%B1%B1%E4%B8%80%E6%9C%9F/%E7%AC%AC012%E8%AF%BE_SDRAM%E7%9A%84%E8%AE%BE%E7%BD%AE/" target="_self">
         <div>
-          三个时钟：CPU---&gt;FCLK            AHB BUS---&gt;HCLK           APB BUS---&gt;PCLK  2440有两个PLL,MPLL生产时钟给CPU用，UPLL生产时钟给USB用  编程：通过控制MPLL、HDIVN、PDIVN来找到合适的FCLK、HCLK、PCLK  上电后FCLK已经起振，但CPU要等待复位引脚松开才运行 1.复位芯片
+          2440接了24M的SDRAM，需要设置下内存控制器才能用起来 SDRAM的存储结构：  每个格保存16位数据，访问指定格子：发出片选信号选中整个芯片--&gt;发出Bank地址(选择哪一块)--&gt;发出行地址--&gt;发出列地址 所有信号都由内存控制器发出  设置相关寄存器： 1.BWSCON &#x3D; 0x2200 0000 只接了片选6，所以DW7，WS7，ST7都不用管，但最终设
         </div>
       </a>
 
