@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、程序进程与程序文件： 程序进程就是程序运行时的程序（如在内存上运行） 程序文件是编译后生成的可执行文件，比如.bin文件等 二、冯诺依曼结构和哈佛结构： 2.1 简介 （1）冯诺依曼结构：提出了二进制逻辑、程序存储思想和计算机由五个部分组成。将指令存储器与数据存储器合在一起，使指令和数据共享一条总线。 指令的执行为顺序执行，无法重叠执行，只有完成一个再执行下一个，使得信息流传输成为限制性能的瓶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="变量的存储位置&#x2F;程序文件与程序进程中数据的位置">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE-%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E4%B8%8E%E7%A8%8B%E5%BA%8F%E8%BF%9B%E7%A8%8B%E4%B8%AD%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="一、程序进程与程序文件： 程序进程就是程序运行时的程序（如在内存上运行） 程序文件是编译后生成的可执行文件，比如.bin文件等 二、冯诺依曼结构和哈佛结构： 2.1 简介 （1）冯诺依曼结构：提出了二进制逻辑、程序存储思想和计算机由五个部分组成。将指令存储器与数据存储器合在一起，使指令和数据共享一条总线。 指令的执行为顺序执行，无法重叠执行，只有完成一个再执行下一个，使得信息流传输成为限制性能的瓶">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://godxqi.github.io/image/20150717122223189.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/25114105_Xc9r.jpg">
+<meta property="og:image" content="https://godxqi.github.io/image/84e7fa5e6f971cce295713ef9dd3fde2.png">
+<meta property="article:published_time" content="2023-01-15T12:19:10.763Z">
+<meta property="article:modified_time" content="2023-01-15T12:23:36.372Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="未重构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://godxqi.github.io/image/20150717122223189.jpg">
+  
+  
+  
+  <title>变量的存储位置/程序文件与程序进程中数据的位置 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="变量的存储位置/程序文件与程序进程中数据的位置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:19" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">变量的存储位置/程序文件与程序进程中数据的位置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>一、程序进程与程序文件：</p>
+<p>程序进程就是程序运行时的程序（如在内存上运行）</p>
+<p>程序文件是编译后生成的可执行文件，比如.bin文件等</p>
+<p>二、冯诺依曼结构和哈佛结构：</p>
+<p>2.1 简介</p>
+<p>（1）冯诺依曼结构：提出了二进制逻辑、程序存储思想和计算机由五个部分组成。将指令存储器与数据存储器合在一起，使指令和数据共享一条总线。</p>
+<p>指令的执行为顺序执行，无法重叠执行，只有完成一个再执行下一个，使得信息流传输成为限制性能的瓶颈。</p>
+<p>（2）哈佛结构：将程序指令和数据分开存储，指令存储器与数据存储器采用两条独立的总线，这两条总线之间毫无关联。</p>
+<p>中央处理器首先到指令存储器中读取程序指令内容，解码后得到数据地址，再到相应的数据存储器中读取数据，并进行下一步的操作（通常是执行）。</p>
+<p>在指令执行时可以预先读下一条指令，取指令和存取数据分别由不同的存储空间和总线，这样也就克服了信息流传输的瓶颈。</p>
+<p>2.2 二者区别：</p>
+<p>区别：程序空间和数据空间是否为一体的。冯诺依曼结构的程序空间和数据空间不分开，哈佛结构数据空间和地址空间是分开的。</p>
+<p>优缺点：哈佛结构略为复杂，对外围设备的连接与处理要求高，十分不适合外围存储器的扩展。所以早期通用CPU难以采用这种结构。而对于单片机来说，由于内部集成了所需的存储器，所以采用哈佛结构也未尝不可。现在的处理器，依托cache的存在，已经很好的将二者统一起来了（cache的出现，是为了缓解CPU和内存之间速度的不匹配问题（结构：cpu -&gt; cache -&gt; memory））。</p>
+<p>2.3 改进型哈佛结构：</p>
+<p>将程序指令和数据分开存储，具有一条独立的地址总线和一条独立的数据总线，利用公用地址总线访问两个存储模块（程序存储模块和数据存储模块），公用数据总线则被用来完成程序存储模块或数据存储模块与CPU之间的数据传输；两条总线由程序存储器和数据存储器分时共用。</p>
+<p>2.4 常见芯片</p>
+<p>Intel的x86处理器：大多为冯诺依曼结构，之所以其早期能快速占领市场，正是采用了这种实现简单、成本低的结构</p>
+<p>51单片机：程序进程的逻辑代码段放在ROM中，而变量部分则放在RAM中，取ROM中的指令和RAM中的变量是两套总线。即数据指令存储区是分开的，总线是分时复用的，所以采用的是改进型哈佛结构。</p>
+<p>ARM9、S3C2440：ARM9被称为是哈佛结构是从它拥有指令cache和数据cache角度来说的，实际上它现在称之为“改进的哈佛结构”，因为这两个cache是独立的，可以并行运行。</p>
+<p>ARM：从ARM9开始以后所有的ARM处理器内核都是改进型的哈佛结构。ARM的逻辑代码和变量都是存放在RAM中的，但是，它在内存中划分了两部分的空间，其中一部分放逻辑代码，另一部分存放变量，之间不会相互干扰。</p>
+<p>DSP：大多采用改进型哈佛结构。</p>
+<p>2.5 从代码角度理解：</p>
+<p>在编写程序时，可以对程序的代码分为两个部分，一部分是程序编写完成后就不再需要对其进行修改了的（也就是逻辑代码部分）另一部分就是在程序编写完毕后其内容会随着程序的运行而不断变化的部分（也就是变量数据部分）。而哈佛结构和冯诺依曼结构就是对于这个两部分代码的存储方式的区别。</p>
+<p>哈佛结构：将程序的逻辑代码和变量分开存放，他们存放的位置可以是形同的（ARM）也可以是不同的（51），只要是分成两个部分单独访问的结构都可以叫哈佛结构。这种结构大量应用在嵌入式编程当中。</p>
+<p>冯诺依曼结构：冯诺依曼结构则是将逻辑代码段和变量统一都存储在内存当中，他们之间一般是按照代码的执行顺序依次存储。</p>
+<p>三、程序文件中的分区</p>
+<p>一般情况下，一个程序本质上都是由 bss段、data段、text段三个组成的。</p>
+<p>3.1 相关概念：</p>
+<p>Code，RO_data，RW_data，ZI_data，RO，RW等常出现在嵌入式程序编译完成后的名词。比如Keil中</p>
+<p><img src="/image/20150717122223189.jpg" srcset="/img/loading.gif" lazyload alt="20150717122223189.jpg"></p>
+<ul>
+<li>Code：即代码域，也称.text段。它指的是编译器生成的机器指令。</li>
+<li>RO_data：即只读数据域，也称.rodata段。它指程序中用到的只读数据，例如const关键字定义的全局变量、字符串字面量。</li>
+<li>RW_data：即可读写数据域，也称.data段。它指初始化为“非0值”的可读写数据，程序刚运行时，这些数据具有非0的初始值，且运行的时候它们会常驻在RAM区，因而应用程序可以修改其内容。例如全局变量或者静态变量，且定义时赋予“非0值”给该变量进行初始化。</li>
+<li>ZI_data：ZeroInitialie data即0初始化数据，也称.bss段。它指初始化为“0值”的可读写数据域，它与RW_data的区别是程序刚运行时这些数据初始值全都为0，而后续运行过程与RW-data的性质一样，它们也常驻在RAM区，因而应用程序可以更改其内容。包括未初始化的全局变量，和初始化为0的全局变量。并不给该段的数据分配空间，只是记录数据所需空间的大小。</li>
+</ul>
+<p>注：RO为只读区域，包括RO_data和code。应与RO_data区分开来。</p>
+<p>3.2 ARM映像文件 </p>
+<p>bin文件和hex都被称为ARM映像文件，即linux的可执行文件，被烧入到<span style="background-color: #ffaaaa">ROM（Nor,Nand）</span>中，它之中包含了Code、RO_data与RW_data。一般来说，在程序运行的最初阶段，RO中的指令完成了这两项工作</p>
+<ol>
+<li>将RW从ROM中搬到RAM中，因为RW是变量，变量不能存在ROM中。</li>
+<li>将ZI所在的RAM区域全部清零，因为ZI区域并不在映像文件中，所以需要程序根据编译器给出的ZI地址及大小来将相应得RAM区域清零。ZI中也是变量，同理：变量不能存在ROM中</li>
+</ol>
+<p>完成了工作后C程序才能正常访问变量。否则只能运行不含变量的代码。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm">从这里就可以看出<span class="hljs-meta">ARM</span>为哈佛结构，程序与代码分别在两个位置访问<br></code></pre></td></tr></table></figure>
+
+<p>程序存储在ROM中时，所占用的大小为Code + RO_data + RW_data</p>
+<p>当程序执行时，RW_data和 ZI_data在RAM中，RO_data和Code视cpu架构（51、arm、x86）处于ROM或者RAM中。</p>
+<p>四、程序进程中的分区（假如bin直接在SRAM上运行）</p>
+<p>程序加载运行时，.text段和.rodata段合并到一个Segment中，即代码段（text Segment），操作系统将这个Segment的页面只读保护起来，防止意外的改写。</p>
+<p>BSS段的大小从可执行文件中(bin)得到，然后链接器得到这个大小的内存块，紧跟在数据段后面。当这个内存区进入程序的地址空间后全部清零。</p>
+<p><img src="/image/25114105_Xc9r.jpg" srcset="/img/loading.gif" lazyload alt="25114105_Xc9r.jpg"></p>
+<ul>
+<li>代码段：代码段（code segment&#x2F;text segment）通常是指用来存放程序执行代码的一块内存区域。这部分区域的大小在程序运行前就已经确定，并且内存区域通常属于只读, 某些架构也允许代码段为可写，即允许修改程序。在代码段中，也有可能包含一些只读的常数变量，例如字符串常量等。</li>
+<li>数据段：数据段（data segment）通常是指用来存放程序中已初始化且不为0的全局变量的一块内存区域。</li>
+<li>BSS段：BSS段（bss segment）通常是指用来存放程序中未初始化的全局变量的一块内存区域。</li>
+<li>堆（heap）：堆是用于存放进程运行中被动态分配的内存段，它的大小并不固定，可动态扩张或缩减。当进程调用malloc等函数分配内存时，新分配的内存就被动态添加到堆上（堆被扩张）；当利用free等函数释放内存时，被释放的内存从堆中被剔除（堆被缩减）。</li>
+<li>栈(stack)：栈又称堆栈，用户存放程序临时创建的局部变量。在函数被调用时，其参数也会被压入发起调用的进程栈中，并且待到调用结束后，函数的返回值也会被存放回栈中。由于栈的后进先出特点，所以栈特别方便用来保存&#x2F;恢复调用现场。</li>
+</ul>
+<p>五、从内存地址的角度描述变量存储位置</p>
+<ul>
+<li>代码区：存放二进制代码的区域</li>
+<li>（文字）常量区：存放常量的区域，程序结束时，系统回收。const修饰的全局变量在区域中的低地址，字符串字面量紧随其后</li>
+<li>全局&#x2F;静态存储区：存放全局变量和静态变量。全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。</li>
+<li>堆：由程序员分配和释放，如果程序员不释放，会有内存泄漏，程序结束时，由操作系统回收。容量大, 速度慢, 无序。</li>
+<li>栈：系统自动分配并释放，存放函数的参数值，局部变量等。容量小,速度快,有序. 栈是系统数据结构，对应线程&#x2F;进程是唯一的。</li>
+</ul>
+<p>这种描述方式将bss段和数据段合并在一起称呼，同时又将.rodata段从代码段中分离</p>
+<p>六、我的观点</p>
+<p>常量区在内存中分配的地址由编译器（链接阶段）决定，可能在全局存储区前，也可能插入全局存储区中放在数据段后bss段之前。我们也可以写lds链接脚本自己规定</p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs erlang">链接脚本主要用于规定如何把输入文件内的section放入输出文件内, 并控制输出文件内各部分在程序地址空间内的布局<br>输入文件: 目标文件或链接脚本文件.<br>输出文件: 目标文件或可执行文件.<br></code></pre></td></tr></table></figure>
+
+<p><img src="/image/84e7fa5e6f971cce295713ef9dd3fde2.png" srcset="/img/loading.gif" lazyload alt="84e7fa5e6f971cce295713ef9dd3fde2.png"></p>
+<p>在vc6.0中，常量区在全局存储区之前；在gcc编译器中，常量区在全局存储区中放在数据段后bss段之前。</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014600626/article/details/81533125?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_utm_term-0&spm=1001.2101.3001.4242">https://blog.csdn.net/u014600626/article/details/81533125?utm_medium&#x3D;distribute.pc_relevant.none-task-blog-baidujs_utm_term-0&amp;spm&#x3D;1001.2101.3001.4242</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhy557/article/details/80832268?utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.control">https://blog.csdn.net/zhy557/article/details/80832268?utm_medium&#x3D;distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&amp;dist_request_id&#x3D;&amp;depth_1-utm_source&#x3D;distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C%E8%AF%AD%E8%A8%80/" class="category-chain-item">C语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C</a>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>变量的存储位置/程序文件与程序进程中数据的位置</div>
+      <div>https://godxqi.github.io/2023/01/15/C语言/变量的存储位置-程序文件与程序进程中数据的位置/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/%E5%8F%98%E9%87%8F%E5%9C%A8%E5%AD%98%E5%82%A8%E5%99%A8%E4%B8%AD%E7%9A%84%E5%AD%98%E6%94%BE%E5%BD%A2%E5%BC%8F/" title="变量在存储器中的存放形式">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">变量在存储器中的存放形式</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/volatile/" title="volatile">
+                        <span class="hidden-mobile">volatile</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

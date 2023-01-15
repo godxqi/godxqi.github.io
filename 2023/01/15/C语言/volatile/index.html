@@ -1,0 +1,701 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="程序的硬件优化：  （1）由于CPU处理速度远大于内存访问速度，CPU直接从内存中存取数据需要等待一定的时间，所以为了提高整体性能，在硬件上引入高速Cache。Cache保存有CPU刚用过或者循环使用的一部分数据，CPU再需要使用这些数据时直接从Cache调用，减少CPU的等待时间。 （2）在现代CPU中指令的执行并不一定严格按照顺序，没有相关性的指令可以乱序执行，以充分利用CPU的指令流水线，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatile">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/volatile/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="程序的硬件优化：  （1）由于CPU处理速度远大于内存访问速度，CPU直接从内存中存取数据需要等待一定的时间，所以为了提高整体性能，在硬件上引入高速Cache。Cache保存有CPU刚用过或者循环使用的一部分数据，CPU再需要使用这些数据时直接从Cache调用，减少CPU的等待时间。 （2）在现代CPU中指令的执行并不一定严格按照顺序，没有相关性的指令可以乱序执行，以充分利用CPU的指令流水线，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:19:10.759Z">
+<meta property="article:modified_time" content="2023-01-15T12:28:22.628Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="未重构">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>volatile - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="volatile"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:19" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">volatile</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ol>
+<li>程序的硬件优化：</li>
+</ol>
+<p>（1）由于CPU处理速度远大于内存访问速度，CPU直接从内存中存取数据需要等待一定的时间，所以为了提高整体性能，在硬件上引入高速Cache。Cache保存有CPU刚用过或者循环使用的一部分数据，CPU再需要使用这些数据时直接从Cache调用，减少CPU的等待时间。</p>
+<p>（2）在现代CPU中指令的执行并不一定严格按照顺序，没有相关性的指令可以乱序执行，以充分利用CPU的指令流水线，提高执行速度。</p>
+<ol>
+<li>程序的软件优化：</li>
+</ol>
+<p>（1）程序员优化</p>
+<p>（2）编译器优化：</p>
+<p>①将内存变量缓存到寄存器</p>
+<p>②调整指令顺序优化流水线，例如重新排序读写指令</p>
+<p>有些时候这些优化并不是程序所需要的，这时候就可以使用volatile禁止这些优化：防止优化编译器把变量从内存装入CPU寄存器中。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs abnf">int obj <span class="hljs-operator">=</span> <span class="hljs-number">10</span><span class="hljs-comment">;</span><br><br>int a <span class="hljs-operator">=</span> <span class="hljs-number">0</span><span class="hljs-comment">;</span><br>int b <span class="hljs-operator">=</span> <span class="hljs-number">0</span><span class="hljs-comment">;</span><br><br><span class="hljs-attribute">a</span> <span class="hljs-operator">=</span> obj<span class="hljs-comment">;    //编译器认为在此之前obj没有出现在赋值号左边，值没有变化，故直接把10赋值给a</span><br><br>sleep(<span class="hljs-number">100</span>)<span class="hljs-comment">;    //有可能obj的内存空间被其他线程或某一个中断处理程序所改变，造成obj的值意外被改变</span><br><br><span class="hljs-attribute">b</span> <span class="hljs-operator">=</span> obj<span class="hljs-comment">;    //编译器认为在此之前obj没有出现在赋值号左边，值没有变化，依旧直接把10赋值给b</span><br></code></pre></td></tr></table></figure>
+
+<p>volatile强制编译器对访问该变量的代码不去优化，即使它前面的指令刚刚从该处读取过数据。因为每次必须从内存中取值，所以用多了会造成程序变慢</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29350001/article/details/54024070">https://blog.csdn.net/qq_29350001&#x2F;article&#x2F;details&#x2F;54024070</a></p>
+<p>用法一：并行设备的硬件寄存器</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> GPC1CON *((volatile unsigned int*)0xE0200080)</span><br></code></pre></td></tr></table></figure>
+
+<p>GPC1CON 为寄存器名称、0xE0200080 为寄存器地址、(volatile unsigned int*) 为强制类型转换。</p>
+<p>如果不加上volatile，那在使用GPC1CON的时候就会从速度较快的寄存器中取值，而寄存器的值是来自之前访问过的GPC1CON，之前就从内存中取出GPC1CON的值保存到这个寄存器里。使用volatile就表示这个寄存器里的值是随时变化的，每次都要去内存里取它的值，不要对其做优化</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">int</span>  *<span class="hljs-keyword">output</span> = (<span class="hljs-keyword">unsigned</span>  <span class="hljs-keyword">int</span> *)<span class="hljs-number">0</span>xff800000;<span class="hljs-comment">//定义一个IO端口；</span><br><span class="hljs-keyword">int</span>   init(<span class="hljs-keyword">void</span>)<br>&#123;<br>      <span class="hljs-keyword">int</span> i;<br>      <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt; <span class="hljs-number">10</span>;i++)&#123;<br>         *<span class="hljs-keyword">output</span> = i;<br>&#125;<br>&#125;<br><br>优化后，编译器认为之前都是废话，对结果无影响<br><span class="hljs-keyword">int</span>  init(<span class="hljs-keyword">void</span>)<br>&#123;<br>      *<span class="hljs-keyword">output</span> = <span class="hljs-number">9</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>用法二：中断服务程序中会访问到的非自动变量</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">static</span> <span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;     <span class="hljs-comment">//i为非自动变量</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>     <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-keyword">if</span> (i) <span class="hljs-built_in">dosomething</span>();<br>    &#125;<br>&#125;<br><span class="hljs-comment">/* 中断服务程序 */</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ISR_2</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>      i=<span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>程序原意在触发中断后，i的值被修改，然后dosomething。但其实编译器判断在main中没有修改过i，因此可能只执行一次将i读到某寄存器的读操作，下次再访问i的时候也是访问寄存器上的”i副本”，导致dosomething永远不会被掉用。所以应该加上volatile。</p>
+<p>用法三：多线程中被几个任务共享的变量</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs objectivec"><span class="hljs-keyword">volatile</span>  <span class="hljs-type">BOOL</span>  bStop  =  <span class="hljs-literal">FALSE</span>;  <span class="hljs-comment">//bStop  为共享全局变量</span><br>(<span class="hljs-number">1</span>) 在一个线程中：  <br>  <span class="hljs-keyword">while</span>(  !bStop  )  &#123;  ...  &#125;  <br>  bStop  =  <span class="hljs-literal">FALSE</span>;  <br>  <span class="hljs-keyword">return</span>;    <br>(<span class="hljs-number">2</span>) 在另外一个线程中，要终止上面的线程循环：  <br>  bStop  =  <span class="hljs-literal">TRUE</span>;  <br>  <span class="hljs-keyword">while</span>(  bStop  );<br></code></pre></td></tr></table></figure>
+
+<p>当两个线程都用到一个变量且这个变量的值会被改变时，应该使用volatile声明。这样就不会把变量从内存装入CPU寄存器，就不会它们在访问的时候访问的不是一个地方的变量。</p>
+<p>在访问a的时候（把a赋值给其他变量或直接使用a）认清是访问a保存在寄存器里的值，还是a在内存里的值。用volatile修饰就是访问a在内存的值。如果a有可能被中断或不同线程，或硬件改动，那就要用volatile修饰。如果a只是同一线程的一个普通变量则没必要用volatile修饰。</p>
+<p>例：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">for ( i=0; i</span>&lt;<span class="hljs-comment">1000; i</span><span class="hljs-literal">++</span> <span class="hljs-comment">)</span><br><span class="hljs-comment">&#123;</span><br><span class="hljs-comment">    a</span><span class="hljs-literal">++</span><span class="hljs-comment">;</span><br><span class="hljs-comment">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>会被优化成a+&#x3D;1000。这时就可以加上一个volatile表示这个a有可能在a++的过程中被改变，让编译器老老实实一个一个加。但其实这里只是为了防止优化</p>
+<p><strong>问题一</strong>：一个参数既可以是const还可以是volatile吗？</p>
+<p>答：可以，例如只读的状态寄存器。它是 volatile 因为它可能被意想不到地改变。它是 const 因为 程序不应该试图去修改它。</p>
+<p><strong>问题二</strong>：一个指针可以是 volatile 吗？</p>
+<p>答：可以，当一个中服务子程序修改一个指向一个 buffer 的指针时。</p>
+<p><strong>问题三</strong>：下面的函数有什么错误？</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs autoit"><span class="hljs-built_in">int</span> square(<span class="hljs-keyword">volatile</span> <span class="hljs-built_in">int</span> *<span class="hljs-built_in">ptr</span>)<br>&#123;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-built_in">ptr</span> * *<span class="hljs-built_in">ptr</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这段代码的目的是用来返指针*ptr指向值的平方，但是，由于*ptr指向一个volatile型参数，编译器将产生类似下面的代码：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs autoit">  <span class="hljs-built_in">int</span> square(<span class="hljs-keyword">volatile</span> <span class="hljs-built_in">int</span> *<span class="hljs-built_in">ptr</span>)  <br>    &#123;<br>         <span class="hljs-built_in">int</span> a,b<span class="hljs-comment">;</span><br>         a = *<span class="hljs-built_in">ptr</span><span class="hljs-comment">;</span><br>         b = *<span class="hljs-built_in">ptr</span><span class="hljs-comment">;</span><br>         <span class="hljs-keyword">return</span> a * b<span class="hljs-comment">;</span><br>     &#125;<br></code></pre></td></tr></table></figure>
+
+<p>  由于*ptr的值可能被意想不到地该变，因此a和b可能是不同的。结果，这段代码可能返不是你所期望的平方值！正确的代码如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-title">square</span><span class="hljs-params">(<span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> *ptr)</span>  </span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> a;<br>    a = *ptr;<br>    <span class="hljs-keyword">return</span> a * a;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>volatile 关键字是一种类型修饰符。volatile 提醒编译器它后面所定义的变量随时都有可能改变，因此编译后的程序每次需要存储或读取这个变量的时候，都会直接从变量地址中读取数据。如 果没有 volatile 关键字，则编译器可能优化读取和存储，可能暂时使用寄存器中的值，如果这个变量由别的程序更新了的话，将出现不一致的现象。所以遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址的稳定访问。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C%E8%AF%AD%E8%A8%80/" class="category-chain-item">C语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C</a>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>volatile</div>
+      <div>https://godxqi.github.io/2023/01/15/C语言/volatile/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE-%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E4%B8%8E%E7%A8%8B%E5%BA%8F%E8%BF%9B%E7%A8%8B%E4%B8%AD%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BD%8D%E7%BD%AE/" title="变量的存储位置/程序文件与程序进程中数据的位置">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">变量的存储位置/程序文件与程序进程中数据的位置</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/typedef/" title="typedef">
+                        <span class="hidden-mobile">typedef</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,625 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Linux内核中的指针函数返回错误码在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    &#x2F;*">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GODXQI&#39;s Blog">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E9%94%99%E8%AF%AF%E7%A0%81/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="Linux内核中的指针函数返回错误码在linux内核中，一个返回指针的函数如何表示错误返回呢？ 首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。 内核中： 123456789101112131415161718#define MAX_ERRNO    4095    &#x2F;*">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:19:10.752Z">
+<meta property="article:modified_time" content="2021-03-21T02:50:12.000Z">
+<meta property="article:author" content="GODXQI">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:19" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Linux内核中的指针函数返回错误码"><a href="#Linux内核中的指针函数返回错误码" class="headerlink" title="Linux内核中的指针函数返回错误码"></a>Linux内核中的指针函数返回错误码</h1><p>在linux内核中，一个返回指针的函数如何表示错误返回呢？</p>
+<p>首先任何一个指针必然有三种情况：有效指针、NULL或空指针、错误指针或无效指针。显然使用一个空指针NULL是无法表示和区分各种执行错误的，应该将无效指针对应着内核中的错误号。</p>
+<p>内核中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_ERRNO    4095    <span class="hljs-comment">/* 4k */</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> IS_ERR_VALUE(x) unlikely((x) &gt;= (unsigned long)-MAX_ERRNO)  <span class="hljs-comment">/* &gt;=0xfffff001 */</span></span><br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> *<span class="hljs-title">ERR_PTR</span><span class="hljs-params">(<span class="hljs-type">long</span> error)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span> *) error;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">long</span> <span class="hljs-title">PTR_ERR</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *ptr)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-type">long</span>) ptr;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">long</span> <span class="hljs-title">IS_ERR</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">void</span> *ptr)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">IS_ERR_VALUE</span>((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)ptr);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>所有的驱动程序都运行在内核空间，在内核空间中的最后一个page是被保留的(假设4k一个page)，用于内核捕捉错误。比如对于32位的系统来说，内核最高地址为0xff ff ff ff，那么最后一个page就是0xff ff f0 00~0xff ff ff ff(最后一page最少为4k)。如果发现你的一个指针指向这个范围内的一个地址，那么这个指针就是个无效指针，于是内核使用IS_ERR()来判断当前指针是否在这个范围内([0xfffff001, 0xffffffff])。</p>
+<p>而PTR_ERR(), ERR_PTR()只是强制转换一下，PTR 是单词 pointer 的缩写，ERR 是单词 errno   的缩写，PTR_ERR 即将指针转换为错误码，ERR_PTR 即将错误码转换为指针。若你只需要知道是否出错，而不在乎为什么出错，那你就可以不调用PTR_ERR()。</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _ASM_GENERIC_ERRNO_BASE_H</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EPERM        1  <span class="hljs-comment">/* Operation not permitted */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOENT       2  <span class="hljs-comment">/* No such file or directory */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESRCH        3  <span class="hljs-comment">/* No such process */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EINTR        4  <span class="hljs-comment">/* Interrupted system call */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EIO      5  <span class="hljs-comment">/* I/O error */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENXIO        6  <span class="hljs-comment">/* No such device or address */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> E2BIG        7  <span class="hljs-comment">/* Argument list too long */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOEXEC      8  <span class="hljs-comment">/* Exec format error */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EBADF        9  <span class="hljs-comment">/* Bad file number */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ECHILD      10  <span class="hljs-comment">/* No child processes */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EAGAIN      11  <span class="hljs-comment">/* Try again */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOMEM      12  <span class="hljs-comment">/* Out of memory */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EACCES      13  <span class="hljs-comment">/* Permission denied */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EFAULT      14  <span class="hljs-comment">/* Bad address */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOTBLK     15  <span class="hljs-comment">/* Block device required */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EBUSY       16  <span class="hljs-comment">/* Device or resource busy */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EEXIST      17  <span class="hljs-comment">/* File exists */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXDEV       18  <span class="hljs-comment">/* Cross-device link */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENODEV      19  <span class="hljs-comment">/* No such device */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOTDIR     20  <span class="hljs-comment">/* Not a directory */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EISDIR      21  <span class="hljs-comment">/* Is a directory */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EINVAL      22  <span class="hljs-comment">/* Invalid argument */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENFILE      23  <span class="hljs-comment">/* File table overflow */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EMFILE      24  <span class="hljs-comment">/* Too many open files */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOTTY      25  <span class="hljs-comment">/* Not a typewriter */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ETXTBSY     26  <span class="hljs-comment">/* Text file busy */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EFBIG       27  <span class="hljs-comment">/* File too large */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ENOSPC      28  <span class="hljs-comment">/* No space left on device */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESPIPE      29  <span class="hljs-comment">/* Illegal seek */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EROFS       30  <span class="hljs-comment">/* Read-only file system */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EMLINK      31  <span class="hljs-comment">/* Too many links */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EPIPE       32  <span class="hljs-comment">/* Broken pipe */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EDOM        33  <span class="hljs-comment">/* Math argument out of domain of func */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ERANGE      34  <span class="hljs-comment">/* Math result not representable */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>page = <span class="hljs-built_in">__get_free_pages</span>(GFP_KERNEL,<span class="hljs-number">3</span>);<br><span class="hljs-keyword">if</span> (!page)&#123;<br>        <span class="hljs-comment">/*没有足够的内存：你必须处理这种错误！*/</span><br>        <span class="hljs-keyword">return</span> -ENOMEM;    <span class="hljs-comment">/* 错误码加负号 */</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://godxqi.github.io/2023/01/15/C语言/Linux内核中的指针函数返回错误码/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/typedef/" title="typedef">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">typedef</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC/" title="Linux内核代码风格">
+                        <span class="hidden-mobile">Linux内核代码风格</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,754 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、缩进 1.1 switch （1）switch和case标签从属一列 123456789101112switch (suffix)&amp;#123;case &amp;#x27;G&amp;#x27;:case &amp;#x27;g&amp;#x27;:        mem &lt;&lt;&#x3D; 30;        break;case &amp;#x27;M&amp;#x27;:case &amp;#x27;m&amp;#x27;:        mem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux内核代码风格">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="一、缩进 1.1 switch （1）switch和case标签从属一列 123456789101112switch (suffix)&amp;#123;case &amp;#x27;G&amp;#x27;:case &amp;#x27;g&amp;#x27;:        mem &lt;&lt;&#x3D; 30;        break;case &amp;#x27;M&amp;#x27;:case &amp;#x27;m&amp;#x27;:        mem">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:19:10.747Z">
+<meta property="article:modified_time" content="2023-01-15T12:27:43.851Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="未重构">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Linux内核代码风格 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Linux内核代码风格"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:19" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux内核代码风格</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>一、缩进</p>
+<p>1.1 switch</p>
+<p>（1）switch和case标签从属一列</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">switch</span> (suffix)&#123;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;G&#x27;</span>:<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;g&#x27;</span>:<br>        mem &lt;&lt;= <span class="hljs-number">30</span>;<br>        <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;M&#x27;</span>:<br><span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;m&#x27;</span>:<br>        mem &lt;&lt;= <span class="hljs-number">20</span>;<br>        <span class="hljs-keyword">break</span>;<br><span class="hljs-keyword">default</span>:<br>        <span class="hljs-keyword">break</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>（2）不要把多个语句放一行，除非想隐藏什么</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">if (condition) do_this<span class="hljs-comment">;</span><br>    do_something_everytime<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>（3）不要一行放多个赋值语句，防止别人误读</p>
+<p>1.2 长的行与字符串应该打乱</p>
+<p>每一行的长度的限制是 80 列，长于 80 列的语句要打散成有意义的片段。</p>
+<p>1.3 大括号和空格的放置</p>
+<p>（1）起始大括号放在行尾，而把结束大括号放在行首，适用于所有的<strong>非函数</strong>语句块 (if, switch, for, while, do)。这种大括号的放置方式也能使空行的数量最小化。</p>
+<p>（2）空格</p>
+<p>①关键字后要加一个空格（除了sizeof, typeof, alignof 和 __attribute__这些更像函数的关键字）</p>
+<p>②不要在小括号里的表达式两侧加空格</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">s</span> <span class="hljs-operator">=</span> sizeof( struct file )<span class="hljs-comment">;    //反例</span><br></code></pre></td></tr></table></figure>
+
+<p>③ * 的首选使用方式是使之靠近变量名或函数名，而不是类型名</p>
+<p>④在大多数二元和三元操作符两侧使用一个空格</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">=  +  -  &lt;  &gt;  *  /  %  |  &amp;  ^  &lt;=  &gt;=  ==  !=  ?  <span class="hljs-symbol">:</span><br></code></pre></td></tr></table></figure>
+
+<p>⑤一元操作符后不要加空格</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf">&amp;  *  +  -  ~  !  <span class="hljs-built_in">sizeof</span>  <span class="hljs-built_in">typeof</span>  alignof  <span class="hljs-variable">__attribute__</span>  defined<br></code></pre></td></tr></table></figure>
+
+<p>⑥. 和 -&gt; 结构体成员操作符前后不加空格。</p>
+<p>1.4 命名</p>
+<p>不混用大小写，使用全小写简称，能够表达相关含义。且全局变量需要一个具有描述性的名字，如有一个可以计算活动用户数量的函数，你应该叫它 count_active_users() 或者类似的名字，你不应该叫它 cntuser() 。</p>
+<p>1.5 typedef</p>
+<p>（1）不要对结构体或指针使用typedef</p>
+<p>（2）只在下列情况下使用：</p>
+<p>① 清楚的整数类型</p>
+<p>②完全不透明的对象，真的是完全没有任何共用的可访问信息。</p>
+<p><span style="background-color: #ffaaaa">③当你使用 sparse 按字面的创建一个新类型来做类型检查的时候。</span></p>
+<p><span style="background-color: #ffaaaa">④</span><span style="background-color: #ffaaaa">和标准 C99 类型相同的类型。</span><span style="background-color: #ffaaaa">当编辑已经使用了某个类型集的已有代码时，你应该遵循那些代码中已经做出的选择。</span></p>
+<p><span style="background-color: #ffaaaa">⑤</span><span style="background-color: #ffaaaa">可以在用户空间安全使用的类型</span></p>
+<span style="background-color: #ffaaaa">
+
+</span>
+
+<p>1.6 函数</p>
+<p>（1）函数应该简短而漂亮，并且只完成一件事情，函数应该可以一屏或者两屏显示完 。</p>
+<p>（2）复杂的函数遵守前面提到的长度限制，使用辅助函数，并为之取个具描述性的名字（如果你觉得它们的性能很重要的话，可以让编译器内联它们，直接把机器码插入调用它们的地方）</p>
+<p>（3）本地变量的数量不应超过 5－10 个</p>
+<p><span style="background-color: #ffaaaa">（4）如果该函数需要被导出，它的 EXPORT 宏应该紧贴在它的结束大括号之下。</span></p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nsis">int <span class="hljs-params">system</span>_is_up(void)<br>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-params">system</span>_state == <span class="hljs-params">SYSTEM</span>_RUNNING<span class="hljs-comment">;</span><br>&#125;<br>EXPORT_SYMBOL(<span class="hljs-params">system</span>_is_up)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>1.7 集中的函数退出途径</p>
+<p>当一个函数从多个位置退出，并且需要做一些类似清理的常见操作时，使用goto 语句很方便。</p>
+<p>（1）goto需要一个描述性标签名（别去使用像 err1: 和 err2: 的 名称，因为你添加退出路径后，你就必须对它们重新编号）</p>
+<p>（2）注意一个常见错误，先释放结构体成员，然后释放结构体</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs scss">err:<br>        <span class="hljs-built_in">kfree</span>(foo-&gt;bar);<br>        <span class="hljs-built_in">kfree</span>(foo);<br>        return ret;<br></code></pre></td></tr></table></figure>
+
+<p>这段代码的错误是，在某些退出路径上 foo 是 NULL。通常情况下，通过把它分离 成两个错误标签 err_free_bar: 和 err_free_foo: 来修复这个错误：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css">err_free_bar:<br>       <span class="hljs-built_in">kfree</span>(foo-&gt;bar);err_free_foo:<br>       <span class="hljs-built_in">kfree</span>(foo);<br>       return ret;<br></code></pre></td></tr></table></figure>
+
+<p>理想情况下，你应该模拟错误来测试所有退出路径。</p>
+<p>1.8 注释</p>
+<p>（1）告诉别人你的代码做了什么，而不是怎么做的。</p>
+<p>（2）做一些小注释来注明或警告某些很聪明(或者槽糕)的做法，但不要加太多。</p>
+<p>（3）把注释放在函数的头部。告诉人们它做了什么， 也可以加上它做这些事情的原因。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * This is the preferred style for multi-line</span><br><span class="hljs-comment"> * comments in the Linux kernel source code.</span><br><span class="hljs-comment"> * Please use it consistently.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * Description:  A column of asterisks on the left side,</span><br><span class="hljs-comment"> * with beginning and ending almost-blank lines.</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
+
+<p>（4）一行应只声明一个数据，对数据进行注释</p>
+<p>1.9 宏，枚举和RTL</p>
+<p>定义常量的宏的名字及枚举里的标签需要大写。在定义几个相关的常量时，最好用枚举。</p>
+<p>（1）少写宏函数。</p>
+<p>（2）依赖于一个本地名字的宏</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-selector-id">#define</span> <span class="hljs-built_in">FOO</span>(val) <span class="hljs-built_in">bar</span>(index, val)<br></code></pre></td></tr></table></figure>
+
+<p>（3）带参数的宏避免称为左值</p>
+<p>（4）忘记了优先级：使用表达式定义常量的宏必须将表达式置于一对小括号之内。带参数的宏也要注意此类问题</p>
+<p>1.10 分配内存</p>
+<p>（1）传递结构体大小的首选形式</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">p</span> = <span class="hljs-built_in">kmalloc</span>(<span class="hljs-built_in">sizeof</span>(*p), ...)<br></code></pre></td></tr></table></figure>
+
+<p>（2）分配一个数组的首选形式</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">p = kmalloc<span class="hljs-constructor">_array(<span class="hljs-params">n</span>, <span class="hljs-params">sizeof</span>(<span class="hljs-operator">...</span>)</span>, ...)<br></code></pre></td></tr></table></figure>
+
+<p>（3）分配一个零长数组的首选形式</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">p</span> = <span class="hljs-built_in">kmalloc</span>(n, <span class="hljs-built_in">sizeof</span>(...), ...)<br></code></pre></td></tr></table></figure>
+
+<p>两种形式检查分配大小 n * sizeof(…) 的溢出，如果溢出返回 NULL。</p>
+<p>1.11 内联弊病</p>
+<p>inline 的过度使用会使内核变大，从而使整个系统运行速度变慢。</p>
+<p>一个基本的原则是如果一个函数有 3 行以上，就不要把它变成内联函数。</p>
+<p>1.12 函数返回值及命名</p>
+<p>如果函数的名字是一个动作或者强制性的命令，那么这个函数应该返回错误代码整数。如果是一个判断，那么函数应该返回一个 “成功” 布尔值。</p>
+<p>返回值是实际计算结果而不是计算是否成功的标志的函数不受此惯例的限制。一般的， 他们通过返回一些正常值范围之外的结果来表示出错。典型的例子是返回指针的函数， 他们使用 NULL 或者 ERR_PTR 机制来报告错误。</p>
+<p>1.13 条件编译</p>
+<p>只要可能，不要在.c文件里使用预处理条件(#if，#ifdef)，这样使代码更难阅读。</p>
+<p>最好倾向于编译整个函数，而不是函数或表达式的一部分。与其放一个 ifdef 在表达式内，不如分解出部分或全部表达式，放进一个单独的辅助函数，并应用预处理条件到这个辅助函数内。</p>
+<p>如果你有一个在特定配置中，可能变成未使用的函数或变量，编译器会警告它定义了但 未使用，把它标记为 __maybe_unused 而不是将它包含在一个预处理条件中。</p>
+<p>在任何有意义的 #if 或 #ifdef 块的末尾 (超过几行的)，在 #endif 同一行的后面写下 注解，注释这个条件表达式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> CONFIG_SOMETHING</span><br>...<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">/* CONFIG_SOMETHING */</span></span><br></code></pre></td></tr></table></figure>
+
+<p>1.14 数据结构</p>
+<p>如果一个数据结构，在创建和销毁它的单线执行环境之外可见，那么它必须要有一个引用计数器。</p>
+<p>1.15你已经把事情弄糟了</p>
+<p>GNU indent 和 GNU emacs</p>
+<p>1.16 Kconfig 配置文件</p>
+<p>1.17打印内核消息</p>
+<p>1.18 不要重新发明内核宏</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/v4.13/translations/zh_CN/coding-style.html#id2">https://www.kernel.org/doc/html/v4.13/translations/zh_CN&#x2F;coding-style.html#id2</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C%E8%AF%AD%E8%A8%80/" class="category-chain-item">C语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C</a>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Linux内核代码风格</div>
+      <div>https://godxqi.github.io/2023/01/15/C语言/Linux内核代码风格/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E6%8C%87%E9%92%88%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E9%94%99%E8%AF%AF%E7%A0%81/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/Linux_C/" title="Linux_C">
+                        <span class="hidden-mobile">Linux_C</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="123456typedef struct tagPoint&amp;#123;double x;double y;double z;&amp;#125; Point;  在上面的代码中，实际上完成了两个操作： 1、定义了一个新的结构类型，代码如下所示： 123456struct tagPoint&amp;#123;double x;double y;double z;&amp;#125; ;  其中，struct 关键字和 ta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言知识补充">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/C%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="123456typedef struct tagPoint&amp;#123;double x;double y;double z;&amp;#125; Point;  在上面的代码中，实际上完成了两个操作： 1、定义了一个新的结构类型，代码如下所示： 123456struct tagPoint&amp;#123;double x;double y;double z;&amp;#125; ;  其中，struct 关键字和 ta">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:19:10.740Z">
+<meta property="article:modified_time" content="2023-01-15T12:26:10.162Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="未重构">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C语言知识补充 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C语言知识补充"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:19" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">C语言知识补充</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs thrift"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tagPoint</span></span><br><span class="hljs-class"></span>&#123;<br><span class="hljs-type">double</span> x;<br><span class="hljs-type">double</span> y;<br><span class="hljs-type">double</span> z;<br>&#125; Point;<br></code></pre></td></tr></table></figure>
+
+<p>在上面的代码中，实际上完成了两个操作：</p>
+<p>1、定义了一个新的结构类型，代码如下所示：</p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs thrift"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tagPoint</span></span><br><span class="hljs-class"></span>&#123;<br><span class="hljs-type">double</span> x;<br><span class="hljs-type">double</span> y;<br><span class="hljs-type">double</span> z;<br>&#125; ;<br></code></pre></td></tr></table></figure>
+
+<p>其中，struct 关键字和 tagPoint 一起构成了这个结构类型，无论是否存在 typedef 关键字，这个结构都存在。</p>
+<p>2、使用 typedef 为这个新的结构起了一个别名，叫 Point，即：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">tagPoint</span> Point<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf">typedef struct tagNode<br>&#123;<br>char *pItem<span class="hljs-comment">;</span><br>pNode pNext<span class="hljs-comment">;</span><br>&#125; *pNode<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>从表面上看，上面的示例代码与前面的定义方法相同，所以应该没有什么问题。但是编译器却报了一个错误，为什么呢？莫非 C 语言不允许在结构中包含指向它自己的指针？</p>
+<p>其实问题并非在于 struct 定义的本身，大家应该都知道，C 语言是允许在结构中包含指向它自己的指针的，我们可以在建立链表等数据结构的实现上看到很多这类例子。那问题在哪里呢？其实，根本问题还是在于 typedef 的应用。</p>
+<p>在上面的代码中，新结构建立的过程中遇到了 pNext 声明，其类型是 pNode。这里要特别注意的是，pNode 表示的是该结构体的新别名。于是问题出现了，在结构体类型本身还没有建立完成的时候，编译器根本就不认识 pNode，因为这个结构体类型的新别名还不存在，所以自然就会报错。因此，我们要做一些适当的调整，比如将结构体中的 pNext 声明修改成如下方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">tagNode</span><br>&#123;<br><span class="hljs-type">char</span> *pItem;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">tagNode</span> *pNext;<br>&#125; *pNode;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs llvm">    #<span class="hljs-keyword">define</span> FREE(p) if(p) &#123; \<br>                        <span class="hljs-keyword">free</span>(p)<span class="hljs-comment">; \</span><br>                        p <span class="hljs-operator">=</span> NULL<span class="hljs-comment">; \</span><br>                    &#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>形参列表</p>
+<p>虽然可以在形参列表中定义多个参数，但是，在编写程序的时候，要考虑函数模块之间的“耦合性”和“扩展性”。不要传递太多的参数。如果项目需求改动，需要修改某个参数，就会导致函数接口的改动，函数接口的改动对程序的改动很大，这种操作应该极力避免。</p>
+<p>当学习到结构体之后，我们可以把多个参数封装到一个结构体中，函数的参数只需要传递一个结构体变量就OK了。那么，当有数据需要改动，只需要修改结构体的定义和数据，函数的接口不需要修改，那么，函数模块之间的耦合性就降低，提高程序函数模块之间的扩展性。这就是函数模块扩展性好的一个表现形式，也是定义函数时需要思考的注意点。</p>
+<hr>
+<p>关系运算符巧记</p>
+<hr>
+<p>赋值小于关系判断，小于算术运算。</p>
+<p>关系判断大于算术运算。</p>
+<p>++优先集相当大，仅次于（）</p>
+<p>比如c&#x3D;getchar()&#x3D;&#x3D;’a’</p>
+<p>这个算相当经典的了。根据上面说的。要先计算关系判断，所以相当于</p>
+<p>c&#x3D;(getchar()&#x3D;&#x3D;’a’)</p>
+<p>你可以找几个式子带一下，不清楚再来hi我</p>
+<p>其次要记住这些符号的结合性。也就是从左到右还是从右到左</p>
+<p>比如赋值。就是从右向左</p>
+<p>x&#x3D;a&#x3D;b&#x3D;3;</p>
+<p>相当于b&#x3D;3</p>
+<p>a&#x3D;b</p>
+<p>x&#x3D;a</p>
+<p>所以最后 是x&#x3D;3</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/EI_Capitan/article/details/109533417?utm_medium=distribute.pc_relevant_bbs_down.none-task--2~all~first_rank_v2~rank_v29-1.nonecase&depth_1-utm_source=distribute.pc_relevant_bbs_down.none-task--2~all~first_rank_v2~rank_v29-1.nonecase">https://blog.csdn.net/EI_Capitan&#x2F;article&#x2F;details&#x2F;109533417?utm_medium&#x3D;distribute.pc_relevant_bbs_down.none-task--2<del>all</del>first_rank_v2<del>rank_v29-1.nonecase&amp;depth_1-utm_source&#x3D;distribute.pc_relevant_bbs_down.none-task--2</del>all<del>first_rank_v2</del>rank_v29-1.nonecase</a></p>
+<hr>
+<p>#include &lt;filename&gt;</p>
+<p>尖括号是预处理到系统规定的路径中去获得这个文件（即 C 编译系统所提供的并存放在指定的子目录下的头文件）。找到文件后，用文件内容替换该语句。如stdio.h</p>
+<p>#include“filename”</p>
+<p>“”则是预处理我们自己第三方的文件，如程序员小刘写的Date.h，我们就可以include“Date.h”</p>
+<hr>
+<p>（1）一个有10个指针的数组，该指针是指向一个整型数的</p>
+<p>（2）一个指向有10个整型数数组的指针</p>
+<p>（3） 一个指向函数的指针，该函数有一个整型参数并返回一个整型数</p>
+<p>（4） 一个有10个指针的数组，该指针指向一个函数，该函数有一个整型参数并返回一个整型数</p>
+<p>（1）int *a[10]; </p>
+<p>（2）int (*a)[10]; </p>
+<p>（3）int (*a)(int); </p>
+<p>（4）int (*a[10])(int);</p>
+<hr>
+<p>数组：</p>
+<p>1.int a[10] &#x3D; {0};这个常见的数组初始化语句其实是将数组的第一个元素初始化为0，然后数组本身的特性是将其余未初始化的数据初始化为0，故做到了将数组全部元素初始化为0</p>
+<p>2.数组首元素的地址值虽然与数组的地址值相同，但数组首元素的地址与数组的地址是两个不同的概念。</p>
+<p>我们常说的地址实际包含了起始地址和所占内存的长度。</p>
+<p>数组名指向的数组名”指向”的是内存中数组首元素的起始位置，即数组名不包含数组的长度信息</p>
+<hr>
+<p>指针：</p>
+<p>1.指针与指针之间只支持减法运算，且参与减法运算的指针类型必须相同。</p>
+<p>2.只有当两个指针指向同一个数组中的元素时,指针相减才有意义,其意义为指针所指元素的下标差。若是指向两个数组的同类型指针相减则语法正确，但结果未知没有意义。</p>
+<p>数组的边界位置：</p>
+<p>指针可以指向数组最后一个元素后面的位置，这个位置是属于c语言的“擦边球”边界位置，在这个边界位置上我们认为这个指针是合法的，但这个位置再后面的元素都是没有意义的了</p>
+<hr>
+<p><strong>数组和指针的可交换性：数组并非指针</strong></p>
+<p>一、声明和定义</p>
+<p>定义：只能存在于一个地方。<strong>确定</strong>对象的类型并分配内存，用于创建新的对象。例如：int my_array[100]</p>
+<p>声明：可以多次出现。<strong>描述</strong>对象的类型，<strong>用于指代</strong>其他地方定义的对象（例如在其他文件里），例：extern int my_array[]；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">文件<span class="hljs-number">1</span>：<br><span class="hljs-type">int</span> p[<span class="hljs-number">100</span>];        <span class="hljs-comment">//定义</span><br>文件<span class="hljs-number">2</span>：<br><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> *p;     <span class="hljs-comment">//错误声明</span><br></code></pre></td></tr></table></figure>
+
+<p>定义与声明必须匹配。</p>
+<p>二、数组和指针的不可互换</p>
+<p>2.1 数组和指针的引用方式</p>
+<p>指针：间接访问，首先取得指针的内容，把它作为地址，然后从这个地址提取数据。如果指针有一个下标[I]，就把指针的内容加上I作为地址，从中提取数据</p>
+<p>数组：直接访问数据，a[I]只是简单地以a+I为地址取得数据</p>
+<p> 例：</p>
+<p>每个符号的地址在编译时可知，存在符号表中。该表记录了变量和内存地址的一一对应关系。</p>
+<p>（1）定义为数组并引用</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">char a[<span class="hljs-number">9</span>] <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdef&quot;</span><span class="hljs-comment">;</span><br><span class="hljs-attribute">c</span> <span class="hljs-operator">=</span> a[i]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>编译器符号表中有一个地址9980</p>
+<ul>
+<li>运行时步骤一：取i的值，将它与9980相加</li>
+<li>运行时步骤二：取地址（9980+i）的内容</li>
+</ul>
+<p>（2）定义为指针并引用</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">char *p <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdef&quot;</span><span class="hljs-comment">;</span><br><span class="hljs-attribute">c</span> <span class="hljs-operator">=</span> *p<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>编译器符号表中有一个符号p，地址为4624</p>
+<ul>
+<li>运行时步骤一：取地址4624的值，得到’5081’</li>
+<li>运行时步骤二：取地址5081的内容</li>
+</ul>
+<p>（3）定义为指针，但以数组方式引用</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs abnf">char *p <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdef&quot;</span><span class="hljs-comment">;</span><br><span class="hljs-attribute">c</span> <span class="hljs-operator">=</span> p[i]<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>编译器符号表中有一个符号p，地址为4624</p>
+<ul>
+<li>运行时步骤一：取地址4624的值，得到’5081’</li>
+<li>运行时步骤二：取i的值，将它与5081相加</li>
+<li>运行时步骤三：取地址（5081+i）的内容</li>
+</ul>
+<p>（4）定义为数组，外部文件声明为指针并引用</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs abnf">文件<span class="hljs-number">1</span>：<br>int p[<span class="hljs-number">100</span>] <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdef&quot;</span><span class="hljs-comment">;        //定义</span><br>文件<span class="hljs-number">2</span>：<br>extern int *p<span class="hljs-comment">;     //错误声明</span><br><span class="hljs-attribute">c</span> <span class="hljs-operator">=</span> *p<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>编译器符号表中有一个符号p，地址为4624</p>
+<ul>
+<li>运行时步骤一：取地址4624的值，得到’a’<ul>
+<li>原意取指针p上保存的数组地址，实际上取得了一个ASCII字符</li>
+</ul>
+</li>
+<li>运行时步骤二：取地址’a’的内容<ul>
+<li>ASCII字符解释为地址，结果未定义</li>
+</ul>
+</li>
+</ul>
+<p>故这样不能改写成指针的形式</p>
+<p>2.2 使用字符串常量初始化</p>
+<p>（1）定义指针时，编辑器并不为指针所指向的对象分配空间，它只分配指针自身的空间，除非在定义时同时赋给指针一个字符串常量进行初始化。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">char *p <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdefg&quot;</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>但这个字符串常量被定义为只读，若试图通过指针修改这个字符串的值，程序就会出现未定义的行为</p>
+<p>（2）定义数组时，也可以使用字符串常量进行初始化，且由字符串常量初始化的数组是可以修改的。</p>
+<p>三、数组和指针可互换</p>
+<p>3.1 “表达式中的数组名”就是指针</p>
+<p>在表达式中，指针与数组是可以互换的，因为它们在编译器里的最终形式都是指针，且都可以进行取下标操作</p>
+<p>3.2 C语言把数组下标作为指针的偏移量</p>
+<p>用a[i]这样的形式对数组进行访问总是被编译器”改写”或解释为像*(a+1)这样的指针访问</p>
+<p>3.3 “作为函数参数的数组名”等同于指针</p>
+<p>C语言中所有非数组形式的数据实参均以传值形式（将实参做一份拷贝供函数使用修改）调用，但要拷贝整个数组需要的开销是非常大的。出于效率考虑，属于函数实参的数组在编译时被编译器改写为指针。类似的函数的返回值也不可以是个数组，而只能是指向数组或函数的指针。</p>
+<p>（1）形参中：以下三种形式完全等同，但我们倾向于始终把参数定义为指针，因为这是编译器内部使用的形式。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">my<span class="hljs-constructor">_func(<span class="hljs-params">int</span> <span class="hljs-operator">*</span><span class="hljs-params">p</span>)</span>&#123;<span class="hljs-operator"> ... </span>&#125;<br>my<span class="hljs-constructor">_func(<span class="hljs-params">int</span> <span class="hljs-params">p</span>[])</span>&#123;<span class="hljs-operator"> ... </span>&#125;<br>my<span class="hljs-constructor">_func(<span class="hljs-params">int</span> <span class="hljs-params">p</span>[200])</span>&#123;<span class="hljs-operator"> ... </span>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>故没有办法把数组本身传递给函数，所有属于函数实参的数组在编译时被编译器改写为指针</p>
+<p>（2）实参中：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs scss">char my_array<span class="hljs-selector-attr">[10]</span>;<br>char *my_ptr;<br><span class="hljs-built_in">printf</span>(&quot;%s %s&quot;, my_ptr, my_array);<br></code></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1.用a[i]这样的形式对数组进行访问总是被编译器”改写”或解释为像*(a+1)这样的指针访问</p>
+<p>2.指针始终不可改写成数组，当使用下标形式访问指针时，一般都是指针作为函数参数，且你知道实际传递给函数的是一个数组</p>
+<p>3.在一个函数的调用中，作为函数参数的数组始终会被编译器修改成为指向数组第一个元素的指针</p>
+<p>4.因此，当把一个数组定义为函数的参数时，可以选择把它定义为数组，也可以定义为指针。不管如何，函数内部事实上获得的都是一个指针</p>
+<hr>
+<p>.h与.c文件</p>
+<p>在.c文件中使用全局变量记录其他文件会需要的变量，然后在.h文件中使用extern声明，这样别的文件只要包含.h文件就可以使用.c中的全局变量</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C%E8%AF%AD%E8%A8%80/" class="category-chain-item">C语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C</a>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C语言知识补充</div>
+      <div>https://godxqi.github.io/2023/01/15/C语言/C语言知识补充/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/gcc%E6%8C%87%E4%BB%A4%E4%B8%8E%E7%A8%8B%E5%BA%8F%E7%9A%84%E9%A2%84%E7%BC%96%E8%AF%91%E7%BC%96%E8%AF%91%E6%B1%87%E7%BC%96%E9%93%BE%E6%8E%A5%E8%BF%90%E8%A1%8C/" title="gcc指令与程序的预编译编译汇编链接运行">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">gcc指令与程序的预编译编译汇编链接运行</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/C%E8%AF%AD%E8%A8%80%E4%B9%A0%E6%83%AF/" title="C语言习惯">
+                        <span class="hidden-mobile">C语言习惯</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

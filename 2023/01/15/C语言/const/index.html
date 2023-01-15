@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、概念 const不能定义真正意义上的常量，const定义的只是一个只读变量，告诉编译器变量不能出现在赋值符号的左边，本质还是变量。 二、用法 2.1 修饰常变量 （1）用于定义常变量时，需要初始化。 （2）数据类型对于const而言是透明的 12const int a &#x3D; 10;   等价于 int const a &#x3D; 10;const int *p1 &#x3D; &amp;a; 等价于 int c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="const">
+<meta property="og:url" content="https://godxqi.github.io/2023/01/15/C%E8%AF%AD%E8%A8%80/const/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="一、概念 const不能定义真正意义上的常量，const定义的只是一个只读变量，告诉编译器变量不能出现在赋值符号的左边，本质还是变量。 二、用法 2.1 修饰常变量 （1）用于定义常变量时，需要初始化。 （2）数据类型对于const而言是透明的 12const int a &#x3D; 10;   等价于 int const a &#x3D; 10;const int *p1 &#x3D; &amp;a; 等价于 int c">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-15T12:19:10.728Z">
+<meta property="article:modified_time" content="2023-01-15T12:26:20.887Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="未重构">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>const - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="const"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-15 20:19" pubdate>
+          January 15, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">const</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p> 一、概念</p>
+<p>const不能定义真正意义上的常量，const定义的只是一个只读变量，告诉编译器变量不能出现在赋值符号的左边，本质还是变量。</p>
+<p>二、用法</p>
+<p>2.1 修饰常变量</p>
+<p>（1）用于定义常变量时，需要初始化。</p>
+<p>（2）数据类型对于const而言是透明的</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> a = <span class="hljs-number">10</span>;   等价于 <span class="hljs-built_in">int</span> <span class="hljs-keyword">const</span> a = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-built_in">int</span> *p1 = &amp;a; 等价于 <span class="hljs-built_in">int</span> <span class="hljs-keyword">const</span> *p1 = &amp;a;   但不等价于<span class="hljs-built_in">int</span> *<span class="hljs-keyword">const</span> p1=&amp;a;<br></code></pre></td></tr></table></figure>
+
+<p>（3）const用于封锁直接修饰的内容，使该内容变为只读，在程序中不能作为左值（左值：放在赋值号‘&#x3D;’的左边，使用变量的写权限）</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">const int a <span class="hljs-operator">=</span> <span class="hljs-number">10</span><span class="hljs-comment">;    //const封锁a</span><br><br><span class="hljs-attribute">a</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span><span class="hljs-comment">;             //a作为左值，使用a的写权限，非法</span><br>int b <span class="hljs-operator">=</span> a<span class="hljs-comment">;           //使用a的读权限，合法</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs smali">int<span class="hljs-built_in"> const </span>*p1 = &amp;a;<span class="hljs-built_in"></span><br><span class="hljs-built_in">const </span>int *p1 = &amp;a;     //const修饰*p1，将*p1作为左值非法，将p1作为左值合法<br><br>p1 = &amp;b;                //使用p1做左值，合法<br>*p1 = 200；             //使用*p1做左值，非法<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs smali">int *const p2 = &amp;a;     //const修饰p2,将p2作为左值非法，将*p2作为左值合法<br><br>p2 = &amp;b;                //使用p2做左值，非法<br>*p2 = 100;              //使用*p2做左值，合法<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs smali">const<span class="hljs-built_in"> int </span>*const p3 = &amp;a;    //const分别修饰*p3,p3,将*p3，p2作为左值都非法<br><br>p3 = &amp;b;                      //使用p3做左值，非法<br>*p3 = 100;                    //使用*p3做左值，非法<br></code></pre></td></tr></table></figure>
+
+<p>2.2 修饰函数的参数</p>
+<p>（1）用作函数的输入参数，防止输入内容被修改。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">StringCopy</span>(<span class="hljs-params"><span class="hljs-built_in">char</span> *<span class="hljs-keyword">out</span>, <span class="hljs-keyword">const</span> <span class="hljs-built_in">char</span> *<span class="hljs-keyword">in</span></span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>其中in 是输入参数，out是输出参数。给in加上 const 修饰后，如果函数体内的语句试图改动 strSource 的内容，编译器将指出错误。</p>
+<p>（2）防止修改指针指向的地址</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-built_in">void</span> swap ( <span class="hljs-built_in">int</span> *<span class="hljs-keyword">const</span> p1 , <span class="hljs-built_in">int</span> *<span class="hljs-keyword">const</span> p2 )<br></code></pre></td></tr></table></figure>
+
+<p>指针p1和指针p2指向的地址都不能被修改。</p>
+<p>（3）以上两种的结合</p>
+<p>2.3 修饰函数的返回值</p>
+<p>表示返回值不可改变，多用于返回值为指针的情形，且该返回值只能被赋给加const 修饰的同类型指针。</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-keyword">const</span> <span class="hljs-built_in">char</span> * GetString(<span class="hljs-keyword">void</span>);<br><span class="hljs-built_in">char</span> *<span class="hljs-built_in">str</span> = GetString();    <span class="hljs-comment">//编译错误</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-built_in">char</span> *<span class="hljs-built_in">str</span> = GetString();    <span class="hljs-comment">//编译成功</span><br></code></pre></td></tr></table></figure>
+
+<p>2.4 修饰全局变量</p>
+<p>首先我们要尽量避免使用全局变量，它不仅在程序结束前一直占用数据段上的空间，而且可以在任何地方更改，减少软件的安全性。所以我们尽量使用const进行修饰，以防止不必要的人为修改。</p>
+<p>三、const和编译器</p>
+<p>早期的标准C语言编译器(bcc)中const修饰的全局变量在全局数据区分配空间，其值依然可以改变；在现代C语言编译器(如gcc,vc6.0)中，将const修饰的全局变量存储于只读存储区，无法通过指针修改其值。</p>
+<p>四、const的变量本质</p>
+<p>4.1 本质一</p>
+<p>const修饰的局部变量在栈上分配空间，虽然不可通过赋值号改变其值，但可以通过指针改变其值；</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs perl">const <span class="hljs-keyword">int</span> g_cc = <span class="hljs-number">2</span>;<br><span class="hljs-keyword">int</span> main()<br>&#123;<br>    const <span class="hljs-keyword">int</span> cc = <span class="hljs-number">1</span>;<br>    <br>    <span class="hljs-keyword">int</span>* p = (<span class="hljs-keyword">int</span>*)&amp;cc;<br><br>    <span class="hljs-keyword">printf</span>(<span class="hljs-string">&quot;cc = %d\n&quot;</span>, cc);<br><br>    *p = <span class="hljs-number">3</span>;        <span class="hljs-regexp">//</span>编译通过<br>//    cc = <span class="hljs-number">3</span>;    <span class="hljs-regexp">//</span>error:assignment of <span class="hljs-keyword">read</span>-only variable <span class="hljs-string">&#x27;cc&#x27;</span><br><br>    <span class="hljs-keyword">printf</span>(<span class="hljs-string">&quot;cc = %d\n&quot;</span>, cc);<br><br>    p = (<span class="hljs-keyword">int</span>*)&amp;g_cc;<br><br>    <span class="hljs-keyword">printf</span>(<span class="hljs-string">&quot;g_cc = %d\n&quot;</span>, g_cc);<br><br>    *p = <span class="hljs-number">4</span>;    <span class="hljs-regexp">//</span>编译通过，但程序崩溃<br>               /*因为现代编译器都对const进行了优化，const修饰的全局变量会被编译进入只读存储区，一旦程序对只读存储区的内容进行修改，就会发生崩溃；但早期编译器是可以修改const全局变量的内存空间的，const修饰的全局变量没有编译进入只读存储区*<span class="hljs-regexp">/</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">    printf(&quot;g_cc = %d\n&quot;, g_cc);    /</span>/error:assignment of <span class="hljs-keyword">read</span>-only variable <span class="hljs-string">&#x27;cc&#x27;</span><br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>-现代C编译器中的const将具有全局生命周期的变量存储于只读存储区。</p>
+<p>（全局生命周期的变量有全局变量和static修饰的局部变量。）</p>
+<p>4.2 本质二</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">const</span> <span class="hljs-type">int</span> g_array[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">0</span>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">modify</span><span class="hljs-params">(<span class="hljs-type">int</span>* p, <span class="hljs-type">int</span> v)</span></span><br><span class="hljs-function"></span>&#123;<br>    *p = v;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> <span class="hljs-type">const</span> i = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-type">static</span> <span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> <span class="hljs-type">const</span> array[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>    <span class="hljs-built_in">modify</span>((<span class="hljs-type">int</span>*)&amp;i, <span class="hljs-number">1</span>);             <span class="hljs-comment">//ok</span><br>    <span class="hljs-built_in">modify</span>((<span class="hljs-type">int</span>*)&amp;j, <span class="hljs-number">2</span>);             <span class="hljs-comment">//error(gcc编译器)</span><br>    <span class="hljs-built_in">modify</span>((<span class="hljs-type">int</span>*)&amp;array[<span class="hljs-number">0</span>], <span class="hljs-number">3</span>);      <span class="hljs-comment">//ok</span><br>    <span class="hljs-built_in">modify</span>((<span class="hljs-type">int</span>*)&amp;g_array[<span class="hljs-number">0</span>], <span class="hljs-number">4</span>);    <span class="hljs-comment">//error(gcc编译器)</span><br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;i = %d\n&quot;</span>, i);    <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;j = %d\n&quot;</span>, j);    <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;array[0] = %d\n&quot;</span>, array[<span class="hljs-number">0</span>]);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;g_array[0] = %d\n&quot;</span>, g_array[<span class="hljs-number">0</span>]);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注意：C语言中的字符串字面量（字符串常量）存储于只读存储区，在程序中需要使用const char*指针指向。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-type">const</span> <span class="hljs-type">char</span>* s = <span class="hljs-string">&quot;Delphi Tanf&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>（三）和宏定义define的区别：宏常量本质为字面量（字面量不占用内存）</p>
+<p>#define指令是另一种创建名字常量的机制。例如，下面这两个声明都为50这个值创建了名字常量：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_ELEMENTS 50</span><br><span class="hljs-type">int</span> <span class="hljs-type">const</span> max_elements <span class="hljs-number">50</span>;<br></code></pre></td></tr></table></figure>
+
+<p>在这种情况下，使用#define比使用const变量更好。#define定义的宏常量本质为字面量（字面量不占用内存），因为只要允许使用字面值常量的地方，都可以使用前者，比如声明数组的长度。const变量只能用于允许使用变量的地方。</p>
+<p><span style="background-color: #ffaaaa">3.编译器通常不为普通const常量分配存储空间，而是将它们保存在符号表中，这使得它成为一个编译期间的常量，没有了存储与读内存的操作，使得它的效率也很高。</span></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C%E8%AF%AD%E8%A8%80/" class="category-chain-item">C语言</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/">#C</a>
+      
+        <a href="/tags/%E6%9C%AA%E9%87%8D%E6%9E%84/">#未重构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>const</div>
+      <div>https://godxqi.github.io/2023/01/15/C语言/const/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" title="C语言基础">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C语言基础</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/15/C%E8%AF%AD%E8%A8%80/-attribute-/" title="attribute">
+                        <span class="hidden-mobile">attribute</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
