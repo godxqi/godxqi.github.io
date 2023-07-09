@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="发送第一次请求的程序，被称作客户端(Client)，等待其他程序连接的程序被称作服务器(Server) 两个模型理论:OSI实际:TCP&#x2F;IP实际传输模型:发送方的应用层一层层向下，再到对方的主机，再层层向上到达接收方 网络构成当一台主机或端设备向另一台端设备发送数据时，发送端将数据从应用层层层封装，形成完整的网络报文，从网络接口卡进入通信链路，经由交换机和路由器选择适合的路径，最终发送">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GODXQI&#39;s Blog">
+<meta property="og:url" content="https://godxqi.github.io/2023/06/07/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/OSI%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="发送第一次请求的程序，被称作客户端(Client)，等待其他程序连接的程序被称作服务器(Server) 两个模型理论:OSI实际:TCP&#x2F;IP实际传输模型:发送方的应用层一层层向下，再到对方的主机，再层层向上到达接收方 网络构成当一台主机或端设备向另一台端设备发送数据时，发送端将数据从应用层层层封装，形成完整的网络报文，从网络接口卡进入通信链路，经由交换机和路由器选择适合的路径，最终发送">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ea2e97737c224599b6fba0f10ffa7e6d.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/d62098ebbc9e415894fa9e81cd6ac06d.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e9975ed7bbde4f319614b82ac3c0870a.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/42a4f7f5bbbf4c6ba44d7144d16fddbc.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/5422a40cc8a746cb9410727f1b8980c0.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/74c3c33ba5854438a97e646007483498.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f8689a2746dd4fd5b69e1f794ebf59d6.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/906df8e9655647b3bea3b97ae6eb4f8a.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/596068300bfc4f42939bf5e7db5893d3.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/74e4a0cfe6d343828618c1f7bb9527db.png#pic_center">
+<meta property="article:published_time" content="2023-06-07T01:31:55.269Z">
+<meta property="article:modified_time" content="2023-07-09T23:33:40.654Z">
+<meta property="article:author" content="GODXQI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/ea2e97737c224599b6fba0f10ffa7e6d.png#pic_center">
+  
+  
+  
+  <title>GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-07 09:31" pubdate>
+          June 7, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>发送第一次请求的程序，被称作客户端(Client)，等待其他程序连接的程序被称作服务器(Server)</p>
+<h3 id="两个模型"><a href="#两个模型" class="headerlink" title="两个模型"></a>两个模型</h3><p>理论:OSI<br>实际:TCP&#x2F;IP<br><img src="https://img-blog.csdnimg.cn/ea2e97737c224599b6fba0f10ffa7e6d.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>实际传输模型:发送方的应用层一层层向下，再到对方的主机，再层层向上到达接收方</p>
+<h3 id="网络构成"><a href="#网络构成" class="headerlink" title="网络构成"></a>网络构成</h3><p><img src="https://img-blog.csdnimg.cn/d62098ebbc9e415894fa9e81cd6ac06d.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>当一台主机或端设备向另一台端设备发送数据时，发送端将数据从应用层层层封装，形成完整的网络报文，从网络接口卡进入通信链路，经由交换机和路由器选择适合的路径，最终发送到接收端主机</p>
+<h4 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h4><p>①扩大网络的器材，能为子网络中提供更多的连接端口，以便连接更多的计算机<br>②为接入交换机的任意两个网络节点提供独享的电信号通路，节省了资源和时间，提高了数据传输的速率。<br>二层交换机属数据链路层设备，可以识别数据包中的MAC地址信息，根据MAC地址进行转发，并将这些MAC地址与对应的端口记录在自己内部的一个地址表中<br>通信流程</p>
+<ol>
+<li>当交换机从某个端口收到一个数据包，它先读取包头中的源MAC地址，这样它就知道源MAC地址的机器是连在哪个端口上的；</li>
+<li>再去读取包头中的目的MAC地址，并在地址表中查找相应的端口；</li>
+<li>如表中有与这目的MAC地址对应的端口，把数据包直接复制到这端口上；</li>
+<li>如表中找不到相应的端口则把数据包广播到所有端口上，当目的机器对源机器回应时，交换机又可以记录这一目的MAC地址与哪个端口对应，在下次传送数据时就不再需要对所有端口进行广播了。不断的循环这个过程，对于全网的MAC地址信息都可以学习到，二层交换机就是这样建立和维护它自己的地址表。<br>路由器实现局域网与局域网的互联，局域网与Internet的互联；而防火墙作为一个安全网络设备，作用于内部网络与内部网络之间，或者内部网络与Internet之间。总的来说，交换机负责连接设备，路由器负责连接网络，防火墙负责网络访问限制。</li>
+</ol>
+<h4 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h4><p>路由，是指把数据从一个地方传送到另一个地方的行为和动作。<br>路由器依据网络层信息将数据包从一个网络前向转发到另一个网络</p>
+<h4 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h4><p>假设网络A中一个用户A1要向C网络中的C3用户发送一个请求信号时，信号传递的步骤如下：<br>第1步：用户A1将目的用户C3的地址C3，连同数据信息以数据帧的形式通过集线器或交换机以广播的形式发送给同一网络中的所有节点，当路由器A5端口侦听到这个地址后，分析得知所发目的节点不是本网段的，需要路由转发，就把数据帧接收下来。<br>第2步：路由器A5端口接收到用户A1的数据帧后，先从报头中取出目的用户C3的IP地址，并根据路由表计算出发往用户C3的最佳路径。因为从分析得知到C3的网络ID号与路由器的C5网络ID号相同，所以由路由器的A5端口直接发向路由器的C5端口应是信号传递的最佳途经。<br>第3步：路由器的C5端口再次取出目的用户C3的IP地址，找出C3的IP地址中的主机ID号，如果在网络中有交换机则可先发给交换机，由交换机根据MAC地址表找出具体的网络节点位置；如果没有交换机设备则根据其IP地址中的主机ID直接把数据帧发送给用户C3，这样一个完整的数据通信转发过程也完成了。</p>
+<h4 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h4><p>第一，网络互连，路由器支持各种局域网和广域网接口，主要用于互连局域网和广域网，实现不同网络互相通信；<br>第二，数据处理，提供包括分组过滤、分组转发、优先级、复用、加密、压缩和防火墙等功能；<br>第三，网络管理，路由器提供包括配置管理、性能管理、容错管理和流量控制等功能。</p>
+<p>路由机如何知道与它连接网络的IP地址	<br>        当路由器收到一个IP数据包时，路由器会解析出IP数据包中的目的IP地址，然后根据目的IP地址查找路由表，依据最长掩码匹配原则，找到对应的路由条目，根据路由条目中的下一跳或者出接口将报文转发出去，这就是路由。</p>
+<h3 id="凭空把东西从A给到B"><a href="#凭空把东西从A给到B" class="headerlink" title="凭空把东西从A给到B"></a>凭空把东西从A给到B</h3><p>物理连线，让A和B连到一片网络下(物理层	)<br>A连到了X区，B连到了Y区，A想找到怎么去Y区的路，就要找到Y区的ip(网络层	IP协议)<br>A找到Y区了，Y区这么大怎么找到B这个设备呢，通过IP地址使用ARP协议获取MAC地址(网路层	ARP协议)<br>(数据链路层	MAC地址)<br>数据给到B，还需要告诉B数据用于哪个端口(传输层	端口)<br>找到端口对应的应用程序后，数据给它，数据实际就是010101的比特流。需要约定规则:一个数据什么时候开始什么时候结束				(数据链路层	封装成帧)<br>具体传输规则:响应方式				网络层	TDP</p>
+<h3 id="找到主机后，怎么确认发给主机里哪个应用程序"><a href="#找到主机后，怎么确认发给主机里哪个应用程序" class="headerlink" title="找到主机后，怎么确认发给主机里哪个应用程序()"></a>找到主机后，怎么确认发给主机里哪个应用程序()</h3><p>一台计算机可以同时提供多种网络服务，例如 Web 服务（网站）、FTP 服务（文件传输服务）、SMTP 服务（邮箱服务）等，仅有 IP 地址和 MAC 地址，计算机虽然可以正确接收到数据包，但是却不知道要将数据包交给哪个网络程序来处理，所以通信失败。	<br>为了区分不同的网络程序，计算机会为每个网络程序分配一个独一无二的端口号（Port Number），例如，Web 服务的端口号是 80，FTP 服务的端口号是 21，SMTP 服务的端口号是 25。	</p>
+<p>数据处理流程		<br><img src="https://img-blog.csdnimg.cn/e9975ed7bbde4f319614b82ac3c0870a.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="各层信息"><a href="#各层信息" class="headerlink" title="各层信息"></a>各层信息</h3><p><img src="https://img-blog.csdnimg.cn/42a4f7f5bbbf4c6ba44d7144d16fddbc.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="socket为啥存在"><a href="#socket为啥存在" class="headerlink" title="socket为啥存在"></a>socket为啥存在</h3><p>网络信息是由分布在主机系统中的应用程序发送和接收，这些应用程序处于网络模型的最上层：应用层。它们采用的协议就是应用层协议<br>应用层由于应用程序的不同，通信方式多样，具有多种协议。相对于应用层协议的多样性，传输层以下（包括传输层）的协议更具确定性和标准性，我们可以把它们认为是基础协议层，它们的协议栈统称为网络协议栈。<br>就是说把固定的属性打包起来，拉一个对外接口叫socket</p>
+<h3 id="socket包含的信息"><a href="#socket包含的信息" class="headerlink" title="socket包含的信息"></a>socket包含的信息</h3><p>传输层的功能就是建立端口到端口的通信（也可以说是进程到进程之间的通信），网络层实现主机之间的通信，链路层实现具体每段链路之间的通信。</p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>任务就是通过应用进程间的交互来完成特定网络应用<br>应用层协议定义的是应用进程间的通信和交互的规则，对于不同的网络应用需要不同的应用层协议<br>在互联网中应用层协议很多，如域名系统 DNS，支持万维网应用的 HTTP 协议，支持电子邮件的 SMTP 协议等等<br>应用层交互的数据单元称为报文。</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>就俩协议。需要保证数据正确送达的选择tcp，强调实时性的选择udp</p>
+<p>简介	<br>TCP 	<br>    TCP 要提供可靠的，面向连接的传输服务<br>    TCP 的可靠体现在 TCP 在传递数据之前，会有三次握手来建立连接，而且在数据传递时，有确认、窗口、重传、流量控制、拥塞控制机制，在数据传完后，还会断开连接用来节约系统资源。这不仅使协议数据单元的首部增大很多，还要占用许多处理机资源<br>    TCP 一般用于文件传输、发送和接收邮件、远程登录等场景。<br>TCP过程	<br><img src="https://img-blog.csdnimg.cn/5422a40cc8a746cb9410727f1b8980c0.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>特点<br><img src="https://img-blog.csdnimg.cn/74c3c33ba5854438a97e646007483498.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>TCP报文<br><img src="https://img-blog.csdnimg.cn/f8689a2746dd4fd5b69e1f794ebf59d6.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>UDP	<br>    UDP 在传送数据之前不需要先建立连接，远程主机在收到 UDP 报文后，不需要给出任何确认<br>    虽然UDP 不提供可靠交付，但在某些情况下 UDP 确是一种最有效的工作方式（一般用于即时通信），<br>    QQ 语音、 QQ 视频 、直播等等<br>报文	<br><img src="https://img-blog.csdnimg.cn/906df8e9655647b3bea3b97ae6eb4f8a.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>广播组播单播		<br>    单播：在同一网络内，两个设备点对点的通信就是单播通信。	<br>    组播：在同一网络可达范围内，一个网络设备与关心其数据的部分设备进行通信就是组播。	<br>    广播：在同一网络可达范围内，一个网络设备向本网络内所有设备进行通信就是广播	</p>
+<pre><code class="hljs">端口号是传输层协议tcp和udp里的一个字段，2个字节，最大值65535	
+</code></pre>
+<h3 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h3><p>实现主机与主机之间的通信，也叫点对点（end to end）通信(数据包根据IP地址在网络上传输,无需与目标实现简建立连接)。		<br>网络层把运输层产生的报文段或用户数据报封装成分组和包进行传送。		<br>因此在通信过程中，IP 数据报的源地址和目的地址始终不变，而 MAC 地址随着链路的改变而改变。		</p>
+<h4 id="IP-协议"><a href="#IP-协议" class="headerlink" title="IP 协议"></a>IP 协议</h4><p>用于屏蔽下层物理网络的差异，为上层提供统一的 IP 数据报。	<br>IP 协议定义的地址，我们称之为 IP 地址	<br>主要就俩协议:IPv4和IPv6	<br>IP数据包转发时不保证到达</p>
+<h5 id="IPv4"><a href="#IPv4" class="headerlink" title="IPv4"></a>IPv4</h5><p>IPv4数据报格式	<br><img src="https://img-blog.csdnimg.cn/596068300bfc4f42939bf5e7db5893d3.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>IPv4地址有32比特，共4个字节<br>习惯上每个字节用十进制表示，中间用点号分开<br>比如192.168.10.1</p>
+<h5 id="IPv4地址组成"><a href="#IPv4地址组成" class="headerlink" title="IPv4地址组成"></a>IPv4地址组成</h5><p>IPv4地址由网络地址(网段号)和主机地址(主机号)组成，网络地址表示主机位于哪个局域网内，主机地址表示主机在这个局域网内的唯一标识<br>由IP地址和子网掩码确认网络号  IP：172.28.146.203  掩码255.255.0.0  那么网络号为172.28.0.0  主机号0.0.146.203<br><img src="https://img-blog.csdnimg.cn/74e4a0cfe6d343828618c1f7bb9527db.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>    区别	<br>        除了IP地址和首部格式不同外，一些其他处理逻辑也不同，比如根据IP地址寻址MAC采用的协议，分片方式等</p>
+<h4 id="ARP地址解析协议"><a href="#ARP地址解析协议" class="headerlink" title="ARP地址解析协议"></a>ARP地址解析协议</h4><pre><code class="hljs">实现由 IP 地址得到 MAC 地址。	
+主机A想要知道ip地址为128.1.2.15的主机的mac地址，于是发送一条arp request报文。由于它是一条广播报文，所以同网段内的所有主机都能收到，但是只有ip地址为128.1.2.15的主机E回复arp reply报文，报文里携带自己的mac地址	
+</code></pre>
+<h4 id="包-Packet"><a href="#包-Packet" class="headerlink" title="包(Packet)"></a>包(Packet)</h4><p>“包”(Packet)是TCP&#x2F;IP协议通信传输中的数据单位，是端到端的数据单元(分片前&#x2F;组装后),一般也称“数据包”</p>
+<h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>实现「直连」的两个设备之间通信		<br>将物理层提供的可能出错的物理连接改造成为逻辑上无差错的数据链路，使之对网络层表现为一条无差错的链路。		</p>
+<p>①封装成帧<br>Frame，数据链路层的协议数据（protocal data unit）单元<br>    为什么	<br>        物理层只是把计算机连起来简单的传输比特流(0,1组合)，但计算机对01的无序组合是不认识的。需要指定一套规则进行0，1传送，使计算机读得懂这些组合<br>    怎么做<br>        发送端收到网络层拿来的数据后，将数据加上帧首与帧尾，从而构成一个帧。从而让计算机读到比特流时，通过帧首帧尾识别帧的开始和结束。</p>
+<p>②MAC地址		<br>    即链路层地址，用于唯一标识网络适配器（网卡）	<br>    一台主机拥有多少个网络适配器就有多少个 MAC 地址。例如笔记本电脑普遍存在无线网络适配器和有线网络适配器，因此就有两个 MAC 地址	</p>
+<h3 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h3><p>物理介质链接，实现计算机间比特流的透明传输，	<br>物理层只是简单的把计算机连接起来并在上面传输比特流，	<br>缺点	<br>    物理连接是有差错和不可靠的<br>    物理设备之间可能存在传输速度不匹配问题</p>
+<p>数据最终封装格式</p>
+<p>————————————<br>IEEE802.3标准		<br>    规定了包括物理层的连线、电子信号和介质访问层协议的内容	</p>
+<p>车载以太网与传统以太网的区别		<br>    在汽车网络总线中，首先要考虑的是总线的稳定、安全和抗干扰的能力。	<br>    物理层的不同，相比较传统以太网采用2对双绞线即4根线，车载以太网只需要两根线，即两线制。	</p>
+<p>其他协议		<br>    ICMP	Internet Control Message Protocol，也就是互联网控制报文协议。<br>    主要的功能包括：确认 IP 包是否成功送达目标地址、报告发送过程中 IP 包被废弃的原因和改善网络设置等。在 IP 通信中如果某个 IP 包因为某种原因未能达到目标地址，那么这个具体的原因将由 ICMP 负责通知。	</p>
+<p>——————————<br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1012413?areaSource=106001.1">https://cloud.tencent.com/developer/article/1012413?areaSource=106001.1</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/403120541">https://zhuanlan.zhihu.com/p/403120541</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="category-chain-item">网络编程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://godxqi.github.io/2023/06/07/网络编程/OSI模型/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 7, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/07/03/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/SomeipProtocol/" title="网络编程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网络编程</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/24/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B0_ClientServer/" title="网络编程">
+                        <span class="hidden-mobile">网络编程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-vercel-lccsqrvsj-godxqi.vercel.app/","placeholder":"遗憾莫过于难忘你的背影，却找不到你来过的痕迹 ...","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

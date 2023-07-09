@@ -1,0 +1,822 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="GODXQI">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文为网络编程学习笔记 关键字Methods一种被调用的方法、过程、函数或子例程。Parameters方法或事件的输入、输出或输入&#x2F;输出参数Remote Procedure Call (RPC)从一个ECU到另一个ECU的方法调用，使用消息传输Request客户端向服务器发送的调用方法的消息Response服务器发送给客户端的消息，用于传输方法调用的结果Request&#x2F;Resp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络编程">
+<meta property="og:url" content="https://godxqi.github.io/2023/07/03/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/SomeipProtocol/index.html">
+<meta property="og:site_name" content="GODXQI&#39;s Blog">
+<meta property="og:description" content="本文为网络编程学习笔记 关键字Methods一种被调用的方法、过程、函数或子例程。Parameters方法或事件的输入、输出或输入&#x2F;输出参数Remote Procedure Call (RPC)从一个ECU到另一个ECU的方法调用，使用消息传输Request客户端向服务器发送的调用方法的消息Response服务器发送给客户端的消息，用于传输方法调用的结果Request&#x2F;Resp">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ecb1e65dfaa9488fa7a9f2720662f263.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e65f5ac0ecda469b9ff3ea0178dd40dd.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/3d48ff716e8945fd9d301cf67bc6e26c.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/05264922f30b41f98e2c73e669dcf76c.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f014e126580d4b4e8fac0565d188c4e5.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7a1b4e9c00cb4ffbb40fd6e47fb004f7.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7dd5be46b58f4509929f88b6723074e1.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/bc1qerdz7v3rqqg7amg4q6ka4xl96vlhc3ka5ndta2d93.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/aa86e80fda88458aaab6bdf46204482e.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7921abc7cb0b47c38228080dab38579f.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/62525cb48d02431481b26e22465d1836.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/9aa59acf74134744b80e230aea760f89.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/5c2de3a51ed34f629dddedfe83c1382c.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7720be9edb754fa88fa49e90e5cce266.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/d14e074ced3a427695c75e615ccc74de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/8daaef1356884f2f99554c657572c9cd.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/9445230a55104d54bdaa41edfe7e7540.png">
+<meta property="article:published_time" content="2023-07-02T23:32:10.766Z">
+<meta property="article:modified_time" content="2023-07-09T23:33:40.668Z">
+<meta property="article:author" content="GODXQI">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="奇怪的问题">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/ecb1e65dfaa9488fa7a9f2720662f263.jpeg#pic_center">
+  
+  
+  
+  <title>网络编程 - GODXQI&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"godxqi.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>GODXQI</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络编程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-07-03 07:32" pubdate>
+          July 3, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">网络编程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文为网络编程学习笔记</p>
+<p>关键字<br>Methods<br>一种被调用的方法、过程、函数或子例程。<br>Parameters<br>方法或事件的输入、输出或输入&#x2F;输出参数<br>Remote Procedure Call (RPC)<br>从一个ECU到另一个ECU的方法调用，使用消息传输<br>Request<br>客户端向服务器发送的调用方法的消息<br>Response<br>服务器发送给客户端的消息，用于传输方法调用的结果<br>Request&#x2F;Response communication<br>由请求和响应组成的RPC<br>Event<br>单向数据传输，仅在更改时调用或循环调用，并从数据生产者发送给消费者。<br>Field<br>字段确实表示一种状态，因此在getter、setter和notifier作用的任何时候都有一个有效值。<br>Notification Event<br>字段的通知程序的事件消息。类似CAN报文，在特定的事件触发下，服务端会发给客户端一个notification报文主要包括周期性事件、数据Changed等<br>Getter<br>允许对字段进行读取访问的请求&#x2F;响应调用。<br>Setter<br>允许对字段进行写访问的请求&#x2F;响应调用。<br>Notifier<br>在字段值发生更改时发送带有新值的事件消息。<br>Service<br>由零个或多个事件、方法和字段的组合组成。<br>Service Interface<br>服务的正式规范，包括其方法、事件和字段<br>Eventgroup<br>服务内部的事件和字段通知事件的逻辑分组，以便允许订阅<br>Service Instance<br>服务的实施，该服务可以在车辆中存在不止一次，也可以在ECU上存在不止一次<br>Server<br>提供服务实例的ECU应在该服务实例的上下文中被称为服务器。<br>Client<br>使用服务器服务实例的ECU应在该服务实例的上下文中被称为客户端。<br>Fire and Forget<br>没有响应消息的请求称为fire&amp;forget。<br>并集动态地采用不同数据类型的数据结构。</p>
+<p>SOMEIP<br>SOME&#x2F;IP是一套用TCP&#x2F;IP协议帮助不同平台上的分布式应用软件互相传递信息的机制<br>三种通信机制</p>
+<h3 id="事件Event"><a href="#事件Event" class="headerlink" title="事件Event"></a>事件Event</h3><p>提供了从提供者到订阅者的循环发送或变化的数据</p>
+<h3 id="方法Methods"><a href="#方法Methods" class="headerlink" title="方法Methods"></a>方法Methods</h3><p>为订阅者提供了在提供者端执行远程过程调用的可能性<br>1.Request&#x2F;Response<br><img src="https://img-blog.csdnimg.cn/ecb1e65dfaa9488fa7a9f2720662f263.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2.Fire and Forget<br><img src="https://img-blog.csdnimg.cn/e65f5ac0ecda469b9ff3ea0178dd40dd.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="字段Field"><a href="#字段Field" class="headerlink" title="字段Field"></a>字段Field</h3><p>1.Setter&#x2F;Getter<br>Getter:订阅者可以调用它来明确地向提供者查询值<br>Setter:当订阅者想要更改提供者端的值时，它可以被订阅者调用<br><img src="https://img-blog.csdnimg.cn/3d48ff716e8945fd9d301cf67bc6e26c.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2.Notifier<br>将提供者的更改数据发送给订阅者<img src="https://img-blog.csdnimg.cn/05264922f30b41f98e2c73e669dcf76c.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="Someip-Header"><a href="#Someip-Header" class="headerlink" title="Someip Header"></a>Someip Header</h3><p>Someip Header应以网络字节顺序编码，也就是大端规则传输<br><img src="https://img-blog.csdnimg.cn/f014e126580d4b4e8fac0565d188c4e5.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="MessageID"><a href="#MessageID" class="headerlink" title="MessageID"></a>MessageID</h4><p>①4个字节。<br>②在整个系统中固定唯一。<br>③由Service ID(16 bit)和Method ID(15 bit)组成，前者表示应用，后者表示方法或事件</p>
+<ul>
+<li>当Method ID表示方法时，bit16为0<br><img src="https://img-blog.csdnimg.cn/7a1b4e9c00cb4ffbb40fd6e47fb004f7.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
+<li>当Method ID表示事件时，bit16为1<br> <img src="https://img-blog.csdnimg.cn/7dd5be46b58f4509929f88b6723074e1.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
+</ul>
+<h4 id="Length"><a href="#Length" class="headerlink" title="Length"></a>Length</h4><p>4个字节，它是从Request ID到Payload的字节长度</p>
+<h4 id="RequestID"><a href="#RequestID" class="headerlink" title="RequestID"></a>RequestID</h4><p><img src="https://img-blog.csdnimg.cn/bc1qerdz7v3rqqg7amg4q6ka4xl96vlhc3ka5ndta2d93.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ul>
+<li>ClientID<br>2字节，是订阅者的唯一标识，提供者用Client ID区分调用同一方法的多个订阅者<br>在整个系统中固定唯一。</li>
+<li>Session ID<br>2个字节，用来区分同一发送者的连续请求或消息<br>① 如果会话处理未激活，Session ID应该设置为0x0000<br>②如果会话处理处于激活状态，Session ID应设置为0x0001-0xFFFF范围内的值，当Session ID达到最大值0xFFFF时，它应该从0x0001重新开始<br>③如果会话处理处于激活状态，Session ID应根据各自的用例递增<br>④如果响应的Session ID与请求的Session ID不匹配，订阅者必须忽略这个响应</li>
+</ul>
+<h4 id="Protocol-Version"><a href="#Protocol-Version" class="headerlink" title="Protocol Version"></a>Protocol Version</h4><p>1个字节，用来表示SOME&#x2F;IP首部的格式</p>
+<h4 id="Interface-Version"><a href="#Interface-Version" class="headerlink" title="Interface Version"></a>Interface Version</h4><p>1个字节，用来表示服务接口版本</p>
+<h4 id="Message-Type"><a href="#Message-Type" class="headerlink" title="Message Type"></a>Message Type</h4><p>消息类型字段用于区分不同类型的消息<br><img src="https://img-blog.csdnimg.cn/aa86e80fda88458aaab6bdf46204482e.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>当没有错误发生时，常规请求(Message Type &#x3D; 0x00)应由响应(Message Type &#x3D; 0x80)回复，如果发生错误，则应回复错误消息(Message Type &#x3D; 0x81)<br>也可以发送没有响应消息的请求(Message Type &#x3D; 0x01)</p>
+<p>对于TP消息来说，Message Type的第三个高位要设置为1，以表示这个SOME&#x2F;IP是一个segment，所以0x00对应0x20<br>这里我不理解segment是什么意思</p>
+<h4 id="Return-Code"><a href="#Return-Code" class="headerlink" title="Return Code"></a>Return Code</h4><p>1个字节，用来表示请求是否已成功处理<br><img src="https://img-blog.csdnimg.cn/7921abc7cb0b47c38228080dab38579f.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ul>
+<li>Response<br><img src="https://img-blog.csdnimg.cn/62525cb48d02431481b26e22465d1836.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
+</ul>
+<h4 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h4><p>SOME&#x2F;IP Payload由事件的数据元素或方法的参数组成，大小取决于所使用的传输层协议，对于UDP，payload介于0到1400个字节之间，而由于TCP支持payload分段，所以支持更大的长度<br>payload</p>
+<h3 id="数据结构的序列化-4-1-4未看完"><a href="#数据结构的序列化-4-1-4未看完" class="headerlink" title="数据结构的序列化(4.1.4未看完)"></a>数据结构的序列化(4.1.4未看完)</h3><p>即把包含不同数据类型的结构化数据序列化成byte数组<br>如何序列化，要根据项目规范和内存对齐<br>①数据的对齐应通过在前面的数据和应对齐的数据之间插入填充元素来实现<br>②固定长度数据元素后不应该有填充，如果非要填充，必须在规范中明确<br>③可变长度数据元素后面的数据对齐应为8、16或32位的倍数<br>如果某个元素大小可变，且不是序列化数据流中的最后一个元素，则应通过在可变元素数据后插入填充位来实现数据对齐</p>
+<h3 id="SOME-x2F-IP协议规范"><a href="#SOME-x2F-IP协议规范" class="headerlink" title="SOME&#x2F;IP协议规范"></a>SOME&#x2F;IP协议规范</h3><p>SOME&#x2F;IP支持TCP和UDP传输消息<br>一个服务实例可以用以下方式来进行所有方法、事件和通知的通信<br>最多一个TCP连接<br>最多一个UDP单播<br>最多一个UDP多播</p>
+<h4 id="TCP-Bind"><a href="#TCP-Bind" class="headerlink" title="TCP Bind"></a>TCP Bind</h4><p>客户端在SOME&#x2F;IP通信前首先需要建立TCP连接<br>客户端负责在失败时重新建立TCP连接<br>当需要断开连接时，由客户端发起断开连接请求<br>当使用TCP连接的所有服务不再可用（停止或超时）时，客户端应关闭TCP连接<br>服务器在停止所有服务时不应停止TCP连接，给客户端足够的时间来处理控制数据以关闭TCP连接本身<br>如果客户端没有主动关闭TCP连接，而服务器关闭TCP连接，那么客户端会尝试重新建立连接</p>
+<h4 id="UDP-Bind"><a href="#UDP-Bind" class="headerlink" title="UDP Bind"></a>UDP Bind</h4><p>报头格式允许在单个UDP数据包中传输多个SOME&#x2F;IP消息</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/404570767">https://zhuanlan.zhihu.com/p/404570767</a></p>
+<h4 id="多重实例"><a href="#多重实例" class="headerlink" title="多重实例"></a>多重实例</h4><p> 如果服务器和多个客户端进行同一个服务的SOME&#x2F;IP通信，它会运行同一服务的不同实例，这些实例的消息是通过传输层协议端口映射到该实例上的<br> 支持多个服务实例驻留在不同的ECU上，以及一个或多个服务的多个服务示例驻留在一个ECU上<br> 单个ECU上相同服务的多个服务实例应在每个服务实例的不同端口上监听<br>实例对UDP和TCP使用相同的端口号</p>
+<h4 id="大型SOME-x2F-IP消息"><a href="#大型SOME-x2F-IP消息" class="headerlink" title="大型SOME&#x2F;IP消息"></a>大型SOME&#x2F;IP消息</h4><p>当需要传输非常大的数据块（&gt;1400字节）并且在出现错误时没有硬延迟要求时，才使用TCP<br>SOME&#x2F;IP的UDP绑定只能传输直接适合IP数据包的SOME&#x2F;IP消息。如果需要通过UDP传输较大的SOM&#x2F;IP消息（例如32KB），则应使用SOME&#x2F;IP-TP协议</p>
+<p><img src="https://img-blog.csdnimg.cn/9aa59acf74134744b80e230aea760f89.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>①SOME&#x2F;IP消息太大而不能用UDP绑定直接传输的，称为“原始”SOME&#x2F;IP消息，在SOME&#x2F;IP-TP消息中传输的原始SOME&#x2F;IP消息payload的“片段”称为segments<br>②Message Type：SOME&#x2F;IP-TP segments应将Message Type的TP-Flag设置为1<br>③Offset：设置为原始消息中传输段的偏移量（以字节为单位）不太理解<br>④Reserve Flag：保留标志应由发送方设置为0，接收方应忽略（且不检查）<br>④More Segments Flag：除最后一个分段外，所有分段的More Segments Flag应设置为1。对于最后一段，应将其设置为0<br>⑤Payload：为了对齐，除最后一个段以外，所有段的长度应为16字节的倍数。由于基于UDP的SOME&#x2F;IP消息的有效载荷限制为1400字节，因此正确对齐的段的最大长度为1392字节<br>⑥所有的SOME&#x2F;IP-TP段必须携带原始消息的Session ID，因此，它们都具有相同的Session-ID</p>
+<blockquote>
+<p>还需要注意Length字段，包含了SOME&#x2F;IP标头的8个字节、TP标头的4个字节以及段本身</p>
+</blockquote>
+<p>例:有5880字节数据需要发送<br><img src="https://img-blog.csdnimg.cn/5c2de3a51ed34f629dddedfe83c1382c.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>前四段<br><img src="https://img-blog.csdnimg.cn/7720be9edb754fa88fa49e90e5cce266.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>第五段<br><img src="https://img-blog.csdnimg.cn/d14e074ced3a427695c75e615ccc74de.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="发送方行为"><a href="#发送方行为" class="headerlink" title="发送方行为"></a>发送方行为</h4><p>①发送方应仅对配置为分段的消息进行分段，且按顺序发送<br>②发送方应把More Segment Flag设置为1的所有段都分片成相同的大小，也就是说除了最后一片，其他的分片大小都要相同，都是1392个byte<br>③发送方不得发送重复的分片报文</p>
+<h4 id="接收方行为"><a href="#接收方行为" class="headerlink" title="接收方行为"></a>接收方行为</h4><p>①接收方应根据配置的Message-ID、Protocol-Version、Interface-Version和Message-Type（w&#x2F;o TP Flag）进行重组<br>②Session ID用于检测下一个要重组的原始消息<br>③如果接收到具有不同Session-ID的Segment，则接收方应开始新的重组（并可能丢弃未成功重组的旧段）<br>④只有正确重组的消息才能传递给应用程序<br>⑤ 消息的每个分片都有Return Code，只有最后一片的Return Code在重组时被使用<br>⑥TP段重新组装为大型未分段消息期间，应调整消息类型，重置TP标志到0<br>⑦当检测到有丢失的分片时，应该取消之前的重组，这意味着不支持重新排序<br>⑧接收方还支持覆盖重复的分片以正确重组消息</p>
+<h3 id="Request-x2F-Response"><a href="#Request-x2F-Response" class="headerlink" title="Request&#x2F;Response"></a>Request&#x2F;Response</h3><p>Request：</p>
+<ul>
+<li>构建Payload</li>
+<li>根据客户端要调用的方法来设置Message ID</li>
+<li>Length字段的值设置8个字节+Payload长度</li>
+<li>将Request ID设置为对客户端来说唯一的编号</li>
+<li>设置Protocol Version</li>
+<li>根据接口定义设置Interface Version</li>
+<li>设置Message Type为REQUEST（0x00）</li>
+<li>设置Return Code为0x00</li>
+</ul>
+<p>Response:</p>
+<ul>
+<li>构建Payload</li>
+<li>把对应的Request消息的Message ID复制到Response消息的Message ID里</li>
+<li>Length字段的值设置8个字节+Payload长度</li>
+<li>把对应的Request消息的Request ID复制到Response消息的Request ID里</li>
+<li>设置Message Type为RESPONSE（0x80）或ERROR（0x81）</li>
+<li>Return Code应该为请求消息调用方法时返回的代码，或者是调用失败时的错误代码</li>
+</ul>
+<blockquote>
+<p>服务器&#x2F;客户端在接收到完整的请求&#x2F;响应消息前，忽略新的请求&#x2F;响应报文</p>
+</blockquote>
+<h3 id="Fire-amp-Forget通信"><a href="#Fire-amp-Forget通信" class="headerlink" title="Fire&amp;Forget通信"></a>Fire&amp;Forget通信</h3><p>没有响应消息的请求称为fire&amp;forget</p>
+<ul>
+<li>构建Payload</li>
+<li>根据客户端要调用的方法来设置Message ID</li>
+<li>Length字段的值设置8个字节+Payload长度</li>
+<li>将Request ID设置为对客户端来说唯一的编号</li>
+<li>设置Protocol Version</li>
+<li>根据接口定义设置Interface Version</li>
+<li>设置Message Type为REQUEST_NO_RETURN（0x01）</li>
+<li>设置Return Code为0x00<blockquote>
+<p>Fire&amp;Forget消息调用方法成功时服务器不会回复响应，发生错误时也不会返回错误，错误处理和返回码应在需要时由应用程序实现</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Notification-Events"><a href="#Notification-Events" class="headerlink" title="Notification Events"></a>Notification Events</h3><p>服务器发布客户端订阅的服务。在某些情况下，服务器会向客户端发送一个事件，例如更新的值或发生的事件。<br>SOME&#x2F;IP-SD用于发布和订阅机制,SOME&#x2F;IP仅用于传输更新后的值。</p>
+<ul>
+<li>构建Payload</li>
+<li>根据服务器要发送的事件来设置Message ID</li>
+<li>Length字段的值设置8个字节+Payload长度</li>
+<li>设置Client ID（0x00）和Session ID</li>
+<li>设置Protocol Version</li>
+<li>根据接口定义设置Interface Version</li>
+<li>设置Message Type为NOTIFICATION（0x02）</li>
+<li>设置Return Code为0x00</li>
+</ul>
+<blockquote>
+<p>Notification分为Event和Field 两类，这两类通知都需要首先使用SOME&#x2F;IP-SD(Service Discovery)来进行服务订阅，然后才能发布通知。区别在于，Event是某一时刻的快照，只是事件通知，而Field除了事件通知之外，还具有Getter和Setter的功能，即对信息进行读写的操作。而且Field会在订阅后会发送一个当前值</p>
+</blockquote>
+<h4 id="发送Notification消息的策略"><a href="#发送Notification消息的策略" class="headerlink" title="发送Notification消息的策略"></a>发送Notification消息的策略</h4><p>对于不同的用例，发送通知消息的策略可能不同，以下是常见的示例：</p>
+<ul>
+<li>循环更新：以固定间隔发送更新值（例如，每100毫秒，对于Alive的安全相关消息）</li>
+<li>改变时更新：一旦“值”发生改变（例如门打开），立即发送更新</li>
+<li>满足差值时更新：仅当与最后一个值的差异大于某个值时才发送更新，这个概念可能是自适应的，即预测是基于历史的，因此，只有当预测值和当前值之间的差异大于某个值时，才会传输更新</li>
+</ul>
+<h3 id="Fields"><a href="#Fields" class="headerlink" title="Fields"></a>Fields</h3><p>①字段应至少包含一个getter、一个setter或一个notifier<br>②getter应是Request&#x2F;Response调用，在Request消息中payload为空，并且在Response消息的payload中具有该字段的值<br>③setter应是Request&#x2F;Response调用，Request消息的payload中有需要设置的值，Response消息的payload中有设置的值<br>③当客户端订阅该字段时，notifier应发送一个事件消息，将字段的值传输到客户端</p>
+<h3 id="Error-Handling"><a href="#Error-Handling" class="headerlink" title="Error Handling"></a>Error Handling</h3><p>错误处理可以在应用程序或下面的通信层中完成，因此，SOME&#x2F;IP支持两种不同的处理错误的机制：</p>
+<ul>
+<li>消息类型0x80，在Response消息中携带Return Code</li>
+<li>消息类型0x81，显式的错误消息</li>
+</ul>
+<p>Return Code是将应用程序错误和方法的响应数据从服务器传输到客户端</p>
+<p>显式错误消息将应用程序错误和响应数据或通用SOME&#x2F;IP错误从服务器传输到客户端<br>如果需要传输更详细的错误信息，则错误消息（Message Type 0x81）的Payload应填充特定错误数据，例如异常字符串，应发送错误消息而不是响应消息</p>
+<p>所有的消息都有Return Code字段，只有Response消息（Message Type 0x80）和Error消息（Message Type 0x81）使用Return Code字段承载Return Code值回复请求（Message Type 0x00），除0x80和0x81之外的所有其他消息都应将Return Code字段设置为0x00</p>
+<h4 id="Return-Code-1"><a href="#Return-Code-1" class="headerlink" title="Return Code"></a>Return Code</h4><h4 id="显式的错误消息"><a href="#显式的错误消息" class="headerlink" title="显式的错误消息"></a>显式的错误消息</h4><p>SOME&#x2F;IP消息的接收者不应对events&#x2F;notifications回复错误消息<br>SOME&#x2F;IP消息的接收者不应对fire&amp;forget methods回复错误消息<br>如果events&#x2F;notifications和fire&amp;forget methods的Message Type字段被错误地设置成Request或Response，则SOME&#x2F;IP消息的接收者不应回复错误消息<br>对于请求&#x2F;响应方法，错误消息应复制请求&#x2F;响应消息的SOME&#x2F;IP首部的字段（例如Message ID、Request ID和Interface Version）而不是Payload，此外Message Type（0x81）和Return Code必须设置为适当的值</p>
+<h3 id="Error-Processing-Overview"><a href="#Error-Processing-Overview" class="headerlink" title="Error Processing Overview"></a>Error Processing Overview</h3><p>对于通过UDP接收的SOME&#x2F;IP消息，应检查UDP如下信息：</p>
+<ul>
+<li>UDP数据报大小应至少为16字节（即SOME&#x2F;IP消息的最小长度）</li>
+<li>UDP首部中Length字段的值应小于或等于UDP payload字节数<br><img src="https://img-blog.csdnimg.cn/8daaef1356884f2f99554c657572c9cd.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><blockquote>
+<p>当以上中指定的错误之一在通过TCP接收SOME&#x2F;IP消息时发生时,接收器应检查TCP连接，并在需要时重新启动TCP连接</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="通信错误与处理-不太懂"><a href="#通信错误与处理-不太懂" class="headerlink" title="通信错误与处理 不太懂"></a>通信错误与处理 不太懂</h3><p>在考虑RPC消息的传输时，存在不同的可靠性语义：</p>
+<ul>
+<li>可能：消息可能会到达通信伙伴</li>
+<li>至少一次：消息至少到达通信伙伴一次</li>
+<li>恰好一次：消息恰好到达通信伙伴一次<br>SOME&#x2F;IP目前在使用UDP绑定时实现了“可能”的可靠性，而在使用TCP绑定时实现了“恰好一次”的可靠性,进一步的错误处理留给应用程序<br>对于“可能”的可靠性，当使用请求&#x2F;响应通信结合UDP作为传输协议时，只需要一个超时</li>
+</ul>
+<p>下图显示了“可能”可靠性的状态机，客户端的SOME&#x2F;IP实现必须等待响应指定的超时时间<br>如果超时发生，SOME&#x2F;IP应向客户端应用程序发送E_TIMEOUT信号<br><img src="https://img-blog.csdnimg.cn/9445230a55104d54bdaa41edfe7e7540.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>对于“恰好一次”的可靠性，可以使用TCP绑定，因为TCP被定义为允许可靠的通信</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="category-chain-item">网络编程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Git/">#Git</a>
+      
+        <a href="/tags/%E5%A5%87%E6%80%AA%E7%9A%84%E9%97%AE%E9%A2%98/">#奇怪的问题</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络编程</div>
+      <div>https://godxqi.github.io/2023/07/03/网络编程/SomeipProtocol/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>GODXQI</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 3, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/07/03/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B1_IPAddrAndSocketFunction/" title="网络编程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网络编程</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/07/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/OSI%E6%A8%A1%E5%9E%8B/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://blog-vercel-lccsqrvsj-godxqi.vercel.app/","placeholder":"遗憾莫过于难忘你的背影，却找不到你来过的痕迹 ...","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
