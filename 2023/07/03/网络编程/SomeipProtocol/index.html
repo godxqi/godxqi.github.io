@@ -16,21 +16,22 @@
   <meta name="author" content="GODXQI">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文为网络编程学习笔记 关键字Methods一种被调用的方法、过程、函数或子例程。Parameters方法或事件的输入、输出或输入&#x2F;输出参数Remote Procedure Call (RPC)从一个ECU到另一个ECU的方法调用，使用消息传输Request客户端向服务器发送的调用方法的消息Response服务器发送给客户端的消息，用于传输方法调用的结果Request&#x2F;Resp">
+    <meta name="description" content="本文为网络编程学习笔记 关键字 Methods:一种被调用的方法、过程、函数或子例程。 Parameters:方法或事件的输入、输出或输入&#x2F;输出参数 Remote Procedure Call (RPC):从一个ECU到另一个ECU的方法调用，使用消息传输 Request:客户端向服务器发送的调用方法的消息 Response:服务器发送给客户端的消息，用于传输方法调用的结果 Reques">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络编程">
 <meta property="og:url" content="https://godxqi.github.io/2023/07/03/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/SomeipProtocol/index.html">
 <meta property="og:site_name" content="GODXQI&#39;s Blog">
-<meta property="og:description" content="本文为网络编程学习笔记 关键字Methods一种被调用的方法、过程、函数或子例程。Parameters方法或事件的输入、输出或输入&#x2F;输出参数Remote Procedure Call (RPC)从一个ECU到另一个ECU的方法调用，使用消息传输Request客户端向服务器发送的调用方法的消息Response服务器发送给客户端的消息，用于传输方法调用的结果Request&#x2F;Resp">
+<meta property="og:description" content="本文为网络编程学习笔记 关键字 Methods:一种被调用的方法、过程、函数或子例程。 Parameters:方法或事件的输入、输出或输入&#x2F;输出参数 Remote Procedure Call (RPC):从一个ECU到另一个ECU的方法调用，使用消息传输 Request:客户端向服务器发送的调用方法的消息 Response:服务器发送给客户端的消息，用于传输方法调用的结果 Reques">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/ecb1e65dfaa9488fa7a9f2720662f263.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/e65f5ac0ecda469b9ff3ea0178dd40dd.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/3d48ff716e8945fd9d301cf67bc6e26c.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/4c3be0e73a394ca9bca988a63a62b32f.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/05264922f30b41f98e2c73e669dcf76c.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/f014e126580d4b4e8fac0565d188c4e5.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/7a1b4e9c00cb4ffbb40fd6e47fb004f7.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/7dd5be46b58f4509929f88b6723074e1.jpeg#pic_center">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/bc1qerdz7v3rqqg7amg4q6ka4xl96vlhc3ka5ndta2d93.jpeg#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6f4ad5eeac6449c3a59fde367954334b.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/aa86e80fda88458aaab6bdf46204482e.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/7921abc7cb0b47c38228080dab38579f.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/62525cb48d02431481b26e22465d1836.jpeg#pic_center">
@@ -38,10 +39,11 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/5c2de3a51ed34f629dddedfe83c1382c.jpeg#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/7720be9edb754fa88fa49e90e5cce266.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/d14e074ced3a427695c75e615ccc74de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/75480fc8ae8044a999073b837067fa8f.jpeg">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/8daaef1356884f2f99554c657572c9cd.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/9445230a55104d54bdaa41edfe7e7540.png">
 <meta property="article:published_time" content="2023-07-02T23:32:10.766Z">
-<meta property="article:modified_time" content="2023-07-09T23:33:40.668Z">
+<meta property="article:modified_time" content="2023-08-01T23:41:03.609Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="奇怪的问题">
@@ -239,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7k words
+          7.3k words
         
       </span>
     
@@ -250,7 +252,7 @@
         
         
         
-          59 mins
+          62 mins
         
       </span>
     
@@ -294,24 +296,45 @@
               <div class="markdown-body">
                 
                 <p>本文为网络编程学习笔记</p>
-<p>关键字<br>Methods<br>一种被调用的方法、过程、函数或子例程。<br>Parameters<br>方法或事件的输入、输出或输入&#x2F;输出参数<br>Remote Procedure Call (RPC)<br>从一个ECU到另一个ECU的方法调用，使用消息传输<br>Request<br>客户端向服务器发送的调用方法的消息<br>Response<br>服务器发送给客户端的消息，用于传输方法调用的结果<br>Request&#x2F;Response communication<br>由请求和响应组成的RPC<br>Event<br>单向数据传输，仅在更改时调用或循环调用，并从数据生产者发送给消费者。<br>Field<br>字段确实表示一种状态，因此在getter、setter和notifier作用的任何时候都有一个有效值。<br>Notification Event<br>字段的通知程序的事件消息。类似CAN报文，在特定的事件触发下，服务端会发给客户端一个notification报文主要包括周期性事件、数据Changed等<br>Getter<br>允许对字段进行读取访问的请求&#x2F;响应调用。<br>Setter<br>允许对字段进行写访问的请求&#x2F;响应调用。<br>Notifier<br>在字段值发生更改时发送带有新值的事件消息。<br>Service<br>由零个或多个事件、方法和字段的组合组成。<br>Service Interface<br>服务的正式规范，包括其方法、事件和字段<br>Eventgroup<br>服务内部的事件和字段通知事件的逻辑分组，以便允许订阅<br>Service Instance<br>服务的实施，该服务可以在车辆中存在不止一次，也可以在ECU上存在不止一次<br>Server<br>提供服务实例的ECU应在该服务实例的上下文中被称为服务器。<br>Client<br>使用服务器服务实例的ECU应在该服务实例的上下文中被称为客户端。<br>Fire and Forget<br>没有响应消息的请求称为fire&amp;forget。<br>并集动态地采用不同数据类型的数据结构。</p>
-<p>SOMEIP<br>SOME&#x2F;IP是一套用TCP&#x2F;IP协议帮助不同平台上的分布式应用软件互相传递信息的机制<br>三种通信机制</p>
-<h3 id="事件Event"><a href="#事件Event" class="headerlink" title="事件Event"></a>事件Event</h3><p>提供了从提供者到订阅者的循环发送或变化的数据</p>
-<h3 id="方法Methods"><a href="#方法Methods" class="headerlink" title="方法Methods"></a>方法Methods</h3><p>为订阅者提供了在提供者端执行远程过程调用的可能性<br>1.Request&#x2F;Response<br><img src="https://img-blog.csdnimg.cn/ecb1e65dfaa9488fa7a9f2720662f263.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2.Fire and Forget<br><img src="https://img-blog.csdnimg.cn/e65f5ac0ecda469b9ff3ea0178dd40dd.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<h3 id="字段Field"><a href="#字段Field" class="headerlink" title="字段Field"></a>字段Field</h3><p>1.Setter&#x2F;Getter<br>Getter:订阅者可以调用它来明确地向提供者查询值<br>Setter:当订阅者想要更改提供者端的值时，它可以被订阅者调用<br><img src="https://img-blog.csdnimg.cn/3d48ff716e8945fd9d301cf67bc6e26c.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2.Notifier<br>将提供者的更改数据发送给订阅者<img src="https://img-blog.csdnimg.cn/05264922f30b41f98e2c73e669dcf76c.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><ul>
+<li>Methods:一种被调用的方法、过程、函数或子例程。</li>
+<li>Parameters:方法或事件的输入、输出或输入&#x2F;输出参数</li>
+<li>Remote Procedure Call (RPC):从一个ECU到另一个ECU的方法调用，使用消息传输</li>
+<li>Request:客户端向服务器发送的调用方法的消息</li>
+<li>Response:服务器发送给客户端的消息，用于传输方法调用的结果</li>
+<li>Request&#x2F;Response communication:由请求和响应组成的RPC</li>
+<li>Event:单向数据传输，仅在更改时调用或循环调用，并从数据生产者发送给消费者。</li>
+<li>Field:表示一种状态，一个可被远程访问的属性.因此在getter、setter和notifier作用的任何时候都有一个有效值。</li>
+<li>Notification Event:字段的通知程序的事件消息。类似CAN报文，在特定的事件触发下，服务端会发给客户端一个notification报文主要包括周期性事件、数据Changed等</li>
+<li>Getter:对字段进行读取访问的请求&#x2F;响应调用。请求报文payload为空,响应报文</li>
+<li>Setter:对字段进行写访问的请求&#x2F;响应调用。预置值放入请求报文payload中,响应报文得到设置结果</li>
+<li>Notifier:在字段值发生更改时发送带有新值的事件消息。订阅完成后会立刻通知当前值</li>
+<li>Service:由零个或多个事件、方法和字段的组合组成。</li>
+<li>Service Interface:服务的正式规范，包括其方法、事件和字段</li>
+<li>Eventgroup:服务内部的事件和字段通知事件的逻辑分组，以便允许订阅</li>
+<li>Service Instance:服务的实施，该服务可以在车辆中存在不止一次，也可以在ECU上存在不止一次</li>
+<li>Server:提供服务实例的ECU应在该服务实例的上下文中被称为服务器。</li>
+<li>Client:使用服务器服务实例的ECU应在该服务实例的上下文中被称为客户端。</li>
+<li>Fire and Forget:没有响应消息的请求称为fire&amp;forget。并集动态地采用不同数据类型的数据结构。</li>
+</ul>
+<p>SOMEIP<br>SOME&#x2F;IP是一套用TCP&#x2F;IP协议帮助不同平台上的分布式应用软件互相传递信息的机制,在接收方有需求的时候才会发送,是一种以服务为导向的数据通信方式</p>
+<h2 id="三种通信方式"><a href="#三种通信方式" class="headerlink" title="三种通信方式"></a>三种通信方式</h2><h3 id="事件Event"><a href="#事件Event" class="headerlink" title="事件Event"></a>事件Event</h3><p>提供了从提供者到订阅者的循环发送或变化的数据</p>
+<h3 id="方法Methods"><a href="#方法Methods" class="headerlink" title="方法Methods"></a>方法Methods</h3><p>为订阅者提供了在提供者端执行远程过程调用的可能性<br>1.Request&#x2F;Response(请求后有应答的Method)<br><img src="https://img-blog.csdnimg.cn/ecb1e65dfaa9488fa7a9f2720662f263.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2.Fire and Forget(请求后无应答的Method)<br><img src="https://img-blog.csdnimg.cn/e65f5ac0ecda469b9ff3ea0178dd40dd.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="字段Field"><a href="#字段Field" class="headerlink" title="字段Field"></a>字段Field</h3><p>1.Setter&#x2F;Getter<br>Getter:订阅者可以调用它来明确地向提供者查询值<br>Setter:当订阅者想要更改提供者端的值时，它可以被订阅者调用<br><img src="https://img-blog.csdnimg.cn/3d48ff716e8945fd9d301cf67bc6e26c.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2.Notifier<br>将提供者的更改数据发送给订阅者<img src="https://img-blog.csdnimg.cn/4c3be0e73a394ca9bca988a63a62b32f.png" srcset="/img/loading.gif" lazyload alt="请添加图片描述"></p>
+<h3 id="EventGroup"><a href="#EventGroup" class="headerlink" title="EventGroup"></a>EventGroup</h3><p>用来进行publish&#x2F;subscribe处理Events和Field的通信的逻辑组<br>由client向server订阅服务内容,然后server向client自动发布服务内容<br><img src="https://img-blog.csdnimg.cn/05264922f30b41f98e2c73e669dcf76c.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
 <h3 id="Someip-Header"><a href="#Someip-Header" class="headerlink" title="Someip Header"></a>Someip Header</h3><p>Someip Header应以网络字节顺序编码，也就是大端规则传输<br><img src="https://img-blog.csdnimg.cn/f014e126580d4b4e8fac0565d188c4e5.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<h4 id="MessageID"><a href="#MessageID" class="headerlink" title="MessageID"></a>MessageID</h4><p>①4个字节。<br>②在整个系统中固定唯一。<br>③由Service ID(16 bit)和Method ID(15 bit)组成，前者表示应用，后者表示方法或事件</p>
+<h4 id="MessageID"><a href="#MessageID" class="headerlink" title="MessageID"></a>MessageID</h4><p>类似CANID主要区分不同的服务和服务接口<br>①4个字节。<br>②在整个系统中固定唯一。<br>③由Service ID(16 bit)和Method ID(15 bit)组成，前者表示应用，后者表示Method或事件(Event或Notifier)</p>
 <ul>
-<li>当Method ID表示方法时，bit16为0<br><img src="https://img-blog.csdnimg.cn/7a1b4e9c00cb4ffbb40fd6e47fb004f7.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
-<li>当Method ID表示事件时，bit16为1<br> <img src="https://img-blog.csdnimg.cn/7dd5be46b58f4509929f88b6723074e1.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
+<li>当Method ID表示Method时，bit16为0<br><img src="https://img-blog.csdnimg.cn/7a1b4e9c00cb4ffbb40fd6e47fb004f7.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
+<li>当Method ID表示事件(Event或Notifier)时，bit16为1<br><img src="https://img-blog.csdnimg.cn/7dd5be46b58f4509929f88b6723074e1.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
 </ul>
 <h4 id="Length"><a href="#Length" class="headerlink" title="Length"></a>Length</h4><p>4个字节，它是从Request ID到Payload的字节长度</p>
-<h4 id="RequestID"><a href="#RequestID" class="headerlink" title="RequestID"></a>RequestID</h4><p><img src="https://img-blog.csdnimg.cn/bc1qerdz7v3rqqg7amg4q6ka4xl96vlhc3ka5ndta2d93.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="RequestID"><a href="#RequestID" class="headerlink" title="RequestID"></a>RequestID</h4><p>用来响应特定的数据请求和发送<br><img src="https://img-blog.csdnimg.cn/6f4ad5eeac6449c3a59fde367954334b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
 <ul>
-<li>ClientID<br>2字节，是订阅者的唯一标识，提供者用Client ID区分调用同一方法的多个订阅者<br>在整个系统中固定唯一。</li>
+<li>ClientID<br>2字节，用来区分订阅者,是订阅者的唯一标识.提供者用Client ID区分调用同一方法的多个订阅者<br>在整个系统中固定唯一。</li>
 <li>Session ID<br>2个字节，用来区分同一发送者的连续请求或消息<br>① 如果会话处理未激活，Session ID应该设置为0x0000<br>②如果会话处理处于激活状态，Session ID应设置为0x0001-0xFFFF范围内的值，当Session ID达到最大值0xFFFF时，它应该从0x0001重新开始<br>③如果会话处理处于激活状态，Session ID应根据各自的用例递增<br>④如果响应的Session ID与请求的Session ID不匹配，订阅者必须忽略这个响应</li>
 </ul>
-<h4 id="Protocol-Version"><a href="#Protocol-Version" class="headerlink" title="Protocol Version"></a>Protocol Version</h4><p>1个字节，用来表示SOME&#x2F;IP首部的格式</p>
+<h4 id="Protocol-Version"><a href="#Protocol-Version" class="headerlink" title="Protocol Version"></a>Protocol Version</h4><p>1个字节，用来表示Someip协议版本信息,用来表示SOME&#x2F;IP首部的格式</p>
 <h4 id="Interface-Version"><a href="#Interface-Version" class="headerlink" title="Interface Version"></a>Interface Version</h4><p>1个字节，用来表示服务接口版本</p>
 <h4 id="Message-Type"><a href="#Message-Type" class="headerlink" title="Message Type"></a>Message Type</h4><p>消息类型字段用于区分不同类型的消息<br><img src="https://img-blog.csdnimg.cn/aa86e80fda88458aaab6bdf46204482e.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>当没有错误发生时，常规请求(Message Type &#x3D; 0x00)应由响应(Message Type &#x3D; 0x80)回复，如果发生错误，则应回复错误消息(Message Type &#x3D; 0x81)<br>也可以发送没有响应消息的请求(Message Type &#x3D; 0x01)</p>
 <p>对于TP消息来说，Message Type的第三个高位要设置为1，以表示这个SOME&#x2F;IP是一个segment，所以0x00对应0x20<br>这里我不理解segment是什么意思</p>
@@ -319,12 +342,11 @@
 <ul>
 <li>Response<br><img src="https://img-blog.csdnimg.cn/62525cb48d02431481b26e22465d1836.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></li>
 </ul>
-<h4 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h4><p>SOME&#x2F;IP Payload由事件的数据元素或方法的参数组成，大小取决于所使用的传输层协议，对于UDP，payload介于0到1400个字节之间，而由于TCP支持payload分段，所以支持更大的长度<br>payload</p>
-<h3 id="数据结构的序列化-4-1-4未看完"><a href="#数据结构的序列化-4-1-4未看完" class="headerlink" title="数据结构的序列化(4.1.4未看完)"></a>数据结构的序列化(4.1.4未看完)</h3><p>即把包含不同数据类型的结构化数据序列化成byte数组<br>如何序列化，要根据项目规范和内存对齐<br>①数据的对齐应通过在前面的数据和应对齐的数据之间插入填充元素来实现<br>②固定长度数据元素后不应该有填充，如果非要填充，必须在规范中明确<br>③可变长度数据元素后面的数据对齐应为8、16或32位的倍数<br>如果某个元素大小可变，且不是序列化数据流中的最后一个元素，则应通过在可变元素数据后插入填充位来实现数据对齐</p>
+<h4 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h4><p>SOME&#x2F;IP Payload由事件的数据元素或方法的参数组成，大小取决于所使用的传输层协议，对于UDP，payload介于0到1400个字节之间，而由于TCP支持payload分段，所以支持更大的长度</p>
+<h3 id="数据结构的序列化-4-1-4未看完"><a href="#数据结构的序列化-4-1-4未看完" class="headerlink" title="数据结构的序列化(4.1.4未看完)"></a>数据结构的序列化(4.1.4未看完)</h3><p>在Someip传输中把包含不同数据类型的结构化数据序列化成byte数组<br>如何序列化，要根据项目规范和内存对齐<br>①数据的对齐应通过在前面的数据和应对齐的数据之间插入填充元素来实现<br>②固定长度数据元素后不应该有填充，如果非要填充，必须在规范中明确<br>③可变长度数据元素后面的数据对齐应为8、16或32位的倍数<br>如果某个元素大小可变，且不是序列化数据流中的最后一个元素，则应通过在可变元素数据后插入填充位来实现数据对齐,如果是最后一个元素,则不需要填充</p>
 <h3 id="SOME-x2F-IP协议规范"><a href="#SOME-x2F-IP协议规范" class="headerlink" title="SOME&#x2F;IP协议规范"></a>SOME&#x2F;IP协议规范</h3><p>SOME&#x2F;IP支持TCP和UDP传输消息<br>一个服务实例可以用以下方式来进行所有方法、事件和通知的通信<br>最多一个TCP连接<br>最多一个UDP单播<br>最多一个UDP多播</p>
 <h4 id="TCP-Bind"><a href="#TCP-Bind" class="headerlink" title="TCP Bind"></a>TCP Bind</h4><p>客户端在SOME&#x2F;IP通信前首先需要建立TCP连接<br>客户端负责在失败时重新建立TCP连接<br>当需要断开连接时，由客户端发起断开连接请求<br>当使用TCP连接的所有服务不再可用（停止或超时）时，客户端应关闭TCP连接<br>服务器在停止所有服务时不应停止TCP连接，给客户端足够的时间来处理控制数据以关闭TCP连接本身<br>如果客户端没有主动关闭TCP连接，而服务器关闭TCP连接，那么客户端会尝试重新建立连接</p>
-<h4 id="UDP-Bind"><a href="#UDP-Bind" class="headerlink" title="UDP Bind"></a>UDP Bind</h4><p>报头格式允许在单个UDP数据包中传输多个SOME&#x2F;IP消息</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/404570767">https://zhuanlan.zhihu.com/p/404570767</a></p>
+<h4 id="UDP-Bind"><a href="#UDP-Bind" class="headerlink" title="UDP Bind"></a>UDP Bind</h4><p>报头格式允许在单个UDP数据包中传输多个SOME&#x2F;IP消息<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/404570767">https://zhuanlan.zhihu.com/p/404570767</a></p>
 <h4 id="多重实例"><a href="#多重实例" class="headerlink" title="多重实例"></a>多重实例</h4><p> 如果服务器和多个客户端进行同一个服务的SOME&#x2F;IP通信，它会运行同一服务的不同实例，这些实例的消息是通过传输层协议端口映射到该实例上的<br> 支持多个服务实例驻留在不同的ECU上，以及一个或多个服务的多个服务示例驻留在一个ECU上<br> 单个ECU上相同服务的多个服务实例应在每个服务实例的不同端口上监听<br>实例对UDP和TCP使用相同的端口号</p>
 <h4 id="大型SOME-x2F-IP消息"><a href="#大型SOME-x2F-IP消息" class="headerlink" title="大型SOME&#x2F;IP消息"></a>大型SOME&#x2F;IP消息</h4><p>当需要传输非常大的数据块（&gt;1400字节）并且在出现错误时没有硬延迟要求时，才使用TCP<br>SOME&#x2F;IP的UDP绑定只能传输直接适合IP数据包的SOME&#x2F;IP消息。如果需要通过UDP传输较大的SOM&#x2F;IP消息（例如32KB），则应使用SOME&#x2F;IP-TP协议</p>
 <p><img src="https://img-blog.csdnimg.cn/9aa59acf74134744b80e230aea760f89.jpeg#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>①SOME&#x2F;IP消息太大而不能用UDP绑定直接传输的，称为“原始”SOME&#x2F;IP消息，在SOME&#x2F;IP-TP消息中传输的原始SOME&#x2F;IP消息payload的“片段”称为segments<br>②Message Type：SOME&#x2F;IP-TP segments应将Message Type的TP-Flag设置为1<br>③Offset：设置为原始消息中传输段的偏移量（以字节为单位）不太理解<br>④Reserve Flag：保留标志应由发送方设置为0，接收方应忽略（且不检查）<br>④More Segments Flag：除最后一个分段外，所有分段的More Segments Flag应设置为1。对于最后一段，应将其设置为0<br>⑤Payload：为了对齐，除最后一个段以外，所有段的长度应为16字节的倍数。由于基于UDP的SOME&#x2F;IP消息的有效载荷限制为1400字节，因此正确对齐的段的最大长度为1392字节<br>⑥所有的SOME&#x2F;IP-TP段必须携带原始消息的Session ID，因此，它们都具有相同的Session-ID</p>
@@ -371,7 +393,7 @@
 </blockquote>
 </li>
 </ul>
-<h3 id="Notification-Events"><a href="#Notification-Events" class="headerlink" title="Notification Events"></a>Notification Events</h3><p>服务器发布客户端订阅的服务。在某些情况下，服务器会向客户端发送一个事件，例如更新的值或发生的事件。<br>SOME&#x2F;IP-SD用于发布和订阅机制,SOME&#x2F;IP仅用于传输更新后的值。</p>
+<h3 id="Notification"><a href="#Notification" class="headerlink" title="Notification"></a>Notification</h3><p>服务器发布客户端订阅的服务。在某些情况下，服务器会向客户端发送一个事件，例如更新的值或发生的事件。<br>SOME&#x2F;IP-SD用于发布和订阅机制,SOME&#x2F;IP仅用于传输更新后的值。</p>
 <ul>
 <li>构建Payload</li>
 <li>根据服务器要发送的事件来设置Message ID</li>
@@ -383,7 +405,7 @@
 <li>设置Return Code为0x00</li>
 </ul>
 <blockquote>
-<p>Notification分为Event和Field 两类，这两类通知都需要首先使用SOME&#x2F;IP-SD(Service Discovery)来进行服务订阅，然后才能发布通知。区别在于，Event是某一时刻的快照，只是事件通知，而Field除了事件通知之外，还具有Getter和Setter的功能，即对信息进行读写的操作。而且Field会在订阅后会发送一个当前值</p>
+<p>Notification分为Event和Field 两类，这两类通知都需要首先使用SOME&#x2F;IP-SD(Service Discovery)来进行服务订阅，然后才能发布通知。区别在于，Event是某一时刻的快照，只是事件通知，而Field除了事件通知之外，还具有Getter和Setter的功能，即对信息进行读写的操作。而且Field会在订阅后会发送一个当前值<br><img src="https://img-blog.csdnimg.cn/75480fc8ae8044a999073b837067fa8f.jpeg" srcset="/img/loading.gif" lazyload alt="请添加图片描述"></p>
 </blockquote>
 <h4 id="发送Notification消息的策略"><a href="#发送Notification消息的策略" class="headerlink" title="发送Notification消息的策略"></a>发送Notification消息的策略</h4><p>对于不同的用例，发送通知消息的策略可能不同，以下是常见的示例：</p>
 <ul>
