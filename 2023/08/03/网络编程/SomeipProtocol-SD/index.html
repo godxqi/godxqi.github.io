@@ -24,7 +24,7 @@
 <meta property="og:description" content="本文为网络编程学习笔记 关键字 Methods:一种被调用的方法、过程、函数或子例程。 Parameters:方法或事件的输入、输出或输入&#x2F;输出参数 Remote Procedure Call (RPC):从一个ECU到另一个ECU的方法调用，使用消息传输 Request:客户端向服务器发送的调用方法的消息 Response:服务器发送给客户端的消息，用于传输方法调用的结果 Reques">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-08-02T22:41:52.021Z">
-<meta property="article:modified_time" content="2023-08-09T00:49:43.160Z">
+<meta property="article:modified_time" content="2023-08-09T23:28:02.707Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="奇怪的问题">
@@ -756,7 +756,6 @@
 </ul>
 </li>
 <li>如果服务不可用,进入Down Phase,并发送StopOffer Service通知所有客户端</li>
-<li>收到相应的Offer entries后，通过跳转到不发送Find entries的Main阶段停止发送Find entries</li>
 </ul>
 <ol start="2">
 <li>Client</li>
@@ -783,12 +782,12 @@
 <li>进入Main阶段后，提供者需要等待1*CYCLIC_OFFER_DELAY才能发送第一个Offer entry消息,随后周期性的发送Offer Service,周期时间为CYCLIC_OFFER_DELAY</li>
 <li>收到Client的Find Service后,不影响当前阶段的发送计数和计时,延迟REQUEST_RESPONSE_DELAY时间后,单独发送Offer Service给服务客户端<ul>
 <li>如果收到Subscribe Eventgroup,发送单播Ack&#x2F;Nack,启动此订阅Entry的TTl计时器</li>
-<li>如果收到StopSubscribe Eventgroup,停止订阅此Entry的TTl计时器</li>
+<li>如果收到StopSubscribe Eventgroup,停止订阅此Entry的TTL计时器</li>
 </ul>
 </li>
 <li>如果服务不可用,进入Down Phase,并发送StopOffer Service通知所有客户端</li>
 </ul>
-<ol>
+<ol start="2">
 <li>Client</li>
 </ol>
 <ul>
@@ -806,14 +805,14 @@
 </ul>
 <p>例如：</p>
 <ol>
-<li>初始等待阶段：</li>
+<li>Initial Phase：</li>
 </ol>
 <ul>
 <li>在(INITIAL_DELAY_MIN, _MAX)范围内中等待random_delay</li>
 <li>发送消息（Find Service和Offer Service Entries）</li>
 </ul>
-<ol>
-<li>重复阶段（REPETITIONS_BASE_DELAY&#x3D;100ms，REPETITIONS_MAX&#x3D;2）：</li>
+<ol start="2">
+<li>Repetition Phase（REPETITIONS_BASE_DELAY&#x3D;100ms，REPETITIONS_MAX&#x3D;2）：</li>
 </ol>
 <ul>
 <li>等待2<sup>0</sup>*100ms</li>
@@ -821,8 +820,8 @@
 <li>等待2<sup>1</sup>*100ms</li>
 <li>发送消息（Find Service和Offer Service Entries）</li>
 </ul>
-<ol>
-<li>主阶段（只要消息处于活动状态并且定义了CYCLIC_OFFER_DELAY）：</li>
+<ol start="3">
+<li>Main Phase（只要消息处于活动状态并且定义了CYCLIC_OFFER_DELAY）：</li>
 </ol>
 <ul>
 <li>等待CYCLIC_OFFER_DELAY</li>
