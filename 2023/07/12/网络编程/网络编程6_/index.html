@@ -24,7 +24,7 @@
 <meta property="og:description" content="本文为网络编程学习笔记 发送缓冲区数据先进入发送缓冲区,再由操作系统送往远端主机 接收缓冲区远端数据被操作系统接收后放入接收缓冲区,之后再由应用程序从接收缓冲区读取  TCP编程: 数据接收端无法知道数据的发送方式,无法知道数据是一次性发送的还是独立发送的  网络编程中的期望 每次发送一条完整的消息,每次接收一条完整的消息 即使接收缓冲区有多条消息,也不会出现消息粘连 消息覆盖了数据类型和数据长度">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-07-11T22:21:40.204Z">
-<meta property="article:modified_time" content="2023-07-16T23:31:24.824Z">
+<meta property="article:modified_time" content="2023-08-16T00:40:30.421Z">
 <meta property="article:author" content="GODXQI">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="奇怪的问题">
@@ -232,7 +232,7 @@
         
         
         
-          14 mins
+          13 mins
         
       </span>
     
@@ -330,9 +330,14 @@
 </li>
 <li>将p-&gt;cache里的元素从网络字节序转换到本机字节序</li>
 <li>至此消息头解析成功,为解析payload做准备:将mem从消息头重定向至payload头部,length减去消息头长度得到payload长度<blockquote>
-<p> mem +&#x3D; p-&gt;need;length -&#x3D; p-&gt;need;p-&gt;header &#x3D; 1;p-&gt;need &#x3D; p-&gt;cache.length<br>解析payload<br>1.根据payload长度申请堆空间,并将已经获取到的消息头拿出<br>p-&gt;msg &#x3D; malloc(sizeof(p-&gt;cache) + p-&gt;need);已经缓存的消息头+还需要缓存<br>*p-&gt;msg &#x3D; p-&gt;cache<br>2.从下一个消息中解析payload,将payload长度与取到的消息长度比较,选取小的那个复制到payload中,并将p-&gt;need减去这个长度,p-need取0后,解析完毕</p>
+<p> mem +&#x3D; p-&gt;need;length -&#x3D; p-&gt;need;p-&gt;header &#x3D; 1;p-&gt;need &#x3D; p-&gt;cache.length<br>解析payload</p>
 </blockquote>
 </li>
+<li>根据payload长度申请堆空间,并将已经获取到的消息头拿出<blockquote>
+<p>p-&gt;msg &#x3D; malloc(sizeof(p-&gt;cache) + p-&gt;need);已经缓存的消息头+还需要缓存<br>*p-&gt;msg &#x3D; p-&gt;cache</p>
+</blockquote>
+</li>
+<li>从下一个消息中解析payload,将payload长度与取到的消息长度比较,选取小的那个复制到payload中,并将p-&gt;need减去这个长度,p-need取0后,解析完毕</li>
 </ol>
 <h5 id="从socket中实时获取数据并解析"><a href="#从socket中实时获取数据并解析" class="headerlink" title="从socket中实时获取数据并解析"></a>从socket中实时获取数据并解析</h5><p>需要做一个实时接收并处理的通信</p>
 
